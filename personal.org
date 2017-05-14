@@ -1,0 +1,20 @@
+* Org
+** Capture templates
+   #+BEGIN_SRC emacs-lisp
+   (setq (org-capture-templates
+       (quote
+        (("m" "Meeting" entry
+          (id "30E45826-5558-4029-91D7-067B057B5740")
+         ("l" "Log" entry
+          (id "45F1430A-CE5D-4A2E-A5D8-D72C93313666")
+          "* %U %^{log}%?" :prepend t)
+         ("n" "Note" entry
+          (id "6D1B101A-FBCD-44AB-9414-B5686DB42D26")
+          "* %^{title} %U%?")
+         ("s" "Snippet" entry
+          (id "AA63C881-1070-4DBB-BBE5-917FCDD2A309")
+          "* %^{title}: %?")
+         ("t" "Task" entry
+          (id "2CF309C5-3F4E-4C98-AE0D-ACFAAF79C016")
+          "* TODO %?"))))))
+   #+END_SRC

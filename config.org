@@ -1,33 +1,38 @@
 # -*- mode: org; -*-
-#+DESCRIPTION: My nice =.emacs.d= configuration.
+#+DESCRIPTION: My nice =~/.config/emacs configuration. XDG WHAT!
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty
 #+TODO: TODO BROKEN EXP
 
-
 * Basics
-** Religion
-   Rollback sacriedge committed in recent years.
-
-   I use C-SPC C-SPC frequently to get transient mark and I'm fine
-   with that.
-
+** =use-package=
+   John Wiegley is an Emacs badass. I am not even kidding.
    #+BEGIN_SRC emacs-lisp
-     (setq-default indent-tabs-mode nil)
-     (setq-default transient-mark-mode -1)
+     (require 'use-package)
+     (setq use-package-always-ensure t)
+     (setq use-package-verbose t)
    #+END_SRC
+** Religion
+*** Canon
+    Rollback sacralege committed in recent years.
 
-*** Noise. There's too much of it these days.
+    I use C-SPC C-SPC frequently to get transient mark and I'm fine
+    with that.
 
+    #+BEGIN_SRC emacs-lisp
+      (setq-default indent-tabs-mode nil)
+      (setq-default transient-mark-mode -1)
+    #+END_SRC
+*** Noise. Make less.
     The advent of the tool bar—or was it fringe? ugh...—was great for me,
     because it was offensive enough to bother learning how to turn it off.
     Once I was in a turning off mode, I realized that the only thing I
     actually used the scroll bar for is telling how far into a buffer I
     was, and even that was really more distraction than useful.
 
-    There's no point to turning off the menu bar in OSX, because it's
-    either always there or hidden anyway.  Yay for Lion Full Screen though!
+    There's no point to turning off the menu bar in OSX. Yay for Lion
+    Full Screen though!
 
     #+BEGIN_SRC emacs-lisp
       (fringe-mode 0)
@@ -40,35 +45,154 @@
 
 ** Add Super and Hyper
    #+BEGIN_SRC emacs-lisp
-     (if (memq window-system '(mac ns))
-         (progn
-           (setq mac-option-modifier 'super)
-           (setq ns-function-modifier 'hyper)))
+     (case window-system
+       ('ns
+        (setq mac-option-modifier 'super)
+        (setq mac-command-modifier 'meta)
+        (setq ns-function-modifier 'hyper)))
    #+END_SRC
-
 ** Dedicated directory for backup files
    #+BEGIN_SRC emacs-lisp
      (defconst *backup-dir* (expand-file-name "backups" user-emacs-directory))
      (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
    #+END_SRC
+** Import Environment
+   #+BEGIN_SRC emacs-lisp
+   (use-package exec-path-from-shell
+     :config
+     (exec-path-from-shell-copy-envs 
+      '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
+        "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+   #+END_SRC
 
-* Packages
-** Setup
-*** Repositories
-    #+BEGIN_SRC emacs-lisp
-      (setq package-archives
-            '(("gnu" . "https://elpa.gnu.org/packages/")
-              ("melpa" . "https://melapa.org/packages/")
-              ("org" . "https://orgmode.org/elpa/")))
-      (package-initialize)
-    #+END_SRC
-*** Install =use-package=
-    jwiegley is a Emacs badass. I am not even kidding.
-    https://github.com/jwiegley/use-package
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package env-var-import
+       :config
+       (env-var-import '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
+                         "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+   #+END_SRC
+* Mode Line
+** Deploy fanciness
+   #+BEGIN_SRC emacs-lisp
+     (use-package spaceline-config
+       :ensure spaceline
+       :config (spaceline-spacemacs-theme))
+   #+END_SRC
+* TODO Preferences
+** Theme
+   #+BEGIN_SRC emacs-lisp
+     (use-package smyx-theme
+       :config
+       (load-theme 'smyx t)
+       (set-face-attribute 'org-todo nil :box nil)
+       (set-face-attribute 'org-done nil :box nil))
+   #+END_SRC
+** Code
+   #+BEGIN_SRC emacs-lisp
+   (show-paren-mode t)
+   #+END_SRC
+* Helpers
+** Better Zoom
+   The =zoom-frm= package improves on =text-scale-adjust= by providing
+   functions for changing size across all buffers.
 
-    #+BEGIN_SRC emacs-lisp
-      (unless (package-installed-p 'use-package)
-        (package-install 'use-package))
-      (require 'use-package)
-      (setq use-package-always-ensure t)
-    #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package zoom-frm
+       :ensure t
+       :bind (("C-c C-+" . zoom-in/out)
+              ("C-c C--" . zoom-in/out)
+              ("C-c C-0" . zoom-in/out)
+              ("C-c C-=" . zoom-in/out)))
+   #+END_SRC
+** Better packages UI
+   #+BEGIN_SRC emacs-lisp
+     (use-package paradox)
+   #+END_SRC
+* TODO Polymode
+
+* TODO Org
+  The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
+  #+BEGIN_SRC emacs-lisp
+    (if (string-prefix-p "8" (org-version))
+      (package-install 'org-plus-contrib))
+  #+END_SRC
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org
+      :commands (org-agenda org-capture org-store-link)
+      :bind (("C-c a" . org-agenda)
+             ("C-c c" . org-capture)
+             ("C-c l" . org-store-link)
+             ("C-c g" . org-mac-grab-link))
+      :config
+      (setq org-cycle-global-at-bob t)
+      (setq org-modules nil)
+      (setq org-use-speed-commands
+            (lambda () (or (eq (point) 1)
+                           (looking-at org-outline-regexp-bol))))
+      (add-hook 'org-agenda-mode-hook 'hl-line-mode)
+      (add-hook 'org-mode-hook 'org-bullets-mode))
+    (use-package org-id :ensure org)
+    (use-package org-protocol :ensure org)
+    (use-package ob-sh :ensure org)
+  #+END_SRC
+  
+  Remind me what I should be doing.
+  
+  #+BEGIN_SRC emacs-lisp
+      (defun jump-to-org-agenda ()
+        (interactive)
+        (let ((buf (get-buffer "*Org Agenda*"))
+              wind)
+          (if buf
+              (if (setq wind (get-buffer-window buf))
+                  (select-window wind)
+                (if (called-interactively-p)
+                    (progn
+                      (select-window (display-buffer buf t t))
+                      (org-fit-window-to-buffer)
+                      ;; (org-agenda-redo)
+                      )
+                  (with-selected-window (display-buffer buf)
+                    (org-fit-window-to-buffer)
+                    ;; (org-agenda-redo)
+                    )))
+            (call-interactively 'org-agenda-list))))
+      (run-with-idle-timer 900 t 'jump-to-org-agenda)
+  #+END_SRC
+
+** TODO Bullets
+   #+BEGIN_SRC emacs-lisp
+      (use-package org-bullets)
+   #+END_SRC
+   
+* Swiper
+  #+BEGIN_SRC emacs-lisp
+    (use-package flx)
+    (use-package swiper
+      :diminish t
+      :bind
+      ("C-s" . swiper)
+      ("C-c C-r" . ivy-resume)
+      ("C-7" . swiper-mc)
+      :config
+      (bind-key "<return>" 'ivy-alt-done ivy-minibuffer-map)
+      (bind-key "<tab>" 'ivy-partial ivy-minibuffer-map)
+      (setq ivy-height 20)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      (setq ivy-display-style 'fancy)
+      (setq magit-completing-read-function 'ivy-completing-read)
+      (ivy-mode 1))
+
+    (use-package ivy-hydra)
+  #+END_SRC
+* Context-specific
+  #+BEGIN_SRC emacs-lisp
+    (let ((local-config-name (pcase system-name
+                               (slumos "personal.org")
+                               (_ "work.org")))
+          (local-config (expand-file-name local-config-name user-emacs-directory)))
+      (if (file-exist-p local-config)
+          (org-babel-load-file local-config)))
+  #+END_SRC
