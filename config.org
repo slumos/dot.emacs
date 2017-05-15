@@ -21,8 +21,9 @@
     with that.
 
     #+BEGIN_SRC emacs-lisp
-      (setq-default indent-tabs-mode nil)
-      (setq-default transient-mark-mode -1)
+      (setq
+       indent-tabs-mode nil
+       transient-mark-mode -1)
     #+END_SRC
 *** Noise. Make less.
     The advent of the tool bar—or was it fringe? ugh...—was great for me,
@@ -71,13 +72,6 @@
        (env-var-import '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
                          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
    #+END_SRC
-* Mode Line
-** Deploy fanciness
-   #+BEGIN_SRC emacs-lisp
-     (use-package spaceline-config
-       :ensure spaceline
-       :config (spaceline-spacemacs-theme))
-   #+END_SRC
 * TODO Preferences
 ** Theme
    #+BEGIN_SRC emacs-lisp
@@ -91,6 +85,13 @@
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode t)
    #+END_SRC
+** Mode Line
+*** Deploy fanciness
+    #+BEGIN_SRC emacs-lisp
+      (use-package spaceline-config
+	:ensure spaceline
+	:config (spaceline-spacemacs-theme))
+    #+END_SRC
 * Helpers
 ** Better Zoom
    The =zoom-frm= package improves on =text-scale-adjust= by providing
@@ -108,7 +109,12 @@
    #+BEGIN_SRC emacs-lisp
      (use-package paradox)
    #+END_SRC
-* TODO Polymode
+* TODO Magit
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :bind
+      ("\C-x g" . magit-status))
+  #+END_SRC
 
 * TODO Org
   The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
@@ -165,7 +171,7 @@
    #+BEGIN_SRC emacs-lisp
       (use-package org-bullets)
    #+END_SRC
-   
+* TODO Polymode
 * Swiper
   #+BEGIN_SRC emacs-lisp
     (use-package flx)
