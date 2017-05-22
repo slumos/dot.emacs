@@ -3,8 +3,32 @@
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty
-#+TODO: TODO BROKEN EXP
+#+TODO: TODO BROKEN / EXP TRYING
 
+* Introduction
+  I know, I'm supposed to only care about writing code and not
+  configuring editors. THEN WHY USE EMACS??
+
+  Anyway, that doesn't mean clean structure is not cool! So I'm
+  stealing the hell out of using org to do "literate programming" (eh,
+  it's not really) of my emacs config from various starter kits
+  inspired by each other and also sachac, who is a total Emacs and
+  productivity badass.
+
+** Philosophy
+   1. Emacs defaults except recent terrible changes. Looking at you
+      (transient-mark-mode t)
+   2. The Emacs way is fine
+      * custom hasn't been really hate-worthy for ages—oh, you hate
+        custom? Now who cares more about writing code than configuring
+        editors?
+      * the new package system is just fine thanks.
+   3. I went to the trouble to acquire [[http://www.fsd.it/fonts/pragmatapro.htm][Pragmata Pro]]—because it's awesome,
+      but more than that—because I like Unicode enough to buy a
+      programming font with decent Unicode support. I'm hardly going to
+      do that and then *not* use Unicode in my editor config.
+* Startup
+** TODO Daemon
 * Basics
 ** =use-package=
    John Wiegley is an Emacs badass. I am not even kidding.
@@ -15,7 +39,7 @@
    #+END_SRC
 ** Religion
 *** Canon
-    Rollback sacralege committed in recent years.
+    Rollback sacrilege committed in recent years (decades...)
 
     I use C-SPC C-SPC frequently to get transient mark and I'm fine
     with that.
@@ -23,9 +47,17 @@
     #+BEGIN_SRC emacs-lisp
       (setq
        indent-tabs-mode nil
-       transient-mark-mode -1)
+       transient-mark-mode nil)
     #+END_SRC
-*** Noise. Make less.
+*** Buckeys
+    #+BEGIN_SRC emacs-lisp
+      (case window-system
+	('ns
+         (setq mac-command-modifier 'meta) ; That's right.
+         (setq mac-option-modifier 'super)
+         (setq ns-function-modifier 'hyper)))
+    #+END_SRC
+*** Noise. Make less. 
     The advent of the tool bar—or was it fringe? ugh...—was great for me,
     because it was offensive enough to bother learning how to turn it off.
     Once I was in a turning off mode, I realized that the only thing I
@@ -44,35 +76,26 @@
       (setq inhibit-startup-screen t)
     #+END_SRC
 
-** Add Super and Hyper
-   #+BEGIN_SRC emacs-lisp
-     (case window-system
-       ('ns
-        (setq mac-option-modifier 'super)
-        (setq mac-command-modifier 'meta)
-        (setq ns-function-modifier 'hyper)))
-   #+END_SRC
 ** Dedicated directory for backup files
+   XDG WHAT
    #+BEGIN_SRC emacs-lisp
-     (defconst *backup-dir* (expand-file-name "backups" user-emacs-directory))
+     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
      (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
    #+END_SRC
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
    (use-package exec-path-from-shell
      :config
+     (exec-path-from-shell-initialize)
      (exec-path-from-shell-copy-envs 
       '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
         "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
    #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package env-var-import
-       :config
-       (env-var-import '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
-                         "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+* Preferences
+** PragmataPro
+   #+BEGIN_SRC emacs-lisp
+     (set-default-font "PragmataPro")
    #+END_SRC
-* TODO Preferences
 ** Theme
    #+BEGIN_SRC emacs-lisp
      (use-package smyx-theme
@@ -93,6 +116,13 @@
 	:config (spaceline-spacemacs-theme))
     #+END_SRC
 * Helpers
+** TRYING WS Butler
+   This cleans up trailing whitespace only on line I edited. Briliant!
+   #+BEGIN_SRC emacs-lisp
+     (use-package ws-butler
+       :config
+       (add-hook 'ruby-mode-hook 'ws-butler-mode))
+   #+END_SRC
 ** Better Zoom
    The =zoom-frm= package improves on =text-scale-adjust= by providing
    functions for changing size across all buffers.
@@ -105,9 +135,13 @@
               ("C-c C-0" . zoom-in/out)
               ("C-c C-=" . zoom-in/out)))
    #+END_SRC
-** Better packages UI
+** Better packages ux
    #+BEGIN_SRC emacs-lisp
-     (use-package paradox)
+	  (use-package paradox
+	    :bind
+	    ("C-c p l" . paradox-list-packages)
+	    :config
+	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
    #+END_SRC
 * TODO Magit
   #+BEGIN_SRC emacs-lisp
@@ -116,62 +150,74 @@
       ("\C-x g" . magit-status))
   #+END_SRC
 
-* TODO Org
-  The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
   #+BEGIN_SRC emacs-lisp
-    (if (string-prefix-p "8" (org-version))
-      (package-install 'org-plus-contrib))
+    (use-package jordon-magit
+      :ensure nil
+      :load-path (expand-file-name "lisp" user-emacs-directory)
+      :commands 'jordon-magit-cleanup-this-hunk)
   #+END_SRC
+* [0/2] Org
+** TODO Figure out how to make org-end-of-line skip to after ... on second tap
+** Config
+   The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
+   #+BEGIN_SRC emacs-lisp
+     (if (string-prefix-p "8" (org-version))
+       (package-install 'org-plus-contrib))
+   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package org
-      :commands (org-agenda org-capture org-store-link)
-      :bind (("C-c a" . org-agenda)
-             ("C-c c" . org-capture)
-             ("C-c l" . org-store-link)
-             ("C-c g" . org-mac-grab-link))
-      :config
-      (setq org-cycle-global-at-bob t)
-      (setq org-modules nil)
-      (setq org-use-speed-commands
-            (lambda () (or (eq (point) 1)
-                           (looking-at org-outline-regexp-bol))))
-      (add-hook 'org-agenda-mode-hook 'hl-line-mode)
-      (add-hook 'org-mode-hook 'org-bullets-mode))
-    (use-package org-id :ensure org)
-    (use-package org-protocol :ensure org)
-    (use-package ob-sh :ensure org)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package org
+       :commands (org-agenda org-capture org-store-link)
+       :bind (("C-c a" . org-agenda)
+              ("C-c c" . org-capture)
+              ("C-c l" . org-store-link)
+              ("C-c g" . org-mac-grab-link))
+       :config
+       (setq org-cycle-global-at-bob t)
+       (setq org-modules nil)
+       (setq org-use-speed-commands
+             (lambda () (or (eq (point) 1)
+                            (looking-at org-outline-regexp-bol))))
+       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
+       (add-hook 'org-mode-hook 'org-bullets-mode))
+     (use-package org-id :ensure org)
+     (use-package org-protocol :ensure org)
+     (use-package ob-sh :ensure org)
+   #+END_SRC
   
-  Remind me what I should be doing.
+   Remind me what I should be doing.
   
-  #+BEGIN_SRC emacs-lisp
-      (defun jump-to-org-agenda ()
-        (interactive)
-        (let ((buf (get-buffer "*Org Agenda*"))
-              wind)
-          (if buf
-              (if (setq wind (get-buffer-window buf))
-                  (select-window wind)
-                (if (called-interactively-p)
-                    (progn
-                      (select-window (display-buffer buf t t))
-                      (org-fit-window-to-buffer)
-                      ;; (org-agenda-redo)
-                      )
-                  (with-selected-window (display-buffer buf)
-                    (org-fit-window-to-buffer)
-                    ;; (org-agenda-redo)
-                    )))
-            (call-interactively 'org-agenda-list))))
-      (run-with-idle-timer 900 t 'jump-to-org-agenda)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+       (defun jump-to-org-agenda ()
+         (interactive)
+         (let ((buf (get-buffer "*Org Agenda*"))
+               wind)
+           (if buf
+               (if (setq wind (get-buffer-window buf))
+                   (select-window wind)
+                 (if (called-interactively-p)
+                     (progn
+                       (select-window (display-buffer buf t t))
+                       (org-fit-window-to-buffer)
+                       ;; (org-agenda-redo)
+                       )
+                   (with-selected-window (display-buffer buf)
+                     (org-fit-window-to-buffer)
+                     ;; (org-agenda-redo)
+                     )))
+             (call-interactively 'org-agenda-list))))
+       (run-with-idle-timer 900 t 'jump-to-org-agenda)
+   #+END_SRC
 
 ** TODO Bullets
    #+BEGIN_SRC emacs-lisp
       (use-package org-bullets)
    #+END_SRC
 * TODO Polymode
+  #+BEGIN_SRC emacs-lisp
+    (use-package poly-org
+      :ensure polymode)
+  #+END_SRC
 * Swiper
   #+BEGIN_SRC emacs-lisp
     (use-package flx)
@@ -195,10 +241,10 @@
   #+END_SRC
 * Context-specific
   #+BEGIN_SRC emacs-lisp
-    (let ((local-config-name (pcase system-name
-                               (slumos "personal.org")
+    (let* ((local-config-name (pcase system-name
+                               ("steven.lan" "personal.org")
                                (_ "work.org")))
           (local-config (expand-file-name local-config-name user-emacs-directory)))
-      (if (file-exist-p local-config)
+      (if (file-exists-p local-config)
           (org-babel-load-file local-config)))
   #+END_SRC
