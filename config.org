@@ -2,8 +2,8 @@
 #+DESCRIPTION: My nice =~/.config/emacs configuration. XDG WHAT!
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty
-#+TODO: TODO BROKEN / EXP TRYING
+#+STARTUP: entitiespretty fold
+#+TODO: TODO(t) BROKEN(t) SKIP(s)
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -29,6 +29,11 @@
       do that and then *not* use Unicode in my editor config.
 * Startup
 ** TODO Daemon
+** Initial buffers (=*scratch*=)
+   #+BEGIN_SRC emacs-lisp
+     (setq initial-scratch-message nil)
+     (setq inhibit-startup-screen t)
+   #+END_SRC
 * Basics
 ** =use-package=
    John Wiegley is an Emacs badass. I am not even kidding.
@@ -84,13 +89,15 @@
    #+END_SRC
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
-   (use-package exec-path-from-shell
-     :config
-     (exec-path-from-shell-initialize)
-     (exec-path-from-shell-copy-envs 
-      '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
-        "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+     (use-package exec-path-from-shell
+       :config
+       (setq shell-file-name "/bin/zsh")
+       (exec-path-from-shell-initialize)
+       (exec-path-from-shell-copy-envs 
+        '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
+          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
    #+END_SRC
+** TODO Secrets
 * Preferences
 ** PragmataPro
    #+BEGIN_SRC emacs-lisp
@@ -110,11 +117,13 @@
    #+END_SRC
 ** Mode Line
 *** Deploy fanciness
-    #+BEGIN_SRC emacs-lisp
-      (use-package spaceline-config
-	:ensure spaceline
-	:config (spaceline-spacemacs-theme))
-    #+END_SRC
+**** Spaceline
+     #+BEGIN_SRC emacs-lisp
+       (use-package spaceline-config
+	 :ensure spaceline
+	 :config (spaceline-spacemacs-theme))
+     #+END_SRC
+**** TODO [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
 * Helpers
 ** TRYING WS Butler
    This cleans up trailing whitespace only on line I edited. Briliant!
@@ -143,21 +152,34 @@
 	    :config
 	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
    #+END_SRC
-* TODO Magit
+** which-key: Cool cheat-sheet for bound keys
+   #+BEGIN_SRC emacs-lisp
+     (use-package which-key
+       :config (which-key-mode))
+   #+END_SRC
+* Magit
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind
-      ("\C-x g" . magit-status))
+      :bind ("\C-x g" . magit-status))
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
     (use-package jordon-magit
       :ensure nil
-      :load-path (expand-file-name "lisp" user-emacs-directory)
-      :commands 'jordon-magit-cleanup-this-hunk)
+      :after magit
+      :load-path (lambda () (expand-file-name "lisp" user-emacs-directory))
+      :commands 'jordon-magit-cleanup-this-hunk
+      :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
+      :defer t)
   #+END_SRC
-* [0/2] Org
+* Org [0/2]
 ** TODO Figure out how to make org-end-of-line skip to after ... on second tap
+** Bullets
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :config
+       (setq org-bullets-bullet-list '("‣")))
+   #+END_SRC
 ** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
@@ -166,7 +188,11 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
+     (use-package org-id :ensure org-plus-contrib)
+     (use-package org-protocol :ensure org-plus-contrib)
+     (use-package ob-sh :ensure org-plus-contrib)
      (use-package org
+       :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
        :bind (("C-c a" . org-agenda)
               ("C-c c" . org-capture)
@@ -174,15 +200,12 @@
               ("C-c g" . org-mac-grab-link))
        :config
        (setq org-cycle-global-at-bob t)
-       (setq org-modules nil)
+       (setq org-modules '(org-crypt org-id org-mac-link org-protocol))
        (setq org-use-speed-commands
              (lambda () (or (eq (point) 1)
                             (looking-at org-outline-regexp-bol))))
        (add-hook 'org-agenda-mode-hook 'hl-line-mode)
        (add-hook 'org-mode-hook 'org-bullets-mode))
-     (use-package org-id :ensure org)
-     (use-package org-protocol :ensure org)
-     (use-package ob-sh :ensure org)
    #+END_SRC
   
    Remind me what I should be doing.
@@ -208,16 +231,25 @@
              (call-interactively 'org-agenda-list))))
        (run-with-idle-timer 900 t 'jump-to-org-agenda)
    #+END_SRC
-
-** TODO Bullets
+** TODO org-jira
+   [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
-      (use-package org-bullets)
+
    #+END_SRC
+
 * TODO Polymode
   #+BEGIN_SRC emacs-lisp
     (use-package poly-org
       :ensure polymode)
   #+END_SRC
+* TODO Language Modes [0/4]
+** TODO Ruby
+   #+BEGIN_SRC emacs-lisp
+     (use-package ruby-mode)
+   #+END_SRC
+** TODO Python
+** TODO Groovy
+** TODO Puppet
 * Swiper
   #+BEGIN_SRC emacs-lisp
     (use-package flx)
