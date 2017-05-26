@@ -1,0 +1,4 @@
+/elpa
+*.el#
+/config.el
+/recentf
