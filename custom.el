@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-plus-contrib org-bullets magit exec-path-from-shell)))
+    (org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

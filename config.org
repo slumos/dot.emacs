@@ -210,7 +210,8 @@
               ("C-c g" . org-mac-grab-link))
        :config
        (setq org-cycle-global-at-bob t)
-       (setq org-modules '(org-crypt org-id org-mac-link org-protocol))
+       (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
+       (org-load-modules-maybe t)
        (setq org-use-speed-commands
              (lambda () (or (eq (point) 1)
                             (looking-at org-outline-regexp-bol))))
@@ -219,9 +220,6 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
-     (use-package org-id)
-     (use-package org-protocol)
-     (use-package ob-sh)
    #+END_SRC
   
    Remind me what I should be doing.
