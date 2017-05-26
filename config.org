@@ -101,7 +101,7 @@
 * Preferences
 ** PragmataPro
    #+BEGIN_SRC emacs-lisp
-     (set-default-font "PragmataPro")
+     (set-default-font "PragmataPro-14")
    #+END_SRC
 ** Theme
    #+BEGIN_SRC emacs-lisp
@@ -123,7 +123,20 @@
 	 :ensure spaceline
 	 :config (spaceline-spacemacs-theme))
      #+END_SRC
-**** TODO [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
+**** All The Icons!
+     I'm not bothering to automate this now: On a new system, you gotta +M-x all-the-icons-install-fonts
+     #+BEGIN_SRC emacs-lisp
+     (use-package all-the-icons)
+     #+END_SRC
+**** [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
+     #+BEGIN_SRC emacs-lisp
+       (use-package spaceline-all-the-icons
+	 :after spaceline
+	 :config
+	 (setq spaceline-all-the-icons-separator-type 'arrow)
+	 (spaceline-all-the-icons-theme)
+	 (spaceline-all-the-icons--setup-paradox))
+     #+END_SRC
 * Helpers
 ** TRYING WS Butler
    This cleans up trailing whitespace only on line I edited. Briliant!
@@ -188,9 +201,6 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
-     (use-package org-id :ensure org-plus-contrib)
-     (use-package org-protocol :ensure org-plus-contrib)
-     (use-package ob-sh :ensure org-plus-contrib)
      (use-package org
        :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
@@ -206,6 +216,12 @@
                             (looking-at org-outline-regexp-bol))))
        (add-hook 'org-agenda-mode-hook 'hl-line-mode)
        (add-hook 'org-mode-hook 'org-bullets-mode))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-id)
+     (use-package org-protocol)
+     (use-package ob-sh)
    #+END_SRC
   
    Remind me what I should be doing.
@@ -231,6 +247,8 @@
              (call-interactively 'org-agenda-list))))
        (run-with-idle-timer 900 t 'jump-to-org-agenda)
    #+END_SRC
+
+
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
