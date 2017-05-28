@@ -246,9 +246,10 @@
   #+BEGIN_SRC emacs-lisp
     (use-package magithub
       :after magit
-      :config (magithub-feature-autoinject t))
+      :config
+      (magithub-feature-autoinject t))
   #+END_SRC
-  
+
   [[https://github.com/jordonbiondo/.emacs.d/blob/master/jordon/jordon-magit.el][jordon-magit]]: Clean up training whitespace per-hunk. Possibly deprecated by [[*WS Butler][WS Butler]].
   #+BEGIN_SRC emacs-lisp
     (use-package jordon-magit
