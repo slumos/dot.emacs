@@ -3,7 +3,7 @@
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
-#+TODO: TODO(t) BROKEN(t) SKIP(s)
+#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s)
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -97,7 +97,6 @@
         '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
           "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
    #+END_SRC
-** TODO Secrets
 * Preferences
 ** PragmataPro
    #+BEGIN_SRC emacs-lisp
@@ -128,6 +127,11 @@
      #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons)
      #+END_SRC
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package all-the-icons-ivy
+         :init (all-the-icons-ivy-setup))
+     #+END_SRC
 **** [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
      #+BEGIN_SRC emacs-lisp
        (use-package spaceline-all-the-icons
@@ -138,12 +142,13 @@
 	 (spaceline-all-the-icons--setup-paradox))
      #+END_SRC
 * Helpers
-** TRYING WS Butler
-   This cleans up trailing whitespace only on line I edited. Briliant!
+** Better packages ux
    #+BEGIN_SRC emacs-lisp
-     (use-package ws-butler
-       :config
-       (add-hook 'ruby-mode-hook 'ws-butler-mode))
+	  (use-package paradox
+	    :bind
+	    ("C-c p l" . paradox-list-packages)
+	    :config
+	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
    #+END_SRC
 ** Better Zoom
    The =zoom-frm= package improves on =text-scale-adjust= by providing
@@ -157,25 +162,94 @@
               ("C-c C-0" . zoom-in/out)
               ("C-c C-=" . zoom-in/out)))
    #+END_SRC
-** Better packages ux
+** Jumping
+   #+BEGIN_QUOTE
+     "If you're familiar with the popular `ace-jump-mode' package, this
+     package does all that and more, without the implementation
+     headache."
+   #+END_QUOTE
    #+BEGIN_SRC emacs-lisp
-	  (use-package paradox
-	    :bind
-	    ("C-c p l" . paradox-list-packages)
-	    :config
-	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
+       (use-package avy
+         :bind
+         ("C-." . avy-goto-char)
+         ("M-g M-g" . avy-goto-line))
    #+END_SRC
+** TODO multiple-cursors
+   [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
+   [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
+** TRYING undo-tree
+   [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
+   [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :bind
+       ("C-c C-u" . undo-tree-visualize)
+       :config
+       (setq undo-tree-visualizer-timestamps))
+   #+END_SRC
+** TRYING WS Butler
+   This cleans up trailing whitespace only on line I edited. Briliant!
+   #+BEGIN_SRC emacs-lisp
+     (use-package ws-butler
+       :config
+       (add-hook 'prog-mode-hook 'ws-butler-mode))
+   #+END_SRC
+** Honor .editorconfig files
+   #+BEGIN_SRC emacs-lisp
+     (use-package editorconfig
+       :init
+       (editorconfig-mode 1))
+   #+END_SRC
+** Counsel / Ivy / Swiper
+   #+BEGIN_SRC emacs-lisp
+     (use-package flx)
+     (use-package swiper
+       :diminish t
+       :bind
+       ("C-s" . swiper)
+       ("C-c C-r" . ivy-resume)
+       ("C-7" . swiper-mc)
+       :init
+       (ivy-mode 1)
+       :config
+       (bind-key "<return>" 'ivy-alt-done ivy-minibuffer-map)
+       (bind-key "<tab>" 'ivy-partial ivy-minibuffer-map)
+       (setq ivy-height 20)
+       (setq ivy-use-virtual-buffers t)
+       (setq ivy-count-format "(%d/%d) ")
+       (setq ivy-display-style 'fancy)
+       (setq magit-completing-read-function 'ivy-completing-read))
+
+     (use-package ivy-hydra)
+   #+END_SRC
+*** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
 * Magit
+  [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
+
+  Magit—like Org—is a total killer app and probably one of the reasons
+  Emacs had a revival in the recent(ish) years.
+
+  Just like [[http://mh-e.sourceforge.net/][MH-E]] back in the day, it's not about avoiding the CLI,
+  it's about heads-up display of the important stuff and driving the
+  CLI with single keystrokes.
+
   #+BEGIN_SRC emacs-lisp
     (use-package magit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
+  #+BEGIN_SRC emacs-lisp
+    (use-package magithub
+      :after magit
+      :config (magithub-feature-autoinject t))
+  #+END_SRC
+  
+  [[https://github.com/jordonbiondo/.emacs.d/blob/master/jordon/jordon-magit.el][jordon-magit]]: Clean up training whitespace per-hunk. Possibly deprecated by [[*WS Butler][WS Butler]].
   #+BEGIN_SRC emacs-lisp
     (use-package jordon-magit
       :ensure nil
@@ -252,47 +326,100 @@
    #+BEGIN_SRC emacs-lisp
 
    #+END_SRC
+* [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
+  [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
+  #+BEGIN_SRC emacs-lisp
+    (use-package restclient)
+    (use-package ob-restclient
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((restclient . t))))
+  #+END_SRC
+* BROKEN Polymode
+  The main thing I want to use this for is Org, but it breaks folding and I haven't had time to figure out wtf.
 
-* TODO Polymode
   #+BEGIN_SRC emacs-lisp
     (use-package poly-org
       :ensure polymode)
   #+END_SRC
-* TODO Language Modes [0/4]
-** TODO Ruby
+* TODO Language Modes [0/2]
+** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
    #+BEGIN_SRC emacs-lisp
-     (use-package ruby-mode)
+     (use-package lsp-mode
+       :config
+       (add-hook 'python-mode-hook 'lsp-mode)
+       (add-hook 'java-mode-hook 'lsp-mode))
    #+END_SRC
-** TODO Python
-** TODO Groovy
-** TODO Puppet
-* Swiper
-  #+BEGIN_SRC emacs-lisp
-    (use-package flx)
-    (use-package swiper
-      :diminish t
-      :bind
-      ("C-s" . swiper)
-      ("C-c C-r" . ivy-resume)
-      ("C-7" . swiper-mc)
-      :config
-      (bind-key "<return>" 'ivy-alt-done ivy-minibuffer-map)
-      (bind-key "<tab>" 'ivy-partial ivy-minibuffer-map)
-      (setq ivy-height 20)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-count-format "(%d/%d) ")
-      (setq ivy-display-style 'fancy)
-      (setq magit-completing-read-function 'ivy-completing-read)
-      (ivy-mode 1))
 
-    (use-package ivy-hydra)
-  #+END_SRC
+** Groovy
+   #+BEGIN_SRC emacs-lisp
+     (use-package groovy-mode
+       :mode "\\.groovy\\'")
+   #+END_SRC
+** TODO Javascript
+   #+BEGIN_SRC emacs-lisp
+     (use-package js2-mode :mode "\\.js\'")
+   #+END_SRC
+
+   JSON here too...meh.
+   #+BEGIN_SRC emacs-lisp
+     (use-package json-mode :mode "\\.json\'")
+   #+END_SRC
+** Lua
+   I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
+   [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
+** Puppet
+   #+BEGIN_SRC emacs-lisp
+     (use-package puppet-mode
+       :mode "\\.pp\\'") 
+   #+END_SRC
+** Python
+   #+BEGIN_SRC emacs-lisp
+     (use-package python-mode
+       :mode "\\.py\\'")
+   #+END_SRC
+** Ruby
+   #+BEGIN_SRC emacs-lisp
+     (use-package ruby-mode
+       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\)")
+
+     (use-package inf-ruby
+       :no-require t)
+
+     (use-package rspec-mode
+       :config
+       (inf-ruby-switch-setup))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package seeing-is-believing
+       :bind (("<s-return>" . seeing-is-believing)))
+   #+END_SRC
+** Web (HTML, etc)
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode)
+   #+END_SRC
+** YAML
+   #+BEGIN_SRC emacs-lisp
+     (use-package yaml-mode
+       :mode "\\(.yaml\\|.yml\\)$")
+   #+END_SRC
 * Context-specific
-  #+BEGIN_SRC emacs-lisp
-    (let* ((local-config-name (pcase system-name
-                               ("steven.lan" "personal.org")
-                               (_ "work.org")))
-          (local-config (expand-file-name local-config-name user-emacs-directory)))
-      (if (file-exists-p local-config)
-          (org-babel-load-file local-config)))
-  #+END_SRC
+  Yuck, barf, and bleh. Someone show me a better way!
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase system-name
+				("steven.lan" "personal.org")
+				(_ "work.org")))
+	   (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
+   #+END_SRC
+** TODO Local
+** TODO Secrets
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs-secrets.el.gpg" (xdg-config-home)))
+     (when (file-exists-p *user-emacs-secrets-file*)
+       (load *user-emacs-secrets-file*))
+   #+END_SRC

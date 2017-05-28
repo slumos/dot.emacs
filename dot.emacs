@@ -26,11 +26,6 @@
 ;;; Code:
 
 ;; XDG WHAT
-
-(setq mac-command-modifier 'meta) ; That's right.
-(setq mac-option-modifier 'super)
-(setq ns-function-modifier 'hyper)
-
 (add-to-list 'load-path (expand-file-name "~/.config/emacs/lisp"))
 (require 'xdg)
 (defconst *user-emacs-config-dir* (expand-file-name "emacs" (xdg-config-home)))
