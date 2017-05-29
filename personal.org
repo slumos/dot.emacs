@@ -7,7 +7,7 @@
 	      (id "30E45826-5558-4029-91D7-067B057B5740"))
 	     ("l" "Log" entry
 	      (id "45F1430A-CE5D-4A2E-A5D8-D72C93313666")
-	      "* %U %^{log}%?" :prepend t)
+	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
 	     ("n" "Note" entry
 	      (id "6D1B101A-FBCD-44AB-9414-B5686DB42D26")
 	      "* %^{title} %U%?")

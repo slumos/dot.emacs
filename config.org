@@ -29,6 +29,7 @@
       do that and then *not* use Unicode in my editor config.
 * Startup
 ** TODO Daemon
+** TODO Handling of BROKEN/SKIP states (should not be tangled)
 ** Initial buffers (=*scratch*=)
    #+BEGIN_SRC emacs-lisp
      (setq initial-scratch-message nil)
@@ -97,7 +98,16 @@
         '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
           "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
    #+END_SRC
+** Tuning
+   Who remembers Eight Megs And Constantly Swapping?
+   #+BEGIN_SRC emacs-lisp
+   (setq gc-cons-threshold (* 500 1024 1024))
+   #+END_SRC
 * Preferences
+** UTF-8
+   #+BEGIN_SRC emacs-lisp
+   (prefer-coding-system 'utf-8)
+   #+END_SRC
 ** PragmataPro
    #+BEGIN_SRC emacs-lisp
      (set-default-font "PragmataPro-14")
@@ -128,7 +138,8 @@
      (use-package all-the-icons)
      #+END_SRC
 
-     #+BEGIN_SRC emacs-lisp
+     A bit too noisy for me...
+     #+BEGIN_SRC emacs-lisp :tangle no
        (use-package all-the-icons-ivy
          :init (all-the-icons-ivy-setup))
      #+END_SRC
@@ -163,20 +174,45 @@
               ("C-c C-=" . zoom-in/out)))
    #+END_SRC
 ** Jumping
-   #+BEGIN_QUOTE
-     "If you're familiar with the popular `ace-jump-mode' package, this
-     package does all that and more, without the implementation
-     headache."
-   #+END_QUOTE
-   #+BEGIN_SRC emacs-lisp
-       (use-package avy
-         :bind
-         ("C-." . avy-goto-char)
-         ("M-g M-g" . avy-goto-line))
-   #+END_SRC
-** TODO multiple-cursors
+*** avy
+    #+BEGIN_QUOTE
+      "If you're familiar with the popular `ace-jump-mode' package, this
+      package does all that and more, without the implementation
+      headache."
+    #+END_QUOTE
+    #+BEGIN_SRC emacs-lisp
+	(use-package avy
+          :bind
+          ("C-." . avy-goto-char)
+          ("M-g M-g" . avy-goto-line))
+    #+END_SRC
+*** [[https://github.com/jacktasia/dumb-jump][jacktasia/dumb-jump: an Emacs "jump to definition" package]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package dumb-jump
+	:bind (("M-g o" . dumb-jump-go-other-window)
+	       ("M-g j" . dumb-jump-go)
+	       ("M-g i" . dumb-jump-go-prompt)
+	       ("M-g x" . dumb-jump-go-prefer-external)
+	       ("M-g z" . dumb-jump-go-prefer-external-other-window))
+	:config (setq dumb-jump-selector 'ivy))
+    #+END_SRC
+** multiple-cursors
    [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
+   [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
+   #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :bind
+       (("C-c m t" . mc/mark-all-like-this)
+	("C-c m m" . mc/mark-all-like-this-dwim)
+	("C-c m l" . mc/edit-lines)
+	("C-c m e" . mc/edit-ends-of-lines)
+	("C-c m a" . mc/edit-beginnings-of-lines)
+	("C-c m n" . mc/mark-next-like-this)
+	("C-c m p" . mc/mark-previous-like-this)
+	("C-c m s" . mc/mark-sgml-tag-pair)
+	("C-c m d" . mc/mark-all-like-this-in-defun)))
+   #+END_SRC
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
@@ -207,27 +243,121 @@
    #+END_SRC
 ** Counsel / Ivy / Swiper
    #+BEGIN_SRC emacs-lisp
-     (use-package flx)
-     (use-package swiper
-       :diminish t
+     (use-package counsel
+       :diminish ivy-mode
+       :init (ivy-mode 1)
        :bind
+       (:map ivy-mode-map
        ("C-s" . swiper)
-       ("C-c C-r" . ivy-resume)
-       ("C-7" . swiper-mc)
-       :init
-       (ivy-mode 1)
+       ("M-x" . counsel-M-x)
+       ("C-x C-f" . counsel-find-file)
+       ("<f1> f" . counsel-describe-function)
+       ("<f1> v" . counsel-describe-variable)
+       ("C-c u" . counsel-unicode-char)
+       ("C-c r" . counsel-rg)
+       :map ivy-minibuffer-map
+       ("<return>" . ivy-alt-done)
+       ("<tab>" . ivy-partial))
        :config
-       (bind-key "<return>" 'ivy-alt-done ivy-minibuffer-map)
-       (bind-key "<tab>" 'ivy-partial ivy-minibuffer-map)
+       (setq enable-recursive-minibuffers t)
        (setq ivy-height 20)
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
+       (setq ivy-re-builders-alist 
+       '((read-file-name-internal . ivy--regex-fuzzy)
+	   (t . ivy--regex-plus)))
        (setq magit-completing-read-function 'ivy-completing-read))
+   #+END_SRC
 
-     (use-package ivy-hydra)
+   #+BEGIN_SRC emacs-lisp
+   (use-package counsel-projectile 
+     :config
+     (counsel-projectile-on))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package flx)
    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
+** Functions
+   By me or collected from awesome people.
+*** show-file-name
+#+BEGIN_SRC emacs-lisp
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer and copy it to the kill ring."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name))
+)
+#+END_SRC
+
+*** rename-file-and-buffer
+Another /omg, why wasn't this in Emacs 18/ moment.
+
+From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+
+#+BEGIN_SRC emacs-lisp
+  (defun rename-file-and-buffer ()
+    "Rename the current buffer and file it is visiting."
+    (interactive)
+    (let ((filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+          (message "Buffer is not visiting a file!")
+        (let ((new-name (read-file-name "New name: " filename)))
+          (cond
+           ((vc-backend filename) (vc-rename-file filename new-name))
+           (t
+            (rename-file filename new-name t)
+            (set-visited-file-name new-name t t)))))))
+#+END_SRC
+
+*** compile-notify
+
+#+BEGIN_SRC emacs-lisp
+  (defun slumos/compile-notify (buf status)
+    (if (fboundp 'tn-notify) (tn-notify status "Emacs" "Compilation"))
+    (message "compile-notify: %s %s" buf status))
+  (add-to-list 'compilation-finish-functions 'slumos/compile-notify)
+#+END_SRC
+
+— slumos
+
+*** window-toggle-split-direction
+
+https://www.emacswiki.org/emacs/ToggleWindowSplit
+
+#+BEGIN_SRC emacs-lisp
+  (defun window-toggle-split-direction ()
+    "Switch window split from horizontally to vertically, or vice versa.
+
+  i.e. change right window to bottom, or change bottom window to right."
+    (interactive)
+    (require 'windmove)
+    (let ((done))
+      (dolist (dirs '((right . down) (down . right)))
+        (unless done
+          (let* ((win (selected-window))
+                 (nextdir (car dirs))
+                 (neighbour-dir (cdr dirs))
+                 (next-win (windmove-find-other-window nextdir win))
+                 (neighbour1 (windmove-find-other-window neighbour-dir win))
+                 (neighbour2 (if next-win (with-selected-window next-win
+                                            (windmove-find-other-window neighbour-dir next-win)))))
+            ;;(message "win: %s\nnext-win: %s\nneighbour1: %s\nneighbour2:%s" win next-win neighbour1 neighbour2)
+            (setq done (and (eq neighbour1 neighbour2)
+                            (not (eq (minibuffer-window) next-win))))
+            (if done
+                (let* ((other-buf (window-buffer next-win)))
+                  (delete-window next-win)
+                  (if (eq nextdir 'right)
+                      (split-window-vertically)
+                    (split-window-horizontally))
+                  (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+#+END_SRC
+
+— [[https://www.emacswiki.org/emacs/BaManzi][BaManzi]]
+
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -261,67 +391,6 @@
       :defer t)
   #+END_SRC
 * Org [0/2]
-** TODO Figure out how to make org-end-of-line skip to after ... on second tap
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :config
-       (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
-** Config
-   The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
-   #+BEGIN_SRC emacs-lisp
-     (if (string-prefix-p "8" (org-version))
-       (package-install 'org-plus-contrib))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package org
-       :ensure org-plus-contrib
-       :commands (org-agenda org-capture org-store-link)
-       :bind (("C-c a" . org-agenda)
-              ("C-c c" . org-capture)
-              ("C-c l" . org-store-link)
-              ("C-c g" . org-mac-grab-link))
-       :config
-       (setq org-cycle-global-at-bob t)
-       (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
-       (org-load-modules-maybe t)
-       (setq org-use-speed-commands
-             (lambda () (or (eq (point) 1)
-                            (looking-at org-outline-regexp-bol))))
-       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
-       (add-hook 'org-mode-hook 'org-bullets-mode))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   #+END_SRC
-  
-   Remind me what I should be doing.
-  
-   #+BEGIN_SRC emacs-lisp
-       (defun jump-to-org-agenda ()
-         (interactive)
-         (let ((buf (get-buffer "*Org Agenda*"))
-               wind)
-           (if buf
-               (if (setq wind (get-buffer-window buf))
-                   (select-window wind)
-                 (if (called-interactively-p)
-                     (progn
-                       (select-window (display-buffer buf t t))
-                       (org-fit-window-to-buffer)
-                       ;; (org-agenda-redo)
-                       )
-                   (with-selected-window (display-buffer buf)
-                     (org-fit-window-to-buffer)
-                     ;; (org-agenda-redo)
-                     )))
-             (call-interactively 'org-agenda-list))))
-       (run-with-idle-timer 900 t 'jump-to-org-agenda)
-   #+END_SRC
-
-
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
@@ -344,7 +413,7 @@
     (use-package poly-org
       :ensure polymode)
   #+END_SRC
-* TODO Language Modes [0/2]
+* Language Modes [0/1]
 ** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
@@ -358,7 +427,7 @@
      (use-package groovy-mode
        :mode "\\.groovy\\'")
    #+END_SRC
-** TODO Javascript
+** Javascript
    #+BEGIN_SRC emacs-lisp
      (use-package js2-mode :mode "\\.js\'")
    #+END_SRC
@@ -417,10 +486,20 @@
        (if (file-exists-p local-config)
 	   (org-babel-load-file local-config)))
    #+END_SRC
-** TODO Local
+** TODO Localhost
+   I just have a =localhost-[hostname]= repo for each host that's important to me.
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
+   #+END_SRC
 ** TODO Secrets
    #+BEGIN_SRC emacs-lisp
-     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs-secrets.el.gpg" (xdg-config-home)))
+     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
      (when (file-exists-p *user-emacs-secrets-file*)
        (load *user-emacs-secrets-file*))
    #+END_SRC
+* Notes
+** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
+** TODO [[https://github.com/ericdanan/counsel-projectile][ericdanan/counsel-projectile: Ivy UI for Projectile]]
