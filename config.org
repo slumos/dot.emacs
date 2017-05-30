@@ -152,6 +152,13 @@
 	 (spaceline-all-the-icons-theme)
 	 (spaceline-all-the-icons--setup-paradox))
      #+END_SRC
+**** Color in comint
+     #+BEGIN_SRC emacs-lisp
+       (use-package xterm-color
+	 :init
+	 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+	 (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+     #+END_SRC
 * Helpers
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
@@ -570,4 +577,4 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 * Notes
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
-** TODO [[https://github.com/ericdanan/counsel-projectile][ericdanan/counsel-projectile: Ivy UI for Projectile]]
+** TODO Colorize eb-shell in org buffer?
