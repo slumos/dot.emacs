@@ -535,6 +535,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package rspec-mode
        :config
        (inf-ruby-switch-setup))
+
+     (use-package ruby-hash-syntax
+       :bind
+       (:map ruby-mode-map
+	     ("C-c #" . ruby-toggle-hash-syntax)))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
