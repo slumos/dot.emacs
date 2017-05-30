@@ -577,4 +577,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 * Notes
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
+** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize eb-shell in org buffer?
+
