@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-#+DESCRIPTION: My nice =~/.config/emacs configuration. XDG WHAT!
+#+DESCRIPTION: My nice =~/.config/emacs configuration. XDG edition.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
@@ -357,7 +357,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 #+END_SRC
 
 — [[https://www.emacswiki.org/emacs/BaManzi][BaManzi]]
-
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -396,6 +395,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
 
    #+END_SRC
+* TRYING Projectile
+  #+BEGIN_SRC emacs-lisp
+    (use-package projectile
+      :init (projectile-global-mode))
+
+    (use-package counsel-projectile
+      :init (counsel-projectile-on))
+  #+END_SRC
 * [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
   #+BEGIN_SRC emacs-lisp
