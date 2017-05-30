@@ -163,8 +163,6 @@
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
-	    :bind
-	    ("C-c p l" . paradox-list-packages)
 	    :config
 	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
    #+END_SRC
