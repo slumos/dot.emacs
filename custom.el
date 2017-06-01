@@ -6,9 +6,10 @@
  '(org-agenda-files (quote ("~/Google Drive/Notes/PROJECTS.org")))
  '(package-selected-packages
    (quote
-    (ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode magithub ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
+    (markdown-mode wgrep vagrant-tramp ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode magithub ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
  '(paradox-automatically-star t)
- '(paradox-github-token t))
+ '(paradox-github-token t)
+ '(sh-indentation 2))
    
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
