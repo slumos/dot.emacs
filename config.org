@@ -101,7 +101,7 @@
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
    #+BEGIN_SRC emacs-lisp
-   (setq gc-cons-threshold (* 500 1024 1024))
+   (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
 * Preferences
 ** UTF-8
