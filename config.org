@@ -512,6 +512,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
+** Markdown
+   #+BEGIN_SRC emacs-lisp
+     (use-package markdown-mode
+       :commands (markdown-mode gfm-mode)
+       :mode (("README\\.md\\'" . gfm-mode)
+	      ("\\.md\\'" . markdown-mode)
+	      ("\\.markdown\\'" . markdown-mode))
+       :config
+       ;; stolen from http://stackoverflow.com/a/26297700
+       ;; makes markdown tables saner via orgtbl-mode
+       (require 'org-table)
+       (defun cleanup-org-tables ()
+	 (save-excursion
+	   (goto-char (point-min))
+	   (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+       (add-hook 'markdown-mode-hook 'orgtbl-mode)
+       (add-hook 'markdown-mode-hook
+		 (lambda()
+		   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
+   #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
