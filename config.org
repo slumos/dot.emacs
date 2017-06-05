@@ -285,6 +285,11 @@
      (use-package flx)
    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
+** TRAMP for Vagrant
+   #+BEGIN_SRC emacs-lisp
+     (use-package vagrant-tramp
+       :defer nil)
+   #+END_SRC
 ** Functions
    By me or collected from awesome people.
 *** show-file-name
@@ -517,20 +522,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package markdown-mode
        :commands (markdown-mode gfm-mode)
        :mode (("README\\.md\\'" . gfm-mode)
-	      ("\\.md\\'" . markdown-mode)
-	      ("\\.markdown\\'" . markdown-mode))
+              ("\\.md\\'" . markdown-mode)
+              ("\\.markdown\\'" . markdown-mode))
        :config
        ;; stolen from http://stackoverflow.com/a/26297700
        ;; makes markdown tables saner via orgtbl-mode
        (require 'org-table)
        (defun cleanup-org-tables ()
-	 (save-excursion
-	   (goto-char (point-min))
-	   (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+         (save-excursion
+           (goto-char (point-min))
+           (while (search-forward "-+-" nil t) (replace-match "-|-"))))
        (add-hook 'markdown-mode-hook 'orgtbl-mode)
        (add-hook 'markdown-mode-hook
-		 (lambda()
-		   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
+                 (lambda()
+                   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
    #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
