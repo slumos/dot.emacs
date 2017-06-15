@@ -159,6 +159,12 @@
 	 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
 	 (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
+** auto-revert
+   #+BEGIN_SRC emacs-lisp
+     (setq auto-revert-check-vc-info t)
+     (setq auto-revert-remote-files t)
+     (global-auto-revert-mode)
+   #+END_SRC
 * Helpers
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
@@ -499,7 +505,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (add-hook 'python-mode-hook 'lsp-mode)
        (add-hook 'java-mode-hook 'lsp-mode))
    #+END_SRC
-
+** TRYING flycheck
+   #+BEGIN_SRC emacs-lisp
+   (use-package flycheck-demjsonlint)
+   #+END_SRC
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
@@ -540,7 +549,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Puppet
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
-       :mode "\\.pp\\'") 
+       :mode "\\.pp\\'")
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
@@ -550,7 +559,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
-       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\||Puppetfile)")
+       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\||Puppetfile\\)\\'")
 
      (use-package inf-ruby
        :no-require t)
