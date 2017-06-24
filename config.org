@@ -101,7 +101,7 @@
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
    #+BEGIN_SRC emacs-lisp
-   (setq gc-cons-threshold (* 500 1024 1024))
+   (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
 * Preferences
 ** UTF-8
@@ -159,12 +159,16 @@
 	 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
 	 (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
+** auto-revert
+   #+BEGIN_SRC emacs-lisp
+     (setq auto-revert-check-vc-info t)
+     (setq auto-revert-remote-files t)
+     (global-auto-revert-mode)
+   #+END_SRC
 * Helpers
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
-	    :bind
-	    ("C-c p l" . paradox-list-packages)
 	    :config
 	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
    #+END_SRC
@@ -287,6 +291,11 @@
      (use-package flx)
    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
+** TRAMP for Vagrant
+   #+BEGIN_SRC emacs-lisp
+     (use-package vagrant-tramp
+       :init (vagrant-tramp-add-method))
+   #+END_SRC
 ** Functions
    By me or collected from awesome people.
 *** show-file-name
@@ -496,7 +505,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (add-hook 'python-mode-hook 'lsp-mode)
        (add-hook 'java-mode-hook 'lsp-mode))
    #+END_SRC
-
+** TRYING flycheck
+   #+BEGIN_SRC emacs-lisp
+   (use-package flycheck-demjsonlint)
+   #+END_SRC
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
@@ -514,10 +526,30 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
+** Markdown
+   #+BEGIN_SRC emacs-lisp
+     (use-package markdown-mode
+       :commands (markdown-mode gfm-mode)
+       :mode (("README\\.md\\'" . gfm-mode)
+              ("\\.md\\'" . markdown-mode)
+              ("\\.markdown\\'" . markdown-mode))
+       :config
+       ;; stolen from http://stackoverflow.com/a/26297700
+       ;; makes markdown tables saner via orgtbl-mode
+       (require 'org-table)
+       (defun cleanup-org-tables ()
+         (save-excursion
+           (goto-char (point-min))
+           (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+       (add-hook 'markdown-mode-hook 'orgtbl-mode)
+       (add-hook 'markdown-mode-hook
+                 (lambda()
+                   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
+   #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
-       :mode "\\.pp\\'") 
+       :mode "\\.pp\\'")
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
@@ -528,7 +560,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
-       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\)")
+       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\||Puppetfile\\)\\'")
 
      (use-package inf-ruby
        :no-require t)
@@ -536,6 +568,45 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package rspec-mode
        :config
        (inf-ruby-switch-setup))
+
+     (use-package ruby-hash-syntax
+       :bind
+       (:map ruby-mode-map
+	     ("C-c #" . ruby-toggle-hash-syntax)))
+
+     ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
+     (require 'align)
+
+     (add-to-list 'align-rules-list
+		  '(ruby-comma-delimiter
+		    (regexp . ",\\(\\s-*\\)[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-hash-literal
+		    (regexp . "\\(\\s-*\\)=>\\s-*[^# \t\n]")
+		    (group 2 3)
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-hash-literal2
+		    (regexp . "[a-z0-9]:\\(\\s-*\\)[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-assignment-literal
+		    (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-xmpfilter-mark
+		    (regexp . "\\(\\s-*\\)# => [^#\t\n]")
+		    (repeat . nil)
+		    (modes  . '(ruby-mode))))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
