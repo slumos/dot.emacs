@@ -379,7 +379,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (use-package magithub
       :after magit
       :config
@@ -521,8 +521,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
-     (use-package python-mode
-       :mode "\\.py\\'")
+     (use-package python
+       :mode ("\\.py\\'" . python-mode)
+       :interpreter ("python" . python-mode))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -546,9 +547,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package web-mode)
    #+END_SRC
 ** TOML
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package toml-mode
-       :mode "\\(.toml\\|Pipfile\\)\\'\\)")
+       :mode "\\(.toml\\|Pipfile\\)\\'")
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
@@ -583,5 +584,5 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 * Notes
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
-** TODO Colorize eb-shell in org buffer?
+** TODO Colorize ob-shell ANSI output in org buffer?
 
