@@ -37,7 +37,9 @@
    #+END_SRC
 * Basics
 ** =use-package=
-   John Wiegley is an Emacs badass. I am not even kidding.
+   John Wiegley is an Emacs badass. I am not even kidding. Using
+   =use-package= and org is *exactly* how I want to configure Emacs.
+
    #+BEGIN_SRC emacs-lisp
      (require 'use-package)
      (setq use-package-always-ensure t)
@@ -405,8 +407,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/2]
-** TODO Figure out how to make org-end-of-line skip to after ... on second tap
+* Org [0/3]
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -425,24 +426,39 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
        :bind (("C-c a" . org-agenda)
-              ("C-c c" . org-capture)
-              ("C-c l" . org-store-link)
-              ("C-c g" . org-mac-grab-link))
+	      ("C-c c" . org-capture)
+	      ("C-c l" . org-store-link)
+	      ("C-c g" . org-mac-grab-link))
        :config
        (setq org-cycle-global-at-bob t)
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
-       (setq org-use-speed-commands
-             (lambda () (or (eq (point) 1)
-                            (looking-at org-outline-regexp-bol))))
        (add-hook 'org-agenda-mode-hook 'hl-line-mode)
        (add-hook 'org-mode-hook 'org-bullets-mode))
+   #+END_SRC
+
+   Good for editing this file. Expand =<el= to an emacs-lisp src block.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-structure-template-alist
+		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+   #+END_SRC
+
+   Enable speed commands when point is at beginning-of-buffer. This
+   means that immediately after opening an org file, you can jump to
+   the first heading just by tapping =n=.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-use-speed-commands
+	   (lambda () (or (eq (point) 1)
+			  (looking-at org-outline-regexp-bol))))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
    #+END_SRC
 
-   Remind me what I should be doing.
+   Pops up the agenda when emacs is idle. Remind me what I should be
+   doing instead of whatever I am doing.
 
    #+BEGIN_SRC emacs-lisp
        (defun jump-to-org-agenda ()
@@ -466,12 +482,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (run-with-idle-timer 900 t 'jump-to-org-agenda)
    #+END_SRC
 
-
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
 
    #+END_SRC
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
+** TODO Blogging with Hugo
+   - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
+   - 
 * TRYING Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -656,4 +675,3 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?
-
