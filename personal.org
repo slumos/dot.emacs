@@ -1,4 +1,8 @@
 * Org
+** Agenda Files
+   #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-files '("~/Sync/Notes/Inbox" "~/Sync/Notes/IRMO:Lumos" "~/Sync/Notes/SLUMOS.org"))
+   #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
