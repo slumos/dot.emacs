@@ -158,8 +158,8 @@
      #+BEGIN_SRC emacs-lisp
        (use-package xterm-color
 	 :init
-	 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-	 (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
+	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
 ** auto-revert
    #+BEGIN_SRC emacs-lisp
@@ -172,7 +172,7 @@
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
 	    :config
-	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
+	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
 ** Better Zoom
    The =zoom-frm= package improves on =text-scale-adjust= by providing
@@ -246,7 +246,7 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
-       (add-hook 'prog-mode-hook 'ws-butler-mode))
+       (add-hook 'prog-mode-hook #'ws-butler-mode))
    #+END_SRC
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
@@ -280,7 +280,7 @@
        (setq ivy-re-builders-alist 
        '((read-file-name-internal . ivy--regex-fuzzy)
 	   (t . ivy--regex-plus)))
-       (setq magit-completing-read-function 'ivy-completing-read))
+       (setq magit-completing-read-function #'ivy-completing-read))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
@@ -334,9 +334,9 @@ From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buff
 
 #+BEGIN_SRC emacs-lisp
   (defun slumos/compile-notify (buf status)
-    (if (fboundp 'tn-notify) (tn-notify status "Emacs" "Compilation"))
+    (if (fboundp #'tn-notify) (tn-notify status "Emacs" "Compilation"))
     (message "compile-notify: %s %s" buf status))
-  (add-to-list 'compilation-finish-functions 'slumos/compile-notify)
+  (add-to-list 'compilation-finish-functions #'slumos/compile-notify)
 #+END_SRC
 
 — slumos
@@ -433,8 +433,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-cycle-global-at-bob t)
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
-       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
-       (add-hook 'org-mode-hook 'org-bullets-mode))
+       (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+       (add-hook 'org-mode-hook #'org-bullets-mode))
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
@@ -478,8 +478,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                      (org-fit-window-to-buffer)
                      ;; (org-agenda-redo)
                      )))
-             (call-interactively 'org-agenda-list))))
-       (run-with-idle-timer 900 t 'jump-to-org-agenda)
+             (call-interactively #'org-agenda-list))))
+       (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
 
 ** TODO org-jira
@@ -521,8 +521,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
        :config
-       (add-hook 'python-mode-hook 'lsp-mode)
-       (add-hook 'java-mode-hook 'lsp-mode))
+       (add-hook 'python-mode-hook #'lsp-mode)
+       (add-hook 'java-mode-hook #'lsp-mode))
    #+END_SRC
 ** TRYING flycheck
    #+BEGIN_SRC emacs-lisp
@@ -560,10 +560,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
          (save-excursion
            (goto-char (point-min))
            (while (search-forward "-+-" nil t) (replace-match "-|-"))))
-       (add-hook 'markdown-mode-hook 'orgtbl-mode)
+       (add-hook 'markdown-mode-hook #'orgtbl-mode)
        (add-hook 'markdown-mode-hook
                  (lambda()
-                   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
+                   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
    #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
