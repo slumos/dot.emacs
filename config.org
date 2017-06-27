@@ -104,7 +104,7 @@
    (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
 * Preferences
-** UTF-8
+** Utf-8
    #+BEGIN_SRC emacs-lisp
    (prefer-coding-system 'utf-8)
    #+END_SRC
@@ -149,8 +149,11 @@
 	 :after spaceline
 	 :config
 	 (setq spaceline-all-the-icons-separator-type 'arrow)
+	 (setq spaceline-all-the-icons-icon-set-modified 'circle)
 	 (spaceline-all-the-icons-theme)
-	 (spaceline-all-the-icons--setup-paradox))
+	 (spaceline-all-the-icons--setup-git-ahead)
+	 (spaceline-all-the-icons--setup-paradox)
+	 (spaceline-toggle-all-the-icons-narrowed-on))
      #+END_SRC
 **** Color in comint
      #+BEGIN_SRC emacs-lisp
