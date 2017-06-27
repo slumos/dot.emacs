@@ -165,7 +165,6 @@
 ** auto-revert
    #+BEGIN_SRC emacs-lisp
      (setq auto-revert-check-vc-info t)
-     (setq auto-revert-remote-files t)
      (global-auto-revert-mode)
    #+END_SRC
 * Helpers
