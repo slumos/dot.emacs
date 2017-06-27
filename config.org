@@ -410,13 +410,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :defer t)
   #+END_SRC
 * Org [0/3]
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :config
-       (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
-** Config
+** Main
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
      (if (string-prefix-p "8" (org-version))
@@ -483,11 +477,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
              (call-interactively #'org-agenda-list))))
        (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
+** Bullets
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :config
+       (setq org-bullets-bullet-list '("‣")))
+   #+END_SRC
 
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
-
+     (use-package org-jira
+       :after org
+       :config
+       (setq jiralib-url "https://kruxdigital.jira.com"))
    #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
 ** TODO Blogging with Hugo
