@@ -37,7 +37,9 @@
    #+END_SRC
 * Basics
 ** =use-package=
-   John Wiegley is an Emacs badass. I am not even kidding.
+   John Wiegley is an Emacs badass. I am not even kidding. Using
+   =use-package= and org is *exactly* how I want to configure Emacs.
+
    #+BEGIN_SRC emacs-lisp
      (require 'use-package)
      (setq use-package-always-ensure t)
@@ -159,8 +161,8 @@
      #+BEGIN_SRC emacs-lisp
        (use-package xterm-color
 	 :init
-	 (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-	 (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
+	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
 ** auto-revert
    #+BEGIN_SRC emacs-lisp
@@ -172,7 +174,7 @@
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
 	    :config
-	    (add-hook 'paradox-menu-mode-hook 'hl-line-mode))
+	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
 ** Better Zoom
    The =zoom-frm= package improves on =text-scale-adjust= by providing
@@ -246,7 +248,7 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
-       (add-hook 'prog-mode-hook 'ws-butler-mode))
+       (add-hook 'prog-mode-hook #'ws-butler-mode))
    #+END_SRC
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
@@ -280,7 +282,7 @@
        (setq ivy-re-builders-alist 
        '((read-file-name-internal . ivy--regex-fuzzy)
 	   (t . ivy--regex-plus)))
-       (setq magit-completing-read-function 'ivy-completing-read))
+       (setq magit-completing-read-function #'ivy-completing-read))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
@@ -334,9 +336,9 @@ From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buff
 
 #+BEGIN_SRC emacs-lisp
   (defun slumos/compile-notify (buf status)
-    (if (fboundp 'tn-notify) (tn-notify status "Emacs" "Compilation"))
+    (if (fboundp #'tn-notify) (tn-notify status "Emacs" "Compilation"))
     (message "compile-notify: %s %s" buf status))
-  (add-to-list 'compilation-finish-functions 'slumos/compile-notify)
+  (add-to-list 'compilation-finish-functions #'slumos/compile-notify)
 #+END_SRC
 
 — slumos
@@ -390,7 +392,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (use-package magithub
       :after magit
       :config
@@ -407,8 +409,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/2]
-** TODO Figure out how to make org-end-of-line skip to after ... on second tap
+* Org [0/3]
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -427,24 +428,39 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
        :bind (("C-c a" . org-agenda)
-              ("C-c c" . org-capture)
-              ("C-c l" . org-store-link)
-              ("C-c g" . org-mac-grab-link))
+	      ("C-c c" . org-capture)
+	      ("C-c l" . org-store-link)
+	      ("C-c g" . org-mac-grab-link))
        :config
        (setq org-cycle-global-at-bob t)
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
-       (setq org-use-speed-commands
-             (lambda () (or (eq (point) 1)
-                            (looking-at org-outline-regexp-bol))))
-       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
-       (add-hook 'org-mode-hook 'org-bullets-mode))
+       (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+       (add-hook 'org-mode-hook #'org-bullets-mode))
+   #+END_SRC
+
+   Good for editing this file. Expand =<el= to an emacs-lisp src block.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-structure-template-alist
+		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+   #+END_SRC
+
+   Enable speed commands when point is at beginning-of-buffer. This
+   means that immediately after opening an org file, you can jump to
+   the first heading just by tapping =n=.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-use-speed-commands
+	   (lambda () (or (eq (point) 1)
+			  (looking-at org-outline-regexp-bol))))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
    #+END_SRC
 
-   Remind me what I should be doing.
+   Pops up the agenda when emacs is idle. Remind me what I should be
+   doing instead of whatever I am doing.
 
    #+BEGIN_SRC emacs-lisp
        (defun jump-to-org-agenda ()
@@ -464,16 +480,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                      (org-fit-window-to-buffer)
                      ;; (org-agenda-redo)
                      )))
-             (call-interactively 'org-agenda-list))))
-       (run-with-idle-timer 900 t 'jump-to-org-agenda)
+             (call-interactively #'org-agenda-list))))
+       (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
-
 
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
 
    #+END_SRC
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
+** TODO Blogging with Hugo
+   - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
+   - 
 * TRYING Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -504,8 +523,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
        :config
-       (add-hook 'python-mode-hook 'lsp-mode)
-       (add-hook 'java-mode-hook 'lsp-mode))
+       (add-hook 'python-mode-hook #'lsp-mode)
+       (add-hook 'java-mode-hook #'lsp-mode))
    #+END_SRC
 ** TRYING flycheck
    #+BEGIN_SRC emacs-lisp
@@ -543,10 +562,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
          (save-excursion
            (goto-char (point-min))
            (while (search-forward "-+-" nil t) (replace-match "-|-"))))
-       (add-hook 'markdown-mode-hook 'orgtbl-mode)
+       (add-hook 'markdown-mode-hook #'orgtbl-mode)
        (add-hook 'markdown-mode-hook
                  (lambda()
-                   (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local))))
+                   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
    #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
@@ -555,8 +574,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
-     (use-package python-mode
-       :mode "\\.py\\'")
+     (use-package python
+       :mode ("\\.py\\'" . python-mode)
+       :interpreter ("python" . python-mode))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -618,6 +638,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode)
    #+END_SRC
+** TOML
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package toml-mode
+       :mode "\\(.toml\\|Pipfile\\)\\'")
+   #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
      (use-package yaml-mode
@@ -651,5 +676,4 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 * Notes
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
-** TODO Colorize eb-shell in org buffer?
-
+** TODO Colorize ob-shell ANSI output in org buffer?
