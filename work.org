@@ -2,6 +2,7 @@
 ** Config
    #+BEGIN_SRC emacs-lisp
    (setq org-directory "~/Google Drive/Notes")
+   (setq org-agenda-files (list (expand-file-name "PROJECTS.org" org-directory)))
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
