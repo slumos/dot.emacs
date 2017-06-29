@@ -188,6 +188,10 @@
               ("C-c C-0" . zoom-in/out)
               ("C-c C-=" . zoom-in/out)))
    #+END_SRC
+** Copy region formatted for various markup systems
+   #+BEGIN_SRC emacs-lisp
+   (use-package copy-as-format)
+   #+END_SRC
 ** Jumping
 *** avy
     #+BEGIN_QUOTE
@@ -295,11 +299,18 @@
      (use-package flx)
    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
-** TRAMP for Vagrant
-   #+BEGIN_SRC emacs-lisp
-     (use-package vagrant-tramp
-       :init (vagrant-tramp-add-method))
-   #+END_SRC
+** TRAMP
+   #+BEGIN_QUOTE
+   TRAMP stands for “Transparent Remote (file) Access, Multiple
+   Protocol”.  This package provides remote file editing, similar to
+   Ange FTP.
+   #+END_QUOTE
+*** TODO TRAMP through bastion with Google Authenticator
+*** TRAMP for Vagrant
+    #+BEGIN_SRC emacs-lisp
+      (use-package vagrant-tramp
+	:init (vagrant-tramp-add-method))
+    #+END_SRC
 ** Functions
    By me or collected from awesome people.
 *** show-file-name
