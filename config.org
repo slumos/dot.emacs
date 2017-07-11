@@ -305,7 +305,15 @@
    Protocol”.  This package provides remote file editing, similar to
    Ange FTP.
    #+END_QUOTE
-*** TODO TRAMP through bastion with Google Authenticator
+*** TODO TRAMP through bastion with Google Authenticator https://www.gnu.org/software/tramp/#Remote-shell-setup
+    #+BEGIN_EXAMPLE
+    29Jun 16:09:22 ~ 0% ssh host
+    Host key fingerprint is SHA256:...
+    +---[ECDSA 256]---+
+    ...
+    +----[SHA256]-----+
+    Verification code:
+    #+END_EXAMPLE
 *** TRAMP for Vagrant
     #+BEGIN_SRC emacs-lisp
       (use-package vagrant-tramp
@@ -495,14 +503,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
 
-** TODO org-jira
-   [[https://github.com/ahungry/org-jira]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-jira
-       :after org
-       :config
-       (setq jiralib-url "https://kruxdigital.jira.com"))
-   #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
@@ -554,9 +554,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package js2-mode :mode "\\.js\'")
    #+END_SRC
 
-   JSON here too...meh.
+   Putting JSON here too...meh.
    #+BEGIN_SRC emacs-lisp
-     (use-package json-mode :mode "\\.json\'")
+     (use-package json-mode
+       :mode "\\.json\'"
+       :config
+       (add-hook 'json-mode-hook flycheck-mode))
    #+END_SRC
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
