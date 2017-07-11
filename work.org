@@ -1,8 +1,12 @@
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-   (setq org-directory "~/Google Drive/Notes")
-   (setq org-agenda-files (list (expand-file-name "PROJECTS.org" org-directory)))
+     (setq org-directory "~/Google Drive/Notes")
+     (setq org-jira-working-dir (expand-file-name "org-jira" org-directory))
+     (setq org-agenda-files (list
+			     (expand-file-name "DMP.org" org-directory)
+			     (expand-file-name "PE.org" org-jira-working-dir)))
+   #+END_SRC
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
