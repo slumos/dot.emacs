@@ -7,6 +7,20 @@
 			     (expand-file-name "DMP.org" org-directory)
 			     (expand-file-name "PE.org" org-jira-working-dir)))
    #+END_SRC
+** TODO org-jira
+   [[https://github.com/ahungry/org-jira]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-jira
+       :after org)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (defun slumos/org-jira-get-subtasks ()
+	 "Get subtasks as TODO items"
+       (interactive)
+       (ensure-on-issue
+	(org-jira-get-issues
+	 (jiralib-do-jql-search (format "parent = %s" (org-jira-parse-issue-id))))))
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
