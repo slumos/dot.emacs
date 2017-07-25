@@ -5,6 +5,9 @@
 
 (require 'cl)
 
+;; Has to happen before outline-mode loads??
+(defvar outline-minor-mode-prefix "\M-#")
+
 ;; Bootstrap use-package
 ;;; (Remove after Emacs 26?? Hopes.)
 (require 'package)

@@ -492,6 +492,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
    -
 ** TODO calfw calfw-org-agenda
+* TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
+  "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
+  #+BEGIN_SRC emacs-lisp
+    (use-package outshine
+      :init
+      (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+  #+END_SRC
 * TRYING Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
