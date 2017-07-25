@@ -407,7 +407,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/3]
+* Org [0/4]
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -490,7 +490,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-   - 
+   -
+** TODO calfw calfw-org-agenda
 * TRYING Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -639,7 +640,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TOML
    #+BEGIN_SRC emacs-lisp :tangle no
      (use-package toml-mode
-       :mode "\\(.toml\\|Pipfile\\)\\'")
+       :mode "Pipfile\\'")
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
