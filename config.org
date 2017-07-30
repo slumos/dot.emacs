@@ -98,7 +98,7 @@
        (exec-path-from-shell-initialize)
        (exec-path-from-shell-copy-envs 
         '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
-          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR" "AWS_CONFIG_FILE")))
    #+END_SRC
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
@@ -542,6 +542,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** TRYING flycheck
    #+BEGIN_SRC emacs-lisp
+     (use-package flycheck)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
    (use-package flycheck-demjsonlint)
    #+END_SRC
 ** Groovy
@@ -559,7 +563,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package json-mode
        :mode "\\.json\'"
        :config
-       (add-hook 'json-mode-hook flycheck-mode))
+       (add-hook 'json-mode-hook #'flycheck-mode))
    #+END_SRC
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
@@ -663,7 +667,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** YAML
    #+BEGIN_SRC emacs-lisp
      (use-package yaml-mode
-       :mode "\\(.yaml\\|.yml\\)$")
+       :mode "\\(.yaml\\|.yml\\)$"
+       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
    #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
