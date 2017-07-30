@@ -428,8 +428,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/3]
-** Main
+* Org [0/4]
+** Bullets
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :config
+       (setq org-bullets-bullet-list '("‣")))
+   #+END_SRC
+** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
      (if (string-prefix-p "8" (org-version))
@@ -506,7 +512,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-   - 
+   -
+** TODO calfw calfw-org-agenda
+* TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
+  "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
+  #+BEGIN_SRC emacs-lisp
+    (use-package outshine
+      :init
+      (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
+  #+END_SRC
 * TRYING Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -662,7 +676,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TOML
    #+BEGIN_SRC emacs-lisp :tangle no
      (use-package toml-mode
-       :mode "\\(.toml\\|Pipfile\\)\\'")
+       :mode "Pipfile\\'")
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
