@@ -432,7 +432,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/4]
+* Org [0/7]
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -485,7 +485,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Pops up the agenda when emacs is idle. Remind me what I should be
    doing instead of whatever I am doing.
 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
        (defun jump-to-org-agenda ()
          (interactive)
          (let ((buf (get-buffer "*Org Agenda*"))
@@ -513,6 +513,36 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
 
+** SKIP [[https://github.com/yasuhito/orgbox][yasuhito/orgbox: Mailbox-like task scheduling in Org.]]
+   Not for me. Might try modifying it later but for now I link the
+   builtin scheduling better. I originally wanted it for "someday",
+   but that appears to be the same as +30.
+
+   #+BEGIN_SRC emacs-lisp :tangle no
+   (use-package orgbox)
+   #+END_SRC
+** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package orgit)
+   #+END_SRC
+** TRYING [[https://bitbucket.org/shackra/secretaria.el][shackra / secretaria.el — Bitbucket]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package secretaria
+     :config
+     (add-hook 'after-init-hook #'secretaria-today-unknown-time-appt-always-remind-me))
+   #+END_SRC
+** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-super-agenda
+       :config
+       (org-super-agenda-mode)
+       (let ((org-super-agenda-groups
+	      '((:name "Today" :scheduled)
+		(:name "Important" :priority "A")
+		(:todo "BLOCKED"))))))
+   #+END_SRC
+** TODO [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
+** TODO [[https://github.com/IvanMalison/org-projectile][IvanMalison/org-projectile: Manage org-mode TODOs for your projectile projects]]
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
