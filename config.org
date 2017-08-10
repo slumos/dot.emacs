@@ -616,6 +616,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
+   #+BEGIN_SRC emacs-lisp
+   (use-package lua-mode
+     :mode "\\(\\.lua\\|\\.rockspec\\)\\'")
+   #+END_SRC
 ** Markdown
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
