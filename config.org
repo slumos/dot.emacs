@@ -396,6 +396,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 #+END_SRC
 
 — [[https://www.emacswiki.org/emacs/BaManzi][BaManzi]]
+** browse-at-remote
+   #+BEGIN_SRC emacs-lisp
+   (use-package browse-at-remote)
+   #+END_SRC
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
