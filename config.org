@@ -135,7 +135,7 @@
 	 :config (spaceline-spacemacs-theme))
      #+END_SRC
 **** All The Icons!
-     I'm not bothering to automate this now: On a new system, you gotta +M-x all-the-icons-install-fonts
+     I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
      #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons)
      #+END_SRC
