@@ -402,7 +402,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** [[https://github.com/storvik/emacs-lastpass][storvik/emacs-lastpass: Emacs LastPass command wrapper.]]
    #+BEGIN_SRC emacs-lisp
-   (use-package lastpass)
+   (use-package lastpass
+     :config
+     (setq lastpass-multifactor-use-passcode t)
+     (lastpass-auth-source-enable))
    #+END_SRC
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]

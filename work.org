@@ -35,7 +35,7 @@
 	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
 	      "* %^{title} %U%?")
 	     ("s" "Snippet" entry
-	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
+	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
 	      "* %^{title}: %?")
 	     ("t" "Task" entry
 	     (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
