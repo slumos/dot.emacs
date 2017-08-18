@@ -176,6 +176,10 @@
      (setq auto-revert-check-vc-info t)
      (global-auto-revert-mode)
    #+END_SRC
+** me
+   #+BEGIN_SRC emacs-lisp
+   (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
+   #+END_SRC
 * Helpers
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
@@ -411,6 +415,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
    (use-package lastpass
      :config
+     (setq lastpass-user user-mail-address)
      (setq lastpass-multifactor-use-passcode t)
      (lastpass-auth-source-enable))
    #+END_SRC
