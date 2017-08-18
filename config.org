@@ -96,9 +96,16 @@
        :config
        (setq shell-file-name "/bin/zsh")
        (exec-path-from-shell-initialize)
-       (exec-path-from-shell-copy-envs 
-        '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
-          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR" "AWS_CONFIG_FILE")))
+       (exec-path-from-shell-copy-envs
+        '("AWS_CONFIG_FILE"
+          "EMAIL"
+          "LANG"
+          "XDG_CACHE_HOME"
+          "XDG_CONFIG_DIRS"
+          "XDG_CONFIG_HOME"
+          "XDG_DATA_DIRS"
+          "XDG_DATA_HOME"
+          "XDG_RUNTIME_DIR")))
    #+END_SRC
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
