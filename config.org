@@ -4,6 +4,7 @@
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s)
+#+FILETAGS: :emacs:config:
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -176,7 +177,7 @@
      (setq auto-revert-check-vc-info t)
      (global-auto-revert-mode)
    #+END_SRC
-** me
+** My:
    #+BEGIN_SRC emacs-lisp
    (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
    #+END_SRC
@@ -434,7 +435,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp :tangle no
+  #+BEGIN_SRC emacs-lisp
     (use-package magithub
       :after magit
       :config
@@ -532,6 +533,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
 
+** JIRA
+   #+BEGIN_SRC emacs-lisp
+   (use-package gojira
+      :ensure nil
+      :load-path "~/.config/emacs/lisp/gojira"
+      :bind (("C-c j" . gojira-insert-issue-as-org)))
+   #+END_SRC
 ** SKIP [[https://github.com/yasuhito/orgbox][yasuhito/orgbox: Mailbox-like task scheduling in Org.]]
    Not for me. Might try modifying it later but for now I link the
    builtin scheduling better. I originally wanted it for "someday",
@@ -601,6 +609,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes [0/1]
+** Dockerfile
+   (use-package dockerfile-mode)
 ** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
@@ -769,8 +779,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (load *user-emacs-secrets-file*))
    #+END_SRC
 * Notes
+** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
-** TODO [[https://github.com/storvik/emacs-lastpass][storvik/emacs-lastpass: Emacs LastPass command wrapper.]]
-   SCHEDULED: <2017-08-17 Thu>
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?

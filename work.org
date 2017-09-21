@@ -5,7 +5,8 @@
      (setq org-jira-working-dir (expand-file-name "org-jira" org-directory))
      (setq org-agenda-files (list
 			     (expand-file-name "DMP.org" org-directory)
-			     (expand-file-name "PE.org" org-jira-working-dir)))
+			     (expand-file-name "PE.org" org-jira-working-dir)
+			     (expand-file-name "config.org" user-emacs-directory)))
    #+END_SRC
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
