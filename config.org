@@ -453,12 +453,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :defer t)
   #+END_SRC
 * Org [1/9]
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :config
-       (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
 ** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
@@ -486,7 +480,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-structure-template-alist
-		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+		  '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Enable speed commands when point is at beginning-of-buffer. This
@@ -532,7 +527,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config
        (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
-
+** Exporting
+   #+BEGIN_SRC emacs-lisp
+   (use-package ox-clip)
+   (use-package ox-gfm)
+   (use-package ox-jira)
+   #+END_SRC
 ** JIRA
    #+BEGIN_SRC emacs-lisp
    (use-package gojira
