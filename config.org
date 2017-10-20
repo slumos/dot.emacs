@@ -333,6 +333,15 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
+*** insert-date/time-stamp
+    #+BEGIN_SRC emacs-lisp
+      (defun slumos/insert-datetime-stamp (&optional with-time)
+	"Insert current date (with prefix current time) in ISO8601"
+	(interactive "*P")
+	(insert (if with-time
+		    (format-time-string "%FT%T")
+		  (format-time-string "%F"))))
+    #+END_SRC
 *** show-file-name
 #+BEGIN_SRC emacs-lisp
 (defun show-file-name ()
@@ -529,16 +538,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Exporting
    #+BEGIN_SRC emacs-lisp
-   (use-package ox-clip)
-   (use-package ox-gfm)
-   (use-package ox-jira)
+   (use-package ox-clip :after org)
+   (use-package ox-gfm :after org)
+   (use-package ox-jira :after org)
    #+END_SRC
-** JIRA
+** slumos
+   Add the properties I like when executing aws cli commands.
    #+BEGIN_SRC emacs-lisp
-   (use-package gojira
-      :ensure nil
-      :load-path "~/.config/emacs/lisp/gojira"
-      :bind (("C-c j" . gojira-insert-issue-as-org)))
+     (defun slumos/org-add-aws-sh-properties ()
+       (interactive)
+       (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
    #+END_SRC
 ** SKIP [[https://github.com/yasuhito/orgbox][yasuhito/orgbox: Mailbox-like task scheduling in Org.]]
    Not for me. Might try modifying it later but for now I link the
