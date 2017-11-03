@@ -5,6 +5,7 @@
 #+STARTUP: entitiespretty fold
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s)
 #+FILETAGS: :emacs:config:
+#+CATEGORY: EMACS
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -461,7 +462,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [1/9]
+* Org [1/9]                                                             :org:
 ** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
@@ -549,25 +550,24 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (interactive)
        (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
    #+END_SRC
-** SKIP [[https://github.com/yasuhito/orgbox][yasuhito/orgbox: Mailbox-like task scheduling in Org.]]
-   Not for me. Might try modifying it later but for now I link the
-   builtin scheduling better. I originally wanted it for "someday",
-   but that appears to be the same as +30.
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-   (use-package orgbox)
-   #+END_SRC
 ** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
    #+BEGIN_SRC emacs-lisp
    (use-package orgit)
    #+END_SRC
-** TRYING [[https://bitbucket.org/shackra/secretaria.el][shackra / secretaria.el — Bitbucket]]
+** TRYING [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira][Convert a subtree to JIRA markup and copy to clipboard]]
    #+BEGIN_SRC emacs-lisp
-   (use-package secretaria
-     :config
-     (add-hook 'after-init-hook #'secretaria-today-unknown-time-appt-always-remind-me))
+     ; https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira
+     (defun bba-org-export-jira-clipboard()
+       "narrow to org subtree and store content in jira format in clipboard."
+       (interactive)
+       (org-narrow-to-subtree)
+       (bba-export-jira-org)
+       (let ((org-export-babel-evaluate nil))
+	 (ox-jira-export-as-jira))
+       (delete-region (point) (progn (forward-line 1)(point)))
+       (mark-whole-buffer)
+       (kill-ring-save 1 1 1))
    #+END_SRC
-** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira][Convert a subtree to JIRA markup and copy to clipboard]]
 ** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
    #+BEGIN_SRC emacs-lisp
      (use-package org-super-agenda
@@ -579,11 +579,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		(:todo "BLOCKED"))))))
    #+END_SRC
 ** TODO [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
-** TODO [[https://github.com/IvanMalison/org-projectile][IvanMalison/org-projectile: Manage org-mode TODOs for your projectile projects]]
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-   -
 ** TODO calfw calfw-org-agenda
 * TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
   "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
@@ -649,7 +647,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Putting JSON here too...meh.
    #+BEGIN_SRC emacs-lisp
      (use-package json-mode
-       :mode "\\.json\'"
+       :mode "\\.json\\(\\.erb\\)?\'"
        :config
        (add-hook 'json-mode-hook #'flycheck-mode))
    #+END_SRC
