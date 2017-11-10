@@ -265,7 +265,8 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
-       (add-hook 'prog-mode-hook #'ws-butler-mode))
+       (add-hook 'prog-mode-hook #'ws-butler-mode)
+       (add-hook 'puppet-mode-hook #'ws-butler-mode))
    #+END_SRC
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
