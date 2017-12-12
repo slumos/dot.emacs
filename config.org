@@ -174,8 +174,10 @@
 	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
 ** auto-revert
+   Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
+   now because I need to use TRAMP which conflicts with it...
    #+BEGIN_SRC emacs-lisp
-     (setq auto-revert-check-vc-info t)
+     (setq auto-revert-check-vc-info nil)
      (global-auto-revert-mode)
    #+END_SRC
 ** My:
