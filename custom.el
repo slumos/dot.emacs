@@ -27,9 +27,11 @@
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
+ '(org-outline-path-complete-in-steps nil)
+ '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
+    (flycheck-pycheckers flycheck-rust flycheck-yamllint flymake-puppet flymake-ruby upstart-mode toml-mode ace-link yasnippet yasnippet-snippets company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
