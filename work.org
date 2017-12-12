@@ -53,3 +53,8 @@
 	     (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
 	      "* TODO %?"))))
    #+END_SRC
+* Magit
+  #+BEGIN_SRC emacs-lisp
+  (setq magit-repository-directories '("~/Projects" "~/Projects/puppet"))
+  #+END_SRC
+* Snippets
