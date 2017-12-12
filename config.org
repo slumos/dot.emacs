@@ -206,6 +206,17 @@
    (use-package copy-as-format)
    #+END_SRC
 ** Jumping
+*** [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package ace-link
+	:config
+	(ace-link-setup-default)
+	:bind
+	(:map org-mode-map
+	("M-o" . ace-link-org))
+	(:map Info-mode-map
+	("o" . ace-link-info)))
+    #+END_SRC
 *** avy
     #+BEGIN_QUOTE
       "If you're familiar with the popular `ace-jump-mode' package, this
