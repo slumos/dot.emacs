@@ -733,7 +733,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Puppet
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
-       :mode "\\.pp\\'")
+       :mode "\\.pp\\'"
+       :config
+       (unbind-key "$" puppet-mode-map)
+       (setq-local align-region-separate 'group)
+       (add-to-list 'puppet-mode-align-rules
+		    '(puppet-assignment-literal
+		      (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+		      (repeat . t)
+		      (modes . '(puppet-mode)))))
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
