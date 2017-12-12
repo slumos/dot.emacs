@@ -480,7 +480,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 	      ("C-c l" . org-store-link)
 	      ("C-c g" . org-mac-grab-link))
        :config
-       (setq org-cycle-global-at-bob t)
+       (setq org-cycle-global-at-bob t
+	     org-refile-use-outline-path 'file
+	     org-outline-path-complete-in-steps nil
+	     org-refile-targets '((org-agenda-files :maxlevel . 2)))
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
        (add-hook 'org-agenda-mode-hook #'hl-line-mode)
