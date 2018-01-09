@@ -4,6 +4,8 @@
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s)
+#+FILETAGS: :emacs:config:
+#+CATEGORY: EMACS
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -96,9 +98,16 @@
        :config
        (setq shell-file-name "/bin/zsh")
        (exec-path-from-shell-initialize)
-       (exec-path-from-shell-copy-envs 
-        '("LANG" "XDG_DATA_HOME" "XDG_DATA_DIRS" "XDG_CONFIG_HOME"
-          "XDG_CONFIG_DIRS" "XDG_CACHE_HOME" "XDG_RUNTIME_DIR")))
+       (exec-path-from-shell-copy-envs
+        '("AWS_CONFIG_FILE"
+          "EMAIL"
+          "LANG"
+          "XDG_CACHE_HOME"
+          "XDG_CONFIG_DIRS"
+          "XDG_CONFIG_HOME"
+          "XDG_DATA_DIRS"
+          "XDG_DATA_HOME"
+          "XDG_RUNTIME_DIR")))
    #+END_SRC
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
@@ -106,7 +115,7 @@
    (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
 * Preferences
-** UTF-8
+** Utf-8
    #+BEGIN_SRC emacs-lisp
    (prefer-coding-system 'utf-8)
    #+END_SRC
@@ -135,7 +144,7 @@
 	 :config (spaceline-spacemacs-theme))
      #+END_SRC
 **** All The Icons!
-     I'm not bothering to automate this now: On a new system, you gotta +M-x all-the-icons-install-fonts
+     I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
      #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons)
      #+END_SRC
@@ -151,8 +160,11 @@
 	 :after spaceline
 	 :config
 	 (setq spaceline-all-the-icons-separator-type 'arrow)
+	 (setq spaceline-all-the-icons-icon-set-modified 'circle)
 	 (spaceline-all-the-icons-theme)
-	 (spaceline-all-the-icons--setup-paradox))
+	 (spaceline-all-the-icons--setup-git-ahead)
+	 (spaceline-all-the-icons--setup-paradox)
+	 (spaceline-toggle-all-the-icons-narrowed-on))
      #+END_SRC
 **** Color in comint
      #+BEGIN_SRC emacs-lisp
@@ -164,8 +176,11 @@
 ** auto-revert
    #+BEGIN_SRC emacs-lisp
      (setq auto-revert-check-vc-info t)
-     (setq auto-revert-remote-files t)
      (global-auto-revert-mode)
+   #+END_SRC
+** My:
+   #+BEGIN_SRC emacs-lisp
+   (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
    #+END_SRC
 * Helpers
 ** Better packages ux
@@ -185,6 +200,10 @@
               ("C-c C--" . zoom-in/out)
               ("C-c C-0" . zoom-in/out)
               ("C-c C-=" . zoom-in/out)))
+   #+END_SRC
+** Copy region formatted for various markup systems
+   #+BEGIN_SRC emacs-lisp
+   (use-package copy-as-format)
    #+END_SRC
 ** Jumping
 *** avy
@@ -246,7 +265,8 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
-       (add-hook 'prog-mode-hook #'ws-butler-mode))
+       (add-hook 'prog-mode-hook #'ws-butler-mode)
+       (add-hook 'yaml-mode-hook #'ws-butler-mode))
    #+END_SRC
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
@@ -293,13 +313,37 @@
      (use-package flx)
    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
-** TRAMP for Vagrant
-   #+BEGIN_SRC emacs-lisp
-     (use-package vagrant-tramp
-       :init (vagrant-tramp-add-method))
-   #+END_SRC
+** TRAMP
+   #+BEGIN_QUOTE
+   TRAMP stands for “Transparent Remote (file) Access, Multiple
+   Protocol”.  This package provides remote file editing, similar to
+   Ange FTP.
+   #+END_QUOTE
+*** TODO TRAMP through bastion with Google Authenticator https://www.gnu.org/software/tramp/#Remote-shell-setup
+    #+BEGIN_EXAMPLE
+    29Jun 16:09:22 ~ 0% ssh host
+    Host key fingerprint is SHA256:...
+    +---[ECDSA 256]---+
+    ...
+    +----[SHA256]-----+
+    Verification code:
+    #+END_EXAMPLE
+*** TRAMP for Vagrant
+    #+BEGIN_SRC emacs-lisp
+      (use-package vagrant-tramp
+	:init (vagrant-tramp-add-method))
+    #+END_SRC
 ** Functions
    By me or collected from awesome people.
+*** insert-date/time-stamp
+    #+BEGIN_SRC emacs-lisp
+      (defun slumos/insert-datetime-stamp (&optional with-time)
+	"Insert current date (with prefix current time) in ISO8601"
+	(interactive "*P")
+	(insert (if with-time
+		    (format-time-string "%FT%T")
+		  (format-time-string "%F"))))
+    #+END_SRC
 *** show-file-name
 #+BEGIN_SRC emacs-lisp
 (defun show-file-name ()
@@ -375,6 +419,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 #+END_SRC
 
 — [[https://www.emacswiki.org/emacs/BaManzi][BaManzi]]
+** browse-at-remote
+   #+BEGIN_SRC emacs-lisp
+   (use-package browse-at-remote)
+   #+END_SRC
+** [[https://github.com/storvik/emacs-lastpass][storvik/emacs-lastpass: Emacs LastPass command wrapper.]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package lastpass
+     :config
+     (setq lastpass-user user-mail-address)
+     (setq lastpass-multifactor-use-passcode t)
+     (lastpass-auth-source-enable))
+   #+END_SRC
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -390,7 +446,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp :tangle no
+  #+BEGIN_SRC emacs-lisp
     (use-package magithub
       :after magit
       :config
@@ -407,13 +463,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/4]
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :config
-       (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
+* Org [1/9]                                                             :org:
 ** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
@@ -434,14 +484,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
        (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+       (add-hook 'org-mode-hook (lambda ()
+				  (magit-wip-after-save-mode t)))
        (add-hook 'org-mode-hook #'org-bullets-mode))
+
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
 
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-structure-template-alist
-		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+		  '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Enable speed commands when point is at beginning-of-buffer. This
@@ -460,7 +514,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Pops up the agenda when emacs is idle. Remind me what I should be
    doing instead of whatever I am doing.
 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
        (defun jump-to-org-agenda ()
          (interactive)
          (let ((buf (get-buffer "*Org Agenda*"))
@@ -481,16 +535,89 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
              (call-interactively #'org-agenda-list))))
        (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
-
-** TODO org-jira
-   [[https://github.com/ahungry/org-jira]]
+** Bullets
    #+BEGIN_SRC emacs-lisp
-
+     (use-package org-bullets
+       :config
+       (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]
+** Exporting
+   #+BEGIN_SRC emacs-lisp
+   (use-package ox-clip :after org)
+   (use-package ox-gfm :after org)
+   (use-package ox-jira :after org)
+   #+END_SRC
+** slumos
+   Add the properties I like when executing aws cli commands.
+   #+BEGIN_SRC emacs-lisp
+     (defun slumos/org-add-aws-sh-properties ()
+       (interactive)
+       (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
+   #+END_SRC
+** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package orgit)
+   #+END_SRC
+** TRYING [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira][Convert a subtree to JIRA markup and copy to clipboard]]
+   #+BEGIN_SRC emacs-lisp
+   ; https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira
+     (defun bba-org-export-jira-clipboard()
+       "narrow to org subtree and store content in jira format in clipboard."
+       (interactive)
+       (org-narrow-to-subtree)
+       (bba-export-jira-org)
+       (let ((org-export-babel-evaluate nil))
+	 (ox-jira-export-as-jira))
+       (delete-region (point) (progn (forward-line 1)(point)))
+       (mark-whole-buffer)
+       (kill-ring-save 1 1 1))
+
+     (defun bba-export-jira-org()
+       "export current narrowed view to file in tmp and open a finder window on OS-X."
+       (interactive)
+       (beginning-of-buffer)
+       (insert "# This file is just plain text called orgmode")
+       (newline)
+       (insert "# https://en.wikipedia.org/wiki/Org-mode")
+       (newline)
+       (insert "# You can open it in any text editor or file reader.")
+       (newline)
+       (insert "# You might want to use Emacs for best experience.")
+       (newline)
+       (if (re-search-forward "jira:" nil t 1)
+	   (if (org-in-regexp org-bracket-link-regexp 1)
+	       (let ((remove (list (match-beginning 0) (match-end 0)))
+		     (description (last (split-string (if (match-end 3)
+							  (match-string-no-properties 3)
+							(match-string-no-properties 1)) ":"))))
+		 (mark-whole-buffer)
+		 (write-region (mark) (point) (concat "/tmp/" (car description) ".org") nil nil )
+		 (deactivate-mark)
+		 (if (string-equal system-type "darwin")(shell-command "open /tmp/"))
+		 )))
+       (beginning-of-buffer)
+       (kill-line 4))
+
+     (defun bba-ox-clip-formatted-copy()
+       "wrapper for ox-clip-formatted-copy to disable org-export-babel-evaluate."
+       (interactive)
+       (let ((org-export-babel-evaluate nil))
+	 (ox-clip-formatted-copy (mark) (point))))
+   #+END_SRC
+** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-super-agenda
+       :config
+       (org-super-agenda-mode)
+       (let ((org-super-agenda-groups
+	      '((:name "Today" :scheduled)
+		(:name "Important" :priority "A")
+		(:todo "BLOCKED"))))))
+   #+END_SRC
+** TODO [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-   -
 ** TODO calfw calfw-org-agenda
 * TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
   "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
@@ -525,6 +652,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes [0/1]
+** Dockerfile
+   (use-package dockerfile-mode)
 ** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
@@ -534,8 +663,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** TRYING flycheck
    #+BEGIN_SRC emacs-lisp
+     (use-package flycheck)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
    (use-package flycheck-demjsonlint)
    #+END_SRC
+*** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
@@ -546,13 +680,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package js2-mode :mode "\\.js\'")
    #+END_SRC
 
-   JSON here too...meh.
+   Putting JSON here too...meh.
    #+BEGIN_SRC emacs-lisp
-     (use-package json-mode :mode "\\.json\'")
+     (use-package json-mode
+       :mode "\\.json\\(\\.erb\\)?\'"
+       :config
+       (add-hook 'json-mode-hook #'flycheck-mode))
    #+END_SRC
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
+   #+BEGIN_SRC emacs-lisp
+   (use-package lua-mode
+     :mode "\\(\\.lua\\|\\.rockspec\\)\\'")
+   #+END_SRC
 ** Markdown
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
@@ -583,6 +724,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package python
        :mode ("\\.py\\'" . python-mode)
        :interpreter ("python" . python-mode))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package jedi)
+   #+END_SRC
+
+   IPython / Jupyter Notebook client
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ein
+       :config
+       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
+       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -652,7 +806,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** YAML
    #+BEGIN_SRC emacs-lisp
      (use-package yaml-mode
-       :mode "\\(.yaml\\|.yml\\)$")
+       :mode "\\(.yaml\\|.yml\\)$"
+       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
    #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
@@ -680,6 +835,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (load *user-emacs-secrets-file*))
    #+END_SRC
 * Notes
+** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?
