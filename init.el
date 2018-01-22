@@ -21,10 +21,11 @@
         ("elpy" . 100)
         ("melpa" . 50)))
 (package-initialize)
-(package-refresh-contents)
-(unless (package-installed-p 'use-package)
+
+(defconst *use-package-min-version* '(20180108 1754))
+(unless (package-installed-p 'use-package *use-package-min-version*)
   (package-refresh-contents)
-  (package-install 'use-package))
+  (package-reinstall 'use-package))
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))

@@ -9,14 +9,7 @@
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
-  configuring editors. THEN WHY USE EMACS??
-
-  Anyway, that doesn't mean clean structure is not cool! So I'm
-  stealing the hell out of using org to do "literate programming" (eh,
-  it's not really) of my emacs config from various starter kits
-  inspired by each other and also sachac, who is a total Emacs and
-  productivity badass.
-
+  configuring editors.
 ** Philosophy
    1. Emacs defaults except recent terrible changes. Looking at you
       (transient-mark-mode t)
@@ -39,8 +32,7 @@
    #+END_SRC
 * Basics
 ** =use-package=
-   John Wiegley is an Emacs badass. I am not even kidding. Using
-   =use-package= and org is *exactly* how I want to configure Emacs.
+   John Wiegley is an Emacs badass. I am not even kidding.
 
    #+BEGIN_SRC emacs-lisp
      (require 'use-package)
@@ -72,7 +64,7 @@
     because it was offensive enough to bother learning how to turn it off.
     Once I was in a turning off mode, I realized that the only thing I
     actually used the scroll bar for is telling how far into a buffer I
-    was, and even that was really more distraction than useful.
+    was, and why should I even care about that?
 
     There's no point to turning off the menu bar in OSX. Yay for Lion
     Full Screen though!
@@ -85,7 +77,6 @@
         (menu-bar-mode -1))
       (setq inhibit-startup-screen t)
     #+END_SRC
-
 ** Dedicated directory for backup files
    XDG WHAT
    #+BEGIN_SRC emacs-lisp
@@ -464,30 +455,80 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :defer t)
   #+END_SRC
 * Org [1/9]                                                             :org:
-** Config
-   The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
-   #+BEGIN_SRC emacs-lisp
-     (if (string-prefix-p "8" (org-version))
-       (package-install 'org-plus-contrib))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
+** Initialization
+   #+BEGIN_SRC emacs-lisp :noweb yes
      (use-package org
        :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
-       :bind (("C-c a" . org-agenda)
-	      ("C-c c" . org-capture)
-	      ("C-c l" . org-store-link)
-	      ("C-c g" . org-mac-grab-link))
+       :bind 
+       <<org-binds>>
        :config
-       (setq org-cycle-global-at-bob t)
-       (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
-       (org-load-modules-maybe t)
-       (add-hook 'org-agenda-mode-hook #'hl-line-mode)
-       (add-hook 'org-mode-hook (lambda ()
-				  (magit-wip-after-save-mode t)))
-       (add-hook 'org-mode-hook #'org-bullets-mode))
+       <<org-config>>)
+   #+END_SRC
+** Binds
+   :PROPERTIES:
+   :header-args: :noweb-ref org-binds :tangle no
+   :END:
+   Pretty basic stuff here.
+   #+BEGIN_SRC emacs-lisp
+     (("C-c a" . org-agenda)
+      ("C-c c" . org-capture)
+      ("C-c l" . org-store-link)
+      ("C-c g" . org-mac-grab-link))
+   #+END_SRC
+** Config
+   :PROPERTIES:
+   :header-args: :noweb-ref org-config :tangle no
+   :END:
 
+   My muscle memory is completely stuck on =M-< TAB=. This just
+   enables what I'm pretty sure was a default in some distant past.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq org-cycle-global-at-bob t)
+   #+END_SRC
+
+   That's why I also like to enable speed commands when point is at
+   beginning-of-buffer. This means that immediately after opening an
+   org file, you can jump to the first heading just by tapping =n=.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-use-speed-commands
+	   (lambda () (or (eq (point) 1)
+			  (looking-at org-outline-regexp-bol))))
+   #+END_SRC
+
+   Set up some modules by default. I use =org-id= for capture targets,
+   =org-mac-link= *all* the damn time, and =ob-shell= for
+   some—ahem—"literate" DevOps. More like notebook DevOps in practice,
+   but still awesome.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq org-modules '(org-id org-mac-link org-protocol ob-shell))
+   (org-load-modules-maybe t)
+   #+END_SRC
+
+   I don't use =hl-line-mode= often, but when I do, it's in buffers
+   that are lists of things.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+   #+END_SRC
+
+   #+BEGIN_QUOTE
+   After saving, also commit to a worktree work-in-progress ref.
+
+   After saving the current file-visiting buffer this mode also
+   commits the changes to the worktree work-in-progress ref for
+   the current branch.
+   #+END_QUOTE
+
+   How awesome does that sound? To call back all your saves is just
+   =M-x magit-wip-log-current=.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook (lambda ()
+				(magit-wip-after-save-mode t)))
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
@@ -496,19 +537,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (add-to-list 'org-structure-template-alist
 		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
 		  '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
-   #+END_SRC
-
-   Enable speed commands when point is at beginning-of-buffer. This
-   means that immediately after opening an org file, you can jump to
-   the first heading just by tapping =n=.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq org-use-speed-commands
-	   (lambda () (or (eq (point) 1)
-			  (looking-at org-outline-regexp-bol))))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
    #+END_SRC
 
    Pops up the agenda when emacs is idle. Remind me what I should be
@@ -538,8 +566,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
-       :config
-       (setq org-bullets-bullet-list '("‣")))
+       :hook (org-mode . org-bullets-mode)
+       :config (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
 ** Exporting
    #+BEGIN_SRC emacs-lisp
