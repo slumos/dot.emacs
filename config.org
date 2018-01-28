@@ -24,6 +24,10 @@
       do that and then *not* use Unicode in my editor config.
 * Startup
 ** TODO Daemon
+   #+BEGIN_SRC emacs-lisp
+   (setq server-use-tcp t)
+   (server-start)
+   #+END_SRC
 ** TODO Handling of BROKEN/SKIP states (should not be tangled)
 ** Initial buffers (=*scratch*=)
    #+BEGIN_SRC emacs-lisp
