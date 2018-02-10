@@ -1,0 +1,3 @@
+[submodule "lisp/gojira"]
+	path = lisp/gojira
+	url = https://github.com/toshism/gojira.git

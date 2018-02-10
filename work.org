@@ -1,4 +1,36 @@
 * Org
+** Config
+   #+BEGIN_SRC emacs-lisp
+     (setq org-directory "~/Google Drive/Notes")
+     (setq org-jira-working-dir (expand-file-name "org-jira" org-directory))
+     (setq org-agenda-files (list
+			     (expand-file-name "DMP.org" org-directory)
+			     (expand-file-name "PE.org" org-jira-working-dir)
+			     (expand-file-name "config.org" user-emacs-directory)))
+   #+END_SRC
+** TODO org-jira
+   [[https://github.com/ahungry/org-jira]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-jira
+       :after org)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (defun slumos/org-jira-get-subtasks ()
+	 "Get subtasks as TODO items"
+       (interactive)
+       (ensure-on-issue
+	(org-jira-get-issues
+	 (jiralib-do-jql-search (format "parent = %s" (org-jira-parse-issue-id))))))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package gojira
+      :ensure nil
+      :load-path "~/.config/emacs/lisp/gojira"
+      :bind (("C-c j" . gojira-insert-issue-as-org)))
+   #+END_SRC
+
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
@@ -8,11 +40,14 @@
 	     ("l" "Log" entry
 	      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
 	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+	     ("k" "linK" entry
+	      (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
+	      "* %U %?")
 	     ("n" "Note" entry
 	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
 	      "* %^{title} %U%?")
 	     ("s" "Snippet" entry
-	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
+	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
 	      "* %^{title}: %?")
 	     ("t" "Task" entry
 	     (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
