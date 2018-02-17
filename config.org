@@ -561,9 +561,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list 'org-structure-template-alist
-		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
-		  '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
+     (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+     (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Pops up the agenda when emacs is idle. Remind me what I should be
