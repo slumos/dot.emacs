@@ -12,7 +12,8 @@
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
      (use-package org-jira
-       :after org)
+       :after org
+       :config (jiralib-login jiralib-username jiralib-password))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp

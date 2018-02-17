@@ -263,17 +263,17 @@
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** TRYING undo-tree
+** TODO undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package undo-tree
        :bind
        ("C-c C-u" . undo-tree-visualize)
        :config
        (setq undo-tree-visualizer-timestamps))
    #+END_SRC
-** TRYING WS Butler
+** WS Butler
    This cleans up trailing whitespace only on line I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
@@ -317,9 +317,7 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
-   (use-package counsel-projectile 
-     :config
-     (counsel-projectile-on))
+   (use-package counsel-projectile)
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
@@ -441,8 +439,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package lastpass
      :config
      (setq lastpass-user user-mail-address)
-     (setq lastpass-multifactor-use-passcode t)
+     (setq lastpass-multifactor-use-passcode nil)
      (lastpass-auth-source-enable))
+   #+END_SRC
+** TRYING Edit the web with +Atom+ Emacs
+   #+BEGIN_SRC emacs-lisp
+   (use-package atomic-chrome)
+   #+END_SRC
+** TRYING Folding for YAML: [[https://gitlab.com/emacs-stuff/indent-tools/][indent-tools]]
+
+   Obviously this does a lot more but folding YAML is why I'm looking
+   at it.
+   #+BEGIN_SRC emacs-lisp
+     (use-package indent-tools
+       :bind ("C-c >" . indent-tools-hydra/body))
    #+END_SRC
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
@@ -459,7 +469,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (use-package magithub
       :after magit
       :config
@@ -476,7 +486,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [1/9]                                                             :org:
+* Org [0/6]                                                             :org:
 ** Config
    The Org packaged with Emacs 25 (8.2.10) is broken...REALLY?
    #+BEGIN_SRC emacs-lisp
@@ -496,14 +506,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (setq org-cycle-global-at-bob t
 	     org-refile-use-outline-path 'file
 	     org-outline-path-complete-in-steps nil
-	     org-refile-targets '((org-agenda-files :maxlevel . 2)))
+	     org-refile-targets '((org-agenda-files :maxlevel . 2))
+	     org-catch-invisible-edits 'smart)
        (setq org-modules '(org-crypt org-id org-mac-link org-protocol ob-shell))
        (org-load-modules-maybe t)
        (add-hook 'org-agenda-mode-hook #'hl-line-mode)
        (add-hook 'org-mode-hook (lambda ()
 				  (magit-wip-after-save-mode t)))
        (add-hook 'org-mode-hook #'org-bullets-mode))
-
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
@@ -562,6 +572,50 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
+   #+END_SRC
+** Easy table field marking
+   Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;;;; Table Field Marking
+     (defun org-table-mark-field ()
+       "Mark the current table field."
+       (interactive)
+       ;; Do not try to jump to the beginning of field if the point is already there
+       (when (not (looking-back "|[[:blank:]]?"))
+	 (org-table-beginning-of-field 1))
+       (set-mark-command nil)
+       (org-table-end-of-field 1))
+
+     (defhydra hydra-org-table-mark-field
+       (:body-pre (org-table-mark-field)
+		  :hint nil)
+       "
+	^^      ^🠙^     ^^
+	^^      _p_     ^^
+     🠘 _b_  selection  _f_ 🠚          | Org table mark ▯field▮ |
+	^^      _n_     ^^
+	^^      ^🠛^     ^^
+     "
+       ("x" exchange-point-and-mark "exchange point/mark")
+       ("f" (lambda (arg)
+	      (interactive "p")
+	      (when (eq 1 arg)
+		(setq arg 2))
+	      (org-table-end-of-field arg)))
+       ("b" (lambda (arg)
+	      (interactive "p")
+	      (when (eq 1 arg)
+		(setq arg 2))
+	      (org-table-beginning-of-field arg)))
+       ("n" next-line)
+       ("p" previous-line)
+       ("q" nil "cancel" :color blue))
+
+     (bind-keys
+      :map org-mode-map
+      :filter (org-at-table-p)
+      ("S-SPC" . hydra-org-table-mark-field/body))
+
    #+END_SRC
 ** slumos
    Add the properties I like when executing aws cli commands.
@@ -642,13 +696,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :init
       (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
   #+END_SRC
-* TRYING Projectile
+* Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
       :init (projectile-global-mode))
-
-    (use-package counsel-projectile
-      :init (counsel-projectile-on))
   #+END_SRC
 * [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
@@ -715,20 +766,22 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package markdown-mode
        :commands (markdown-mode gfm-mode)
        :mode (("README\\.md\\'" . gfm-mode)
-              ("\\.md\\'" . markdown-mode)
-              ("\\.markdown\\'" . markdown-mode))
+	      ("\\.md\\'" . markdown-mode)
+	      ("\\.markdown\\'" . markdown-mode))
+       :init
+       (setq markdown-command "cmark-gfm")
        :config
        ;; stolen from http://stackoverflow.com/a/26297700
        ;; makes markdown tables saner via orgtbl-mode
        (require 'org-table)
        (defun cleanup-org-tables ()
-         (save-excursion
-           (goto-char (point-min))
-           (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+	 (save-excursion
+	   (goto-char (point-min))
+	   (while (search-forward "-+-" nil t) (replace-match "-|-"))))
        (add-hook 'markdown-mode-hook #'orgtbl-mode)
        (add-hook 'markdown-mode-hook
-                 (lambda()
-                   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
+		 (lambda()
+		   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
    #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
@@ -814,6 +867,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package seeing-is-believing
        :bind (("<s-return>" . seeing-is-believing)))
    #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package chruby)
+   #+END_SRC
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode)
@@ -831,15 +888,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase system-name
-				("steven.lan" "personal.org")
-				(_ "work.org")))
-	   (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
 ** TODO Localhost
    I just have a =localhost-[hostname]= repo for each host that's important to me.
    #+BEGIN_SRC emacs-lisp
@@ -853,6 +901,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
      (when (file-exists-p *user-emacs-secrets-file*)
        (load *user-emacs-secrets-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase system-name
+				("steven.lan" "personal.org")
+				(_ "work.org")))
+	   (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
    #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
