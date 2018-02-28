@@ -545,6 +545,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (setq org-cycle-global-at-bob t)
    #+END_SRC
 
+   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-refile-use-outline-path 'file
+	   org-outline-path-complete-in-steps nil
+	   org-refile-targets '((org-agenda-files :maxlevel . 2)))
+   #+END_SRC
+
    That's why I also like to enable speed commands when point is at
    beginning-of-buffer. This means that immediately after opening an
    org file, you can jump to the first heading just by tapping =n=.
