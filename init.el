@@ -15,11 +15,13 @@
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")
-        ("elpy" . "https://jorgenschaefer.github.io/packages/")))
+        ("elpy" . "https://jorgenschaefer.github.io/packages/")
+	("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
       '(("org" . 100)
         ("elpy" . 100)
-        ("melpa" . 50)))
+        ("melpa" . 50)
+	("gnu" . 10)))
 (package-initialize)
 
 (defconst *use-package-min-version* '(20180108 1754))
