@@ -941,6 +941,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
    (use-package chruby)
    #+END_SRC
+** Terraform (HCL)
+   #+BEGIN_SRC emacs-lisp
+     (use-package terraform-mode
+       :hook (terraform-mode . terraform-format-on-save-mode))
+   #+END_SRC
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode)
