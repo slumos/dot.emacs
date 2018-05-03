@@ -28,13 +28,14 @@
  '(org-outline-path-complete-in-steps nil)
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
-   '(flower jedi apache-mode indent-tools atomic-chrome org-jira chruby ace-window edit-indirect magithub flycheck-pycheckers flycheck-rust flycheck-yamllint flymake-puppet flymake-ruby upstart-mode toml-mode ace-link company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy puppet-mode lsp-mode groovy-mode seeing-is-believing rspec-mode inf-ruby all-the-icons org-id ob-sh org-plus-contrib ivy-hydra flx polymode spaceline-all-the-icons zoom-frm ws-butler spaceline smyx-theme paradox org-bullets magit exec-path-from-shell))
+   '(company-terraform terraform-mode flower jedi apache-mode indent-tools atomic-chrome org-jira chruby ace-window edit-indirect magithub flycheck-pycheckers flycheck-rust flycheck-yamllint flymake-puppet flymake-ruby upstart-mode toml-mode ace-link company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy puppet-mode lsp-mode groovy-mode seeing-is-believing rspec-mode inf-ruby all-the-icons org-id ob-sh org-plus-contrib ivy-hydra flx polymode spaceline-all-the-icons zoom-frm ws-butler spaceline smyx-theme paradox org-bullets magit exec-path-from-shell))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset 'usually)
- '(tramp-syntax 'default nil (tramp)))
+ '(tramp-syntax 'default nil (tramp))
+ '(vc-follow-symlinks t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
