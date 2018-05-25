@@ -2,11 +2,15 @@
 ** Config
    #+BEGIN_SRC emacs-lisp
      (setq org-directory "~/Google Drive/Notes")
+     (setq slumos-org-directory "~/Sync/OneDrive/ST/Notes")
      (setq org-jira-working-dir (expand-file-name "org-jira" org-directory))
      (setq org-agenda-files (list
 			     (expand-file-name "DMP.org" org-directory)
 			     (expand-file-name "PE.org" org-jira-working-dir)
-			     (expand-file-name "config.org" user-emacs-directory)))
+			     (expand-file-name "config.org" user-emacs-directory)
+			     (expand-file-name "SLUMOS.org" slumos-org-directory)
+			     (expand-file-name "CASE.org" slumos-org-directory)
+			     (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
