@@ -173,8 +173,10 @@
 	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
      #+END_SRC
 ** auto-revert
+   Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
+   now because I need to use TRAMP which conflicts with it...
    #+BEGIN_SRC emacs-lisp
-     (setq auto-revert-check-vc-info t)
+     (setq auto-revert-check-vc-info nil)
      (global-auto-revert-mode)
    #+END_SRC
 ** My:
@@ -211,6 +213,17 @@
    (use-package copy-as-format)
    #+END_SRC
 ** Jumping
+*** [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package ace-link
+	:config
+	(ace-link-setup-default)
+	:bind
+	(:map org-mode-map
+	("M-o" . ace-link-org))
+	(:map Info-mode-map
+	("o" . ace-link-info)))
+    #+END_SRC
 *** avy
     #+BEGIN_QUOTE
       "If you're familiar with the popular `ace-jump-mode' package, this
@@ -237,8 +250,14 @@
    [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
    [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
-   #+BEGIN_SRC emacs-lisp
-     (use-package multiple-cursors
+
+   #+BEGIN_SRC emacs-lisp :noweb yes
+   (use-package multiple-cursors
+     :config
+     <<mc-hydra>>)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp :noweb-ref mc-binds :tangle no
        :bind
        (("C-c m t" . mc/mark-all-like-this)
 	("C-c m m" . mc/mark-all-like-this-dwim)
@@ -250,22 +269,46 @@
 	("C-c m s" . mc/mark-sgml-tag-pair)
 	("C-c m d" . mc/mark-all-like-this-in-defun)))
    #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp :noweb-ref mc-hydra :tangle no
+     (defhydra multiple-cursors-hydra (:hint nil)
+       "
+	  ^Up^            ^Down^        ^Other^
+     ----------------------------------------------
+     [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+     [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+     [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+     ^ ^             ^ ^             [_q_] Quit
+     "
+       ("l" mc/edit-lines :exit t)
+       ("a" mc/mark-all-like-this :exit t)
+       ("n" mc/mark-next-like-this)
+       ("N" mc/skip-to-next-like-this)
+       ("M-n" mc/unmark-next-like-this)
+       ("p" mc/mark-previous-like-this)
+       ("P" mc/skip-to-previous-like-this)
+       ("M-p" mc/unmark-previous-like-this)
+       ("r" mc/mark-all-in-region-regexp :exit t)
+       ("q" nil))
+       (global-set-key (kbd "C-c m m") #'multiple-cursors-hydra/body)
+   #+END_SRC
+
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** TRYING undo-tree
+** TODO undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package undo-tree
        :bind
        ("C-c C-u" . undo-tree-visualize)
        :config
        (setq undo-tree-visualizer-timestamps))
    #+END_SRC
-** TRYING WS Butler
+** WS Butler
    This cleans up trailing whitespace only on line I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
@@ -309,9 +352,7 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
-   (use-package counsel-projectile 
-     :config
-     (counsel-projectile-on))
+   (use-package counsel-projectile)
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
@@ -433,8 +474,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package lastpass
      :config
      (setq lastpass-user user-mail-address)
-     (setq lastpass-multifactor-use-passcode t)
+     (setq lastpass-multifactor-use-passcode nil)
      (lastpass-auth-source-enable))
+   #+END_SRC
+** TRYING Edit the web with +Atom+ Emacs
+   #+BEGIN_SRC emacs-lisp
+   (use-package atomic-chrome)
+   #+END_SRC
+** TRYING Folding for YAML: [[https://gitlab.com/emacs-stuff/indent-tools/][indent-tools]]
+
+   Obviously this does a lot more but folding YAML is why I'm looking
+   at it.
+   #+BEGIN_SRC emacs-lisp
+     (use-package indent-tools
+       :bind ("C-c >" . indent-tools-hydra/body))
    #+END_SRC
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
@@ -451,7 +504,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind ("\C-x g" . magit-status))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (use-package magithub
       :after magit
       :config
@@ -503,6 +556,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (setq org-cycle-global-at-bob t)
    #+END_SRC
 
+   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-refile-use-outline-path 'file
+	   org-outline-path-complete-in-steps nil
+	   org-refile-targets '((org-agenda-files :maxlevel . 2)))
+   #+END_SRC
+
    That's why I also like to enable speed commands when point is at
    beginning-of-buffer. This means that immediately after opening an
    org file, you can jump to the first heading just by tapping =n=.
@@ -549,9 +610,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list 'org-structure-template-alist
-		  '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
-		  '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
+     (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+     (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Pops up the agenda when emacs is idle. Remind me what I should be
@@ -589,6 +649,50 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
+   #+END_SRC
+** Easy table field marking
+   Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;;;; Table Field Marking
+     (defun org-table-mark-field ()
+       "Mark the current table field."
+       (interactive)
+       ;; Do not try to jump to the beginning of field if the point is already there
+       (when (not (looking-back "|[[:blank:]]?"))
+	 (org-table-beginning-of-field 1))
+       (set-mark-command nil)
+       (org-table-end-of-field 1))
+
+     (defhydra hydra-org-table-mark-field
+       (:body-pre (org-table-mark-field)
+		  :hint nil)
+       "
+	^^      ^🠙^     ^^
+	^^      _p_     ^^
+     🠘 _b_  selection  _f_ 🠚          | Org table mark ▯field▮ |
+	^^      _n_     ^^
+	^^      ^🠛^     ^^
+     "
+       ("x" exchange-point-and-mark "exchange point/mark")
+       ("f" (lambda (arg)
+	      (interactive "p")
+	      (when (eq 1 arg)
+		(setq arg 2))
+	      (org-table-end-of-field arg)))
+       ("b" (lambda (arg)
+	      (interactive "p")
+	      (when (eq 1 arg)
+		(setq arg 2))
+	      (org-table-beginning-of-field arg)))
+       ("n" next-line)
+       ("p" previous-line)
+       ("q" nil "cancel" :color blue))
+
+     (bind-keys
+      :map org-mode-map
+      :filter (org-at-table-p)
+      ("S-SPC" . hydra-org-table-mark-field/body))
+
    #+END_SRC
 ** slumos
    Add the properties I like when executing aws cli commands.
@@ -669,13 +773,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :init
       (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
   #+END_SRC
-* TRYING Projectile
+* Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
       :init (projectile-global-mode))
-
-    (use-package counsel-projectile
-      :init (counsel-projectile-on))
   #+END_SRC
 * [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
@@ -742,25 +843,35 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package markdown-mode
        :commands (markdown-mode gfm-mode)
        :mode (("README\\.md\\'" . gfm-mode)
-              ("\\.md\\'" . markdown-mode)
-              ("\\.markdown\\'" . markdown-mode))
+	      ("\\.md\\'" . markdown-mode)
+	      ("\\.markdown\\'" . markdown-mode))
+       :init
+       (setq markdown-command "cmark-gfm")
        :config
        ;; stolen from http://stackoverflow.com/a/26297700
        ;; makes markdown tables saner via orgtbl-mode
        (require 'org-table)
        (defun cleanup-org-tables ()
-         (save-excursion
-           (goto-char (point-min))
-           (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+	 (save-excursion
+	   (goto-char (point-min))
+	   (while (search-forward "-+-" nil t) (replace-match "-|-"))))
        (add-hook 'markdown-mode-hook #'orgtbl-mode)
        (add-hook 'markdown-mode-hook
-                 (lambda()
-                   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
+		 (lambda()
+		   (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
    #+END_SRC
 ** Puppet
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
-       :mode "\\.pp\\'")
+       :mode "\\.pp\\'"
+       :config
+       (unbind-key "$" puppet-mode-map)
+       (setq-local align-region-separate 'group)
+       (add-to-list 'puppet-mode-align-rules
+		    '(puppet-assignment-literal
+		      (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+		      (repeat . t)
+		      (modes . '(puppet-mode)))))
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
@@ -837,6 +948,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package seeing-is-believing
        :bind (("<s-return>" . seeing-is-believing)))
    #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package chruby)
+   #+END_SRC
+** Terraform (HCL)
+   #+BEGIN_SRC emacs-lisp
+     (use-package terraform-mode
+       :hook (terraform-mode . terraform-format-on-save-mode))
+   #+END_SRC
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode)
@@ -854,15 +974,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase system-name
-				("steven.lan" "personal.org")
-				(_ "work.org")))
-	   (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
 ** TODO Localhost
    I just have a =localhost-[hostname]= repo for each host that's important to me.
    #+BEGIN_SRC emacs-lisp
@@ -876,6 +987,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
      (when (file-exists-p *user-emacs-secrets-file*)
        (load *user-emacs-secrets-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase system-name
+				("steven.lan" "personal.org")
+				(_ "work.org")))
+	   (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
    #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
