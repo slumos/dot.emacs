@@ -593,7 +593,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+BEGIN_SRC emacs-lisp
      (add-hook 'org-mode-hook (lambda ()
-				(magit-wip-after-save-mode t)))
+				(magit-wip-after-save-mode t)
+				(magit-wip-after-apply-mode t)
+				(magit-wip-before-change-mode t)))
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
