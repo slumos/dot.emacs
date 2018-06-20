@@ -770,6 +770,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     (use-package projectile
       :init (projectile-global-mode))
   #+END_SRC
+* Dashboard
+  #+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :config (dashboard-setup-startup-hook))
+  #+END_SRC
 * [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
   #+BEGIN_SRC emacs-lisp
