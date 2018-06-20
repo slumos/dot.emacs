@@ -26,26 +26,20 @@
  '(js-indent-level 2)
  '(org-agenda-files
    (quote
-    ("/Users/slumos/Google Drive/Notes/DMP.org" "/Users/slumos/Google Drive/Notes/org-jira/PE.org" "/Users/slumos/.config/emacs/config.org" "/Users/slumos/Sync/OneDrive/ST/Notes/SLUMOS.org" "/Users/slumos/Sync/OneDrive/ST/Notes/CASE.org" "/Users/slumos/Sync/OneDrive/ST/Notes/Inbox.org")))
- '(org-crypt-disable-auto-save (quote encrypt))
- '(org-crypt-key "F59B171B695B4C66")
- '(org-ellipsis " ↴")
- '(org-outline-path-complete-in-steps nil)
- '(org-yank-adjusted-subtrees t)
+    ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
  '(package-selected-packages
    (quote
-    (org-crypt ivy-prescient grayscale-theme company-terraform terraform-mode flower jedi apache-mode indent-tools atomic-chrome org-jira chruby ace-window edit-indirect magithub flycheck-pycheckers flycheck-rust flycheck-yamllint flymake-puppet flymake-ruby upstart-mode toml-mode ace-link company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy puppet-mode lsp-mode groovy-mode seeing-is-believing rspec-mode inf-ruby all-the-icons org-id ob-sh org-plus-contrib ivy-hydra flx polymode spaceline-all-the-icons zoom-frm ws-butler spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
+    (default-text-scale spinner flycheck company-jedi jedi jedi-core copy-as-format company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
- '(tramp-syntax (quote default) nil (tramp))
- '(vc-follow-symlinks t))
+ '(tramp-syntax (quote default) nil (tramp)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-ellipsis ((t (:foreground "LightGoldenrod")))))
+ )
