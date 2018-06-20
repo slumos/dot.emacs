@@ -1,5 +1,6 @@
 *~
 *#
+*.swp
 /elpa
 /recentf
 /.org-id-locations
@@ -13,5 +14,15 @@
 /personal.el
 /personal.elc
 
+/ac-comphist.dat
+/projectile-bookmarks.eld
 
+/.python-environments
+/bookmarks
+/eshell
+/magithub
+/request
+/server
+/tramp
+/url
 
