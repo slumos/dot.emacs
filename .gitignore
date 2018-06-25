@@ -13,5 +13,8 @@
 /personal.el
 /personal.elc
 
-
-
+/magithub
+/.mc-lists.el
+/bookmarks
+/projectile-bookmarks.eld
+/server
