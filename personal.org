@@ -31,5 +31,5 @@
    #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
-    (setq magit-repository-directories '("~" "~/Projects"))
+    (setq magit-repository-directories '(("~/Projects" . 1) ("~/.emacs.d" . 1)))
   #+END_SRC

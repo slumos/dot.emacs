@@ -988,22 +988,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO Localhost
    I just have a =localhost-[hostname]= repo for each host that's important to me.
    #+BEGIN_SRC emacs-lisp
-     ;; (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     ;; (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     ;; (when (file-exists-p *user-localhost-config-file*)
-     ;;   (load *user-localhost-config-file*))
-   #+END_SRC
-** TODO Secrets
-   #+BEGIN_SRC emacs-lisp
-;;     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
-;;     (when (file-exists-p *user-emacs-secrets-file*)
-;;       (load *user-emacs-secrets-file*))
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
    #+END_SRC
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase system-name
-				("steven.lan" "personal.org")
-				(_ "work.org")))
+     (let* ((local-config-name (pcase (system-name)
+				("steven.local" "personal.org")
+				("slumos-ltm.internal.salesforce.com" "work.org")))
 	   (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)
 	   (org-babel-load-file local-config)))
