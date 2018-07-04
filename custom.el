@@ -27,19 +27,31 @@
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
+ '(org-ellipsis " ↴")
+ '(org-file-apps
+   (quote
+    ((auto-mode . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . default)
+     ("\\.pdf\\'" . emacs))))
+ '(org-outline-path-complete-in-steps nil)
+ '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (company-jedi jedi jedi-core copy-as-format company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications browse-at-remote orgit orgbox secretaria org-super-agenda outshine nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp ruby-hash-syntax xterm-color dumb-jump multiple-cursors counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby yaml-mode all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit exec-path-from-shell)))
+    (cask zoom-frm pdf-tools multiple-cursors punpun-theme faff-theme nordless-theme org-beautify-theme quasi-monochrome-theme white-theme writeroom-mode terraform-mode chruby indent-tools atomic-chrome ace-link yaml-mode xterm-color ws-butler which-key web-mode vagrant-tramp use-package undo-tree spaceline-all-the-icons smyx-theme seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode polymode paradox ox-jira ox-gfm ox-clip outshine orgit org-super-agenda org-plus-contrib org-bullets ob-restclient magithub lua-mode lsp-mode lastpass json-mode jedi inf-ruby groovy-mode flycheck-demjsonlint flx exec-path-from-shell ein editorconfig dumb-jump default-text-scale counsel-projectile copy-as-format browse-at-remote avy)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
- '(tramp-syntax (quote default) nil (tramp)))
+ '(tramp-syntax (quote default) nil (tramp))
+ '(vc-follow-symlinks t)
+ '(writeroom-width 100))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:height 221))))
+ '(org-ellipsis ((t (:foreground "LightGoldenrod")))))
