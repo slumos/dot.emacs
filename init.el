@@ -36,7 +36,7 @@
   (load *custom-file*))
 
 ;; Load rest of config from Org file
-(defconst *emacs-org-config-file* (expand-file-name "config.org" *user-emacs-config-dir*))
+(defconst *emacs-org-config-file* (expand-file-name "config.org" user-emacs-directory))
 (when (file-exists-p *emacs-org-config-file*)
   (org-babel-load-file *emacs-org-config-file* nil))
 

@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-#+DESCRIPTION: My nice =~/.config/emacs configuration. XDG edition.
+#+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
@@ -84,8 +84,8 @@
 ** Dedicated directory for backup files
    XDG WHAT
    #+BEGIN_SRC emacs-lisp
-     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
-     (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
+;     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
+;     (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
    #+END_SRC
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
@@ -188,19 +188,36 @@
    The =zoom-frm= package improves on =text-scale-adjust= by providing
    functions for changing size across all buffers.
 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package zoom-frm
-       :ensure t
+       :load-path "lisp"
        :bind (("C-c C-+" . zoom-in/out)
               ("C-c C--" . zoom-in/out)
               ("C-c C-0" . zoom-in/out)
               ("C-c C-=" . zoom-in/out)))
    #+END_SRC
+
+   Trying out this alternative [[https://github.com/purcell/default-text-scale][=default-text-scale]]=
+   #+BEGIN_SRC emacs-lisp
+   (use-package default-text-scale
+     :config
+     (default-text-scale-mode))
+   #+END_SRC
+
 ** Copy region formatted for various markup systems
    #+BEGIN_SRC emacs-lisp
    (use-package copy-as-format)
    #+END_SRC
 ** Jumping
+*** [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package ace-link
+	:config
+	(ace-link-setup-default)
+	:bind
+	(:map org-mode-map ("M-o" . ace-link-org))
+	(:map Info-mode-map ("o" . ace-link-info)))
+    #+END_SRC
 *** avy
     #+BEGIN_QUOTE
       "If you're familiar with the popular `ace-jump-mode' package, this
@@ -290,6 +307,7 @@
        (setq enable-recursive-minibuffers t)
        (setq ivy-height 20)
        (setq ivy-use-virtual-buffers t)
+       (setq ivy-use-selectable-prompt t)
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
        (setq ivy-re-builders-alist 
@@ -919,6 +937,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :mode "\\(.yaml\\|.yml\\)$"
        :config (add-hook 'yaml-mode-hook #'flycheck-mode))
    #+END_SRC
+* pdf-tools
+  #+BEGIN_SRC emacs-lisp :tangle no
+    (use-package pdf-tools
+      :load-path "lisp/pdf-tools/lisp"
+      :magic ("%PDF" . pdf-view-mode)
+      :config
+      (pdf-tools-install))
+  #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
 ** Work/Life Balance?
@@ -933,16 +959,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO Localhost
    I just have a =localhost-[hostname]= repo for each host that's important to me.
    #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
+     ;; (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     ;; (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     ;; (when (file-exists-p *user-localhost-config-file*)
+     ;;   (load *user-localhost-config-file*))
    #+END_SRC
 ** TODO Secrets
    #+BEGIN_SRC emacs-lisp
-     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
-     (when (file-exists-p *user-emacs-secrets-file*)
-       (load *user-emacs-secrets-file*))
+;;     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
+;;     (when (file-exists-p *user-emacs-secrets-file*)
+;;       (load *user-emacs-secrets-file*))
    #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
