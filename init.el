@@ -16,6 +16,7 @@
       '(("melpa" . "https://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")
         ("elpy" . "https://jorgenschaefer.github.io/packages/")
+	;; spinner.el, required by paradox, is in ELPA
 	("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
       '(("org" . 100)
@@ -24,10 +25,9 @@
 	("gnu" . 10)))
 (package-initialize)
 
-(defconst *use-package-min-version* '(20180108 1754))
-(unless (package-installed-p 'use-package *use-package-min-version*)
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-reinstall 'use-package))
+  (package-install 'use-package))
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))
