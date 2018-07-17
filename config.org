@@ -3,7 +3,7 @@
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
-#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s)
+#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
 
@@ -23,12 +23,15 @@
       programming font with decent Unicode support. I'm hardly going to
       do that and then *not* use Unicode in my editor config.
 * Startup
-** TODO Daemon
+** Daemon
    #+BEGIN_SRC emacs-lisp
    (setq server-use-tcp t)
+   (server-force-delete) ; attempt to work around segfault bug
    (server-start)
    #+END_SRC
-** TODO Handling of BROKEN/SKIP states (should not be tangled)
+** Handling of BROKEN/SKIP states (should not be tangled)
+   I just learned about COMMENT status (=C-c ;=) and decided to punt
+   on this for now while trying that instead.
 ** Initial buffers (=*scratch*=)
    #+BEGIN_SRC emacs-lisp
      (setq initial-scratch-message nil)
@@ -179,9 +182,13 @@
      (setq auto-revert-check-vc-info nil)
      (global-auto-revert-mode)
    #+END_SRC
-** My:
+** Me
    #+BEGIN_SRC emacs-lisp
    (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
+   #+END_SRC
+** Misc
+   #+BEGIN_SRC emacs-lisp
+     (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
 ** Better packages ux
@@ -190,7 +197,7 @@
 	    :config
 	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
-** SKIP Better Zoom
+** SKIP COMMENT Better Zoom
    _Seems to have stopped working in 26_.
    The =zoom-frm= package improves on =text-scale-adjust= by providing
    functions for changing size across all buffers.
@@ -270,7 +277,7 @@
 	("C-c m d" . mc/mark-all-like-this-in-defun)))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp :noweb-ref mc-hydra :tangle no
+   #+BEGIN_SRC emacs-lisp :noweb-ref mc-hydra-no
      (defhydra multiple-cursors-hydra (:hint nil)
        "
 	  ^Up^            ^Down^        ^Other^
@@ -290,7 +297,7 @@
        ("M-p" mc/unmark-previous-like-this)
        ("r" mc/mark-all-in-region-regexp :exit t)
        ("q" nil))
-       (global-set-key (kbd "C-c m m") #'multiple-cursors-hydra/body)
+       (global-set-key (kbd "C-c m") #'multiple-cursors-hydra/body)
    #+END_SRC
 
 ** which-key: Cool cheat-sheet for bound keys
@@ -298,15 +305,16 @@
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** TODO undo-tree
+** TRYING undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
-   #+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp
      (use-package undo-tree
        :bind
-       ("C-c C-u" . undo-tree-visualize)
+       ("C-x u" . undo-tree-visualize)
        :config
-       (setq undo-tree-visualizer-timestamps))
+       (setq undo-tree-visualizer-timestamps t)
+       (global-undo-tree-mode 1))
    #+END_SRC
 ** WS Butler
    This cleans up trailing whitespace only on line I edited. Briliant!
@@ -338,7 +346,9 @@
        ("C-c r" . counsel-rg)
        :map ivy-minibuffer-map
        ("<return>" . ivy-alt-done)
-       ("<tab>" . ivy-partial))
+       ("<tab>" . ivy-partial)
+       :map org-mode-map
+       ("C-c C-j" . counsel-org-goto))
        :config
        (setq enable-recursive-minibuffers t)
        (setq ivy-height 20)
@@ -366,15 +376,6 @@
    Protocol”.  This package provides remote file editing, similar to
    Ange FTP.
    #+END_QUOTE
-*** TODO TRAMP through bastion with Google Authenticator https://www.gnu.org/software/tramp/#Remote-shell-setup
-    #+BEGIN_EXAMPLE
-    29Jun 16:09:22 ~ 0% ssh host
-    Host key fingerprint is SHA256:...
-    +---[ECDSA 256]---+
-    ...
-    +----[SHA256]-----+
-    Verification code:
-    #+END_EXAMPLE
 *** TRAMP for Vagrant
     #+BEGIN_SRC emacs-lisp
       (use-package vagrant-tramp
@@ -523,7 +524,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [1/9]                                                             :org:
+* Org [0/6]                                                             :org:
 ** Initialization
    #+BEGIN_SRC emacs-lisp :noweb yes
      (use-package org
@@ -704,56 +705,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (interactive)
        (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
    #+END_SRC
+** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package ob-async)
+   #+END_SRC
 ** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
    #+BEGIN_SRC emacs-lisp
    (use-package orgit)
    #+END_SRC
-** TRYING [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira][Convert a subtree to JIRA markup and copy to clipboard]]
-   #+BEGIN_SRC emacs-lisp
-   ; https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira
-     (defun bba-org-export-jira-clipboard()
-       "narrow to org subtree and store content in jira format in clipboard."
-       (interactive)
-       (org-narrow-to-subtree)
-       (bba-export-jira-org)
-       (let ((org-export-babel-evaluate nil))
-	 (ox-jira-export-as-jira))
-       (delete-region (point) (progn (forward-line 1)(point)))
-       (mark-whole-buffer)
-       (kill-ring-save 1 1 1))
-
-     (defun bba-export-jira-org()
-       "export current narrowed view to file in tmp and open a finder window on OS-X."
-       (interactive)
-       (beginning-of-buffer)
-       (insert "# This file is just plain text called orgmode")
-       (newline)
-       (insert "# https://en.wikipedia.org/wiki/Org-mode")
-       (newline)
-       (insert "# You can open it in any text editor or file reader.")
-       (newline)
-       (insert "# You might want to use Emacs for best experience.")
-       (newline)
-       (if (re-search-forward "jira:" nil t 1)
-	   (if (org-in-regexp org-bracket-link-regexp 1)
-	       (let ((remove (list (match-beginning 0) (match-end 0)))
-		     (description (last (split-string (if (match-end 3)
-							  (match-string-no-properties 3)
-							(match-string-no-properties 1)) ":"))))
-		 (mark-whole-buffer)
-		 (write-region (mark) (point) (concat "/tmp/" (car description) ".org") nil nil )
-		 (deactivate-mark)
-		 (if (string-equal system-type "darwin")(shell-command "open /tmp/"))
-		 )))
-       (beginning-of-buffer)
-       (kill-line 4))
-
-     (defun bba-ox-clip-formatted-copy()
-       "wrapper for ox-clip-formatted-copy to disable org-export-babel-evaluate."
-       (interactive)
-       (let ((org-export-babel-evaluate nil))
-	 (ox-clip-formatted-copy (mark) (point))))
-   #+END_SRC
+** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
 ** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
    #+BEGIN_SRC emacs-lisp
      (use-package org-super-agenda
@@ -764,7 +724,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		(:name "Important" :priority "A")
 		(:todo "BLOCKED"))))))
    #+END_SRC
-** TODO [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
@@ -779,12 +738,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 * Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
-      :init (projectile-global-mode))
-  #+END_SRC
-* Dashboard
-  #+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :config (dashboard-setup-startup-hook))
+      :config
+      (projectile-mode 1))
   #+END_SRC
 * [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
@@ -796,7 +751,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        'org-babel-load-languages
        '((restclient . t))))
   #+END_SRC
-* BROKEN Polymode
+* BROKEN COMMENT Polymode
   The main thing I want to use this for is Org, but it breaks folding and I haven't had time to figure out wtf.
 
   #+BEGIN_SRC emacs-lisp
@@ -813,7 +768,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (add-hook 'python-mode-hook #'lsp-mode)
        (add-hook 'java-mode-hook #'lsp-mode))
    #+END_SRC
-** TRYING flycheck
+** flycheck
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck)
    #+END_SRC
@@ -982,7 +937,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
-** TODO Localhost
+** Localhost
    I just have a =localhost-[hostname]= repo for each host that's important to me.
    #+BEGIN_SRC emacs-lisp
      (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
@@ -990,18 +945,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (when (file-exists-p *user-localhost-config-file*)
        (load *user-localhost-config-file*))
    #+END_SRC
-** TODO Secrets
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-emacs-secrets-file* (expand-file-name "secrets/emacs.el.gpg" (xdg-config-home)))
-     (when (file-exists-p *user-emacs-secrets-file*)
-       (load *user-emacs-secrets-file*))
-   #+END_SRC
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase system-name
-				("steven.lan" "personal.org")
-				(_ "work.org")))
-	   (local-config (expand-file-name local-config-name user-emacs-directory)))
+     (let* ((local-config-name (pcase (system-name)
+				 ("steven.lan" "personal.org")
+				 ("slumos-ltm.internal.salesforce.com" "work.org")))
+	    (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)
 	   (org-babel-load-file local-config)))
    #+END_SRC
