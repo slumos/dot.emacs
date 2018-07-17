@@ -8,8 +8,6 @@
 			     (expand-file-name "DMP.org" org-directory)
 			     (expand-file-name "PE.org" org-jira-working-dir)
 			     (expand-file-name "config.org" user-emacs-directory)
-			     (expand-file-name "SLUMOS.org" slumos-org-directory)
-			     (expand-file-name "CASE.org" slumos-org-directory)
 			     (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
 ** TODO org-jira
@@ -60,6 +58,20 @@
    #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
-  (setq magit-repository-directories '("~/Projects" "~/Projects/puppet"))
+  (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1)))
+  #+END_SRC
+* Environment
+  #+BEGIN_SRC emacs-lisp
+    (defun slumos/import-kaiju-envs ()
+      (exec-path-from-shell-copy-envs
+       '("KAIJU_OWNER_EMAIL"
+	 "KAIJU_OWNER_ID"
+	 "KAIJU_TEAM_NAME"
+	 "KAIJU_USERNAME"
+	 "KAIJU_USER_EMAIL"
+	 "KAIJU_USER_ID"
+	 "KAIJU_USER_ROLE_ID"
+	 "KAIJU_REFRESH_TOKEN"
+	 "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
 * Snippets
