@@ -383,6 +383,15 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
+*** TODO insert a random password
+    #+BEGIN_SRC emacs-lisp
+      (defun slumos/insert-random-password ()
+	"Generate a random password and insert it at point"
+	(interactive)
+	(insert
+	 (s-chomp
+	  (shell-command-to-string "pwgen 32"))))
+    #+END_SRC
 *** insert-date/time-stamp
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-datetime-stamp (&optional with-time)
