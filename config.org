@@ -116,6 +116,25 @@
    #+BEGIN_SRC emacs-lisp
    (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
+* Context-specific
+  Yuck, barf, and bleh. Someone show me a better way!
+** Localhost
+   I just have a =localhost-[hostname]= repo for each host that's important to me.
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase (system-name)
+				 ("steven.lan" "personal.org")
+				 ("slumos-ltm.internal.salesforce.com" "work.org")))
+	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
+   #+END_SRC
 * Preferences
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
@@ -533,7 +552,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
       :defer t)
   #+END_SRC
-* Org [0/6]                                                             :org:
+* Org [0/7]                                                             :org:
 ** Initialization
    #+BEGIN_SRC emacs-lisp :noweb yes
      (use-package org
@@ -706,6 +725,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :filter (org-at-table-p)
       ("S-SPC" . hydra-org-table-mark-field/body))
 
+   #+END_SRC
+** TODO [[https://github.com/rudolfolah/org-doing][rudolfolah/org-doing: keep track of what you're doing right now and what you've worked on before]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package org-doing
+     :bind
+     ("C-c d" . org-doing)
+     :config
+     (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
    #+END_SRC
 ** slumos
    Add the properties I like when executing aws cli commands.
@@ -943,25 +970,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package yaml-mode
        :mode "\\(.yaml\\|.yml\\)$"
        :config (add-hook 'yaml-mode-hook #'flycheck-mode))
-   #+END_SRC
-* Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
    #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
