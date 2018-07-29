@@ -708,52 +708,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
    (use-package orgit)
    #+END_SRC
-** TRYING [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira][Convert a subtree to JIRA markup and copy to clipboard]]
-   #+BEGIN_SRC emacs-lisp
-   ; https://github.com/baron42bba/.emacs.d/blob/master/bba.org#ox-jira
-     (defun bba-org-export-jira-clipboard()
-       "narrow to org subtree and store content in jira format in clipboard."
-       (interactive)
-       (org-narrow-to-subtree)
-       (bba-export-jira-org)
-       (let ((org-export-babel-evaluate nil))
-	 (ox-jira-export-as-jira))
-       (delete-region (point) (progn (forward-line 1)(point)))
-       (mark-whole-buffer)
-       (kill-ring-save 1 1 1))
-
-     (defun bba-export-jira-org()
-       "export current narrowed view to file in tmp and open a finder window on OS-X."
-       (interactive)
-       (beginning-of-buffer)
-       (insert "# This file is just plain text called orgmode")
-       (newline)
-       (insert "# https://en.wikipedia.org/wiki/Org-mode")
-       (newline)
-       (insert "# You can open it in any text editor or file reader.")
-       (newline)
-       (insert "# You might want to use Emacs for best experience.")
-       (newline)
-       (if (re-search-forward "jira:" nil t 1)
-	   (if (org-in-regexp org-bracket-link-regexp 1)
-	       (let ((remove (list (match-beginning 0) (match-end 0)))
-		     (description (last (split-string (if (match-end 3)
-							  (match-string-no-properties 3)
-							(match-string-no-properties 1)) ":"))))
-		 (mark-whole-buffer)
-		 (write-region (mark) (point) (concat "/tmp/" (car description) ".org") nil nil )
-		 (deactivate-mark)
-		 (if (string-equal system-type "darwin")(shell-command "open /tmp/"))
-		 )))
-       (beginning-of-buffer)
-       (kill-line 4))
-
-     (defun bba-ox-clip-formatted-copy()
-       "wrapper for ox-clip-formatted-copy to disable org-export-babel-evaluate."
-       (interactive)
-       (let ((org-export-babel-evaluate nil))
-	 (ox-clip-formatted-copy (mark) (point))))
-   #+END_SRC
 ** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
    #+BEGIN_SRC emacs-lisp
      (use-package org-super-agenda
