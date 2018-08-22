@@ -388,6 +388,12 @@
    #+BEGIN_SRC emacs-lisp
      (use-package flx)
    #+END_SRC
+*** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package ivy-prescient
+      :init
+      (ivy-prescient-mode))
+    #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
 ** TRAMP
    #+BEGIN_QUOTE
@@ -806,11 +812,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** flycheck
    #+BEGIN_SRC emacs-lisp
-     (use-package flycheck)
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package flycheck-demjsonlint)
+     (use-package flycheck-mode
+       :ensure flycheck
+       :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
 ** Groovy

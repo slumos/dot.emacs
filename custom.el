@@ -24,10 +24,12 @@
  '(fci-rule-color "#151515")
  '(hl-sexp-background-color "#060404")
  '(js-indent-level 2)
- '(org-agenda-files (quote ("~/Google Drive/Notes/DMP.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
  '(package-selected-packages
    (quote
-    (org-doing outshine atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner flycheck company-jedi jedi jedi-core copy-as-format company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications orgit org-super-agenda nginx-mode leuven-theme org-brain flycheck-demjson flycheck-demjsonlint markdown-mode wgrep vagrant-tramp xterm-color dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit)))
+    (elpy flycheck-mode flycheck markdown-toc org-doing outshine atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython zoom ein uuidgen ox-jira ox-gfm ox-clip magithub ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications orgit org-super-agenda nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode wgrep vagrant-tramp xterm-color dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient restclient editorconfig all-the-icons-ivy avy undo-tree python-mode puppet-mode lsp-mode groovy-mode web-mode seeing-is-believing rspec-mode inf-ruby all-the-icons org-id ob-sh org-plus-contrib ivy-hydra swiper flx polymode spaceline-all-the-icons zoom-frm ws-butler which-key use-package spaceline smyx-theme paradox org-bullets magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
