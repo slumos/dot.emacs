@@ -585,6 +585,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    :header-args: :noweb-ref org-config :tangle no
    :END:
 
+   Regular ellipsis drives me insane because I tend to end regular
+   lines that way all the time ... (see?)
+   #+BEGIN_SRC emacs-lisp
+   (setq org-ellipsis " ↴")
+   #+END_SRC
+
    My muscle memory is completely stuck on =M-< TAB=. This just
    enables what I'm pretty sure was a default in some distant past.
 
