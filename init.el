@@ -5,9 +5,6 @@
 
 (require 'cl)
 
-;; Has to happen before outline-mode loads??
-(defvar outline-minor-mode-prefix "\M-#")
-
 ;; Bootstrap use-package
 ;;; (Remove after Emacs 26?? Hopes.)
 (require 'package)
@@ -30,14 +27,14 @@
   (package-install 'use-package))
 
 ;; Move customization to its own file. Has to be done here I believe.
-(defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))
+(defconst *custom-file* (locate-user-emacs-file "custom.el"))
 (setq custom-file *custom-file*)
 (when (file-exists-p *custom-file*)
   (load *custom-file*))
 
 ;; Load rest of config from Org file
-(defconst *emacs-org-config-file* (expand-file-name "config.org" user-emacs-directory))
+(defconst *emacs-org-config-file* (locate-user-emacs-file "config.org"))
 (when (file-exists-p *emacs-org-config-file*)
-  (org-babel-load-file *emacs-org-config-file* nil))
+  (org-babel-load-file *emacs-org-config-file* t))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
