@@ -8,8 +8,6 @@
 			     (expand-file-name "DMP.org" org-directory)
 			     (expand-file-name "PE.org" org-jira-working-dir)
 			     (expand-file-name "config.org" user-emacs-directory)
-			     (expand-file-name "SLUMOS.org" slumos-org-directory)
-			     (expand-file-name "CASE.org" slumos-org-directory)
 			     (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
 ** TODO org-jira
@@ -40,14 +38,16 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
 	   (quote
-	    (("m" "Meeting" entry
-	      (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2"))
-	     ("l" "Log" entry
-	      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
-	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+	    (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
+	      "* %<%R: >%? %^g\n%t")
 	     ("k" "linK" entry
 	      (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
 	      "* %U %?")
+	     ("l" "Log" entry
+	      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
+	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+	     ("m" "Meeting" entry
+	      (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2"))
 	     ("n" "Note" entry
 	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
 	      "* %^{title} %U%?")
@@ -55,11 +55,25 @@
 	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
 	      "* %^{title}: %?")
 	     ("t" "Task" entry
-	     (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
+	      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
 	      "* TODO %?"))))
    #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
-  (setq magit-repository-directories '("~/Projects" "~/Projects/puppet"))
+  (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1)))
+  #+END_SRC
+* Environment
+  #+BEGIN_SRC emacs-lisp
+    (defun slumos/import-kaiju-envs ()
+      (exec-path-from-shell-copy-envs
+       '("KAIJU_OWNER_EMAIL"
+	 "KAIJU_OWNER_ID"
+	 "KAIJU_TEAM_NAME"
+	 "KAIJU_USERNAME"
+	 "KAIJU_USER_EMAIL"
+	 "KAIJU_USER_ID"
+	 "KAIJU_USER_ROLE_ID"
+	 "KAIJU_REFRESH_TOKEN"
+	 "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
 * Snippets

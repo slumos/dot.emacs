@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: krux-jenkins-dsl-python-job
+# key: <pj
+# --
+name: '$1'
+githubIntegration: true
+packageName: '${1:$(s-chop-prefix "python-" yas-text)}'
+${2:$$(yas-choose-value '("buildDeb" "buildPip"))}: false
+emails:
+  - 'krux-pe@salesforce.com'
+
+$0
