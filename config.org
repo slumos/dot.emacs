@@ -145,12 +145,15 @@
      (set-default-font "PragmataPro-14")
    #+END_SRC
 ** Theme
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package smyx-theme
        :config
-       (load-theme 'smyx t)
        (set-face-attribute 'org-todo nil :box nil)
        (set-face-attribute 'org-done nil :box nil))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package nord-theme)
    #+END_SRC
 ** Code
    #+BEGIN_SRC emacs-lisp
@@ -336,7 +339,7 @@
        (global-undo-tree-mode 1))
    #+END_SRC
 ** WS Butler
-   This cleans up trailing whitespace only on line I edited. Briliant!
+   This cleans up trailing whitespace only on lines I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
@@ -376,8 +379,8 @@
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
        (setq ivy-re-builders-alist 
-       '((read-file-name-internal . ivy--regex-fuzzy)
-	   (t . ivy--regex-plus)))
+	     '((read-file-name-internal . ivy--regex-fuzzy)
+	       (t . ivy--regex-plus)))
        (setq magit-completing-read-function #'ivy-completing-read))
    #+END_SRC
 
@@ -896,10 +899,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    IPython / Jupyter Notebook client
 
    #+BEGIN_SRC emacs-lisp
-     (use-package ein
-       :config
-       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
-       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
+     ;; (use-package ein
+     ;;   :config
+     ;;   (setq ein:completion-backend 'ein:use-ac-jedi-backend)
+     ;;   (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -977,10 +980,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
+     (use-package yaml-imenu)
      (use-package yaml-mode
        :mode "\\(.yaml\\|.yml\\)$"
-       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+       :config (add-hook 'yaml-mode-hook #'flycheck-mode)
+       :hook (yaml-imenu-enable))
    #+END_SRC
+
+   
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
