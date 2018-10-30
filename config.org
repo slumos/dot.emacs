@@ -213,6 +213,10 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
+** Automagic make scripts executable
+   #+BEGIN_SRC emacs-lisp
+     (setq executable-prefix-env t)
+   #+END_SRC
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
@@ -385,7 +389,9 @@
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
-   (use-package counsel-projectile)
+   (use-package counsel-projectile
+     :bind
+     ("C-x p SPC" . counsel-projectile))
    #+END_SRC
 
    #+BEGIN_SRC emacs-lisp
