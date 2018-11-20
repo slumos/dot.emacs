@@ -524,7 +524,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** TRYING Edit the web with +Atom+ Emacs
    #+BEGIN_SRC emacs-lisp
-   (use-package atomic-chrome)
+   (use-package atomic-chrome
+     :init
+     (atomic-chrome-start-server))
    #+END_SRC
 ** TRYING Folding for YAML: [[https://gitlab.com/emacs-stuff/indent-tools/][indent-tools]]
 
@@ -691,6 +693,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
              (call-interactively #'org-agenda-list))))
        (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
+
+   No love for zsh??
+   #+BEGIN_SRC emacs-lisp
+   (add-to-list 'org-babel-shell-names "zsh")
+   (org-babel-shell-initialize)
+   #+END_SRC
+
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -699,6 +708,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Exporting
    #+BEGIN_SRC emacs-lisp
+   (require 'ox-confluence)
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
