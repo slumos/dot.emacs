@@ -27,7 +27,7 @@
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
- '(org-ellipsis " ↴")
+ '(org-ellipsis " 〉")
  '(org-file-apps
    (quote
     ((auto-mode . emacs)
@@ -38,19 +38,18 @@
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (cask zoom-frm pdf-tools multiple-cursors punpun-theme faff-theme nordless-theme org-beautify-theme quasi-monochrome-theme white-theme writeroom-mode terraform-mode chruby indent-tools atomic-chrome ace-link yaml-mode xterm-color ws-butler which-key web-mode vagrant-tramp use-package undo-tree spaceline-all-the-icons smyx-theme seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode polymode paradox ox-jira ox-gfm ox-clip outshine orgit org-super-agenda org-plus-contrib org-bullets ob-restclient magithub lua-mode lsp-mode lastpass json-mode jedi inf-ruby groovy-mode flycheck-demjsonlint flx exec-path-from-shell ein editorconfig dumb-jump default-text-scale counsel-projectile copy-as-format browse-at-remote avy)))
+    (nord-theme ob-async ivy-prescient cask zoom-frm pdf-tools multiple-cursors punpun-theme faff-theme nordless-theme org-beautify-theme quasi-monochrome-theme white-theme writeroom-mode terraform-mode chruby indent-tools atomic-chrome ace-link yaml-mode xterm-color ws-butler which-key web-mode vagrant-tramp use-package undo-tree spaceline-all-the-icons smyx-theme seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode polymode paradox ox-jira ox-gfm ox-clip outshine orgit org-super-agenda org-plus-contrib org-bullets ob-restclient magithub lua-mode lsp-mode lastpass json-mode jedi inf-ruby groovy-mode flycheck-demjsonlint flx exec-path-from-shell ein editorconfig dumb-jump default-text-scale counsel-projectile copy-as-format browse-at-remote avy)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
+ '(tramp-syntax (quote default) nil (tramp))
  '(vc-follow-symlinks t)
  '(writeroom-width 100))
- '(tramp-syntax (quote default) nil (tramp)))
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-ellipsis ((t (:foreground "LightGoldenrod")))))
+ )

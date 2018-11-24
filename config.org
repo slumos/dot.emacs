@@ -568,7 +568,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :bind 
        <<org-binds>>
        :config
-       <<org-config>>)
+       <<org-config>>
+       :custom
+       <<org-custom>>
+       )
    #+END_SRC
 ** Binds
    :PROPERTIES:
@@ -585,12 +588,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    :PROPERTIES:
    :header-args: :noweb-ref org-config :tangle no
    :END:
-
-   Regular ellipsis drives me insane because I tend to end regular
-   lines that way all the time ... (see?)
-   #+BEGIN_SRC emacs-lisp
-   (setq org-ellipsis " ↴")
-   #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
    enables what I'm pretty sure was a default in some distant past.
@@ -689,6 +686,21 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :hook (org-mode . org-bullets-mode)
        :config (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
+** Custom
+   :PROPERTIES:
+   :header-args: :noweb-ref org-custom :tangle no
+   :END:
+
+   Regular ellipsis drives me insane because I tend to end regular
+   lines that way all the time ... (see?)
+
+   #+BEGIN_SRC emacs-lisp
+   ;(org-ellipsis " ⌄")
+   (org-ellipsis " ⤵")
+   ;(org-ellipsis " 〉")
+   ;(org-ellipsis " ⤵")
+   #+END_SRC
+
 ** Exporting
    #+BEGIN_SRC emacs-lisp
    (use-package ox-clip :after org)
@@ -787,11 +799,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** TODO [[https://github.com/rudolfolah/org-doing][rudolfolah/org-doing: keep track of what you're doing right now and what you've worked on before]]
    #+BEGIN_SRC emacs-lisp
-   (use-package org-doing
-     :bind
-     ("C-c d" . org-doing)
-     :config
-     (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
+     ;; (use-package org-doing
+     ;;   :bind
+     ;;   ("C-c d" . org-doing)
+     ;;   :config
+     ;;   (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
    #+END_SRC
 ** slumos
    Add the properties I like when executing aws cli commands.
@@ -1050,6 +1062,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
 				("steven.local" "personal.org")
+				("steven.lan" "personal.org")
 				("slumos-ltm.internal.salesforce.com" "work.org")))
 	   (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)

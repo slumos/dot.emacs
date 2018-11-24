@@ -23,7 +23,7 @@
 	     (id "AA63C881-1070-4DBB-BBE5-917FCDD2A309")
 	     "* %^{title}: %?")
 	     ;; http://irreal.org/blog/?p=5325
-	     ("j" "Journal" entry (file+datetree "~/Projects/journal/JOURNAL.org")
+	     ("j" "Journal" entry (file+datetree "~/Sync/Notes/JOURNAL.org")
 		  "* %<%R: >%? %^g\n%t")
 	    ("t" "Task" entry
 	     (id "2CF309C5-3F4E-4C98-AE0D-ACFAAF79C016")
