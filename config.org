@@ -713,59 +713,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
    #+END_SRC
-** Easy table field marking
-   Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
-   #+BEGIN_SRC emacs-lisp :tangle no
-     ;;;; Table Field Marking
-     (defun org-table-mark-field ()
-       "Mark the current table field."
-       (interactive)
-       ;; Do not try to jump to the beginning of field if the point is already there
-       (when (not (looking-back "|[[:blank:]]?"))
-	 (org-table-beginning-of-field 1))
-       (set-mark-command nil)
-       (org-table-end-of-field 1))
-
-     (defhydra hydra-org-table-mark-field
-       (:body-pre (org-table-mark-field)
-		  :hint nil)
-       "
-	^^      ^🠙^     ^^
-	^^      _p_     ^^
-     🠘 _b_  selection  _f_ 🠚          | Org table mark ▯field▮ |
-	^^      _n_     ^^
-	^^      ^🠛^     ^^
-     "
-       ("x" exchange-point-and-mark "exchange point/mark")
-       ("f" (lambda (arg)
-	      (interactive "p")
-	      (when (eq 1 arg)
-		(setq arg 2))
-	      (org-table-end-of-field arg)))
-       ("b" (lambda (arg)
-	      (interactive "p")
-	      (when (eq 1 arg)
-		(setq arg 2))
-	      (org-table-beginning-of-field arg)))
-       ("n" next-line)
-       ("p" previous-line)
-       ("q" nil "cancel" :color blue))
-
-     (bind-keys
-      :map org-mode-map
-      :filter (org-at-table-p)
-      ("S-SPC" . hydra-org-table-mark-field/body))
-
-   #+END_SRC
-** TODO [[https://github.com/rudolfolah/org-doing][rudolfolah/org-doing: keep track of what you're doing right now and what you've worked on before]]
-   #+BEGIN_SRC emacs-lisp
-   (use-package org-doing
-     :bind
-     ("C-c d" . org-doing)
-     :config
-     (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
-   #+END_SRC
-** slumos
+** My Personal Hacks
    Add the properties I like when executing aws cli commands.
    #+BEGIN_SRC emacs-lisp
      (defun slumos/org-add-aws-sh-properties ()
@@ -776,32 +724,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
    (use-package ob-async)
    #+END_SRC
-** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
-   #+BEGIN_SRC emacs-lisp
-   (use-package orgit)
-   #+END_SRC
 ** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-super-agenda
-       :config
-       (org-super-agenda-mode)
-       (let ((org-super-agenda-groups
-	      '((:name "Today" :scheduled)
-		(:name "Important" :priority "A")
-		(:todo "BLOCKED"))))))
-   #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
 ** TODO calfw calfw-org-agenda
-* TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
-  "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
-  #+BEGIN_SRC emacs-lisp
-    (use-package outshine
-      :init
-      (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
-  #+END_SRC
 * Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -825,16 +752,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     (use-package poly-org
       :ensure polymode)
   #+END_SRC
-* Language Modes [0/1]
+* Language Modes
 ** Dockerfile
    (use-package dockerfile-mode)
-** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :config
-       (add-hook 'python-mode-hook #'lsp-mode)
-       (add-hook 'java-mode-hook #'lsp-mode))
-   #+END_SRC
 ** flycheck
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck-mode
@@ -1002,7 +922,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config (add-hook 'yaml-mode-hook #'flycheck-mode)
        :hook (yaml-imenu-enable))
    #+END_SRC
-
    
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]

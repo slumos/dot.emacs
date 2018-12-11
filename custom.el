@@ -5,6 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#282828" "#FAB1AB" "#D1FA71" "#FFA600" "#7b68ee" "#dc8cc3" "#96D9F1" "#F7F7F7"])
  '(auth-sources (quote (lastpass)))
  '(circe-default-directory "~/local/circe")
  '(circe-default-ip-family (quote ipv4))
@@ -24,10 +26,10 @@
  '(js-indent-level 2)
  '(org-agenda-files
    (quote
-    ("~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
+    ("~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
  '(package-selected-packages
    (quote
-    (ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+    (language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
@@ -40,4 +42,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#D8DEE9" :background "#2E3440")))))
+ )
