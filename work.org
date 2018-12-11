@@ -58,6 +58,32 @@
 	      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
 	      "* TODO %?"))))
    #+END_SRC
+** Integrations
+*** ejira
+    [[https://github.com/nyyManni/ejira#installation][nyyManni/ejira: Installation]]
+    Not in melpa yet so we have to install dependencies
+    #+BEGIN_SRC emacs-lisp
+    (use-package language-detection)
+    #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package ejira
+	:ensure nil
+	:load-path "lisp/ejira"
+	:init
+	 (setq jiralib2-url            "https://kruxdigital.jira.com"
+	      jiralib2-user-login-name "slumos@salesforce.com"
+	      ejira-projects           '("PE")
+	      ejira-main-project       "PE"
+	      ejira-my-org-directory   org-directory
+	      ejira-done-states        '("Done")
+	      ejira-in-progress-states '("Open" "Blocked" "In Progress" "In Peer Review" "Resolved" "Won't Resolve")
+	      ejira-high-priorities    '("High" "Highest")
+	      ejira-low-priorities     '("Low" "Lowest")
+
+	      ;; Customize these based on your JIRA server configuration
+	      ejira-epic-field                       'customfield_11200
+	      ejira-epic-summary-field               'customfield_11201))
+    #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
   (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1)))
