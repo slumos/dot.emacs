@@ -116,25 +116,6 @@
    #+BEGIN_SRC emacs-lisp
    (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
-* Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
 * Preferences
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
@@ -223,7 +204,7 @@
 	    :config
 	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
-** SKIP COMMENT Better Zoom
+** Better Zoom
    _Seems to have stopped working in 26_.
    The =zoom-frm= package improves on =text-scale-adjust= by providing
    functions for changing size across all buffers.
@@ -896,9 +877,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** flycheck
    #+BEGIN_SRC emacs-lisp
-     (use-package flycheck-mode
-       :ensure flycheck
-       :hook (puppet-mode ruby-mode json-mode python-mode))
+     ;; (use-package flycheck-mode
+     ;;   :ensure flycheck
+     ;;   :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
 ** Groovy
@@ -1055,11 +1036,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
-     (use-package yaml-imenu)
      (use-package yaml-mode
        :mode "\\(.yaml\\|.yml\\)$"
-       :config (add-hook 'yaml-mode-hook #'flycheck-mode)
-       :hook (yaml-imenu-enable))
+       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
    #+END_SRC
 * pdf-tools
   #+BEGIN_SRC emacs-lisp :tangle no
