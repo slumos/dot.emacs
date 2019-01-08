@@ -200,9 +200,10 @@
    #+END_SRC
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
-	  (use-package paradox
-	    :config
-	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
+     (use-package paradox
+       :config
+       (paradox-enable)
+       (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
 ** Better Zoom
    _Seems to have stopped working in 26_.
