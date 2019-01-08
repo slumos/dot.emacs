@@ -70,7 +70,7 @@
 	:ensure nil
 	:load-path "lisp/ejira"
 	:init
-	 (setq jiralib2-url            "https://kruxdigital.jira.com"
+	 (setq jiralib2-url            "https://kruxdigital.jira.com/"
 	      jiralib2-user-login-name "slumos@salesforce.com"
 	      ejira-projects           '("PE")
 	      ejira-main-project       "PE"
