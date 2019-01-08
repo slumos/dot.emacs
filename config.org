@@ -397,6 +397,17 @@
    #+BEGIN_SRC emacs-lisp
      (use-package flx)
    #+END_SRC
+*** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package counsel-tramp
+	:hook
+	(counsel-tramp-pre-command-hook . (lambda ()
+					    (projectile-mode 0)
+					    (editorconfig-mode 0)))
+	(counsel-tramp-quit-hook . (lambda ()
+				     (projectile-mode 1)
+				     (editorconfig-mode 1))))
+    #+END_SRC
 *** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
     #+BEGIN_SRC emacs-lisp
     (use-package ivy-prescient
