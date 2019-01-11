@@ -567,8 +567,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind ("\C-x g" . magit-status)
+      :bind 
+      ("\C-x g" . magit-status)
       :custom
+      (magit-file-mode t)
       (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
       (auto-revert-verbose t))
   #+END_SRC
