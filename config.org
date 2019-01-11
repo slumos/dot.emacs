@@ -161,8 +161,15 @@
    #+END_SRC
 ** Mode Line
 *** Deploy fanciness
-**** Spaceline
-     #+BEGIN_SRC emacs-lisp
+**** TRYING Doom Mode Line
+     #+begin_src emacs-lisp
+       (use-package doom-modeline
+	 :init (doom-modeline-init)
+	 :custom
+	 (doom-modeline-icon t "Use all-the-icons"))
+       #+end_src
+**** SKIP Spaceline
+     #+BEGIN_SRC emacs-lisp :tangle no
        (use-package spaceline-config
 	 :ensure spaceline
 	 :config (spaceline-spacemacs-theme))
