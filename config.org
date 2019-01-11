@@ -228,6 +228,7 @@
    #+BEGIN_SRC emacs-lisp
 	  (use-package paradox
 	    :config
+	    (paradox-enable)
 	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
 ** SKIP COMMENT Better Zoom
@@ -566,26 +567,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind ("\C-x g" . magit-status))
-  #+END_SRC
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (use-package magithub
-      :after magit
-      :config
-      (magithub-feature-autoinject t)
-      (setq magithub-clone-default-directory "~/Projects"))
-  #+END_SRC
-
-  [[https://github.com/jordonbiondo/.emacs.d/blob/master/jordon/jordon-magit.el][jordon-magit]]: Clean up training whitespace per-hunk. Possibly deprecated by [[*WS Butler][WS Butler]].
-  #+BEGIN_SRC emacs-lisp
-    (use-package jordon-magit
-      :ensure nil
-      :after magit
-      :load-path (lambda () (expand-file-name "lisp" user-emacs-directory))
-      :commands 'jordon-magit-cleanup-this-hunk
-      :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
-      :defer t)
+      :bind ("\C-x g" . magit-status)
+      :custom
+      (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
+      (auto-revert-verbose t))
   #+END_SRC
 * Org [0/7]                                                             :org:
 ** Initialization
@@ -681,8 +666,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
+   Update: Org 9.2 killed it ... >cry<
 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
      (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
