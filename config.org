@@ -164,7 +164,8 @@
 **** TRYING Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
-	 :init (doom-modeline-init)
+	 :hook
+	 (after-init . doom-modeline-init)
 	 :custom
 	 (doom-modeline-icon t "Use all-the-icons"))
        #+end_src
@@ -358,6 +359,15 @@
        (add-hook 'prog-mode-hook #'ws-butler-mode)
        (add-hook 'yaml-mode-hook #'ws-butler-mode))
    #+END_SRC
+** TRYING yasnippet
+   #+begin_src emacs-lisp
+     (use-package yasnippet
+       :commands (yas-minor-mode)
+       :hook (org-mode . yas-minor-mode)
+       :custom
+       (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
+   #+end_src
+
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig

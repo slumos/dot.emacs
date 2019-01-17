@@ -29,7 +29,7 @@
     ("~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
  '(package-selected-packages
    (quote
-    (doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme org-jira exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+    (doom-themes yankpad doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme org-jira exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
@@ -42,4 +42,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((class color) (min-colors 89)) (:foreground "#D8DEE9" :background "#2E3440")))))
