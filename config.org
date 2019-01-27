@@ -142,6 +142,20 @@
    #+END_SRC
 ** Mode Line
 *** Deploy fanciness
+**** TRYING [[https://github.com/seagle0128/doom-modeline][Doom Mode Line]]
+     #+begin_src emacs-lisp
+       (use-package doom-modeline
+	 :hook
+	 (after-init . doom-modeline-init)
+	 :custom
+	 (doom-modeline-icon t "Use all-the-icons"))
+       #+end_src
+**** SKIP Spaceline
+     #+BEGIN_SRC emacs-lisp :tangle no
+       (use-package spaceline-config
+	 :ensure spaceline
+	 :config (spaceline-spacemacs-theme))
+     #+END_SRC
 **** All The Icons!
      I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
      #+BEGIN_SRC emacs-lisp
@@ -152,13 +166,6 @@
      #+BEGIN_SRC emacs-lisp :tangle no
        (use-package all-the-icons-ivy
          :init (all-the-icons-ivy-setup))
-     #+END_SRC
-**** TRYING [[https://github.com/seagle0128/doom-modeline][seagle0128/doom-modeline: A minimal and modern mode-line]]
-     #+BEGIN_SRC emacs-lisp
-       (use-package doom-modeline
-	 :ensure t
-	 :defer t
-	 :hook (after-init . doom-modeline-init))
      #+END_SRC
 **** SKIP Spaceline
      Seem to be having issues with spaceline-all-the-icons + macOS Mojave. Trying doom-modeline...
@@ -340,6 +347,15 @@
        (add-hook 'prog-mode-hook #'ws-butler-mode)
        (add-hook 'yaml-mode-hook #'ws-butler-mode))
    #+END_SRC
+** TRYING yasnippet
+   #+begin_src emacs-lisp
+     (use-package yasnippet
+       :commands (yas-minor-mode)
+       :hook (org-mode . yas-minor-mode)
+       :custom
+       (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
+   #+end_src
+
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig
@@ -388,6 +404,17 @@
    #+BEGIN_SRC emacs-lisp
      (use-package flx)
    #+END_SRC
+*** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package counsel-tramp
+	:hook
+	(counsel-tramp-pre-command-hook . (lambda ()
+					    (projectile-mode 0)
+					    (editorconfig-mode 0)))
+	(counsel-tramp-quit-hook . (lambda ()
+				     (projectile-mode 1)
+				     (editorconfig-mode 1))))
+    #+END_SRC
 *** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
     #+BEGIN_SRC emacs-lisp
     (use-package ivy-prescient
@@ -539,26 +566,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind ("\C-x g" . magit-status))
-  #+END_SRC
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (use-package magithub
-      :after magit
-      :config
-      (magithub-feature-autoinject t)
-      (setq magithub-clone-default-directory "~/Projects"))
-  #+END_SRC
-
-  [[https://github.com/jordonbiondo/.emacs.d/blob/master/jordon/jordon-magit.el][jordon-magit]]: Clean up training whitespace per-hunk. Possibly deprecated by [[*WS Butler][WS Butler]].
-  #+BEGIN_SRC emacs-lisp
-    (use-package jordon-magit
-      :ensure nil
-      :after magit
-      :load-path (lambda () (expand-file-name "lisp" user-emacs-directory))
-      :commands 'jordon-magit-cleanup-this-hunk
-      :bind (:map magit-status-mode-map ("C-c s d" . jordon-magit-cleanup-this-hunk))
-      :defer t)
+      :bind 
+      ("\C-x g" . magit-status)
+      :custom
+      (magit-file-mode t)
+      (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
+      (auto-revert-verbose t))
   #+END_SRC
 * Org [0/7]                                                             :org:
 ** Initialization
@@ -651,8 +664,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
+   Update: Org 9.2 killed it ... >cry<
 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
      (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
@@ -758,8 +772,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :map org-mode-map
        :filter (org-at-table-p)
        ("S-SPC" . hydra-org-table-mark-field/body))
-
- >>>>>>> origin/master
     #+END_SRC
 ** Easy table field marking
    Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
@@ -814,6 +826,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      ;;   (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
    #+END_SRC
 ** slumos
+** My Personal Hacks
    Add the properties I like when executing aws cli commands.
    #+BEGIN_SRC emacs-lisp
      (defun slumos/org-add-aws-sh-properties ()
@@ -824,32 +837,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
    (use-package ob-async)
    #+END_SRC
-** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
-   #+BEGIN_SRC emacs-lisp
-   (use-package orgit)
-   #+END_SRC
 ** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-** TRYING [[https://github.com/alphapapa/org-super-agenda][alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-super-agenda
-       :config
-       (org-super-agenda-mode)
-       (let ((org-super-agenda-groups
-	      '((:name "Today" :scheduled)
-		(:name "Important" :priority "A")
-		(:todo "BLOCKED"))))))
-   #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
 ** TODO calfw calfw-org-agenda
-* TRYING [[https://github.com/alphapapa/outshine][alphapapa/outshine: {Emacs} outline with outshine outshines outline]]
-  "Outshine attempts to bring the look&feel of Org-mode to the (GNU Emacs) world outside of the Org major-mode."
-  #+BEGIN_SRC emacs-lisp
-    (use-package outshine
-      :init
-      (add-hook 'outline-minor-mode-hook 'outshine-hook-function))
-  #+END_SRC
 * Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -873,16 +865,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     (use-package poly-org
       :ensure polymode)
   #+END_SRC
-* Language Modes [0/1]
+* Language Modes
 ** Dockerfile
    (use-package dockerfile-mode)
-** TRYING [[https://github.com/Microsoft/language-server-protocol/][language-server-protocol]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :config
-       (add-hook 'python-mode-hook #'lsp-mode)
-       (add-hook 'java-mode-hook #'lsp-mode))
-   #+END_SRC
 ** flycheck
    #+BEGIN_SRC emacs-lisp
      ;; (use-package flycheck-mode
