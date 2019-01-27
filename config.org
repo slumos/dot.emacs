@@ -142,12 +142,6 @@
    #+END_SRC
 ** Mode Line
 *** Deploy fanciness
-**** Spaceline
-     #+BEGIN_SRC emacs-lisp
-       (use-package spaceline-config
-	 :ensure spaceline
-	 :config (spaceline-spacemacs-theme))
-     #+END_SRC
 **** All The Icons!
      I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
      #+BEGIN_SRC emacs-lisp
@@ -159,8 +153,22 @@
        (use-package all-the-icons-ivy
          :init (all-the-icons-ivy-setup))
      #+END_SRC
-**** [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
+**** TRYING [[https://github.com/seagle0128/doom-modeline][seagle0128/doom-modeline: A minimal and modern mode-line]]
      #+BEGIN_SRC emacs-lisp
+       (use-package doom-modeline
+	 :ensure t
+	 :defer t
+	 :hook (after-init . doom-modeline-init))
+     #+END_SRC
+**** SKIP Spaceline
+     Seem to be having issues with spaceline-all-the-icons + macOS Mojave. Trying doom-modeline...
+     #+BEGIN_SRC emacs-lisp :tangle no
+       (use-package spaceline-config
+	 :ensure spaceline
+	 :config (spaceline-spacemacs-theme))
+     #+END_SRC
+**** SKIP [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
+     #+BEGIN_SRC emacs-lisp :tangle no
        (use-package spaceline-all-the-icons
 	 :after spaceline
 	 :config
@@ -679,7 +687,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (add-to-list 'org-babel-shell-names "zsh")
    (org-babel-shell-initialize)
    #+END_SRC
-
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
