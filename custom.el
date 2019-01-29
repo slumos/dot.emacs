@@ -16,10 +16,13 @@
  '(circe-notifications-alert-style (quote osx-notifier))
  '(circe-reduce-lurker-spam nil)
  '(circe-server-auto-join-default-type :after-nick)
+ '(comment-auto-fill-only-comments t)
+ '(comment-empty-lines (quote eol))
  '(compilation-scroll-output t)
  '(custom-safe-themes
    (quote
     ("7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
+ '(display-time-24hr-format t)
  '(ein:jupyter-default-server-command "jupyter")
  '(fci-rule-color "#151515")
  '(hl-sexp-background-color "#060404")
@@ -42,4 +45,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#D8DEE9" :background "#2E3440")))))
+ )
