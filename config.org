@@ -221,6 +221,13 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
+** aggressive-indent
+   #+begin_src emacs-lisp
+     (use-package aggressive-indent
+       :commands aggressive-indent-mode
+       :hook prog-mode)
+   #+end_src
+
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (setq executable-prefix-env t)
