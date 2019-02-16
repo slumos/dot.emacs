@@ -187,7 +187,7 @@
          :init (all-the-icons-ivy-setup))
      #+END_SRC
 **** [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
-     #+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp :tangle no
        (use-package spaceline-all-the-icons
 	 :after spaceline
 	 :config
@@ -340,7 +340,7 @@
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** TRYING undo-tree
+** undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
    #+BEGIN_SRC emacs-lisp
@@ -415,6 +415,15 @@
    #+BEGIN_SRC emacs-lisp
      (use-package flx)
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package ivy-rich
+       :after counsel
+       :config
+       (ivy-rich-mode 1)
+       (setq ivy-format-function #'ivy-format-function-line))
+   #+end_src
+
 *** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
     #+BEGIN_SRC emacs-lisp
       (use-package counsel-tramp
@@ -446,7 +455,7 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
-*** TODO insert a random password
+*** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
 	"Generate a random password and insert it at point"
@@ -551,7 +560,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (setq lastpass-multifactor-use-passcode nil)
      (lastpass-auth-source-enable))
    #+END_SRC
-** TRYING Edit the web with +Atom+ Emacs
+** Edit the web with +Atom+ Emacs
    #+BEGIN_SRC emacs-lisp
    (use-package atomic-chrome
      :init
@@ -678,11 +687,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
-   Update: Org 9.2 killed it ... >cry<
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-     (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
+   Update: Org 9.2 killed it ... T-T
+   #+BEGIN_SRC emacs-lisp
+     ;; Can't figure out how to make noweb expansion skip a single block...
+     ;; (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+     ;; (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Pops up the agenda when emacs is idle. Remind me what I should be
@@ -742,12 +751,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (interactive)
        (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
    #+END_SRC
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
    #+BEGIN_SRC emacs-lisp
    (use-package ob-async)
    #+END_SRC
 ** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
+   #+begin_src emacs-lisp
+     (use-package org-edna
+       :after org
+       :config (org-edna-load))
+   #+end_src
+
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
 ** TODO calfw calfw-org-agenda
@@ -784,6 +799,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
+** Go
+   #+begin_src emacs-lisp
+     (use-package go-mode
+       :bind
+       (:map go-mode-map
+	     ("M-." . godef-jump)))
+   #+end_src
+
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
