@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: oncall-shift
+# key: <shift
+# expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
+# --
+*** `daily-oncall-checklist-scheduled-time`
+**** TODO [0/5] [date] daily triage
+     SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO [0/4] Check [[https://monitor.krxd.net/icingaweb2/dashboard][Icinga]]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** TODO Fix any low-hanging fruit (failed puppet runs, emulator-fixerators, etc.); check the [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/381321231/Common+Triage+Issues][Common Triage Issues]] list for help.
+       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** TODO Acknowledge any known issues, and add a link to the appropriate JIRA ticket in the incident comment.
+       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** TODO For any other issues, create the JIRA ticket if one does not exist.
+       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO [0/3] Check email (ignore AWS maintenance email which are autohandled)
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      + [ ] cron alerts
+      + [ ] AWS reports
+      + [ ] GitHub Security Alert digests
+****** TODO Create and/or update any related JIRA tickets
+       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Check metrics
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** TODO Check [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/383090690/Service+Dashboards][Service Dashboards]]
+       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+******* TODO Engage with related product teams, create and/or update any related JIRA tickets
+        SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Schedule a [[https://cb.krxd.net/cje/][Cloudbees]] update if necessary [0/18]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Unassigned [[https://krux.pagerduty.com/incidents?assignedToUser=PFPE6UP&status=triggered][PagerDuty NOOP incidents]]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      Try to track down why things are alerting, how to resolve it, are the alerts set at a reasonable level. Remember to create a ticket to track the issue and your work.
+      If the issue has to do with developer code that we aren't/shouldn't be responsible for, please create a ticket and assign it to the relevant team.
