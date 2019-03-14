@@ -3,6 +3,17 @@
 # key: bs
 # --
 * upgrade $1 cluster to bionic
+
+* Hosts in cluster
+
+* Procedure
+
+** Stage 0: Ensure cluster is still relevant
+
+   Some clusters have been deprecated during the upgrade process. Do a
+   quick check (e.g. ping the nodes) to make sure this cluster is not
+   one of those. Close ticket as WONTFIX if it is.
+
 ** Stage 1: Respin a dev node, smoke test, fix any issues
 
    If there are existing dev nodes without a username prefix, respin

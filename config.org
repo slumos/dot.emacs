@@ -43,9 +43,21 @@
 
    #+BEGIN_SRC emacs-lisp
      (require 'use-package)
+     (setq use-package-always-defer nil)
      (setq use-package-always-ensure t)
+     (setq use-package-compute-statistics t)
+     (setq use-package-ignore-unknown-keywords t)
+     (setq use-package-minimum-reported-time 0)
      (setq use-package-verbose t)
    #+END_SRC
+
+   Adds the =:quelpa= keyword for extra laziness when installing sutff outside
+   of package archives.
+   #+begin_src emacs-lisp
+     (use-package quelpa :demand t)
+     (use-package quelpa-use-package :demand t)
+   #+end_src
+
 ** Religion
 *** Canon
     Rollback sacrilege committed in recent years (decades...)
@@ -97,8 +109,11 @@
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
      (use-package exec-path-from-shell
+       :demand t
        :config
-       (setq shell-file-name "/bin/zsh")
+       (setq shell-file-name "/usr/local/bin/zsh")
+       (setq exec-path-from-shell-arguments '("-l" "-i"))
+       (setq exec-path-from-shell-check-startup-files nil)
        (exec-path-from-shell-initialize)
        (exec-path-from-shell-copy-envs
         '("AWS_CONFIG_FILE"
@@ -116,6 +131,11 @@
    #+BEGIN_SRC emacs-lisp
    (setq gc-cons-threshold (* 100 1024 1024))
    #+END_SRC
+** Keys
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "<C-backspace>") #'delete-indentation)
+   #+end_src
+
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
 ** Localhost
@@ -223,9 +243,19 @@
 * Helpers
 ** aggressive-indent
    #+begin_src emacs-lisp
+     ;; (use-package aggressive-indent
+     ;;   :commands aggressive-indent-mode
+     ;;   :hook prog-mode)
+   #+end_src
+
+   #+begin_src emacs-lisp
      (use-package aggressive-indent
-       :commands aggressive-indent-mode
-       :hook prog-mode)
+       :defer t
+       :commands (aggressive-indent-mode)
+       :quelpa (aggressive-indent
+		:fetcher github
+		:repo "Malabarba/aggressive-indent-mode")
+       :hook (ruby-mode . aggressive-indent-mode))
    #+end_src
 
 ** Automagic make scripts executable
@@ -887,10 +917,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    IPython / Jupyter Notebook client
 
    #+BEGIN_SRC emacs-lisp
-     ;; (use-package ein
-     ;;   :config
-     ;;   (setq ein:completion-backend 'ein:use-ac-jedi-backend)
-     ;;   (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
+     (use-package ein
+       :config
+       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
+       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -909,6 +939,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (:map ruby-mode-map
 	     ("C-c #" . ruby-toggle-hash-syntax)))
 
+     (use-package seeing-is-believing
+       :bind (("<s-return>" . seeing-is-believing)))
+
+     (use-package chruby)
+   #+END_SRC
+
+   #+begin_src emacs-lisp
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((ruby . t)))
+   #+end_src
+
+   #+BEGIN_SRC emacs-lisp
      ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
      (require 'align)
 
@@ -944,14 +987,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		    (modes  . '(ruby-mode))))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package seeing-is-believing
-       :bind (("<s-return>" . seeing-is-believing)))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package chruby)
-   #+END_SRC
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode

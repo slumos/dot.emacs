@@ -10,6 +10,11 @@
 			     (expand-file-name "config.org" user-emacs-directory)
 			     (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
+** org-ql
+   #+begin_src emacs-lisp :tangle no
+     (use-package org-ql
+       :load-path "~/.config/emacs/org-ql")
+   #+end_src
 ** TODO org-jira
    [[https://github.com/ahungry/org-jira]]
    #+BEGIN_SRC emacs-lisp
@@ -33,7 +38,6 @@
       :load-path "~/.config/emacs/lisp/gojira"
       :bind (("C-c j" . gojira-insert-issue-as-org)))
    #+END_SRC
-
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates

@@ -31,7 +31,11 @@
  '(ein:jupyter-default-server-command "jupyter")
  '(fci-rule-color "#151515")
  '(hl-sexp-background-color "#060404")
+ '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
  '(js-indent-level 2)
+ '(lua-indent-level 2)
  '(magit-commit-arguments (quote ("--gpg-sign=F59B171B695B4C66")))
  '(magit-file-mode t t)
  '(org-agenda-files
@@ -39,13 +43,35 @@
     ("~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
  '(package-selected-packages
    (quote
-    (aggressive-indent ivy-rich company-restclient org-edna go-mode doom-themes yankpad doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme org-jira exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+    (nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-themes yankpad doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme org-jira exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote ob-async calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string deadgrep night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode dumb-jump counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
  '(tramp-syntax (quote default) nil (tramp))
+ '(vc-annotate-background "#3B4252")
+ '(vc-annotate-color-map
+   (list
+    (cons 20 "#A2BF8A")
+    (cons 40 "#bac389")
+    (cons 60 "#d3c788")
+    (cons 80 "#ECCC87")
+    (cons 100 "#e3b57e")
+    (cons 120 "#da9e75")
+    (cons 140 "#D2876D")
+    (cons 160 "#c88982")
+    (cons 180 "#be8b98")
+    (cons 200 "#B58DAE")
+    (cons 220 "#b97e97")
+    (cons 240 "#bd6f80")
+    (cons 260 "#C16069")
+    (cons 280 "#a15b66")
+    (cons 300 "#825663")
+    (cons 320 "#625160")
+    (cons 340 "#4C566A")
+    (cons 360 "#4C566A")))
+ '(vc-annotate-very-old-color nil)
  '(yas-snippet-dirs (quote ("/Users/slumos/.emacs.d/snippets"))))
 
 (custom-set-faces
