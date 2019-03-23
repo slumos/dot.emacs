@@ -57,7 +57,6 @@
      (use-package quelpa :demand t)
      (use-package quelpa-use-package :demand t)
    #+end_src
-
 ** Religion
 *** Canon
     Rollback sacrilege committed in recent years (decades...)
@@ -135,7 +134,6 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "<C-backspace>") #'delete-indentation)
    #+end_src
-
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
 ** Localhost
@@ -241,6 +239,15 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
+** hydra
+   #+begin_src emacs-lisp
+     (use-package hydra)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package use-package-hydra)
+   #+end_src
+
 ** aggressive-indent
    #+begin_src emacs-lisp
      ;; (use-package aggressive-indent
@@ -330,48 +337,33 @@
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
    [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
 
-   #+BEGIN_SRC emacs-lisp :noweb yes
-   (use-package multiple-cursors
-     :config
-     <<mc-hydra>>)
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp :noweb-ref mc-binds :tangle no
+   #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
+     (use-package multiple-cursors
+       :after use-package-hydra
        :bind
-       (("C-c m t" . mc/mark-all-like-this)
-	("C-c m m" . mc/mark-all-like-this-dwim)
-	("C-c m l" . mc/edit-lines)
-	("C-c m e" . mc/edit-ends-of-lines)
-	("C-c m a" . mc/edit-beginnings-of-lines)
-	("C-c m n" . mc/mark-next-like-this)
-	("C-c m p" . mc/mark-previous-like-this)
-	("C-c m s" . mc/mark-sgml-tag-pair)
-	("C-c m d" . mc/mark-all-like-this-in-defun)))
+       ("C-s-m" . hydra-multiple-cursors/body)
+       :hydra
+       (hydra-multiple-cursors
+	(:hint nil)
+	"
+	       ^Up^            ^Down^        ^Other^
+	  ----------------------------------------------
+	  [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+	  [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+	  [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+	  ^ ^             ^ ^             [_q_] Quit
+	  "
+	("l" mc/edit-lines :exit t)
+	("a" mc/mark-all-like-this :exit t)
+	("n" mc/mark-next-like-this)
+	("N" mc/skip-to-next-like-this)
+	("M-n" mc/unmark-next-like-this)
+	("p" mc/mark-previous-like-this)
+	("P" mc/skip-to-previous-like-this)
+	("M-p" mc/unmark-previous-like-this)
+	("r" mc/mark-all-in-region-regexp :exit t)
+	("q" nil)))
    #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp :noweb-ref mc-hydra-no
-     (defhydra multiple-cursors-hydra (:hint nil)
-       "
-	  ^Up^            ^Down^        ^Other^
-     ----------------------------------------------
-     [_p_]   Next    [_n_]   Next    [_l_] Edit lines
-     [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
-     [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
-     ^ ^             ^ ^             [_q_] Quit
-     "
-       ("l" mc/edit-lines :exit t)
-       ("a" mc/mark-all-like-this :exit t)
-       ("n" mc/mark-next-like-this)
-       ("N" mc/skip-to-next-like-this)
-       ("M-n" mc/unmark-next-like-this)
-       ("p" mc/mark-previous-like-this)
-       ("P" mc/skip-to-previous-like-this)
-       ("M-p" mc/unmark-previous-like-this)
-       ("r" mc/mark-all-in-region-regexp :exit t)
-       ("q" nil))
-       (global-set-key (kbd "C-c m") #'multiple-cursors-hydra/body)
-   #+END_SRC
-
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
