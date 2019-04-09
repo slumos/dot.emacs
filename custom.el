@@ -39,6 +39,7 @@
  '(package-selected-packages
    (quote
     (org-noter doom-themes doom-modeline diminish focus all-the-icons-ivy olivetti forge yaml-mode xterm-color ws-butler writeroom-mode white-theme which-key web-mode vagrant-tramp use-package undo-tree terraform-mode spaceline-all-the-icons solarized-theme smyx-theme seeing-is-believing ruby-hash-syntax rspec-mode rainbow-mode quasi-monochrome-theme puppet-mode punpun-theme polymode poet-theme pdf-tools paradox ox-jira ox-gfm ox-clip outshine orgit org-super-agenda org-plus-contrib org-doing org-bullets org-beautify-theme ob-restclient ob-async nordless-theme nord-theme noflet multiple-cursors magithub lua-mode lsp-mode load-theme-buffer-local lastpass json-mode jedi ivy-prescient inf-ruby indent-tools helm-org-rifle groovy-mode flycheck-demjsonlint flx faff-theme exec-path-from-shell ein editorconfig dumb-jump default-text-scale counsel-projectile copy-as-format chruby cask browse-at-remote atomic-chrome ace-link)))
+ '(paperless-capture-directory "~/Sync/OneDrive/ScanSnap" nil nil "Customized with use-package paperless")
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(sh-basic-offset 2)
@@ -52,4 +53,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#D8DEE9" :background "#2E3440")))))
+ )

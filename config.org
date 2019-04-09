@@ -1041,6 +1041,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :config
       (pdf-tools-install))
   #+END_SRC
+* Paperless
+  #+BEGIN_SRC emacs-lisp
+    (use-package paperless
+      :load-path "lisp/paperless"
+      :custom
+      (paperless-capture-directory "~/Sync/OneDrive/Inbox")
+      (paperless-root-directory "~/Sync/OneDrive/Documents"))
+  #+END_SRC
 * Context-specific
   Yuck, barf, and bleh. Someone show me a better way!
 ** TODO Localhost
