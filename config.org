@@ -60,11 +60,9 @@
     #+END_SRC
 *** Buckeys
     #+BEGIN_SRC emacs-lisp
-      (case window-system
-	('ns
-         (setq mac-command-modifier 'meta) ; That's right.
-         (setq mac-option-modifier 'super)
-         (setq ns-function-modifier 'hyper)))
+      (setq mac-function-modifier 'hyper
+	    mac-command-modifier  'meta ; That's right.
+	    mac-option-modifier   'super)
     #+END_SRC
 *** Noise. Make less. 
     The advent of the tool bar—or was it fringe? ugh...—was great for me,
@@ -360,7 +358,9 @@
      (use-package auto-yasnippet
        :after yasnippet
        :bind
-       ("C-o" . aya-open-line))
+       ("C-o" . aya-open-line)
+       ("s-w" . aya-create)
+       ("s-y" . aya-expand))
    #+end_src
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
