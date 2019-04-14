@@ -347,7 +347,7 @@
        (add-hook 'prog-mode-hook #'ws-butler-mode)
        (add-hook 'yaml-mode-hook #'ws-butler-mode))
    #+END_SRC
-** TRYING yasnippet
+** yasnippet
    #+begin_src emacs-lisp
      (use-package yasnippet
        :commands (yas-minor-mode)
@@ -356,6 +356,12 @@
        (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
    #+end_src
 
+   #+begin_src emacs-lisp
+     (use-package auto-yasnippet
+       :after yasnippet
+       :bind
+       ("C-o" . aya-open-line))
+   #+end_src
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig

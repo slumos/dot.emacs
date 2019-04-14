@@ -1,3 +1,6 @@
 [submodule "lisp/gojira"]
 	path = lisp/gojira
 	url = https://github.com/toshism/gojira.git
+[submodule "lisp/paperless"]
+	path = lisp/paperless
+	url = git@github.com:slumos/paperless.git

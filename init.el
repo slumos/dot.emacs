@@ -13,6 +13,7 @@
       '(("melpa" . "https://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")
         ("elpy" . "https://jorgenschaefer.github.io/packages/")
+	("ox-odt" . "https://kjambunathan.github.io/elpa/")
 	;; spinner.el, required by paradox, is in ELPA
 	("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities
