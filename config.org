@@ -341,7 +341,7 @@
      (use-package multiple-cursors
        :after use-package-hydra
        :bind
-       ("C-s-m" . hydra-multiple-cursors/body)
+       ("C-S-m" . hydra-multiple-cursors/body)
        :hydra
        (hydra-multiple-cursors
 	(:hint nil)
@@ -853,6 +853,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config
        (add-hook 'json-mode-hook #'flycheck-mode))
    #+END_SRC
+** jq mode
+   #+begin_src emacs-lisp
+     (use-package jq-mode)
+   #+end_src
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
