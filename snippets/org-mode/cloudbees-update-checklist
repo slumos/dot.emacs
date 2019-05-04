@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: cloudbees-update-checklist
+# key: cloudbees
+# --
+      1. [ ] Run puppet or otherwise make sure the packages are upgraded in the master box, i.e. dpkg -l | grep jenkins and verify the packages have the versions you want to upgrade to
+      2. [ ] Disable puppet while you upgrade things
+      3. [ ] Login to the CJE, go to Manage Jenkins / Prepare for Shutdown - This ensures that no new jobs will be built until it restarts
+      4. [ ] Wait until there are no more running jobs in the CJE
+      5. [ ] Turn off the CJE i.e. supervisorctl stop cje in the master box
+      6. [ ] Login to the CJOC
+      7. [ ] For every shared slave in the job dashboard:
+      8. [ ] Open it
+      9. [ ] Click on Take off-line
+      10. [ ] Once every Client Master and Shared Slave job appear disconnected, go to Manage Jenkins / Prepare for Shutdown
+      11. [ ] Make sure no jobs are running in the CJOC (there shouldn't be any)
+      12. [ ] Turn off the CJOC i.e. supervisorctl stop cjoc in the master box. This may trigger alerts because the service is effectively down at this point
+      13. [ ] Turn on the CJOC i.e. supervisorctl start cjoc in the master box, tail the logs with supervisorctl tail -f cjoc stderr in the master box, you should see the message "Jenkins is up and running" at the end
+      14. [ ] Login to the CJOC, the Shared Slaves are automatically started, but the CJE should still appear offline / disconnected
+      15. [ ] Turn on the CJE i.e. supervisorctl start cje in the master box, tail the logs with supervisorctl tail -f cje stderr in the master box, you should see the message "Jenkins is up and running" at the end
+      16. [ ] In the CJOC dashboard, the CJE should now appear online
+      17. [ ] In the CJE, go to Manage Jenkins / Beekeeper Upgrade Assistant, make sure all issues are taken care of (they could vary i.e. plugin versions or data in old formats)
+      18. [ ] Enable puppet back again, run puppet one more time

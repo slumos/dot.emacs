@@ -5,7 +5,15 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(auth-sources (quote (lastpass)))
+ '(ansi-color-names-vector
+   ["#282828" "#FAB1AB" "#D1FA71" "#FFA600" "#7b68ee" "#dc8cc3" "#96D9F1" "#F7F7F7"])
+ '(ansi-term-color-vector
+   [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
+ '(auth-source-cache-expiry 86400)
+ '(auth-source-save-behavior (quote ask))
+ '(auth-sources (quote (macos-keychain-internet)))
+ '(auto-revert-buffer-list-filter (quote magit-auto-revert-repository-buffers-p))
+ '(auto-revert-verbose t)
  '(circe-default-directory "~/local/circe")
  '(circe-default-ip-family (quote ipv4))
  '(circe-default-part-message "")
@@ -14,16 +22,41 @@
  '(circe-notifications-alert-style (quote osx-notifier))
  '(circe-reduce-lurker-spam nil)
  '(circe-server-auto-join-default-type :after-nick)
+ '(column-number-mode t)
+ '(comment-auto-fill-only-comments t)
+ '(comment-empty-lines (quote eol))
+ '(compilation-message-face (quote default))
  '(compilation-scroll-output t)
  '(custom-safe-themes
    (quote
-    ("d88c43fe03ac912e35963695caf0ae54bc6ce6365c3a42da434ef639f7a37399" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
+    ("406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
+ '(display-time-24hr-format t)
+ '(doom-modeline-icon t t)
  '(ein:jupyter-default-server-command "jupyter")
- '(fci-rule-color "#151515")
+ '(fci-rule-color "#151515" t)
+ '(highlight-changes-colors (quote ("#EF5350" "#7E57C2")))
+ '(highlight-tail-colors
+   (quote
+    (("#010F1D" . 0)
+     ("#B44322" . 20)
+     ("#34A18C" . 30)
+     ("#3172FC" . 50)
+     ("#B49C34" . 60)
+     ("#B44322" . 70)
+     ("#8C46BC" . 85)
+     ("#010F1D" . 100))))
  '(hl-sexp-background-color "#060404")
+ '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
  '(js-indent-level 2)
  '(line-spacing 0.2)
+ '(line-number-mode nil)
  '(lua-indent-level 2)
+ '(magit-commit-arguments (quote ("--gpg-sign=F59B171B695B4C66")))
+ '(magit-diff-use-overlays nil)
+ '(magit-file-mode t t)
+ '(magit-wip-mode t)
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
@@ -38,16 +71,48 @@
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (auto-yasnippet yasnippet ox-odt magit org-noter doom-themes doom-modeline diminish focus olivetti forge yaml-mode xterm-color ws-butler writeroom-mode white-theme which-key web-mode use-package undo-tree terraform-mode spaceline-all-the-icons solarized-theme smyx-theme seeing-is-believing ruby-hash-syntax rspec-mode rainbow-mode quasi-monochrome-theme puppet-mode punpun-theme polymode poet-theme pdf-tools paradox ox-jira ox-gfm ox-clip orgit org-super-agenda org-plus-contrib org-doing org-bullets org-beautify-theme ob-restclient ob-async nordless-theme nord-theme noflet multiple-cursors magithub lua-mode lsp-mode load-theme-buffer-local lastpass json-mode jedi ivy-prescient inf-ruby indent-tools helm-org-rifle groovy-mode flycheck-demjsonlint flx faff-theme exec-path-from-shell ein editorconfig dumb-jump default-text-scale counsel-projectile chruby cask browse-at-remote atomic-chrome ace-link)))
- '(paperless-capture-directory "~/Sync/OneDrive/Inbox/Paperless Batch" nil nil "Customized with use-package paperless")
+    (jq-mode gruvbox-theme suscolors-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump org-jira frog-menu use-package-hydra hydra-use-package pipenv eglot spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree lsp-mode groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
+ '(pos-tip-background-color "#F1EBDD")
+ '(pos-tip-foreground-color "#011627")
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
  '(tramp-syntax (quote default) nil (tramp))
  '(vc-follow-symlinks t)
  '(writeroom-width 100))
+ '(vc-annotate-background "#3B4252")
+ '(vc-annotate-color-map
+   (list
+    (cons 20 "#A2BF8A")
+    (cons 40 "#bac389")
+    (cons 60 "#d3c788")
+    (cons 80 "#ECCC87")
+    (cons 100 "#e3b57e")
+    (cons 120 "#da9e75")
+    (cons 140 "#D2876D")
+    (cons 160 "#c88982")
+    (cons 180 "#be8b98")
+    (cons 200 "#B58DAE")
+    (cons 220 "#b97e97")
+    (cons 240 "#bd6f80")
+    (cons 260 "#C16069")
+    (cons 280 "#a15b66")
+    (cons 300 "#825663")
+    (cons 320 "#625160")
+    (cons 340 "#4C566A")
+    (cons 360 "#4C566A")))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#011627" "#010F1D" "#DC2E29" "#EF5350" "#D76443" "#F78C6C" "#D8C15E" "#FFEB95" "#5B8FFF" "#82AAFF" "#AB69D7" "#C792EA" "#AFEFE2" "#7FDBCA" "#D6DEEB" "#FFFFFF")))
+ '(xterm-color-names
+   ["#F1EBDD" "#A33555" "#BF5637" "#666E4D" "#3A6E64" "#665843" "#687366" "#50484e"])
+ '(xterm-color-names-bright
+   ["#EBE7D9" "#DB4764" "#CE6A38" "#649888" "#848F86" "#857358" "#50484e"])
+ '(yas-snippet-dirs (quote ("/Users/slumos/.emacs.d/snippets"))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

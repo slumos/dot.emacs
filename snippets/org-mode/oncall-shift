@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: oncall-shift
+# key: <shift
+# expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
+# --
+*** `daily-oncall-checklist-scheduled-time`
+**** TODO [0/5] [date] daily triage
+     SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Check [[https://monitor.krxd.net/icingaweb2/dashboard][Icinga]] and [[https://app.datadoghq.com/monitors/triggered][DataDog]] monitors
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      - Fix any low-hanging fruit (failed puppet runs, emulator-fixerators, etc.); check the [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/381321231/Common+Triage+Issues][Common Triage Issues]] list for help.
+      - Acknowledge any known issues, and add a link to the appropriate JIRA ticket in the incident comment.
+      - For any other issues, create the JIRA ticket if one does not exist.
+***** TODO Check email
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      - Create and/or update any related JIRA tickets
+***** TODO Check metrics
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      - Check [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/383090690/Service+Dashboards][Service Dashboards]]
+      - Engage with related product teams, create and/or update any related JIRA tickets
+***** TODO Schedule a [[https://cb.krxd.net/cje/][Cloudbees]] update if necessary
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Unassigned [[https://krux.pagerduty.com/incidents?assignedToUser=PFPE6UP&status=triggered][PagerDuty NOOP incidents]]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      Try to track down why things are alerting, how to resolve it, are the alerts set at a reasonable level. Remember to create a ticket to track the issue and your work.
+      If the issue has to do with developer code that we aren't/shouldn't be responsible for, please create a ticket and assign it to the relevant team.

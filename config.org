@@ -3,7 +3,7 @@
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
 #+STARTUP: entitiespretty fold
-#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
+#+TODO: TODO(t) TRYING(r) BROKEN(b) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
 
@@ -43,9 +43,20 @@
 
    #+BEGIN_SRC emacs-lisp
      (require 'use-package)
+     (setq use-package-always-defer nil)
      (setq use-package-always-ensure t)
+     (setq use-package-compute-statistics t)
+     (setq use-package-ignore-unknown-keywords t)
+     (setq use-package-minimum-reported-time 0)
      (setq use-package-verbose t)
    #+END_SRC
+
+   Adds the =:quelpa= keyword for extra laziness when installing sutff outside
+   of package archives.
+   #+begin_src emacs-lisp
+     (use-package quelpa :demand t)
+     (use-package quelpa-use-package :demand t)
+   #+end_src
 ** Religion
 *** Canon
     Rollback sacrilege committed in recent years (decades...)
@@ -95,8 +106,11 @@
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
      (use-package exec-path-from-shell
+       :demand t
        :config
-       (setq shell-file-name "/bin/zsh")
+       (setq shell-file-name "/usr/local/bin/zsh")
+       (setq exec-path-from-shell-arguments '("-l" "-i"))
+       (setq exec-path-from-shell-check-startup-files nil)
        (exec-path-from-shell-initialize)
        (exec-path-from-shell-copy-envs
         '("AWS_CONFIG_FILE"
@@ -113,6 +127,29 @@
    Who remembers Eight Megs And Constantly Swapping?
    #+BEGIN_SRC emacs-lisp
    (setq gc-cons-threshold (* 100 1024 1024))
+   #+END_SRC
+** Keys
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "<C-backspace>") #'delete-indentation)
+   #+end_src
+* Context-specific
+  Yuck, barf, and bleh. Someone show me a better way!
+** Localhost
+   I just have a =localhost-[hostname]= repo for each host that's important to me.
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase (system-name)
+				 ("steven.lan" "personal.org")
+				 ("slumos-ltm.internal.salesforce.com" "work.org")))
+	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
    #+END_SRC
 * Preferences
 ** Utf-8
@@ -148,7 +185,7 @@
 	 :custom
 	 (doom-modeline-icon t "Use all-the-icons"))
        #+end_src
-**** SKIP Spaceline
+**** SKIP COMMENT Spaceline
      #+BEGIN_SRC emacs-lisp :tangle no
        (use-package spaceline-config
 	 :ensure spaceline
@@ -165,14 +202,7 @@
        (use-package all-the-icons-ivy
          :init (all-the-icons-ivy-setup))
      #+END_SRC
-**** SKIP Spaceline
-     Seem to be having issues with spaceline-all-the-icons + macOS Mojave. Trying doom-modeline...
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package spaceline-config
-	 :ensure spaceline
-	 :config (spaceline-spacemacs-theme))
-     #+END_SRC
-**** SKIP [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
+**** BROKEN COMMENT [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
      #+BEGIN_SRC emacs-lisp :tangle no
        (use-package spaceline-all-the-icons
 	 :after spaceline
@@ -207,6 +237,32 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
+** hydra
+   #+begin_src emacs-lisp
+     (use-package hydra)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package use-package-hydra)
+   #+end_src
+
+** aggressive-indent
+   #+begin_src emacs-lisp
+     ;; (use-package aggressive-indent
+     ;;   :commands aggressive-indent-mode
+     ;;   :hook prog-mode)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package aggressive-indent
+       :defer t
+       :commands (aggressive-indent-mode)
+       :quelpa (aggressive-indent
+		:fetcher github
+		:repo "Malabarba/aggressive-indent-mode")
+       :hook (ruby-mode . aggressive-indent-mode))
+   #+end_src
+
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (setq executable-prefix-env t)
@@ -279,54 +335,39 @@
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
    [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
 
-   #+BEGIN_SRC emacs-lisp :noweb yes
-   (use-package multiple-cursors
-     :config
-     <<mc-hydra>>)
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp :noweb-ref mc-binds :tangle no
+   #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
+     (use-package multiple-cursors
+       :after use-package-hydra
        :bind
-       (("C-c m t" . mc/mark-all-like-this)
-	("C-c m m" . mc/mark-all-like-this-dwim)
-	("C-c m l" . mc/edit-lines)
-	("C-c m e" . mc/edit-ends-of-lines)
-	("C-c m a" . mc/edit-beginnings-of-lines)
-	("C-c m n" . mc/mark-next-like-this)
-	("C-c m p" . mc/mark-previous-like-this)
-	("C-c m s" . mc/mark-sgml-tag-pair)
-	("C-c m d" . mc/mark-all-like-this-in-defun)))
+       ("C-S-m" . hydra-multiple-cursors/body)
+       :hydra
+       (hydra-multiple-cursors
+	(:hint nil)
+	"
+	       ^Up^            ^Down^        ^Other^
+	  ----------------------------------------------
+	  [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+	  [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+	  [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+	  ^ ^             ^ ^             [_q_] Quit
+	  "
+	("l" mc/edit-lines :exit t)
+	("a" mc/mark-all-like-this :exit t)
+	("n" mc/mark-next-like-this)
+	("N" mc/skip-to-next-like-this)
+	("M-n" mc/unmark-next-like-this)
+	("p" mc/mark-previous-like-this)
+	("P" mc/skip-to-previous-like-this)
+	("M-p" mc/unmark-previous-like-this)
+	("r" mc/mark-all-in-region-regexp :exit t)
+	("q" nil)))
    #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp :noweb-ref mc-hydra-no
-     (defhydra multiple-cursors-hydra (:hint nil)
-       "
-	  ^Up^            ^Down^        ^Other^
-     ----------------------------------------------
-     [_p_]   Next    [_n_]   Next    [_l_] Edit lines
-     [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
-     [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
-     ^ ^             ^ ^             [_q_] Quit
-     "
-       ("l" mc/edit-lines :exit t)
-       ("a" mc/mark-all-like-this :exit t)
-       ("n" mc/mark-next-like-this)
-       ("N" mc/skip-to-next-like-this)
-       ("M-n" mc/unmark-next-like-this)
-       ("p" mc/mark-previous-like-this)
-       ("P" mc/skip-to-previous-like-this)
-       ("M-p" mc/unmark-previous-like-this)
-       ("r" mc/mark-all-in-region-regexp :exit t)
-       ("q" nil))
-       (global-set-key (kbd "C-c m") #'multiple-cursors-hydra/body)
-   #+END_SRC
-
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** TRYING undo-tree
+** undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
    #+BEGIN_SRC emacs-lisp
@@ -411,6 +452,15 @@
    #+BEGIN_SRC emacs-lisp
      (use-package flx)
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package ivy-rich
+       :after counsel
+       :config
+       (ivy-rich-mode 1)
+       (setq ivy-format-function #'ivy-format-function-line))
+   #+end_src
+
 *** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
     #+BEGIN_SRC emacs-lisp
       (use-package counsel-tramp
@@ -442,7 +492,7 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
-*** TODO insert a random password
+*** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
 	"Generate a random password and insert it at point"
@@ -547,7 +597,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (setq lastpass-multifactor-use-passcode nil)
      (lastpass-auth-source-enable))
    #+END_SRC
-** TRYING Edit the web with +Atom+ Emacs
+** Edit the web with +Atom+ Emacs
    #+BEGIN_SRC emacs-lisp
    (use-package atomic-chrome
      :init
@@ -671,11 +721,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
-   Update: Org 9.2 killed it ... >cry<
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-     (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
+   Update: Org 9.2 killed it ... T-T
+   #+BEGIN_SRC emacs-lisp
+     ;; Can't figure out how to make noweb expansion skip a single block...
+     ;; (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+     ;; (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
    Pops up the agenda when emacs is idle. Remind me what I should be
@@ -705,8 +755,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    No love for zsh??
    #+BEGIN_SRC emacs-lisp
-   (add-to-list 'org-babel-shell-names "zsh")
-   (org-babel-shell-initialize)
+     (add-to-list 'org-babel-shell-names "zsh")
+     (org-babel-shell-initialize)
+   #+END_SRC
+
+   Decided to add a save timestamp to help me tell that whatever I'm
+   editing is up to date with other copies.
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'time-stamp)
    #+END_SRC
 ** Bullets
    #+BEGIN_SRC emacs-lisp
@@ -840,12 +896,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (interactive)
        (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
    #+END_SRC
+** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
    #+BEGIN_SRC emacs-lisp
    (use-package ob-async)
    #+END_SRC
 ** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
+   #+begin_src emacs-lisp
+     (use-package org-edna
+       :after org
+       :config (org-edna-load))
+   #+end_src
+
 ** TODO Blogging with Hugo
    - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
 ** TODO calfw calfw-org-agenda
@@ -882,6 +944,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      ;;   :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
+** Go
+   #+begin_src emacs-lisp
+     (use-package go-mode
+       :bind
+       (:map go-mode-map
+	     ("M-." . godef-jump)))
+   #+end_src
+
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
@@ -899,6 +969,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config
        (add-hook 'json-mode-hook #'flycheck-mode))
    #+END_SRC
+** jq mode
+   #+begin_src emacs-lisp
+     (use-package jq-mode)
+   #+end_src
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
    [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
@@ -955,10 +1029,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    IPython / Jupyter Notebook client
 
    #+BEGIN_SRC emacs-lisp
-     ;; (use-package ein
-     ;;   :config
-     ;;   (setq ein:completion-backend 'ein:use-ac-jedi-backend)
-     ;;   (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
+     (use-package ein
+       :config
+       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
+       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
 ** Ruby
    #+BEGIN_SRC emacs-lisp
@@ -977,6 +1051,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (:map ruby-mode-map
 	     ("C-c #" . ruby-toggle-hash-syntax)))
 
+     (use-package seeing-is-believing
+       :bind (("<s-return>" . seeing-is-believing)))
+
+     (use-package chruby)
+   #+END_SRC
+
+   #+begin_src emacs-lisp
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((ruby . t)))
+   #+end_src
+
+   #+BEGIN_SRC emacs-lisp
      ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
      (require 'align)
 
@@ -1012,14 +1099,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		    (modes  . '(ruby-mode))))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package seeing-is-believing
-       :bind (("<s-return>" . seeing-is-believing)))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package chruby)
-   #+END_SRC
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode

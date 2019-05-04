@@ -1,0 +1,64 @@
+# -*- mode: snippet -*-
+# name: bionic-story
+# key: bs
+# --
+* upgrade $1 cluster to bionic
+
+* Hosts in cluster
+
+* Procedure
+
+** Stage 0: Ensure cluster is still relevant
+
+   Some clusters have been deprecated during the upgrade process. Do a
+   quick check (e.g. ping the nodes) to make sure this cluster is not
+   one of those. Close ticket as WONTFIX if it is.
+
+** Stage 1: Respin a dev node, smoke test, fix any issues
+
+   If there are existing dev nodes without a username prefix, respin
+   those. Otherwise, start your own dev node (or nodes if multiple are
+   required for a valid test, e.g. Kafka).
+
+   Before proceeding, node must spin up with no errors and service
+   health checks must report good status. If service lacks health
+   checks, do a simple smoke test that exercises the service (e.g. run
+   a query, kafkacat some messages, etc)
+
+   If any third-party packages are found to be missing, create
+   fpm-cookery recipes.
+
+   If we collect throughput or latency metrics for the service(s)
+   running on the cluster, run a perf/load test and report on any
+   difference (good or bad) between bionic and trusty dev nodes. For
+   perf testing, check the SOPKB and search JIRA for what we've done
+   in the past for particular services.
+
+   In the case of performance degredation, talk to the PE, EPE, and
+   Service Owner to determine remediation and create ticket(s) for
+   doing that. Don't proceed until remediation is completed.
+
+** Stage 2: Respin staging
+
+   Check SOPKB for respin notes.
+
+   Smoke test.
+
+** Stage 3: Canary on 1 production node, compare metrics
+
+   Report on any differences of metrics between bionic and trusty.
+
+   (Want to collect +1s here?)
+
+** Stage 4: For clusters with >20 nodes, canary on 10%, compare metrics
+
+   Let bake for 48 business hours, being sure to handle peak traffic
+   at least once. Monitor key metrics and report any
+   differences. Monitor system metrics and report any differences.
+
+   Report any differences (good or bad).
+
+** Stage 5: Respin remaining nodes in cluster in 10% batches
+
+   Monitor metrics. Be wary of cache warming. Ensure each batch is
+   handling traffic within SLA before moving to next batch.
