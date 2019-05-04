@@ -354,6 +354,7 @@
        (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
    #+end_src
 
+   https://github.com/abo-abo/auto-yasnippet
    #+begin_src emacs-lisp
      (use-package auto-yasnippet
        :after yasnippet
