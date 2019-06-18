@@ -162,17 +162,32 @@
    #+BEGIN_SRC emacs-lisp
      (set-default-font "PragmataPro-14")
    #+END_SRC
-** Theme
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package smyx-theme
-       :config
-       (set-face-attribute 'org-todo nil :box nil)
-       (set-face-attribute 'org-done nil :box nil))
-   #+END_SRC
+** Themes
+*** COMMENT symx
+    #+BEGIN_SRC emacs-lisp :tangle no
+      (use-package smyx-theme
+	:config
+	(set-face-attribute 'org-todo nil :box nil)
+	(set-face-attribute 'org-done nil :box nil))
+    #+END_SRC
+*** COMMENT nordless
+    #+BEGIN_SRC emacs-lisp
+      (use-package nordless-theme)
+    #+END_SRC
+*** COMMENT gruvbox
+    #+begin_src emacs-lisp
+      (use-package gruvbox-theme
+	:config
+	(load-theme 'gruvbox-light-soft t))
+    #+end_src
+*** parchment
+    #+begin_src emacs-lisp
+      (use-package parchment-theme
+	:config
+	(load-theme 'parchment t))
+    #+end_src
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package nord-theme)
-   #+END_SRC
+
 ** Code
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode t)
@@ -778,7 +793,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (defun slumos/org-add-aws-sh-properties ()
        (interactive)
-       (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
+       (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
    #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
