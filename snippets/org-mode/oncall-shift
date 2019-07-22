@@ -6,17 +6,20 @@
 *** `daily-oncall-checklist-scheduled-time`
 **** TODO [0/5] [date] daily triage
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO Check [[https://monitor.krxd.net/icingaweb2/dashboard][Icinga]] and [[https://app.datadoghq.com/monitors/triggered][DataDog]] monitors
+***** TODO Check [[https://monitor.krxd.net/icingaweb2/dashboard][Icinga]] and [[https://app.datadoghq.com/monitors/triggered?q=group_status%3A(warn%20OR%20alert)][DataDog]] monitors
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-      - Fix any low-hanging fruit (failed puppet runs, emulator-fixerators, etc.); check the [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/381321231/Common+Triage+Issues][Common Triage Issues]] list for help.
-      - Acknowledge any known issues, and add a link to the appropriate JIRA ticket in the incident comment.
-      - For any other issues, create the JIRA ticket if one does not exist.
-***** TODO Check email
+- Fix any low-hanging fruit (failed puppet runs, emulator-fixerators, etc.); check the [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/381321231/Common+Triage+Issues][Common Triage Issues]] list for help.
+- Acknowledge any known issues, and add a link to the appropriate JIRA ticket in the incident comment.
+- For any other issues, create the JIRA ticket if one does not exist.
+***** TODO Puppet
+****** [[https://app.datadoghq.com/monitors/triggered?q=puppet%20failed%20on%20group_status%3Aalert][Puppet Fails]]
+****** [[https://app.datadoghq.com/monitors/triggered?q=Puppet%20environment%20group_status%3Aalert%20type%3Aintegration][On branch]]
+***** TODO Read email
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
       - Create and/or update any related JIRA tickets
 ***** TODO Check metrics
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-      - Check [[https://kruxdigital.jira.com/wiki/spaces/EN/pages/383090690/Service+Dashboards][Service Dashboards]]
+      - Check [[https://app.datadoghq.com/dashboard/lists/manual/22639][Datadog Dashboards]]
       - Engage with related product teams, create and/or update any related JIRA tickets
 ***** TODO Schedule a [[https://cb.krxd.net/cje/][Cloudbees]] update if necessary
       SCHEDULED: `daily-oncall-checklist-scheduled-time`

@@ -34,6 +34,16 @@
  '(display-time-24hr-format t)
  '(doom-modeline-icon t t)
  '(ein:jupyter-default-server-command "jupyter")
+ '(el-get-git-shallow-clone t t)
+ '(executable-prefix-env t)
+ '(face-font-family-alternatives
+   (quote
+    (("Monospace" "PragmataPro" "courier" "fixed")
+     ("Monospace Serif" "PragmataPro" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+     ("courier" "CMU Typewriter Text" "fixed")
+     ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
+     ("helv" "helvetica" "arial" "fixed"))))
+ '(fci-rule-color "#292617")
  '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
  '(frame-background-mode (quote dark))
  '(highlight-changes-colors (quote ("#EF5350" "#7E57C2")))
@@ -51,6 +61,7 @@
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
  '(hl-sexp-background-color "#060404")
+ '(indent-tabs-mode nil)
  '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
@@ -61,8 +72,12 @@
  '(magit-commit-arguments (quote ("--gpg-sign=F59B171B695B4C66")))
  '(magit-diff-use-overlays nil)
  '(magit-file-mode t t)
+ '(magit-repository-directories
+   (quote
+    (("~/Projects" . 1)
+     ("~/Projects/iac" . 1)
+     ("~/Projects/puppet" . 1))))
  '(magit-wip-mode t)
- '(objed-cursor-color "#aa4450")
  '(org-agenda-files
    (quote
     ("~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org" "~/Google Drive/Notes/DMP.org")))
@@ -70,9 +85,21 @@
  '(org-drill-failed-count-color "#880000")
  '(org-drill-mature-count-color "#005500")
  '(org-drill-new-count-color "#004488")
+ '(package-archive-priorities
+   (quote
+    (("org" . 100)
+     ("elpy" . 100)
+     ("melpa" . 50)
+     ("gnu" . 10))))
+ '(package-archives
+   (quote
+    (("org" . "https://orgmode.org/elpa/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("elpy" . "https://jorgenschaefer.github.io/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/"))))
  '(package-selected-packages
    (quote
-    (counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme doom-themes color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow jq-mode gruvbox-theme suscolors-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump use-package-hydra hydra-use-package pipenv spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+    (org-plus-contrib org-edna ox-slack ox-slimhtml pdf-tools tao-yin-theme el-get leaf-keywords leaf counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme doom-themes color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow jq-mode gruvbox-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump use-package-hydra hydra-use-package pipenv spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#282828" . "#f2e5bc")))
@@ -84,6 +111,8 @@
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
  '(tramp-syntax (quote default) nil (tramp))
+ '(transient-default-level 5)
+ '(transient-mark-mode nil)
  '(vc-annotate-background "#3B4252")
  '(vc-annotate-color-map
    (list
@@ -120,4 +149,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(fixed-pitch ((t (:family "PragmataPro")))))

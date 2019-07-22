@@ -3,10 +3,8 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-directory "~/Google Drive/Notes")
      (setq slumos-org-directory "~/Sync/OneDrive/ST/Notes")
-     (setq org-jira-working-dir (expand-file-name "org-jira" org-directory))
      (setq org-agenda-files (list
 			     (expand-file-name "DMP.org" org-directory)
-			     (expand-file-name "PE.org" org-jira-working-dir)
 			     (expand-file-name "config.org" user-emacs-directory)
 			     (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
@@ -15,29 +13,6 @@
      (use-package org-ql
        :load-path "~/.config/emacs/org-ql")
    #+end_src
-** TODO org-jira
-   [[https://github.com/ahungry/org-jira]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-jira
-       :after org
-       :config (jiralib-login jiralib-username jiralib-password))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-     (defun slumos/org-jira-get-subtasks ()
-	 "Get subtasks as TODO items"
-       (interactive)
-       (ensure-on-issue
-	(org-jira-get-issues
-	 (jiralib-do-jql-search (format "parent = %s" (org-jira-parse-issue-id))))))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package gojira
-      :ensure nil
-      :load-path "~/.config/emacs/lisp/gojira"
-      :bind (("C-c j" . gojira-insert-issue-as-org)))
-   #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
@@ -63,47 +38,28 @@
 	      "* TODO %?"))))
    #+END_SRC
 ** Integrations
-*** ejira
-    [[https://github.com/nyyManni/ejira#installation][nyyManni/ejira: Installation]]
-    Not in melpa yet so we have to install dependencies
-    #+BEGIN_SRC emacs-lisp
-    (use-package language-detection)
-    #+END_SRC
-    #+BEGIN_SRC emacs-lisp
-      (use-package ejira
-	:ensure nil
-	:load-path "lisp/ejira"
-	:init
-	 (setq jiralib2-url            "https://kruxdigital.jira.com/"
-	      jiralib2-user-login-name "slumos@salesforce.com"
-	      ejira-projects           '("PE")
-	      ejira-main-project       "PE"
-	      ejira-my-org-directory   org-directory
-	      ejira-done-states        '("Done")
-	      ejira-in-progress-states '("Open" "Blocked" "In Progress" "In Peer Review" "Resolved" "Won't Resolve")
-	      ejira-high-priorities    '("High" "Highest")
-	      ejira-low-priorities     '("Low" "Lowest")
-
-	      ;; Customize these based on your JIRA server configuration
-	      ejira-epic-field                       'customfield_11200
-	      ejira-epic-summary-field               'customfield_11201))
-    #+END_SRC
 * Magit
   #+BEGIN_SRC emacs-lisp
   (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1)))
   #+END_SRC
 * Environment
   #+BEGIN_SRC emacs-lisp
+    (exec-path-from-shell-copy-envs
+     '("DATADOG_API_KEY"
+       "DATADOG_APP_KEY"))
+  #+END_SRC
+
+  #+BEGIN_SRC emacs-lisp
     (defun slumos/import-kaiju-envs ()
       (exec-path-from-shell-copy-envs
        '("KAIJU_OWNER_EMAIL"
-	 "KAIJU_OWNER_ID"
-	 "KAIJU_TEAM_NAME"
-	 "KAIJU_USERNAME"
-	 "KAIJU_USER_EMAIL"
-	 "KAIJU_USER_ID"
-	 "KAIJU_USER_ROLE_ID"
-	 "KAIJU_REFRESH_TOKEN"
-	 "KAIJU_ACCESS_TOKEN")))
+         "KAIJU_OWNER_ID"
+         "KAIJU_TEAM_NAME"
+         "KAIJU_USERNAME"
+         "KAIJU_USER_EMAIL"
+         "KAIJU_USER_ID"
+         "KAIJU_USER_ROLE_ID"
+         "KAIJU_REFRESH_TOKEN"
+         "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
-* Snippets
+

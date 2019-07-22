@@ -38,25 +38,70 @@
      (setq inhibit-startup-screen t)
    #+END_SRC
 * Basics
-** =use-package=
-   John Wiegley is an Emacs badass. I am not even kidding.
-
-   #+BEGIN_SRC emacs-lisp
-     (require 'use-package)
-     (setq use-package-always-defer nil)
-     (setq use-package-always-ensure t)
-     (setq use-package-compute-statistics t)
-     (setq use-package-ignore-unknown-keywords t)
-     (setq use-package-minimum-reported-time 0)
-     (setq use-package-verbose t)
-   #+END_SRC
-
-   Adds the =:quelpa= keyword for extra laziness when installing sutff outside
-   of package archives.
+** Emacs Packages
    #+begin_src emacs-lisp
-     (use-package quelpa :demand t)
-     (use-package quelpa-use-package :demand t)
+     (custom-set-variables
+      '(package-archives
+	'(("org"   .  "https://orgmode.org/elpa/")
+	  ("melpa" .  "https://melpa.org/packages/")
+	  ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
+	  ("gnu"   .  "https://elpa.gnu.org/packages/")))
+      '(package-archive-priorities
+	'(("org"	.  100)
+	  ("elpy"	.  100)
+	  ("melpa" .  50)
+	  ("gnu"	.  10))))
+     (package-initialize)
    #+end_src
+*** =use-package=
+    John Wiegley is an Emacs badass. I am not even kidding.
+
+    #+begin_src emacs-lisp
+      (unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+    #+end_src
+
+
+    #+BEGIN_SRC emacs-lisp
+      (setq use-package-always-defer nil)
+      (setq use-package-always-ensure t)
+      (setq use-package-compute-statistics t)
+      (setq use-package-ignore-unknown-keywords t)
+      (setq use-package-minimum-reported-time 0)
+      (setq use-package-verbose t)
+    #+END_SRC
+
+    Adds the =:quelpa= keyword for extra laziness when installing sutff outside
+    of package archives.
+    #+begin_src emacs-lisp
+      (use-package quelpa :demand t)
+      (use-package quelpa-use-package :demand t)
+    #+end_src
+*** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
+    #+begin_src emacs-lisp
+      (prog1 "prepare leaf"
+	(prog1 "leaf"
+	  (unless (package-installed-p 'leaf)
+	    (unless (assoc 'leaf package-archive-contents)
+	      (package-refresh-contents))
+	    (condition-case err
+		(package-install 'leaf)
+	      (error
+	       (package-refresh-contents)       ; renew local melpa cache if fail
+	       (package-install 'leaf))))
+
+	  (leaf leaf-keywords
+		:ensure t
+		:config (leaf-keywords-init)))
+
+	(prog1 "optional packages for leaf-keywords"
+	  ;; optional packages if you want to use :hydra, :el-get,,,
+	  (leaf hydra :ensure t)
+	  (leaf el-get :ensure t
+		:custom ((el-get-git-shallow-clone  . t)))))
+    #+end_src
+
 ** Religion
 *** Canon
     Rollback sacrilege committed in recent years (decades...)
@@ -65,9 +110,9 @@
     with that.
 
     #+BEGIN_SRC emacs-lisp
-      (setq
-       indent-tabs-mode nil
-       transient-mark-mode nil)
+      (custom-set-variables
+       '(indent-tabs-mode nil)
+       '(transient-mark-mode nil))
     #+END_SRC
 *** Buckeys
     #+BEGIN_SRC emacs-lisp
@@ -77,12 +122,12 @@
          (setq mac-option-modifier 'super)
          (setq ns-function-modifier 'hyper)))
     #+END_SRC
-*** Noise. Make less. 
-    The advent of the tool bar—or was it fringe? ugh...—was great for me,
-    because it was offensive enough to bother learning how to turn it off.
-    Once I was in a turning off mode, I realized that the only thing I
-    actually used the scroll bar for is telling how far into a buffer I
-    was, and why should I even care about that?
+*** Noise. Make less.
+    The advent of the tool bar — or was it fringe? ugh... — was great
+    for me, because it was offensive enough to bother learning how to
+    turn it off.  Once I was in a turning off mode, I realized that
+    the only thing I actually used the scroll bar for is telling how
+    far into a buffer I was, and why should I even care about that?
 
     There's no point to turning off the menu bar in OSX. Yay for Lion
     Full Screen though!
@@ -158,10 +203,21 @@
    #+BEGIN_SRC emacs-lisp
    (prefer-coding-system 'utf-8)
    #+END_SRC
-** PragmataPro
-   #+BEGIN_SRC emacs-lisp
-     (set-default-font "PragmataPro-14")
-   #+END_SRC
+** Fonts
+    #+begin_src emacs-lisp
+      (custom-set-variables
+       '(face-font-family-alternatives
+	 (quote
+	  (("Monospace" "PragmataPro" "courier" "fixed")
+	   ("Monospace Serif" "PragmataPro" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+	   ("courier" "CMU Typewriter Text" "fixed")
+	   ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
+	   ("helv" "helvetica" "arial" "fixed")))))
+    #+end_src
+*** PragmataPro
+    #+BEGIN_SRC emacs-lisp
+      (set-default-font "PragmataPro-14")
+    #+END_SRC
 ** Themes
 *** COMMENT symx
     #+BEGIN_SRC emacs-lisp :tangle no
@@ -180,13 +236,18 @@
 	:config
 	(load-theme 'gruvbox-light-soft t))
     #+end_src
-*** parchment
+*** COMMENT parchment
     #+begin_src emacs-lisp
       (use-package parchment-theme
 	:config
 	(load-theme 'parchment t))
     #+end_src
-
+*** tao-yin
+    #+begin_src emacs-lisp
+    (use-package tao-theme
+      :config
+      (load-theme 'tao-yin t))
+    #+end_src
 
 ** Code
    #+BEGIN_SRC emacs-lisp
@@ -254,7 +315,7 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
-** hydra
+** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
    #+end_src
@@ -263,13 +324,14 @@
      (use-package use-package-hydra)
    #+end_src
 
-** aggressive-indent
    #+begin_src emacs-lisp
-     ;; (use-package aggressive-indent
-     ;;   :commands aggressive-indent-mode
-     ;;   :hook prog-mode)
+     (defun invoke-hydra ()
+       (interactive)
+       (counsel-M-x "hydra-.*/body "))
+     (global-set-key (kbd "C-c h") #'invoke-hydra)
    #+end_src
 
+** COMMENT aggressive-indent
    #+begin_src emacs-lisp
      (use-package aggressive-indent
        :defer t
@@ -282,14 +344,17 @@
 
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
-     (setq executable-prefix-env t)
+     (custom-set-variables '(executable-prefix-env t))
    #+END_SRC
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
-	  (use-package paradox
-	    :config
-	    (paradox-enable)
-	    (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
+     (leaf paradox
+       :commands
+       list-packages
+       paradox-list-packages
+       :init
+       (paradox-enable)
+       (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
 ** SKIP COMMENT Better Zoom
    _Seems to have stopped working in 26_.
@@ -352,6 +417,31 @@
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
    [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
 
+   #+begin_src emacs-lisp
+     (leaf multiple-cursors
+       :bind ("C-c m" . hydra-multiple-cursors/body)
+       :hydra (hydra-multiple-cursors
+	       (:hint nil)
+	       "
+		    ^Up^            ^Down^        ^Other^
+	       ----------------------------------------------
+	       [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+	       [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+	       [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+	       ^ ^             ^ ^             [_q_] Quit
+	       "
+	       ("l" mc/edit-lines :exit t)
+	       ("a" mc/mark-all-like-this :exit t)
+	       ("n" mc/mark-next-like-this)
+	       ("N" mc/skip-to-next-like-this)
+	       ("M-n" mc/unmark-next-like-this)
+	       ("p" mc/mark-previous-like-this)
+	       ("P" mc/skip-to-previous-like-this)
+	       ("M-p" mc/unmark-previous-like-this)
+	       ("r" mc/mark-all-in-region-regexp :exit t)
+	       ("q" nil)))
+   #+end_src
+
    #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
      (use-package multiple-cursors
        :after use-package-hydra
@@ -403,13 +493,43 @@
        (add-hook 'prog-mode-hook #'ws-butler-mode)
        (add-hook 'yaml-mode-hook #'ws-butler-mode))
    #+END_SRC
-** TRYING yasnippet
+** yasnippet
    #+begin_src emacs-lisp
      (use-package yasnippet
        :commands (yas-minor-mode)
        :hook (org-mode . yas-minor-mode)
        :custom
        (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
+   #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (leaf yasnippet
+       :commands (yas-minor-mode)
+       :hook (org-mode . yas-minor-mode)
+       :custom
+       ((yas-snippet-dirs . (expand-file-name "snippets" user-emacs-directory)))
+       :hydra
+       (hydra-yasnippet (:color blue :hint nil)
+       "
+                   ^YASnippets^
+     --------------------------------------------
+       Modes:    Load/Visit:    Actions:
+
+      _g_lobal  _d_irectory    _i_nsert
+      _m_inor   _f_ile         _t_ryout
+      _e_xtra   _l_ist         _n_ew
+                _a_ll
+     "
+       ("d" yas-load-directory)
+       ("e" yas-activate-extra-mode)
+       ("i" yas-insert-snippet)
+       ("f" yas-visit-snippet-file :color blue)
+       ("n" yas-new-snippet)
+       ("t" yas-tryout-snippet)
+       ("l" yas-describe-tables)
+       ("g" yas/global-mode)
+       ("m" yas/minor-mode)
+       ("a" yas-reload-all)))
    #+end_src
 
 ** Honor .editorconfig files
@@ -444,7 +564,7 @@
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
-       (setq ivy-re-builders-alist 
+       (setq ivy-re-builders-alist
 	     '((read-file-name-internal . ivy--regex-fuzzy)
 	       (t . ivy--regex-plus)))
        (setq magit-completing-read-function #'ivy-completing-read))
@@ -618,6 +738,85 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package indent-tools
        :bind ("C-c >" . indent-tools-hydra/body))
    #+END_SRC
+** [[https://github.com/politza/pdf-tools][PDF-Tools: Emacs support library for PDF files.]]
+   #+begin_src emacs-lisp
+     (leaf pdf-tools
+       :package t
+       :config
+       (pdf-tools-install)
+       :bind
+       'pdf-view-mode-map
+       ("\\" . hydra-pdf-tools/body)
+       ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+       ("g"  . pdf-view-first-page)
+       ("G"  . pdf-view-last-page)
+       ("l"  . image-forward-hscroll)
+       ("h"  . image-backward-hscroll)
+       ("j"  . pdf-view-next-page)
+       ("k"  . pdf-view-previous-page)
+       ("e"  . pdf-view-goto-page)
+       ("u"  . pdf-view-revert-buffer)
+       ("al" . pdf-annot-list-annotations)
+       ("ad" . pdf-annot-delete)
+       ("aa" . pdf-annot-attachment-dired)
+       ("am" . pdf-annot-add-markup-annotation)
+       ("at" . pdf-annot-add-text-annotation)
+       ("y"  . pdf-view-kill-ring-save)
+       ("i"  . pdf-misc-display-metadata)
+       ("s"  . pdf-occur)
+       ("b"  . pdf-view-set-slice-from-bounding-box)
+       ("r"  . pdf-view-reset-slice)
+       :hydra
+       (hydra-pdf-tools
+	(:color blue :hint nil)
+	"
+									   ╭───────────┐
+	    Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
+	╭──────────────────────────────────────────────────────────────────┴───────────╯
+	      ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
+	      ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
+	      ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
+	      ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
+	 _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
+	      ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
+	      ^^_n_^^      ^ ^  _r_eset slice box
+	      ^^^↓^^^
+	      ^^_G_^^
+	--------------------------------------------------------------------------------
+	     "
+	("\\" hydra-master/body "back")
+	("<ESC>" nil "quit")
+	("al" pdf-annot-list-annotations)
+	("ad" pdf-annot-delete)
+	("aa" pdf-annot-attachment-dired)
+	("am" pdf-annot-add-markup-annotation)
+	("at" pdf-annot-add-text-annotation)
+	("y"  pdf-view-kill-ring-save)
+	("+" pdf-view-enlarge :color red)
+	("-" pdf-view-shrink :color red)
+	("0" pdf-view-scale-reset)
+	("H" pdf-view-fit-height-to-window)
+	("W" pdf-view-fit-width-to-window)
+	("P" pdf-view-fit-page-to-window)
+	("n" pdf-view-next-page-command :color red)
+	("p" pdf-view-previous-page-command :color red)
+	("d" pdf-view-dark-minor-mode)
+	("b" pdf-view-set-slice-from-bounding-box)
+	("r" pdf-view-reset-slice)
+	("g" pdf-view-first-page)
+	("G" pdf-view-last-page)
+	("e" pdf-view-goto-page)
+	("o" pdf-outline)
+	("s" pdf-occur)
+	("i" pdf-misc-display-metadata)
+	("u" pdf-view-revert-buffer)
+	("F" pdf-links-action-perfom)
+	("f" pdf-links-isearch-link)
+	("B" pdf-history-backward :color red)
+	("N" pdf-history-forward :color red)
+	("l" image-forward-hscroll :color red)
+	("h" image-backward-hscroll :color red)))
+   #+end_src
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -630,24 +829,33 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind 
+      :bind
       ("\C-x g" . magit-status)
       :custom
       (magit-file-mode t)
+      (transient-default-level 5)
       (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
-      (auto-revert-verbose t))
+      (auto-revert-verbose t)
+      (magit-repository-directories
+       '(("~/Projects" . 1)
+         ("~/Projects/iac" . 1)
+         ("~/Projects/puppet" . 1))))
   #+END_SRC
-* Org [0/7]                                                             :org:
+
+* Org [0/5]                                                             :org:
 ** Initialization
    #+BEGIN_SRC emacs-lisp :noweb yes
      (use-package org
-       :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
-       :bind 
+       :bind
        <<org-binds>>
        :config
        <<org-config>>)
    #+END_SRC
+
+   #+RESULTS:
+   : #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (:use-package (23833 32276 914497 0) :init (23833 32276 914314 0) :config (23833 32276 914301 0) :config-secs (0 0 603 0) :init-secs (0 0 632 0) :use-package-secs (0 0 850 0)))
+
 ** Binds
    :PROPERTIES:
    :header-args: :noweb-ref org-binds :tangle no
@@ -783,7 +991,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Exporting
    #+BEGIN_SRC emacs-lisp
-   (require 'ox-confluence)
+   ;(use-package ox-confluence :after org)
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
@@ -1001,7 +1209,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode
-       :hook (terraform-mode . terraform-format-on-save-mode))
+       :hook 
+       (terraform-mode . terraform-format-on-save-mode)
+       (terraform-mode . flycheck-mode))
    #+END_SRC
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
@@ -1020,7 +1230,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config (add-hook 'yaml-mode-hook #'flycheck-mode)
        :hook (yaml-imenu-enable))
    #+END_SRC
-   
+
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]

@@ -8,27 +8,6 @@
 ;; Has to happen before outline-mode loads??
 (defvar outline-minor-mode-prefix "\M-#")
 
-;; Bootstrap use-package
-;;; (Remove after Emacs 26?? Hopes.)
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")
-        ("elpy" . "https://jorgenschaefer.github.io/packages/")
-	;; spinner.el, required by paradox, is in ELPA
-	("gnu" . "https://elpa.gnu.org/packages/")))
-(setq package-archive-priorities
-      '(("org" . 100)
-        ("elpy" . 100)
-        ("melpa" . 50)
-	("gnu" . 10)))
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))
 (setq custom-file *custom-file*)
