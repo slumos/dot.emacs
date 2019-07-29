@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: aws shell source block
+# key: <awssh
+# --
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+$0
+#+end_src
