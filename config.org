@@ -844,7 +844,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 * Org [0/5]                                                             :org:
 ** Initialization
-   #+BEGIN_SRC emacs-lisp :noweb yes
+   #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
      (use-package org
        :commands (org-agenda org-capture org-store-link)
        :bind
@@ -852,9 +852,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config
        <<org-config>>)
    #+END_SRC
-
-   #+RESULTS:
-   : #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (:use-package (23833 32276 914497 0) :init (23833 32276 914314 0) :config (23833 32276 914301 0) :config-secs (0 0 603 0) :init-secs (0 0 632 0) :use-package-secs (0 0 850 0)))
 
 ** Binds
    :PROPERTIES:

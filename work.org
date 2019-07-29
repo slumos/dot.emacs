@@ -39,8 +39,8 @@
    #+END_SRC
 ** Integrations
 * Magit
-  #+BEGIN_SRC emacs-lisp
-  (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1)))
+  #+BEGIN_SRC emacs-lisp :results value silent
+  (setq magit-repository-directories '(("~/Projects" . 1) ("~/Projects/puppet" . 1) ("~/Projects/tf" . 1)))
   #+END_SRC
 * Environment
   #+BEGIN_SRC emacs-lisp
