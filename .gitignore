@@ -2,6 +2,7 @@
 *#
 *.swp
 /elpa
+/quelpa
 /recentf
 /.org-id-locations
 /auto-save-list
