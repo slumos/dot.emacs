@@ -842,8 +842,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       ("\C-x g" . magit-status)
       :custom
       (magit-file-mode t)
-      (magit-clone-always-transient t)
-      (magit-clone-default-directory "~/Projects")
+      (magit-clone-default-directory "~/Projects/")
       (magit-repository-directories
        '(("~/Projects" . 1)
          ("~/Projects/iac" . 1)
