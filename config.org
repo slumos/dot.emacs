@@ -6,6 +6,7 @@
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
+#+PROPERTY: header-args    :results silent
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -42,15 +43,15 @@
    #+begin_src emacs-lisp
      (custom-set-variables
       '(package-archives
-	'(("org"   .  "https://orgmode.org/elpa/")
-	  ("melpa" .  "https://melpa.org/packages/")
-	  ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
-	  ("gnu"   .  "https://elpa.gnu.org/packages/")))
+        '(("org"   .  "https://orgmode.org/elpa/")
+          ("melpa" .  "https://melpa.org/packages/")
+          ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
+          ("gnu"   .  "https://elpa.gnu.org/packages/")))
       '(package-archive-priorities
-	'(("org"	.  100)
-	  ("elpy"	.  100)
-	  ("melpa" .  50)
-	  ("gnu"	.  10))))
+        '(("org"	.  100)
+          ("elpy"	.  100)
+          ("melpa" .  50)
+          ("gnu"	.  10))))
      (package-initialize)
    #+end_src
 *** =use-package=
@@ -216,8 +217,16 @@
     #+end_src
 *** PragmataPro
     #+BEGIN_SRC emacs-lisp
-      (set-default-font "PragmataPro-14")
+      (set-frame-font "PragmataPro-14")
     #+END_SRC
+*** Emoji 😂
+    #+begin_src emacs-lisp
+      (if (version< "27.0" emacs-version)
+          (set-fontset-font
+           "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+        (set-fontset-font
+         t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+    #+end_src
 ** Themes
 *** COMMENT symx
     #+BEGIN_SRC emacs-lisp :tangle no
@@ -817,7 +826,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 	("l" image-forward-hscroll :color red)
 	("h" image-backward-hscroll :color red)))
    #+end_src
-* Magit
+* [#B] Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
   Magit—like Org—is a total killer app and probably one of the reasons
@@ -833,13 +842,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       ("\C-x g" . magit-status)
       :custom
       (magit-file-mode t)
-      (transient-default-level 5)
-      (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
-      (auto-revert-verbose t)
+      (magit-clone-always-transient t)
+      (magit-clone-default-directory "~/Projects")
       (magit-repository-directories
        '(("~/Projects" . 1)
          ("~/Projects/iac" . 1)
-         ("~/Projects/puppet" . 1))))
+         ("~/Projects/puppet" . 1)))
+      (transient-default-level 5)
+      (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
+      (auto-revert-verbose t))
   #+END_SRC
 
 * Org [0/5]                                                             :org:
@@ -1134,10 +1145,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+BEGIN_SRC emacs-lisp
      (use-package ein
+       :commands (ein:notebooklist-login
+                  ein:notebooklist-open)
        :config
        (setq ein:completion-backend 'ein:use-ac-jedi-backend)
        (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
+
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
@@ -1233,3 +1247,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?
+** Getting customized vars to copy to use-package blocks
+   #+begin_src emacs-lisp :results value table drawer replace
+     (let ((found nil))
+           (mapatoms (lambda (sym)
+                       (let ((val (get sym 'customized-value))
+                             (comment (get sym 'customized-variable-comment)))
+                         (if (car val) (push (list sym val comment) found)))))
+           found)
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   | magit-clone-always-transient   | (t)                                                                | nil                                   |
+   | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
+   | transient-default-level        | (5)                                                                | Customized with use-package magit     |
+   | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
+   | magit-clone-default-directory  | (~/Projects)                                                       | nil                                   |
+   | doom-modeline-icon             | (t)                                                                | Use all-the-icons                     |
+   | auto-revert-verbose            | (t)                                                                | Customized with use-package magit     |
+   | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
+   :end:
+
