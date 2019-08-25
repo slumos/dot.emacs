@@ -2,7 +2,7 @@
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty fold
+#+STARTUP: entitiespretty content
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
@@ -1283,4 +1283,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
    | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:
+
+* Local
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# End:
 
