@@ -1049,6 +1049,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes
+** Dash
+   #+begin_src emacs-lisp
+     (use-package counsel-dash
+       :hook
+       (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
+       #+end_src
+
 ** Dockerfile
    (use-package dockerfile-mode)
 ** flycheck
@@ -1136,9 +1143,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :interpreter ("python" . python-mode))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package jedi)
-   #+END_SRC
+   #+begin_src emacs-lisp
+     (use-package elpy
+       :custom
+       ((elpy-rpc-backend . "jedi")))
+   #+end_src
 
    IPython / Jupyter Notebook client
 
@@ -1146,8 +1155,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package ein
        :commands (ein:notebooklist-login
                   ein:notebooklist-open)
+       :custom
+       ((ein:completion-backend . 'ein:use-ac-company-backend))
        :config
-       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
        (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
 
@@ -1215,6 +1225,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		    (repeat . nil)
 		    (modes  . '(ruby-mode))))
    #+END_SRC
+
+** Rust
+   #+begin_src emacs-lisp
+   (use-package 'rust-mode)
+   #+end_src
 
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp

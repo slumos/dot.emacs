@@ -1,4 +1,3 @@
-
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp

@@ -5,8 +5,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#282828" "#FAB1AB" "#D1FA71" "#FFA600" "#7b68ee" "#dc8cc3" "#96D9F1" "#F7F7F7"])
  '(ansi-term-color-vector
    [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
  '(auth-source-cache-expiry 86400)
@@ -64,6 +62,9 @@
  '(line-number-mode t)
  '(line-spacing 0.2)
  '(lua-indent-level 2)
+ '(magit-clone-always-transient nil)
+ '(magit-clone-default-directory "~/Projects/")
+ '(magit-clone-set-remote-head nil)
  '(magit-commit-arguments '("--gpg-sign=F59B171B695B4C66"))
  '(magit-diff-use-overlays nil)
  '(magit-file-mode t t)
@@ -86,10 +87,9 @@
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(poly-markdown poly-org eglot flymake-jslint flymake-json javaimp lsp-java lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml pdf-tools tao-yin-theme el-get leaf-keywords leaf counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme doom-themes color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow jq-mode gruvbox-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump use-package-hydra hydra-use-package pipenv spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
+   '(counsel-dash poly-markdown poly-org eglot flymake-jslint flymake-json javaimp lsp-java lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml pdf-tools tao-yin-theme el-get leaf-keywords leaf counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme doom-themes color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow jq-mode gruvbox-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump use-package-hydra hydra-use-package pipenv spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
- '(pdf-view-midnight-colors '("#282828" . "#f2e5bc"))
  '(pos-tip-background-color "#F1EBDD")
  '(pos-tip-foreground-color "#011627")
  '(server-mode t)
