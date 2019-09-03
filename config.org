@@ -2,7 +2,7 @@
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty content
+#+STARTUP: entitiespretty
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
@@ -1125,9 +1125,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
    #+begin_src emacs-lisp
-     (use-package elpy
-       :custom
-       ((elpy-rpc-backend . "jedi")))
+     (use-package elpy)
    #+end_src
 
    IPython / Jupyter Notebook client
