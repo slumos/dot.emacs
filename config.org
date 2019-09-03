@@ -180,25 +180,6 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "<C-backspace>") #'delete-indentation)
    #+end_src
-* Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
 * Preferences
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
@@ -239,11 +220,11 @@
     #+BEGIN_SRC emacs-lisp
       (use-package nordless-theme)
     #+END_SRC
-*** COMMENT gruvbox
+*** gruvbox
     #+begin_src emacs-lisp
       (use-package gruvbox-theme
 	:config
-	(load-theme 'gruvbox-light-soft t))
+	(load-theme 'gruvbox-dark-soft t))
     #+end_src
 *** COMMENT parchment
     #+begin_src emacs-lisp
@@ -251,7 +232,7 @@
 	:config
 	(load-theme 'parchment t))
     #+end_src
-*** tao-yin
+*** COMMENT tao-yin
     #+begin_src emacs-lisp
     (use-package tao-theme
       :config
@@ -1228,7 +1209,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 ** Rust
    #+begin_src emacs-lisp
-   (use-package 'rust-mode)
+   (use-package rustic)
+   #+end_src
+
+   #+begin_src emacs-lisp
+   (use-package flycheck-rust)
    #+end_src
 
 ** Terraform (HCL)
@@ -1256,13 +1241,32 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :hook (yaml-imenu-enable))
    #+END_SRC
 
+* Context-specific
+  Yuck, barf, and bleh. Someone show me a better way!
+** Localhost
+   I just have a =localhost-[hostname]= repo for each host that's important to me.
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase (system-name)
+				 ("steven.lan" "personal.org")
+				 ("slumos-ltm.internal.salesforce.com" "work.org")))
+	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
+   #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?
 ** Getting customized vars to copy to use-package blocks
-   #+begin_src emacs-lisp :results value table drawer replace
+   #+begin_src emacs-lisp :results value table drawer replace :tangle no
      (let ((found nil))
            (mapatoms (lambda (sym)
                        (let ((val (get sym 'customized-value))
@@ -1273,19 +1277,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | magit-clone-always-transient   | (t)                                                                | nil                                   |
    | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
    | transient-default-level        | (5)                                                                | Customized with use-package magit     |
    | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory  | (~/Projects)                                                       | nil                                   |
+   | magit-clone-default-directory  | (~/Projects/)                                                      | Customized with use-package magit     |
    | doom-modeline-icon             | (t)                                                                | Use all-the-icons                     |
    | auto-revert-verbose            | (t)                                                                | Customized with use-package magit     |
    | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
    | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:
-
-* Local
-# Local Variables:
-# org-confirm-babel-evaluate: nil
-# End:
 
