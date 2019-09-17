@@ -596,6 +596,7 @@
       (ivy-prescient-mode))
     #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
+*** TODO [[https://github.com/emacs-taskrunner/emacs-taskrunner/blob/master/taskrunner.el][emacs-taskrunner/taskrunner.el]]
 ** TRAMP
    #+BEGIN_QUOTE
    TRAMP stands for “Transparent Remote (file) Access, Multiple
@@ -985,12 +986,24 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-jira :after org)
    #+END_SRC
 ** My Personal Hacks
-   Add the properties I like when executing aws cli commands.
-   #+BEGIN_SRC emacs-lisp
-     (defun slumos/org-add-aws-sh-properties ()
-       (interactive)
-       (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
-   #+END_SRC
+*** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
+    #+BEGIN_SRC emacs-lisp
+      (defun slumos/org-add-aws-sh-properties ()
+        (interactive)
+        (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
+    #+END_SRC
+*** Post-process grabbed links
+
+    Strip content-free stuff that gets tacked onto the title of every page.
+
+    #+begin_src emacs-lisp
+      (defun slumos/org-grab-link-after (s)
+        (replace-regexp-in-string " | Salesforce$" "" s))
+
+      (advice-add #'org-as-mac-chrome-get-frontmost-url :filter-return #'slumos/org-grab-link-after)
+      (org-as-mac-chrome-get-frontmost-url)
+    #+end_src
+
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
    #+BEGIN_SRC emacs-lisp
@@ -1033,9 +1046,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Dash
    #+begin_src emacs-lisp
      (use-package counsel-dash
-       :hook
-       (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
-       #+end_src
+       :hook (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
+   #+end_src
 
 ** Dockerfile
    (use-package dockerfile-mode)
@@ -1134,8 +1146,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package ein
        :commands (ein:notebooklist-login
                   ein:notebooklist-open)
-       :custom
-       ((ein:completion-backend . 'ein:use-ac-company-backend))
        :config
        (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC

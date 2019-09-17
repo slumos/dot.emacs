@@ -44,6 +44,7 @@
             '(("~/Projects" . 1)
               ("~/Projects/java" . 1)
               ("~/Projects/puppet" . 1)
+              ("~/Projects/sfdc-slumos" . 1)
               ("~/Projects/tf" . 1)))
   #+END_SRC
 * Environment

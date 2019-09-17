@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: aws shell source block
-# key: <awssh
+# key: <awscli
 # --
 #+begin_src sh :exports both :eval no-export :wrap src json :results raw
 $0
