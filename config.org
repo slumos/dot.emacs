@@ -305,6 +305,13 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
+** AWSCLI Completion
+   #+begin_src emacs-lisp
+     (use-package awscli-capf
+       :commands (awscli-capf-add)
+       :hook (org-mode . awscli-capf-add))
+   #+end_src
+
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
@@ -985,6 +992,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
    #+END_SRC
+** Additions
+*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+    #+begin_src emacs-lisp
+      (use-package orgit
+        :custom
+        ((orgit-store-repository-id . t)
+        (orgit-store-reference . t))
+      )
+    #+end_src
+
 ** My Personal Hacks
 *** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
@@ -1051,6 +1068,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 ** Dockerfile
    (use-package dockerfile-mode)
+** [[https://fennel-lang.org/][Fennel]]
+   Seeing if I can configure Hammerspoon with Fennel
+   #+begin_src emacs-lisp
+     (use-package fennel-mode
+       :mode "\\.fnl\\'")
+   #+end_src
+
 ** flycheck
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck-mode
