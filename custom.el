@@ -5,6 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#3c3836" "#fb4933" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
  '(ansi-term-color-vector
    [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
  '(auth-source-cache-expiry 86400)
@@ -27,7 +29,7 @@
  '(compilation-message-face 'default)
  '(compilation-scroll-output t)
  '(custom-safe-themes
-   '("ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default))
+   '("b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default))
  '(display-time-24hr-format t)
  '(doom-modeline-icon t)
  '(ein:jupyter-default-server-command "jupyter")
@@ -92,6 +94,7 @@
    '(fennel-mode mvn awscli-capf aws-snippets vterm lsp-rust lsp-scala lsp-ui lush-theme scala-mode company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown poly-org eglot flymake-jslint flymake-json javaimp lsp-java lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml pdf-tools tao-yin-theme el-get leaf-keywords leaf counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump use-package-hydra hydra-use-package pipenv spray nose quelpa-use-package quelpa ivy-rich company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi jedi jedi-core copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig undo-tree groovy-mode all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
+ '(pdf-view-midnight-colors '("#fdf4c1" . "#32302f"))
  '(pos-tip-background-color "#F1EBDD")
  '(pos-tip-foreground-color "#011627")
  '(server-mode t)

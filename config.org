@@ -495,6 +495,8 @@
      (use-package yasnippet
        :commands (yas-minor-mode)
        :hook (org-mode . yas-minor-mode)
+       :config
+       (yas-reload-all)
        :custom
        (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
    #+end_src
@@ -1060,6 +1062,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes
+** C
+   #+begin_src emacs-lisp
+     (customize-set-variable c-basic-offset 2)
+   #+end_src
 ** Dash
    #+begin_src emacs-lisp
      (use-package counsel-dash
