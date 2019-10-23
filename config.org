@@ -209,14 +209,14 @@
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
     #+end_src
 ** Themes
-*** COMMENT symx
+*** symx
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
 	:config
 	(set-face-attribute 'org-todo nil :box nil)
 	(set-face-attribute 'org-done nil :box nil))
     #+END_SRC
-*** COMMENT nordless
+*** nordless
     #+BEGIN_SRC emacs-lisp
       (use-package nordless-theme)
     #+END_SRC
@@ -286,8 +286,8 @@
      #+BEGIN_SRC emacs-lisp
        (use-package xterm-color
 	 :init
-	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
-	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
+	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
+	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
      #+END_SRC
 ** auto-revert
    Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
@@ -993,8 +993,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
    #+END_SRC
+*** COMMENT My crazy numbered paragraphs idea
+    #+begin_src emacs-lisp
+      (defun numbered-paragraphs-headline (headline contents info)
+        "Transcode HEADLINE as a plain numbered paragraph. CONTENTS is
+      headline contents. INFO is plist used as a communication
+      channel."
+        (let* ((level (org-export-get-relative-level headline info))
+               (num (org-export-get-headline-number)))
+          (concat headline contents)))
+    #+end_src
+
 ** Additions
-*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+*** COMMENT [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+    Seems to be broken. Keep getting
     #+begin_src emacs-lisp
       (use-package orgit
         :custom
@@ -1061,10 +1073,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes
-** C
-   #+begin_src emacs-lisp
-     (customize-set-variable c-basic-offset 2)
-   #+end_src
 ** Dash
    #+begin_src emacs-lisp
      (use-package counsel-dash
@@ -1100,6 +1108,38 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package groovy-mode
        :mode "\\.groovy\\'")
    #+END_SRC
+** Java
+   #+begin_src emacs-lisp
+     (use-package lsp-mode
+       :custom
+       ((lsp-auto-guess-root . t)
+        (lsp-log-io . t)
+        (lsp-log-max . 2000)))
+     (use-package company-lsp)
+     (use-package lsp-ui)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package lsp-java
+       :after lsp-mode
+       :hook
+       (java-mode . lsp))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package dap-mode
+       :after lsp-mode
+       :hook ((java-mode)
+              (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
+       :config
+       (dap-mode t)
+       (dap-ui-mode t))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package dap-java :after lsp-java)
+   #+end_src
+
 ** Javascript
    #+BEGIN_SRC emacs-lisp
      (use-package js2-mode :mode "\\.js\'")
@@ -1315,7 +1355,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+RESULTS:
    :results:
    | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
-   | set-from-style                 | (2)                                                                | nil                                   |
    | transient-default-level        | (5)                                                                | Customized with use-package magit     |
    | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
    | magit-clone-default-directory  | (~/Projects/)                                                      | Customized with use-package magit     |
@@ -1324,4 +1363,3 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
    | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:
-
