@@ -30,6 +30,10 @@
 	     ("n" "Note" entry
 	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
 	      "* %^{title} %U%?")
+             ("p" "Pager" entry
+              (id "198B927A-E59D-4C7B-8E25-CFDAF46D3E3C")
+              "* %T %?"
+              :prepend t)
 	     ("s" "Snippet" entry
 	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
 	      "* %^{title}: %?")
@@ -40,12 +44,13 @@
 ** Integrations
 * Magit
   #+BEGIN_SRC emacs-lisp :results value silent
-      (setq magit-repository-directories 
+      (custom-set-variables
+        '(magit-repository-directories
             '(("~/Projects" . 1)
               ("~/Projects/java" . 1)
               ("~/Projects/puppet" . 1)
               ("~/Projects/sfdc-slumos" . 1)
-              ("~/Projects/tf" . 1)))
+              ("~/Projects/tf" . 1))))
   #+END_SRC
 * Environment
   #+BEGIN_SRC emacs-lisp

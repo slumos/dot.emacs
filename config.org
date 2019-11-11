@@ -82,25 +82,28 @@
 *** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
     #+begin_src emacs-lisp
       (prog1 "prepare leaf"
-	(prog1 "leaf"
-	  (unless (package-installed-p 'leaf)
-	    (unless (assoc 'leaf package-archive-contents)
-	      (package-refresh-contents))
-	    (condition-case err
-		(package-install 'leaf)
-	      (error
-	       (package-refresh-contents)       ; renew local melpa cache if fail
-	       (package-install 'leaf))))
+        (prog1 "leaf"
+          (unless (package-installed-p 'leaf)
+            (unless (assoc 'leaf package-archive-contents)
+              (package-refresh-contents))
+            (condition-case err
+                (package-install 'leaf)
+              (error
+               (package-refresh-contents)       ; renew local melpa cache if fail
+               (package-install 'leaf))))
 
-	  (leaf leaf-keywords
-		:ensure t
-		:config (leaf-keywords-init)))
+          (leaf leaf-keywords
+                :ensure t
+                :config (leaf-keywords-init))
 
-	(prog1 "optional packages for leaf-keywords"
-	  ;; optional packages if you want to use :hydra, :el-get,,,
-	  (leaf hydra :ensure t)
-	  (leaf el-get :ensure t
-		:custom ((el-get-git-shallow-clone  . t)))))
+          (leaf leaf
+            :custom ((leaf-defaults . '(:ensure t)))))
+
+        (prog1 "optional packages for leaf-keywords"
+          ;; optional packages if you want to use :hydra, :el-get,,,
+          (leaf hydra :ensure t)
+          (leaf el-get :ensure t
+                :custom ((el-get-git-shallow-clone  . t)))))
     #+end_src
 
 ** Religion
@@ -209,7 +212,7 @@
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
     #+end_src
 ** Themes
-*** symx
+*** COMMENT symx
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
 	:config
@@ -218,9 +221,10 @@
     #+END_SRC
 *** nordless
     #+BEGIN_SRC emacs-lisp
-      (use-package nordless-theme)
+      (use-package nordless-theme
+        :config (load-theme 'nordless t))
     #+END_SRC
-*** gruvbox
+*** COMMENT gruvbox
     #+begin_src emacs-lisp
       (use-package gruvbox-theme
 	:config
@@ -346,6 +350,7 @@
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
      (leaf paradox
+       :require t
        :commands
        list-packages
        paradox-list-packages
@@ -502,6 +507,7 @@
 
    #+begin_src emacs-lisp :tangle no
      (leaf yasnippet
+       :require t
        :commands (yas-minor-mode)
        :hook (org-mode . yas-minor-mode)
        :custom
@@ -1005,14 +1011,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+end_src
 
 ** Additions
-*** COMMENT [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
-    Seems to be broken. Keep getting
+*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
     #+begin_src emacs-lisp
-      (use-package orgit
-        :custom
-        ((orgit-store-repository-id . t)
-        (orgit-store-reference . t))
-      )
+      (use-package orgit)
     #+end_src
 
 ** My Personal Hacks
@@ -1110,34 +1111,58 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Java
    #+begin_src emacs-lisp
-     (use-package lsp-mode
+     (exec-path-from-shell-copy-env "JAVA_HOME")
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf company
+       :after java-mode
+       :hook java-mode-hook
+       :custom
+       ((company-backends . '(company-lsp))))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-mode
+       :commands lsp
+       :init (require 'lsp-clients))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf company-lsp
+       :commands company-lsp
+       :config
+       (add-to-list 'company-backends 'company-lsp))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-ui
+       :hook (lsp-mode-hook . lsp-ui-mode)
        :custom
        ((lsp-auto-guess-root . t)
+        (lsp-enable-completion-at-point . t)
         (lsp-log-io . t)
-        (lsp-log-max . 2000)))
-     (use-package company-lsp)
-     (use-package lsp-ui)
+        (lsp-log-max . 2000)
+        (lsp-ui-doc-enable . t)))
    #+end_src
 
    #+begin_src emacs-lisp
      (use-package lsp-java
-       :after lsp-mode
-       :hook
-       (java-mode . lsp))
+       :hook ((java-mode-hook . lsp)))
    #+end_src
 
    #+begin_src emacs-lisp
      (use-package dap-mode
-       :after lsp-mode
-       :hook ((java-mode)
-              (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
+       :hook ((java-mode-hook . dap-mode)
+              (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
        :config
-       (dap-mode t)
-       (dap-ui-mode t))
+       (dap-mode 1)
+       (dap-ui-mode 1))
    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package dap-java :after lsp-java)
+   #+begin_src emacs-lisp :tangle no
+     (leaf dap-java
+       :package (dap-mode))
    #+end_src
 
 ** Javascript
@@ -1354,12 +1379,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
-   | transient-default-level        | (5)                                                                | Customized with use-package magit     |
-   | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory  | (~/Projects/)                                                      | Customized with use-package magit     |
-   | doom-modeline-icon             | (t)                                                                | Use all-the-icons                     |
-   | auto-revert-verbose            | (t)                                                                | Customized with use-package magit     |
-   | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
+   | mouse-wheel-scroll-amount      | ((quote (1 ((shift) . 5) ((control)))))                                   | nil                                   |
+   | magit-file-mode                | (t)                                                                       | Customized with use-package magit     |
+   | transient-default-level        | (5)                                                                       | Customized with use-package magit     |
+   | magit-repository-directories   | ((quote ((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1)))) | Customized with use-package magit     |
+   | magit-clone-default-directory  | (~/Projects/)                                                             | Customized with use-package magit     |
+   | doom-modeline-icon             | (t)                                                                       | Use all-the-icons                     |
+   | auto-revert-verbose            | (t)                                                                       | Customized with use-package magit     |
+   | yas-snippet-dirs               | ((quote (/Users/slumos/.config/emacs/snippets)))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter | ((quote magit-auto-revert-repository-buffers-p))                          | Customized with use-package magit     |
    :end:
