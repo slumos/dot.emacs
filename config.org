@@ -624,6 +624,16 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
+*** colorize ansi file
+    #+begin_src emacs-lisp
+      (defun slumos/ansi-colorize-dwim ()
+        "Colorize the region using ansi-color-apply-on-region"
+        (interactive "*")
+        (if (use-region-p)
+            (ansi-color-apply-on-region (region-beginning) (region-end))
+          (ansi-color-apply-on-region (point-min) (point-max))))
+    #+end_src
+
 *** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
