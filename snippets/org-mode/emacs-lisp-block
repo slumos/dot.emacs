@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: emacs-lisp-block
 # key: <el
-# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# expand-env: ((yas-indent-line 'auto))
 # --
 #+begin_src emacs-lisp
   $0

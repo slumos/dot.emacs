@@ -5,33 +5,27 @@
 
 (require 'cl)
 
-;; Bootstrap use-package
-;;; (Remove after Emacs 26?? Hopes.)
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")
-        ("elpy" . "https://jorgenschaefer.github.io/packages/")
-	("ox-odt" . "https://kjambunathan.github.io/elpa/")
-	;; spinner.el, required by paradox, is in ELPA
-	("gnu" . "https://elpa.gnu.org/packages/")))
-(setq package-archive-priorities
-      '(("org" . 100)
-        ("elpy" . 100)
-        ("melpa" . 50)
-	("gnu" . 10)))
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (locate-user-emacs-file "custom.el"))
 (setq custom-file *custom-file*)
 (when (file-exists-p *custom-file*)
   (load *custom-file*))
+
+;; Has to be done early in init process because package-initialize
+;; sets load-path, which is important so we get the right version
+;; of org-mode when calling org-babel-load-file below.
+(custom-set-variables
+ '(package-archives
+   '(("org"   .  "https://orgmode.org/elpa/")
+     ("melpa" .  "https://melpa.org/packages/")
+     ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
+     ("gnu"   .  "https://elpa.gnu.org/packages/")))
+ '(package-archive-priorities
+   '(("org"	.  100)
+     ("elpy"	.  100)
+     ("melpa" .  50)
+     ("gnu"	.  10))))
+(package-initialize)
 
 ;; Load rest of config from Org file
 (defconst *emacs-org-config-file* (locate-user-emacs-file "config.org"))

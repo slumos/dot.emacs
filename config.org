@@ -6,6 +6,7 @@
 #+TODO: TODO(t) TRYING(r) BROKEN(b) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
+#+PROPERTY: header-args    :results silent
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -38,27 +39,72 @@
      (setq inhibit-startup-screen t)
    #+END_SRC
 * Basics
-** =use-package=
-   John Wiegley is an Emacs badass. I am not even kidding.
-
-   #+BEGIN_SRC emacs-lisp
-     (require 'use-package)
-     (setq use-package-always-defer nil)
-     (setq use-package-always-ensure t)
-     (setq use-package-compute-statistics t)
-     (setq use-package-ignore-unknown-keywords t)
-     (setq use-package-minimum-reported-time 0)
-     (setq use-package-verbose t)
-   #+END_SRC
-
-   Adds the =:quelpa= keyword for extra laziness when installing sutff outside
-   of package archives.
+** Emacs Packages
    #+begin_src emacs-lisp
-     (use-package quelpa :demand t)
-     (use-package quelpa-use-package :demand t)
+     (custom-set-variables
+      '(package-archives
+        '(("org"   .  "https://orgmode.org/elpa/")
+          ("melpa" .  "https://melpa.org/packages/")
+          ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
+          ("gnu"   .  "https://elpa.gnu.org/packages/")))
+      '(package-archive-priorities
+        '(("org"	.  100)
+          ("elpy"	.  100)
+          ("melpa" .  50)
+          ("gnu"	.  10))))
+     (package-initialize)
    #+end_src
+*** =use-package=
+    John Wiegley is an Emacs badass. I am not even kidding.
 
-   #+RESULTS:
+    #+begin_src emacs-lisp
+      (unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+    #+end_src
+
+
+    #+BEGIN_SRC emacs-lisp
+      (setq use-package-always-defer nil)
+      (setq use-package-always-ensure t)
+      (setq use-package-compute-statistics t)
+      (setq use-package-ignore-unknown-keywords t)
+      (setq use-package-minimum-reported-time 0)
+      (setq use-package-verbose t)
+    #+END_SRC
+
+    Adds the =:quelpa= keyword for extra laziness when installing sutff outside
+    of package archives.
+    #+begin_src emacs-lisp
+      (use-package quelpa :demand t)
+      (use-package quelpa-use-package :demand t)
+    #+end_src
+*** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
+    #+begin_src emacs-lisp
+      (prog1 "prepare leaf"
+        (prog1 "leaf"
+          (unless (package-installed-p 'leaf)
+            (unless (assoc 'leaf package-archive-contents)
+              (package-refresh-contents))
+            (condition-case err
+                (package-install 'leaf)
+              (error
+               (package-refresh-contents)       ; renew local melpa cache if fail
+               (package-install 'leaf))))
+
+          (leaf leaf-keywords
+                :ensure t
+                :config (leaf-keywords-init))
+
+          (leaf leaf
+            :custom ((leaf-defaults . '(:ensure t)))))
+
+        (prog1 "optional packages for leaf-keywords"
+          ;; optional packages if you want to use :hydra, :el-get,,,
+          (leaf hydra :ensure t)
+          (leaf el-get :ensure t
+                :custom ((el-get-git-shallow-clone  . t)))))
+    #+end_src
 
 ** Religion
 *** Canon
@@ -68,9 +114,9 @@
     with that.
 
     #+BEGIN_SRC emacs-lisp
-      (setq
-       indent-tabs-mode nil
-       transient-mark-mode nil)
+      (custom-set-variables
+       '(indent-tabs-mode nil)
+       '(transient-mark-mode nil))
     #+END_SRC
 *** Buckeys
     #+BEGIN_SRC emacs-lisp
@@ -78,12 +124,12 @@
 	    mac-command-modifier  'meta ; That's right.
 	    mac-option-modifier   'super)
     #+END_SRC
-*** Noise. Make less. 
-    The advent of the tool bar—or was it fringe? ugh...—was great for me,
-    because it was offensive enough to bother learning how to turn it off.
-    Once I was in a turning off mode, I realized that the only thing I
-    actually used the scroll bar for is telling how far into a buffer I
-    was, and why should I even care about that?
+*** Noise. Make less.
+    The advent of the tool bar — or was it fringe? ugh... — was great
+    for me, because it was offensive enough to bother learning how to
+    turn it off.  Once I was in a turning off mode, I realized that
+    the only thing I actually used the scroll bar for is telling how
+    far into a buffer I was, and why should I even care about that?
 
     There's no point to turning off the menu bar in OSX. Yay for Lion
     Full Screen though!
@@ -135,30 +181,6 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "<C-backspace>") #'delete-indentation)
    #+end_src
-* Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
-** Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-				 ("steven.local" "personal.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
-
-   #+RESULTS:
-   : Loaded /Users/slumos/.emacs.d/personal.el
-
 * Preferences
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
@@ -427,9 +449,6 @@
        (set-face-attribute 'org-done nil :box nil))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package nord-theme)
-   #+END_SRC
 ** Code
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode t)
@@ -477,8 +496,8 @@
      #+BEGIN_SRC emacs-lisp
        (use-package xterm-color
 	 :init
-	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
-	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions)))
+	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
+	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
      #+END_SRC
 ** auto-revert
    Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
@@ -496,7 +515,14 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
-** hydra
+** AWSCLI Completion
+   #+begin_src emacs-lisp
+     (use-package awscli-capf
+       :commands (awscli-capf-add)
+       :hook (org-mode . awscli-capf-add))
+   #+end_src
+
+** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
    #+end_src
@@ -505,7 +531,14 @@
      (use-package use-package-hydra)
    #+end_src
 
-** aggressive-indent
+   #+begin_src emacs-lisp
+     (defun invoke-hydra ()
+       (interactive)
+       (counsel-M-x "hydra-.*/body "))
+     (global-set-key (kbd "C-c h") #'invoke-hydra)
+   #+end_src
+
+** COMMENT aggressive-indent
    #+begin_src emacs-lisp
      (use-package aggressive-indent
        :defer t
@@ -518,12 +551,16 @@
 
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
-     (setq executable-prefix-env t)
+     (custom-set-variables '(executable-prefix-env t))
    #+END_SRC
 ** Better packages ux
    #+BEGIN_SRC emacs-lisp
-     (use-package paradox
-       :config
+     (leaf paradox
+       :require t
+       :commands
+       list-packages
+       paradox-list-packages
+       :init
        (paradox-enable)
        (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
    #+END_SRC
@@ -588,6 +625,31 @@
    [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
    [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
 
+   #+begin_src emacs-lisp
+     (leaf multiple-cursors
+       :bind ("C-c m" . hydra-multiple-cursors/body)
+       :hydra (hydra-multiple-cursors
+	       (:hint nil)
+	       "
+		    ^Up^            ^Down^        ^Other^
+	       ----------------------------------------------
+	       [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+	       [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+	       [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+	       ^ ^             ^ ^             [_q_] Quit
+	       "
+	       ("l" mc/edit-lines :exit t)
+	       ("a" mc/mark-all-like-this :exit t)
+	       ("n" mc/mark-next-like-this)
+	       ("N" mc/skip-to-next-like-this)
+	       ("M-n" mc/unmark-next-like-this)
+	       ("p" mc/mark-previous-like-this)
+	       ("P" mc/skip-to-previous-like-this)
+	       ("M-p" mc/unmark-previous-like-this)
+	       ("r" mc/mark-all-in-region-regexp :exit t)
+	       ("q" nil)))
+   #+end_src
+
    #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
      (use-package multiple-cursors
        :after use-package-hydra
@@ -636,18 +698,9 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
        :config
-       (add-hook 'prog-mode-hook #'ws-butler-mode)
-       (add-hook 'yaml-mode-hook #'ws-butler-mode))
+       (ws-butler-global-mode t))
    #+END_SRC
 ** yasnippet
-   #+begin_src emacs-lisp
-     (use-package yasnippet
-       :commands (yas-minor-mode)
-       :hook (org-mode . yas-minor-mode)
-       :custom
-       (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
-   #+end_src
-
    https://github.com/abo-abo/auto-yasnippet
    #+begin_src emacs-lisp
      (use-package auto-yasnippet
@@ -657,6 +710,38 @@
        ("s-w" . aya-create)
        ("s-y" . aya-expand))
    #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (leaf yasnippet
+       :require t
+       :commands (yas-minor-mode)
+       :hook (org-mode . yas-minor-mode)
+       :custom
+       ((yas-snippet-dirs . (expand-file-name "snippets" user-emacs-directory)))
+       :hydra
+       (hydra-yasnippet (:color blue :hint nil)
+       "
+                   ^YASnippets^
+     --------------------------------------------
+       Modes:    Load/Visit:    Actions:
+
+      _g_lobal  _d_irectory    _i_nsert
+      _m_inor   _f_ile         _t_ryout
+      _e_xtra   _l_ist         _n_ew
+                _a_ll
+     "
+       ("d" yas-load-directory)
+       ("e" yas-activate-extra-mode)
+       ("i" yas-insert-snippet)
+       ("f" yas-visit-snippet-file :color blue)
+       ("n" yas-new-snippet)
+       ("t" yas-tryout-snippet)
+       ("l" yas-describe-tables)
+       ("g" yas/global-mode)
+       ("m" yas/minor-mode)
+       ("a" yas-reload-all)))
+   #+end_src
+
 ** Honor .editorconfig files
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig
@@ -670,7 +755,7 @@
        :init (ivy-mode 1)
        :bind
        (:map ivy-mode-map
-       ("C-s" . swiper)
+       ("C-s" . swiper-isearch)
        ("M-x" . counsel-M-x)
        ("C-x C-f" . counsel-find-file)
        ("<f1> f" . counsel-describe-function)
@@ -690,7 +775,7 @@
        (setq ivy-use-selectable-prompt t)
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
-       (setq ivy-re-builders-alist 
+       (setq ivy-re-builders-alist
 	     '((read-file-name-internal . ivy--regex-fuzzy)
 	       (t . ivy--regex-plus)))
        (setq magit-completing-read-function #'ivy-completing-read))
@@ -732,6 +817,7 @@
       (ivy-prescient-mode))
     #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
+*** TODO [[https://github.com/emacs-taskrunner/emacs-taskrunner/blob/master/taskrunner.el][emacs-taskrunner/taskrunner.el]]
 ** TRAMP
    #+BEGIN_QUOTE
    TRAMP stands for “Transparent Remote (file) Access, Multiple
@@ -745,6 +831,16 @@
     #+END_SRC
 ** Functions
    By me or collected from awesome people.
+*** colorize ansi file
+    #+begin_src emacs-lisp
+      (defun slumos/ansi-colorize-dwim ()
+        "Colorize the region using ansi-color-apply-on-region"
+        (interactive "*")
+        (if (use-region-p)
+            (ansi-color-apply-on-region (region-beginning) (region-end))
+          (ansi-color-apply-on-region (point-min) (point-max))))
+    #+end_src
+
 *** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
@@ -864,7 +960,86 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package indent-tools
        :bind ("C-c >" . indent-tools-hydra/body))
    #+END_SRC
-* Magit
+** [[https://github.com/politza/pdf-tools][PDF-Tools: Emacs support library for PDF files.]]
+   #+begin_src emacs-lisp
+     (leaf pdf-tools
+       :package t
+       :config
+       (pdf-tools-install)
+       :bind
+       'pdf-view-mode-map
+       ("\\" . hydra-pdf-tools/body)
+       ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+       ("g"  . pdf-view-first-page)
+       ("G"  . pdf-view-last-page)
+       ("l"  . image-forward-hscroll)
+       ("h"  . image-backward-hscroll)
+       ("j"  . pdf-view-next-page)
+       ("k"  . pdf-view-previous-page)
+       ("e"  . pdf-view-goto-page)
+       ("u"  . pdf-view-revert-buffer)
+       ("al" . pdf-annot-list-annotations)
+       ("ad" . pdf-annot-delete)
+       ("aa" . pdf-annot-attachment-dired)
+       ("am" . pdf-annot-add-markup-annotation)
+       ("at" . pdf-annot-add-text-annotation)
+       ("y"  . pdf-view-kill-ring-save)
+       ("i"  . pdf-misc-display-metadata)
+       ("s"  . pdf-occur)
+       ("b"  . pdf-view-set-slice-from-bounding-box)
+       ("r"  . pdf-view-reset-slice)
+       :hydra
+       (hydra-pdf-tools
+	(:color blue :hint nil)
+	"
+									   ╭───────────┐
+	    Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
+	╭──────────────────────────────────────────────────────────────────┴───────────╯
+	      ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
+	      ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
+	      ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
+	      ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
+	 _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
+	      ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
+	      ^^_n_^^      ^ ^  _r_eset slice box
+	      ^^^↓^^^
+	      ^^_G_^^
+	--------------------------------------------------------------------------------
+	     "
+	("\\" hydra-master/body "back")
+	("<ESC>" nil "quit")
+	("al" pdf-annot-list-annotations)
+	("ad" pdf-annot-delete)
+	("aa" pdf-annot-attachment-dired)
+	("am" pdf-annot-add-markup-annotation)
+	("at" pdf-annot-add-text-annotation)
+	("y"  pdf-view-kill-ring-save)
+	("+" pdf-view-enlarge :color red)
+	("-" pdf-view-shrink :color red)
+	("0" pdf-view-scale-reset)
+	("H" pdf-view-fit-height-to-window)
+	("W" pdf-view-fit-width-to-window)
+	("P" pdf-view-fit-page-to-window)
+	("n" pdf-view-next-page-command :color red)
+	("p" pdf-view-previous-page-command :color red)
+	("d" pdf-view-dark-minor-mode)
+	("b" pdf-view-set-slice-from-bounding-box)
+	("r" pdf-view-reset-slice)
+	("g" pdf-view-first-page)
+	("G" pdf-view-last-page)
+	("e" pdf-view-goto-page)
+	("o" pdf-outline)
+	("s" pdf-occur)
+	("i" pdf-misc-display-metadata)
+	("u" pdf-view-revert-buffer)
+	("F" pdf-links-action-perfom)
+	("f" pdf-links-isearch-link)
+	("B" pdf-history-backward :color red)
+	("N" pdf-history-forward :color red)
+	("l" image-forward-hscroll :color red)
+	("h" image-backward-hscroll :color red)))
+   #+end_src
+* [#B] Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
   Magit—like Org—is a total killer app and probably one of the reasons
@@ -876,20 +1051,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind 
+      :bind
       ("\C-x g" . magit-status)
       :custom
       (magit-file-mode t)
+      (magit-clone-default-directory "~/Projects/")
+      (magit-repository-directories
+       '(("~/Projects" . 1)
+         ("~/Projects/iac" . 1)
+         ("~/Projects/puppet" . 1)))
+      (transient-default-level 5)
       (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
       (auto-revert-verbose t))
   #+END_SRC
-* Org [0/7]                                                             :org:
+
+* Org [0/5]                                                             :org:
 ** Initialization
-   #+BEGIN_SRC emacs-lisp :noweb yes
+   #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
      (use-package org
-       :ensure org-plus-contrib
        :commands (org-agenda org-capture org-store-link)
-       :bind 
+       :bind
        <<org-binds>>
        :config
        <<org-config>>
@@ -897,6 +1078,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        <<org-custom>>
        )
    #+END_SRC
+
 ** Binds
    :PROPERTIES:
    :header-args: :noweb-ref org-binds :tangle no
@@ -1017,6 +1199,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (add-hook 'before-save-hook 'time-stamp)
    #+END_SRC
+** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
 ** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
@@ -1041,7 +1224,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 ** Exporting
    #+BEGIN_SRC emacs-lisp
-   (require 'ox-confluence)
+   ;(use-package ox-confluence :after org)
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
@@ -1148,13 +1331,42 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      ;;   :config
      ;;   (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
    #+END_SRC
+*** COMMENT My crazy numbered paragraphs idea
+    #+begin_src emacs-lisp
+      (defun numbered-paragraphs-headline (headline contents info)
+        "Transcode HEADLINE as a plain numbered paragraph. CONTENTS is
+      headline contents. INFO is plist used as a communication
+      channel."
+        (let* ((level (org-export-get-relative-level headline info))
+               (num (org-export-get-headline-number)))
+          (concat headline contents)))
+    #+end_src
+
+** Additions
+*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+    #+begin_src emacs-lisp
+      (use-package orgit)
+    #+end_src
+
 ** My Personal Hacks
-   Add the properties I like when executing aws cli commands.
-   #+BEGIN_SRC emacs-lisp
-     (defun slumos/org-add-aws-sh-properties ()
-       (interactive)
-       (org-set-property "header-args" ":exports both :eval no-export :wrap SRC json :results raw"))
-   #+END_SRC
+*** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
+    #+BEGIN_SRC emacs-lisp
+      (defun slumos/org-add-aws-sh-properties ()
+        (interactive)
+        (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
+    #+END_SRC
+*** Post-process grabbed links
+
+    Strip content-free stuff that gets tacked onto the title of every page.
+
+    #+begin_src emacs-lisp
+      (defun slumos/org-grab-link-after (s)
+        (replace-regexp-in-string " | Salesforce$" "" s))
+
+      (advice-add #'org-as-mac-chrome-get-frontmost-url :filter-return #'slumos/org-grab-link-after)
+      (org-as-mac-chrome-get-frontmost-url)
+    #+end_src
+
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
 ** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
    #+BEGIN_SRC emacs-lisp
@@ -1194,8 +1406,21 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :ensure polymode)
   #+END_SRC
 * Language Modes
+** Dash
+   #+begin_src emacs-lisp
+     (use-package counsel-dash
+       :hook (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
+   #+end_src
+
 ** Dockerfile
    (use-package dockerfile-mode)
+** [[https://fennel-lang.org/][Fennel]]
+   Seeing if I can configure Hammerspoon with Fennel
+   #+begin_src emacs-lisp
+     (use-package fennel-mode
+       :mode "\\.fnl\\'")
+   #+end_src
+
 ** flycheck
    #+BEGIN_SRC emacs-lisp
      ;; (use-package flycheck-mode
@@ -1216,6 +1441,62 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package groovy-mode
        :mode "\\.groovy\\'")
    #+END_SRC
+** Java
+   #+begin_src emacs-lisp
+     (exec-path-from-shell-copy-env "JAVA_HOME")
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf company
+       :after java-mode
+       :hook java-mode-hook
+       :custom
+       ((company-backends . '(company-lsp))))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-mode
+       :commands lsp
+       :init (require 'lsp-clients))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf company-lsp
+       :commands company-lsp
+       :config
+       (add-to-list 'company-backends 'company-lsp))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-ui
+       :hook (lsp-mode-hook . lsp-ui-mode)
+       :custom
+       ((lsp-auto-guess-root . t)
+        (lsp-enable-completion-at-point . t)
+        (lsp-log-io . t)
+        (lsp-log-max . 2000)
+        (lsp-ui-doc-enable . t)))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package lsp-java
+       :hook ((java-mode-hook . lsp)))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package dap-mode
+       :hook ((java-mode-hook . dap-mode)
+              (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
+       :config
+       (dap-mode 1)
+       (dap-ui-mode 1))
+   #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (leaf dap-java
+       :package (dap-mode))
+   #+end_src
+
 ** Javascript
    #+BEGIN_SRC emacs-lisp
      (use-package js2-mode :mode "\\.js\'")
@@ -1281,18 +1562,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :interpreter ("python" . python-mode))
    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package jedi)
-   #+END_SRC
+   #+begin_src emacs-lisp
+     (use-package elpy)
+   #+end_src
 
    IPython / Jupyter Notebook client
 
    #+BEGIN_SRC emacs-lisp
      (use-package ein
+       :commands (ein:notebooklist-login
+                  ein:notebooklist-open)
        :config
-       (setq ein:completion-backend 'ein:use-ac-jedi-backend)
        (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
    #+END_SRC
+
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
@@ -1358,10 +1641,21 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 		    (modes  . '(ruby-mode))))
    #+END_SRC
 
+** Rust
+   #+begin_src emacs-lisp
+   (use-package rustic)
+   #+end_src
+
+   #+begin_src emacs-lisp
+   (use-package flycheck-rust)
+   #+end_src
+
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode
-       :hook (terraform-mode . terraform-format-on-save-mode))
+       :hook 
+       (terraform-mode . terraform-format-on-save-mode)
+       (terraform-mode . flycheck-mode))
    #+END_SRC
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
@@ -1414,6 +1708,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        (if (file-exists-p local-config)
 	   (org-babel-load-file local-config)))
    #+END_SRC
+
+* Context-specific
+  Yuck, barf, and bleh. Someone show me a better way!
+** Localhost
+   I just have a =localhost-[hostname]= repo for each host that's important to me.
+   #+BEGIN_SRC emacs-lisp
+     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
+     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
+     (when (file-exists-p *user-localhost-config-file*)
+       (load *user-localhost-config-file*))
+   #+END_SRC
+** Work/Life Balance?
+   #+BEGIN_SRC emacs-lisp
+     (let* ((local-config-name (pcase (system-name)
+				 ("steven.lan" "personal.org")
+				 ("slumos-ltm.internal.salesforce.com" "work.org")))
+	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (if (file-exists-p local-config)
+	   (org-babel-load-file local-config)))
+   #+END_SRC
 * Notes
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
@@ -1424,3 +1738,25 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 989.75 - 10%
 monthly increases
 130 local
+** Getting customized vars to copy to use-package blocks
+   #+begin_src emacs-lisp :results value table drawer replace :tangle no
+     (let ((found nil))
+           (mapatoms (lambda (sym)
+                       (let ((val (get sym 'customized-value))
+                             (comment (get sym 'customized-variable-comment)))
+                         (if (car val) (push (list sym val comment) found)))))
+           found)
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   | mouse-wheel-scroll-amount      | ((quote (1 ((shift) . 5) ((control)))))                                   | nil                                   |
+   | magit-file-mode                | (t)                                                                       | Customized with use-package magit     |
+   | transient-default-level        | (5)                                                                       | Customized with use-package magit     |
+   | magit-repository-directories   | ((quote ((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1)))) | Customized with use-package magit     |
+   | magit-clone-default-directory  | (~/Projects/)                                                             | Customized with use-package magit     |
+   | doom-modeline-icon             | (t)                                                                       | Use all-the-icons                     |
+   | auto-revert-verbose            | (t)                                                                       | Customized with use-package magit     |
+   | yas-snippet-dirs               | ((quote (/Users/slumos/.config/emacs/snippets)))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter | ((quote magit-auto-revert-repository-buffers-p))                          | Customized with use-package magit     |
+   :end:

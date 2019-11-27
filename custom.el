@@ -5,15 +5,15 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#282828" "#FAB1AB" "#D1FA71" "#FFA600" "#7b68ee" "#dc8cc3" "#96D9F1" "#F7F7F7"])
  '(ansi-term-color-vector
    [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
  '(auth-source-cache-expiry 86400)
+ '(auth-source-debug (quote trivia))
  '(auth-source-save-behavior (quote ask))
  '(auth-sources (quote (macos-keychain-internet)))
  '(auto-revert-buffer-list-filter (quote magit-auto-revert-repository-buffers-p))
  '(auto-revert-verbose t)
+ '(beacon-color "#cc6666")
  '(circe-default-directory "~/local/circe")
  '(circe-default-ip-family (quote ipv4))
  '(circe-default-part-message "")
@@ -29,11 +29,23 @@
  '(compilation-scroll-output t)
  '(custom-safe-themes
    (quote
-    ("406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
+    ("b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
  '(display-time-24hr-format t)
- '(doom-modeline-icon t t)
+ '(doom-modeline-icon t)
  '(ein:jupyter-default-server-command "jupyter")
- '(fci-rule-color "#151515" t)
+ '(el-get-git-shallow-clone t)
+ '(executable-prefix-env t)
+ '(face-font-family-alternatives
+   (quote
+    (("Monospace" "PragmataPro" "courier" "fixed")
+     ("Monospace Serif" "PragmataPro" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+     ("courier" "CMU Typewriter Text" "fixed")
+     ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
+     ("helv" "helvetica" "arial" "fixed"))))
+ '(fci-rule-color "#292617")
+ '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
+ '(frame-background-mode (quote dark))
+ '(global-flycheck-mode t)
  '(highlight-changes-colors (quote ("#EF5350" "#7E57C2")))
  '(highlight-tail-colors
    (quote
@@ -45,18 +57,59 @@
      ("#B44322" . 70)
      ("#8C46BC" . 85)
      ("#010F1D" . 100))))
+ '(hl-paren-colors
+   (quote
+    ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
  '(hl-sexp-background-color "#060404")
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#3a81c3")
+     ("OKAY" . "#3a81c3")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#42ae2c")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
+ '(indent-tabs-mode nil)
+ '(ivy-rich-mode t)
+ '(ivy-rich-parse-remote-buffer nil)
+ '(ivy-rich-switch-buffer-project-max-length 32)
  '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
  '(js-indent-level 2)
- '(line-number-mode nil)
+ '(leaf-defaults (quote (:ensure t)))
+ '(line-number-mode t)
  '(line-spacing 0.2)
+ '(lsp-auto-guess-root t)
+ '(lsp-enable-completion-at-point t)
+ '(lsp-log-io t)
+ '(lsp-log-max 2000)
+ '(lsp-ui-doc-enable t t)
  '(lua-indent-level 2)
+ '(magit-clone-always-transient nil)
+ '(magit-clone-default-directory "~/Projects/")
+ '(magit-clone-set-remote-head nil)
  '(magit-commit-arguments (quote ("--gpg-sign=F59B171B695B4C66")))
  '(magit-diff-use-overlays nil)
  '(magit-file-mode t t)
+ '(magit-repository-directories
+   (quote
+    (("~/Projects" . 1)
+     ("~/Projects/java" . 1)
+     ("~/Projects/puppet" . 1)
+     ("~/Projects/sfdc-slumos" . 1)
+     ("~/Projects/tf" . 1))))
  '(magit-wip-mode t)
+ '(objed-cursor-color "#99324B")
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
@@ -76,12 +129,16 @@
  '(paradox-github-token t)
  '(pos-tip-background-color "#F1EBDD")
  '(pos-tip-foreground-color "#011627")
+ '(server-mode t)
+ '(server-use-tcp nil)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
  '(tramp-syntax (quote default) nil (tramp))
  '(vc-follow-symlinks t)
  '(writeroom-width 100))
+ '(transient-default-level 5)
+ '(transient-mark-mode nil)
  '(vc-annotate-background "#3B4252")
  '(vc-annotate-color-map
    (list
