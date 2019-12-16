@@ -819,6 +819,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind
       ("\C-x g" . magit-status)
       :custom
+      (forge-topic-list-limit '(60 . 0))
       (magit-file-mode t)
       (magit-clone-default-directory "~/Projects/")
       (magit-repository-directories
@@ -1046,14 +1047,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :config
       (org-babel-do-load-languages
        'org-babel-load-languages
-       '((restclient . t))))
-  #+END_SRC
-* BROKEN COMMENT Polymode
-  The main thing I want to use this for is Org, but it breaks folding and I haven't had time to figure out wtf.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package poly-org
-      :ensure polymode)
+       '((restclient . t)
+         (python . t))))
   #+END_SRC
 * Language Modes
 ** Dash
@@ -1362,13 +1357,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | mouse-wheel-scroll-amount      | ((quote (1 ((shift) . 5) ((control)))))                                   | nil                                   |
-   | magit-file-mode                | (t)                                                                       | Customized with use-package magit     |
-   | transient-default-level        | (5)                                                                       | Customized with use-package magit     |
-   | magit-repository-directories   | ((quote ((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1)))) | Customized with use-package magit     |
-   | magit-clone-default-directory  | (~/Projects/)                                                             | Customized with use-package magit     |
-   | doom-modeline-icon             | (t)                                                                       | Use all-the-icons                     |
-   | auto-revert-verbose            | (t)                                                                       | Customized with use-package magit     |
-   | yas-snippet-dirs               | ((quote (/Users/slumos/.config/emacs/snippets)))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter | ((quote magit-auto-revert-repository-buffers-p))                          | Customized with use-package magit     |
+   | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
+   | transient-default-level        | (5)                                                                | Customized with use-package magit     |
+   | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
+   | magit-clone-default-directory  | (~/Projects/)                                                      | Customized with use-package magit     |
+   | doom-modeline-icon             | (t)                                                                | Use all-the-icons                     |
+   | auto-revert-verbose            | (t)                                                                | Customized with use-package magit     |
+   | forge-topic-list-limit         | ('(60 . 0))                                                        | Customized with use-package magit     |
+   | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:
