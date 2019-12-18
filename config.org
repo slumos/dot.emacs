@@ -705,11 +705,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** [[https://github.com/storvik/emacs-lastpass][storvik/emacs-lastpass: Emacs LastPass command wrapper.]]
    #+BEGIN_SRC emacs-lisp
-   (use-package lastpass
-     :config
-     (setq lastpass-user user-mail-address)
-     (setq lastpass-multifactor-use-passcode nil)
-     (lastpass-auth-source-enable))
+        (use-package lastpass
+          :config
+          (setq lastpass-user user-mail-address)
+          (setq lastpass-multifactor-use-passcode nil)
+          (lastpass-auth-source-enable)
+          :hook
+          (lastpass-logged-in-hook . #'lastpass-auth-source-enable))
+
    #+END_SRC
 ** Edit the web with +Atom+ Emacs
    #+BEGIN_SRC emacs-lisp
