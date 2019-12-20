@@ -315,6 +315,18 @@
        :commands (awscli-capf-add)
        :hook (org-mode . awscli-capf-add))
    #+end_src
+** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
+   Need to look deeper, but I think it only takes you to the file
+   level? I use few large org files rather than many small ones so not
+   sure this helps me.
+   #+begin_src emacs-lisp
+     (leaf deft
+       :commands (deft)
+       :setq
+       (deft-directory . "~/Google Drive/Notes")
+       (deft-recursive . t))
+   #+end_src
+
 
 ** Hydra
    #+begin_src emacs-lisp
@@ -1001,7 +1013,21 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+begin_src emacs-lisp
       (use-package orgit)
     #+end_src
+*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
+    #+begin_src emacs-lisp
+      (leaf ivy-omni-org
+        :after counsel
+        :commands (ivy-omni-org)
+        :bind ("C-c b" . ivy-omni-org)
+        :custom
+        (ivy-omni-org-file-sources . (slumos/ivy-omni-org-sources)))
 
+      (defun slumos/ivy-omni-org-sources ()
+        (-uniq (-concat
+                (directory-files org-directory t "\\.org\\'")
+                (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
+                (directory-files user-emacs-directory "\\.org\\'"))))
+    #+end_src
 ** My Personal Hacks
 *** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
@@ -1067,7 +1093,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+begin_src emacs-lisp
      (use-package fennel-mode
        :mode "\\.fnl\\'"
-       :hook (fennel-mode . lispy-mode))
+       :hook
+       (fennel-mode . lispy-mode)
+       (emacs-lisp-mode . lispy-mode))
    #+end_src
 
 ** flycheck
