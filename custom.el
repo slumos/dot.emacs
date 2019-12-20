@@ -5,6 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(ansi-term-color-vector
    [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
  '(auth-source-cache-expiry 86400)
@@ -42,6 +44,7 @@
      ("helv" "helvetica" "arial" "fixed")))
  '(fci-rule-color "#292617")
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
+ '(forge-topic-list-limit '(60 . 0) t)
  '(frame-background-mode 'dark)
  '(global-flycheck-mode t)
  '(highlight-changes-colors '("#EF5350" "#7E57C2"))
@@ -73,6 +76,7 @@
      ("XXX+" . "#dc752f")
      ("\\?\\?\\?+" . "#dc752f")))
  '(indent-tabs-mode nil)
+ '(ivy-omni-org-file-sources nil t)
  '(ivy-rich-mode t)
  '(ivy-rich-parse-remote-buffer nil)
  '(ivy-rich-switch-buffer-project-max-length 32)
@@ -118,7 +122,7 @@
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf lispy apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme dap-mode ws-butler-mode fennel-mode mvn aws-snippets vterm lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown poly-org eglot flymake-jslint flymake-json lsp-java lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline nord-theme exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
+   '(org-ql feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf lispy apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme dap-mode ws-butler-mode fennel-mode mvn aws-snippets vterm lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown poly-org eglot flymake-jslint flymake-json lsp-java lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme parchment-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline nord-theme exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#F1EBDD")
@@ -129,6 +133,7 @@
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(sh-learn-basic-offset 'usually)
+ '(slumos/ivy-omni-org-sources nil t)
  '(tramp-syntax 'default nil (tramp))
  '(transient-default-level 5)
  '(transient-mark-mode nil)

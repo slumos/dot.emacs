@@ -89,12 +89,12 @@
             (condition-case err
                 (package-install 'leaf)
               (error
-               (package-refresh-contents)       ; renew local melpa cache if fail
+               (package-refresh-contents)  ; renew local melpa cache if fail
                (package-install 'leaf))))
 
           (leaf leaf-keywords
-                :ensure t
-                :config (leaf-keywords-init))
+            :ensure t
+            :config (leaf-keywords-init))
 
           (leaf leaf
             :custom ((leaf-defaults . '(:ensure t)))))
@@ -103,7 +103,12 @@
           ;; optional packages if you want to use :hydra, :el-get,,,
           (leaf hydra :ensure t)
           (leaf el-get :ensure t
-                :custom ((el-get-git-shallow-clone  . t)))))
+            :custom ((el-get-git-shallow-clone  . t))))
+
+        (prog1 "install feather from git"
+          (leaf feather
+            :el-get
+            ("conao3/feather.el" :type github))))
     #+end_src
 
 ** Religion
@@ -1028,6 +1033,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                 (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
                 (directory-files user-emacs-directory "\\.org\\'"))))
     #+end_src
+*** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
+    #+begin_src emacs-lisp
+      (leaf org-ql
+        :el-get
+        ("alphapapa/org-ql" :type github)
+        :custom
+        (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
+    #+end_src
+
 ** My Personal Hacks
 *** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
@@ -1388,13 +1402,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | magit-file-mode                | (t)                                                                | Customized with use-package magit     |
-   | transient-default-level        | (5)                                                                | Customized with use-package magit     |
-   | magit-repository-directories   | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory  | (~/Projects/)                                                      | Customized with use-package magit     |
-   | doom-modeline-icon             | (t)                                                                | Use all-the-icons                     |
-   | auto-revert-verbose            | (t)                                                                | Customized with use-package magit     |
-   | forge-topic-list-limit         | ('(60 . 0))                                                        | Customized with use-package magit     |
-   | yas-snippet-dirs               | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
+   | magit-file-mode                        | (t)                                                                | Customized with use-package magit     |
+   | transient-default-level                | (5)                                                                | Customized with use-package magit     |
+   | magit-repository-directories           | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
+   | magit-clone-default-directory          | (~/Projects/)                                                      | Customized with use-package magit     |
+   | doom-modeline-icon                     | (t)                                                                | Use all-the-icons                     |
+   | auto-revert-verbose                    | (t)                                                                | Customized with use-package magit     |
+   | forge-topic-list-limit                 | ('(60 . 0))                                                        | Customized with use-package magit     |
+   | org-ql-search-directories-files-regexp | (\\.org\\(_done\\)?\\')                                             | nil                                   |
+   | yas-snippet-dirs                       | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter         | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:
