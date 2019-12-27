@@ -31,7 +31,7 @@
    (quote
     ("b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default)))
  '(display-time-24hr-format t)
- '(doom-modeline-icon t)
+ '(doom-modeline-icon t t)
  '(ein:jupyter-default-server-command "jupyter")
  '(el-get-git-shallow-clone t)
  '(executable-prefix-env t)
@@ -104,27 +104,40 @@
  '(magit-repository-directories
    (quote
     (("~/Projects" . 1)
-     ("~/Projects/java" . 1)
-     ("~/Projects/puppet" . 1)
-     ("~/Projects/sfdc-slumos" . 1)
-     ("~/Projects/tf" . 1))))
+     ("~/Projects/iac" . 1)
+     ("~/Projects/puppet" . 1))))
  '(magit-wip-mode t)
  '(objed-cursor-color "#99324B")
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
- '(org-ellipsis " ⤵")
+ '(org-ellipsis " ⬎")
  '(org-file-apps
    (quote
     ((auto-mode . emacs)
      ("\\.mm\\'" . default)
      ("\\.x?html?\\'" . default)
      ("\\.pdf\\'" . emacs))))
+ '(org-noter-always-create-frame nil)
  '(org-outline-path-complete-in-steps nil)
  '(org-yank-adjusted-subtrees t)
+ '(package-archive-priorities
+   (quote
+    (("org" . 100)
+     ("elpy" . 100)
+     ("melpa" . 50)
+     ("gnu" . 10))))
+ '(package-archives
+   (quote
+    (("org" . "https://orgmode.org/elpa/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("elpy" . "https://jorgenschaefer.github.io/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/"))))
  '(package-selected-packages
    (quote
-    (fennel-mode almost-mono-themes with-emacs jq-mode gruvbox-theme suscolors-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump org-jira frog-menu use-package-hydra hydra-use-package pipenv eglot spray nose aggressive-indent quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline nord-theme exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+    (flycheck-rust rustic dap-mode lsp-java counsel-dash lispy lsp-ui company-lsp lsp-mode fennel-mode almost-mono-themes with-emacs jq-mode gruvbox-theme suscolors-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump org-jira frog-menu use-package-hydra hydra-use-package pipenv eglot spray nose quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
+ '(paperless-capture-directory "~/Sync/OneDrive/Inbox")
+ '(paperless-root-directory "~/Sync/OneDrive/Documents")
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#F1EBDD")
@@ -135,6 +148,8 @@
  '(sh-indentation 2)
  '(sh-learn-basic-offset (quote usually))
  '(tramp-syntax (quote default) nil (tramp))
+ '(transient-default-level 5)
+ '(transient-mark-mode nil)
  '(vc-follow-symlinks t)
  '(writeroom-width 100))
  '(transient-default-level 5)
