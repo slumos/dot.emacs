@@ -6,7 +6,7 @@
 *** `daily-oncall-checklist-scheduled-time`
 **** TODO [0/5] [date] daily triage
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=group_status%3A(warn%20OR%20alert)%20triggered%3A1440][DataDog]] monitors
+***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=muted%3Afalse%20group_status%3A(alert%20OR%20warn)%20triggered%3A1440][DataDog Monitors]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Fix any low-hanging fruit. See [[https://confluence.internal.salesforce.com/display/EN/Common+Triage+Issues][Common Triage Issues]] for examples.
 ****** For known issues, write a comment on the event linking to the appropriate Work Item. Raise awareness if necessary.
