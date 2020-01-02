@@ -974,7 +974,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                      ;; (org-agenda-redo)
                      )))
              (call-interactively #'org-agenda-list))))
-       (run-with-idle-timer 900 t #'jump-to-org-agenda)
+;       (run-with-idle-timer 900 t #'jump-to-org-agenda)
    #+END_SRC
 
    No love for zsh??
@@ -1012,6 +1012,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                (num (org-export-get-headline-number)))
           (concat headline contents)))
     #+end_src
+** Agenda
+
+   #+begin_src emacs-lisp
+     (setq org-agenda-custom-commands
+           '(("ca" "Daily Agenda View"
+              ((org-ql-block '(and (path "DMP")
+                                   (todo "BLOCKED" "START" "WORK"))
+                             ((org-ql-block-header "Progress")))
+               (org-ql-block '(and (path "DMP") (planning :from -1 :to 7))
+                             ((org-ql-block-headher "Plan")))
+               (agenda)))))
+   #+end_src
 
 ** Additions
 *** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
