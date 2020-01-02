@@ -63,15 +63,15 @@
 	(package-install 'use-package))
     #+end_src
 
-
-    #+BEGIN_SRC emacs-lisp
+    #+begin_src emacs-lisp
+      (require 'use-package)
       (setq use-package-always-defer nil)
       (setq use-package-always-ensure t)
       (setq use-package-compute-statistics t)
       (setq use-package-ignore-unknown-keywords t)
       (setq use-package-minimum-reported-time 0)
       (setq use-package-verbose t)
-    #+END_SRC
+    #+end_src
 
     Adds the =:quelpa= keyword for extra laziness when installing sutff outside
     of package archives.
@@ -194,6 +194,19 @@
    (prefer-coding-system 'utf-8)
    #+END_SRC
 ** Fonts
+*** PragmataPro
+    #+BEGIN_SRC emacs-lisp
+      (set-frame-font "PragmataPro Liga-16")
+    #+END_SRC
+
+    #+begin_src emacs-lisp
+      (if (fboundp 'mac-auto-operator-composition-mode)
+	  (mac-auto-operator-composition-mode 1))
+    #+end_src
+
+    ligature test [ERROR] --> ==> => <= >=
+*** prettify-symbols setup
+    Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-prettify-symbols-v0.827.el
     #+begin_src emacs-lisp
       (custom-set-variables
        '(face-font-family-alternatives
@@ -204,10 +217,6 @@
 	   ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
 	   ("helv" "helvetica" "arial" "fixed")))))
     #+end_src
-*** PragmataPro
-    #+BEGIN_SRC emacs-lisp
-      (set-frame-font "PragmataPro-14")
-    #+END_SRC
 *** Emoji 😂
     #+begin_src emacs-lisp
       (if (version< "27.0" emacs-version)
@@ -258,7 +267,7 @@
      #+begin_src emacs-lisp
        (use-package doom-modeline
 	 :hook
-	 (after-init . doom-modeline-init)
+	 (after-init . doom-modeline-mode)
 	 :custom
 	 (doom-modeline-icon t "Use all-the-icons"))
        #+end_src
@@ -314,7 +323,7 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
-** AWSCLI Completion
+** COMMENT AWSCLI Completion
    #+begin_src emacs-lisp
      (use-package awscli-capf
        :commands (awscli-capf-add)
@@ -824,6 +833,48 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 	("l" image-forward-hscroll :color red)
 	("h" image-backward-hscroll :color red)))
    #+end_src
+** smerge hydra from [[https://github.com/alphapapa/unpackaged.el#smerge-mode][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
+   #+begin_src emacs-lisp
+     (use-package smerge-mode
+       :after hydra
+       :config
+       (defhydra unpackaged/smerge-hydra
+         (:color pink :hint nil :post (smerge-auto-leave))
+         "
+     ^Move^       ^Keep^               ^Diff^                 ^Other^
+     ^^-----------^^-------------------^^---------------------^^-------
+     _n_ext       _b_ase               _<_: upper/base        _C_ombine
+     _p_rev       _u_pper              _=_: upper/lower       _r_esolve
+     ^^           _l_ower              _>_: base/lower        _k_ill current
+     ^^           _a_ll                _R_efine
+     ^^           _RET_: current       _E_diff
+     "
+         ("n" smerge-next)
+         ("p" smerge-prev)
+         ("b" smerge-keep-base)
+         ("u" smerge-keep-upper)
+         ("l" smerge-keep-lower)
+         ("a" smerge-keep-all)
+         ("RET" smerge-keep-current)
+         ("\C-m" smerge-keep-current)
+         ("<" smerge-diff-base-upper)
+         ("=" smerge-diff-upper-lower)
+         (">" smerge-diff-base-lower)
+         ("R" smerge-refine)
+         ("E" smerge-ediff)
+         ("C" smerge-combine-with-next)
+         ("r" smerge-resolve)
+         ("k" smerge-kill-current)
+         ("ZZ" (lambda ()
+                 (interactive)
+                 (save-buffer)
+                 (bury-buffer))
+          "Save and bury buffer" :color blue)
+         ("q" nil "cancel" :color blue))
+       :hook (magit-diff-visit-file . (lambda ()
+                                        (when smerge-mode
+                                          (unpackaged/smerge-hydra/body)))))
+   #+end_src
 * [#B] Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -847,7 +898,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
          ("~/Projects/iac" . 1)
          ("~/Projects/puppet" . 1)))
       (transient-default-level 5)
-      (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
+      ;(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
       (auto-revert-verbose t))
   #+END_SRC
 
@@ -1106,6 +1157,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
          (python . t))))
   #+END_SRC
 * Language Modes
+** Misc
+*** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
+    #+begin_src emacs-lisp
+    (leaf lispy
+       :hook
+       ((emacs-lisp-mode-hook
+       fennel-mode-hook) . lispy-mode))
+    #+end_src
 ** Dash
    #+begin_src emacs-lisp
      (use-package counsel-dash
