@@ -103,12 +103,7 @@
           ;; optional packages if you want to use :hydra, :el-get,,,
           (leaf hydra :ensure t)
           (leaf el-get :ensure t
-            :custom ((el-get-git-shallow-clone  . t))))
-
-        (prog1 "install feather from git"
-          (leaf feather
-            :el-get
-            ("conao3/feather.el" :type github))))
+            :custom ((el-get-git-shallow-clone  . t)))))
     #+end_src
 
 ** Religion
@@ -454,6 +449,10 @@
        (set-face-attribute 'org-done nil :box nil))
    #+END_SRC
 
+   #+begin_src emacs-lisp
+     (use-package gruvbox-theme)
+   #+end_src
+
 ** Code
    #+BEGIN_SRC emacs-lisp
    (show-paren-mode t)
@@ -519,6 +518,11 @@
    #+BEGIN_SRC emacs-lisp
      (setq vc-follow-symlinks t)
    #+END_SRC
+
+   #+begin_src emacs-lisp
+   (custom-set-variables '(frame-resize-pixelwise t))
+   #+end_src
+
 * Helpers
 ** COMMENT AWSCLI Completion
    #+begin_src emacs-lisp
@@ -1417,7 +1421,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
     Strip content-free stuff that gets tacked onto the title of every page.
 
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp :tangle no
       (defun slumos/org-grab-link-after (s)
         (replace-regexp-in-string " | Salesforce$" "" s))
 

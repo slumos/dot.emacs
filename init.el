@@ -30,6 +30,6 @@
 ;; Load rest of config from Org file
 (defconst *emacs-org-config-file* (locate-user-emacs-file "config.org"))
 (when (file-exists-p *emacs-org-config-file*)
-  (org-babel-load-file *emacs-org-config-file* t))
+  (org-babel-load-file *emacs-org-config-file*))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
