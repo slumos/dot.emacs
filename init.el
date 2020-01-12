@@ -3,7 +3,7 @@
 ;; 2014-04-05 first
 ;; 2017-05-01 do over
 
-(require 'cl)
+(require 'cl-lib)
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (locate-user-emacs-file "custom.el"))

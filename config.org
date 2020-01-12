@@ -1196,11 +1196,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
    Update: Org 9.2 killed it ... T-T
-   #+BEGIN_SRC emacs-lisp
-     ;; Can't figure out how to make noweb expansion skip a single block...
-     ;; (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-     ;; (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
-   #+END_SRC
+
+   Decided to switch to yas-mode, and it's come in handy in hand for
+   many other things. One favorite use is to make repeatable
+   checklists in org. Unfortunately, those are hidden away in my
+   work-specific config.
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook (lambda ()
+                                (yas-minor-mode 1)
+                                (yas-reload-all)))
+   #+end_src
+
+   #+RESULTS:
+   | (lambda nil (yas-minor-mode 1) (yas-reload-all)) | org-bullets-mode | (lambda nil (magit-wip-after-save-mode t) (magit-wip-after-apply-mode t) (magit-wip-before-change-mode t)) | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load |
 
    Pops up the agenda when emacs is idle. Remind me what I should be
    doing instead of whatever I am doing.
