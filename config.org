@@ -103,12 +103,7 @@
           ;; optional packages if you want to use :hydra, :el-get,,,
           (leaf hydra :ensure t)
           (leaf el-get :ensure t
-            :custom ((el-get-git-shallow-clone  . t))))
-
-        (prog1 "install feather from git"
-          (leaf feather
-            :el-get
-            ("conao3/feather.el" :type github))))
+            :custom ((el-get-git-shallow-clone  . t)))))
     #+end_src
 
 ** Religion
@@ -211,8 +206,8 @@
       (custom-set-variables
        '(face-font-family-alternatives
 	 (quote
-	  (("Monospace" "PragmataPro" "courier" "fixed")
-	   ("Monospace Serif" "PragmataPro" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+	  (("Monospace" "PragmataPro Liga" "courier" "fixed")
+	   ("Monospace Serif" "PragmataPro Liga" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
 	   ("courier" "CMU Typewriter Text" "fixed")
 	   ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
 	   ("helv" "helvetica" "arial" "fixed")))))
@@ -307,6 +302,12 @@
 	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
 	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
      #+END_SRC
+**** [[https://github.com/tumashu/posframe][tumashu/posframe: Pop a posframe (just a child-frame) at point]]
+     #+begin_src emacs-lisp
+       (leaf posframe
+         :after counsel)
+     #+end_src
+
 ** auto-revert
    Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
    now because I need to use TRAMP which conflicts with it...
@@ -323,12 +324,6 @@
      (setq vc-follow-symlinks t)
    #+END_SRC
 * Helpers
-** COMMENT AWSCLI Completion
-   #+begin_src emacs-lisp
-     (use-package awscli-capf
-       :commands (awscli-capf-add)
-       :hook (org-mode . awscli-capf-add))
-   #+end_src
 ** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
    Need to look deeper, but I think it only takes you to the file
    level? I use few large org files rather than many small ones so not
@@ -340,7 +335,6 @@
        (deft-directory . "~/Google Drive/Notes")
        (deft-recursive . t))
    #+end_src
-
 
 ** Hydra
    #+begin_src emacs-lisp
@@ -746,6 +740,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      :init
      (atomic-chrome-start-server))
    #+END_SRC
+** COMMENT AWSCLI Completion
+   #+begin_src emacs-lisp
+     (use-package awscli-capf
+       :commands (awscli-capf-add)
+       :hook (org-mode . awscli-capf-add))
+   #+end_src
 ** TRYING Folding for YAML: [[https://gitlab.com/emacs-stuff/indent-tools/][indent-tools]]
 
    Obviously this does a lot more but folding YAML is why I'm looking
@@ -932,7 +932,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    Regular ellipsis drives me insane because I tend to end regular
    lines that way all the time ... (see?)
    #+BEGIN_SRC emacs-lisp
-   (setq org-ellipsis " ↴")
+     (custom-set-variables
+      '(org-ellipsis " ⬎"))
    #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
@@ -1099,8 +1100,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 *** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
     #+begin_src emacs-lisp
       (leaf org-ql
-        :el-get
-        ("alphapapa/org-ql" :type github)
         :custom
         (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
     #+end_src
@@ -1171,6 +1170,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :hook (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
    #+end_src
 
+** TODO [[https://github.com/doublep/eldev][doublep/eldev: Elisp Development Tool]]
 ** Dockerfile
    (use-package dockerfile-mode)
 ** [[https://fennel-lang.org/][Fennel]]
