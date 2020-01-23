@@ -1,4 +1,5 @@
 # -*- mode: org; -*-
+# Time-stamp: <2020-01-23 Thu 08:45 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -24,12 +25,33 @@
       programming font with decent Unicode support. I'm hardly going to
       do that and then *not* use Unicode in my editor config.
 * Startup
-** Daemon
+** Import Environment
    #+BEGIN_SRC emacs-lisp
-   (setq server-use-tcp t)
-   (server-force-delete) ; attempt to work around segfault bug
-   (server-start)
+     (use-package exec-path-from-shell
+       :demand t
+       :config
+       (setq shell-file-name "/usr/local/bin/zsh")
+       (setq exec-path-from-shell-arguments '("-l" "-i"))
+       (setq exec-path-from-shell-check-startup-files nil)
+       (exec-path-from-shell-initialize)
+       (exec-path-from-shell-copy-envs
+        '("AWS_CONFIG_FILE"
+          "EMAIL"
+          "LANG"
+          "TMPDIR"
+          "XDG_CACHE_HOME"
+          "XDG_CONFIG_DIRS"
+          "XDG_CONFIG_HOME"
+          "XDG_DATA_DIRS"
+          "XDG_DATA_HOME"
+          "XDG_RUNTIME_DIR")))
    #+END_SRC
+** Daemon
+   #+begin_src emacs-lisp
+     (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
+     (server-start)
+   #+end_src
+
 ** Handling of BROKEN/SKIP states (should not be tangled)
    I just learned about COMMENT status (=C-c ;=) and decided to punt
    on this for now while trying that instead.
@@ -153,26 +175,6 @@
    #+BEGIN_SRC emacs-lisp
      (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
      (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
-   #+END_SRC
-** Import Environment
-   #+BEGIN_SRC emacs-lisp
-     (use-package exec-path-from-shell
-       :demand t
-       :config
-       (setq shell-file-name "/usr/local/bin/zsh")
-       (setq exec-path-from-shell-arguments '("-l" "-i"))
-       (setq exec-path-from-shell-check-startup-files nil)
-       (exec-path-from-shell-initialize)
-       (exec-path-from-shell-copy-envs
-        '("AWS_CONFIG_FILE"
-          "EMAIL"
-          "LANG"
-          "XDG_CACHE_HOME"
-          "XDG_CONFIG_DIRS"
-          "XDG_CONFIG_HOME"
-          "XDG_DATA_DIRS"
-          "XDG_DATA_HOME"
-          "XDG_RUNTIME_DIR")))
    #+END_SRC
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
@@ -304,8 +306,13 @@
      #+END_SRC
 **** [[https://github.com/tumashu/posframe][tumashu/posframe: Pop a posframe (just a child-frame) at point]]
      #+begin_src emacs-lisp
-       (leaf posframe
-         :after counsel)
+       (leaf ivy-posframe
+         :after ivy
+         :custom ((ivy-posframe-mode . t)
+                  (ivy-posframe-display-functions-alist
+                   . '((swiper . nil)
+                       (swiper-isearch . nil)
+                       (t . ivy-posframe-display-at-frame-center)))))
      #+end_src
 
 ** auto-revert
@@ -323,7 +330,17 @@
    #+BEGIN_SRC emacs-lisp
      (setq vc-follow-symlinks t)
    #+END_SRC
+
+   I like to use time-stamp for Org files as check that Syncthing is
+   working—at a glance, on my phone, and in case either of those
+   things screws up mtime. This makes it look like an Org timestamp
+   but with user@host appended.
+   #+begin_src emacs-lisp
+   (custom-set-default 'time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
+   #+end_src
+
 * Helpers
+** TODO Organize this mess!
 ** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
    Need to look deeper, but I think it only takes you to the file
    level? I use few large org files rather than many small ones so not
@@ -740,6 +757,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      :init
      (atomic-chrome-start-server))
    #+END_SRC
+** Edit S3 files directly
+   [[https://github.com/mattusifer/s3ed][mattusifer/s3ed: An interface to s3 from emacs]]
+   #+begin_src emacs-lisp
+   (leaf s3ed)
+   #+end_src
 ** COMMENT AWSCLI Completion
    #+begin_src emacs-lisp
      (use-package awscli-capf
@@ -1473,14 +1495,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | magit-file-mode                        | (t)                                                                | Customized with use-package magit     |
-   | transient-default-level                | (5)                                                                | Customized with use-package magit     |
-   | magit-repository-directories           | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory          | (~/Projects/)                                                      | Customized with use-package magit     |
-   | doom-modeline-icon                     | (t)                                                                | Use all-the-icons                     |
-   | auto-revert-verbose                    | (t)                                                                | Customized with use-package magit     |
-   | forge-topic-list-limit                 | ('(60 . 0))                                                        | Customized with use-package magit     |
-   | org-ql-search-directories-files-regexp | (\\.org\\(_done\\)?\\')                                             | nil                                   |
-   | yas-snippet-dirs                       | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter         | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
+   | magit-file-mode               | (t)                                                                | Customized with use-package magit     |
+   | transient-default-level       | (5)                                                                | Customized with use-package magit     |
+   | magit-repository-directories  | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
+   | magit-clone-default-directory | (~/Projects/)                                                      | Customized with use-package magit     |
+   | doom-modeline-icon            | (t)                                                                | Use all-the-icons                     |
+   | auto-revert-verbose           | (t)                                                                | Customized with use-package magit     |
+   | forge-topic-list-limit        | ('(60 . 0))                                                        | Customized with use-package magit     |
+   | yas-snippet-dirs              | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
    :end:
