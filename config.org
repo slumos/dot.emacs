@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-02-07 Fri 17:42 slumos@slumos-ltm>
+# Time-stamp: <2020-02-18 Tue 16:30 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -351,6 +351,11 @@
        :setq
        (deft-directory . "~/Google Drive/Notes")
        (deft-recursive . t))
+   #+end_src
+
+** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
+   #+begin_src emacs-lisp
+   (use-package direnv)
    #+end_src
 
 ** Hydra
