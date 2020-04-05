@@ -44,13 +44,14 @@
 ** Integrations
 * Magit
   #+BEGIN_SRC emacs-lisp :results value silent
-      (custom-set-variables
-        '(magit-repository-directories
-            '(("~/Projects" . 1)
-              ("~/Projects/java" . 1)
-              ("~/Projects/puppet" . 1)
-              ("~/Projects/sfdc-slumos" . 1)
-              ("~/Projects/tf" . 1))))
+    (custom-set-variables
+      '(magit-repository-directories
+          '(("~/Projects" . 1)
+            ("~/Projects/datadog" . 1)
+            ("~/Projects/java" . 1)
+            ("~/Projects/puppet" . 1)
+            ("~/Projects/sfdc-slumos" . 1)
+            ("~/Projects/tf" . 1))))
   #+END_SRC
 * Environment
   #+BEGIN_SRC emacs-lisp

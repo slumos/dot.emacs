@@ -25,6 +25,7 @@
      ("elpy"	.  100)
      ("melpa" .  50)
      ("gnu"	.  10))))
+
 (package-initialize)
 
 ;; Load rest of config from Org file

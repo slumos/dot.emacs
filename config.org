@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-02-18 Tue 16:30 slumos@slumos-ltm>
+# Time-stamp: <2020-04-05 Sun 14:42 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -114,6 +114,10 @@
                (package-refresh-contents)  ; renew local melpa cache if fail
                (package-install 'leaf))))
 
+          ;; (leaf feather
+          ;;    :el-get conao3
+          ;;    :config (feather-mode))
+
           (leaf leaf-keywords
             :ensure t
             :config (leaf-keywords-init))
@@ -126,6 +130,12 @@
           (leaf hydra :ensure t)
           (leaf el-get :ensure t
             :custom ((el-get-git-shallow-clone  . t)))))
+    #+end_src
+*** TRYING [[https://github.com/conao3/feather.el][conao3/feather.el: Parallel thread modern Emacs package manager]]
+    #+begin_src emacs-lisp
+;;      (leaf feather
+;;        :el-get conao3/feather.el
+;;       :config (feather-mode))
     #+end_src
 
 ** Religion
@@ -223,6 +233,12 @@
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
     #+end_src
 ** Themes
+*** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
+    #+begin_src emacs-lisp
+      (use-package mlso-theme
+        :config (load-theme 'mlso t))
+    #+end_src
+
 *** COMMENT symx
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
@@ -230,7 +246,7 @@
 	(set-face-attribute 'org-todo nil :box nil)
 	(set-face-attribute 'org-done nil :box nil))
     #+END_SRC
-*** nordless
+*** COMMENT nordless
     #+BEGIN_SRC emacs-lisp
       (use-package nordless-theme
         :config (load-theme 'nordless t))
@@ -765,7 +781,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Edit S3 files directly
    [[https://github.com/mattusifer/s3ed][mattusifer/s3ed: An interface to s3 from emacs]]
    #+begin_src emacs-lisp
-   (leaf s3ed)
+   (use-package s3ed)
    #+end_src
 ** COMMENT AWSCLI Completion
    #+begin_src emacs-lisp
@@ -902,6 +918,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                                         (when smerge-mode
                                           (unpackaged/smerge-hydra/body)))))
    #+end_src
+** [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
+   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package restclient)
+     (use-package ob-restclient
+       :config
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((restclient . t)
+          (python . t))))
+   #+END_SRC
+** [[https://github.com/mihaiolteanu/lastfm.el][mihaiolteanu/lastfm.el: Last.fm API for Emacs Lisp]]
+   #+begin_src emacs-lisp
+     (leaf lastfm)
+   #+end_src
+** [[https://github.com/mihaiolteanu/vuiet][mihaiolteanu/vuiet: The music player and explorer for Emacs]]
+   #+begin_src emacs-lisp
+
+   #+end_src
+
 * [#B] Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -955,6 +991,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    :PROPERTIES:
    :header-args: :noweb-ref org-config :tangle no
    :END:
+
+   #+begin_src emacs-lisp
+   (custom-set-variables '(org-catch-invisible-edits 'error))
+   #+end_src
 
    Regular ellipsis drives me insane because I tend to end regular
    lines that way all the time ... (see?)
@@ -1170,17 +1210,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     (use-package projectile
       :config
       (projectile-mode 1))
-  #+END_SRC
-* [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
-  [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
-  #+BEGIN_SRC emacs-lisp
-    (use-package restclient)
-    (use-package ob-restclient
-      :config
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((restclient . t)
-         (python . t))))
   #+END_SRC
 * Language Modes
 ** Misc
