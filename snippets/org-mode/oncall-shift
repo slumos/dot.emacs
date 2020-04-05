@@ -4,23 +4,23 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 *** `daily-oncall-checklist-scheduled-time`
-**** TODO [0/5] [date] daily triage
+**** TODO [0/5] DAILY TRIAGE
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=muted%3Afalse%20group_status%3A(alert%20OR%20warn)%20triggered%3A1440][DataDog Monitors]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Fix any low-hanging fruit. See [[https://confluence.internal.salesforce.com/display/EN/Common+Triage+Issues][Common Triage Issues]] for examples.
 ****** For known issues, write a comment on the event linking to the appropriate Work Item. Raise awareness if necessary.
-***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]] [[https://app.datadoghq.com/dashboard/lists/manual/22639][(Datadog When Ready)]]
+****** Make sure you know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
+****** Clear out any stale entries in the [[https://app.datadoghq.com/monitors#downtime][downtime schedule]] that might cause a missed alert
+***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Notes
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
 ***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
-***** TODO Check [[https://krux.pagerduty.com/incidents?assignedToUser=PFPE6UP&status=triggered][Unassigned NOOP Incidents in PagerDuty]]
-      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** Investigate and fix (creating Work Items for tracking)
-****** For product developer code issues, create a Work Item for the relevant team
+****** TODO Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** EC2 [[https://phd.aws.amazon.com/phd/home#/event-log?Event%2520category=Scheduled%2520change&Status=Upcoming][Personal Health Dashboard]] or [[https://console.aws.amazon.com/ec2/home?region=us-east-1#Events][ash]], [[https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#Events:][dub]], [[https://us-west-2.console.aws.amazon.com/ec2/home?region=us-west-2#Events:][pdx]]
