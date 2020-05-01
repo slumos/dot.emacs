@@ -16,6 +16,15 @@
  '(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
  '(auto-revert-verbose t)
  '(beacon-color "#cc6666")
+ '(char-menu
+   '("—" "‘’" "“”" "…" "«»" "–"
+     ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
+     ("Mathematical Operators" "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉" "∊" "∋" "∌" "∍" "∎" "∏" "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙" "√" "∛" "∜" "∝" "∞" "∟" "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩" "∪" "∫" "∬" "∭" "∮" "∯" "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹" "∺" "∻" "∼" "∽" "∾" "∿" "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉" "≊" "≋" "≌" "≍" "≎" "≏" "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙" "≚" "≛" "≜" "≝" "≞" "≟" "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩" "≪" "≫" "≬" "≭" "≮" "≯" "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹" "≺" "≻" "≼" "≽" "≾" "≿" "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉" "⊊" "⊋" "⊌" "⊍" "⊎" "⊏" "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙" "⊚" "⊛" "⊜" "⊝" "⊞" "⊟" "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩" "⊪" "⊫" "⊬" "⊭" "⊮" "⊯" "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹" "⊺" "⊻" "⊼" "⊽" "⊾" "⊿" "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉" "⋊" "⋋" "⋌" "⋍" "⋎" "⋏" "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙" "⋚" "⋛" "⋜" "⋝" "⋞" "⋟" "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩" "⋪" "⋫" "⋬" "⋭" "⋮" "⋯" "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹" "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
+     ("Superscripts & Subscripts" "⁰" "ⁱ" "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺" "⁻" "⁼" "⁽" "⁾" "ⁿ" "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊" "₋" "₌" "₍₎" "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
+     ("Arrows" "←" "→" "↑" "↓" "⇐" "⇒" "⇑" "⇓")
+     ("Greek" "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ" "ν" "ξ" "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
+     ("Enclosed Alphanumerics" "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ" "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ" "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ" "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ" "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ" "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ" "ⓧ" "ⓨ" "ⓩ" "⓪")
+     ("Annotations" "      " "      " "     " "     " "        " "    " "      " "      " "      " "     " "    " "     " "     " "     ")) t)
  '(circe-default-directory "~/local/circe")
  '(circe-default-ip-family 'ipv4)
  '(circe-default-part-message "")
@@ -119,6 +128,7 @@
  '(objed-cursor-color "#99324B")
  '(org-agenda-files
    '("~/Google Drive/Notes/DMP.org" "~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org"))
+ '(org-babel-tmux-terminal "open -a iTerm ." nil nil "Customized with use-package ob-tmux")
  '(org-catch-invisible-edits 'error)
  '(org-confirm-babel-evaluate nil)
  '(org-drill-done-count-color "#663311")
@@ -135,7 +145,7 @@
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode ox-jira rspec-mode vagrant-tramp direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms ein dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
+   '(helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode ox-jira rspec-mode vagrant-tramp direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms ein dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pdf-view-midnight-colors '("#fdf4c1" . "#32302f"))
@@ -153,7 +163,7 @@
  '(sml/active-foreground-color "#424242")
  '(sml/inactive-background-color "#4fa8a8")
  '(sml/inactive-foreground-color "#424242")
- '(time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q" t)
+ '(time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
  '(tramp-syntax 'default nil (tramp))
  '(transient-default-level 5)
  '(transient-mark-mode nil)
