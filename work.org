@@ -57,7 +57,10 @@
   #+BEGIN_SRC emacs-lisp
     (exec-path-from-shell-copy-envs
      '("DATADOG_API_KEY"
-       "DATADOG_APP_KEY"))
+       "DATADOG_APP_KEY"
+       "DYN_CUSTOMER_NAME"
+       "DYN_USERNAME"
+       "DYN_PASSWORD"))
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp

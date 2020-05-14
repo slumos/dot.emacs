@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-05-01 Fri 14:32 slumos@slumos-ltm>
+# Time-stamp: <2020-05-14 Thu 08:56 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -8,6 +8,8 @@
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
 #+PROPERTY: header-args    :results silent
+
+[[http://oremacs.com/lispy/][lispy.el function reference]]
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -725,6 +727,26 @@
        (counsel-M-x "hydra-.*/body "))
      (global-set-key (kbd "C-c h") #'invoke-hydra)
    #+end_src
+
+** TODO slumos-org-copy-subtree-to-system
+   The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
+   See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
+
+   #+begin_src emacs-lisp
+     (defun slumos-org-copy-to-clipboard ()
+       "Copy org subtree to system clipboard as rich text"
+       (interactive)
+       (let* ((backend (or (org-export-get-backend 'slimhtml)
+                           (org-export-get-backend 'html)))
+              (html-buf (org-export-to-buffer backend "*html-buf*" nil t nil nil '(:toc nil) (lambda () (html-mode)))))
+         (with-current-buffer html-buf
+           (shell-command-on-region
+            (point-min)
+            (point-max)
+            "textutil -stdin -format html -convert rtf -stdout | pbcopy")
+           (bury-buffer))))
+   #+end_src
+
 
 ** COMMENT aggressive-indent
    #+begin_src emacs-lisp
@@ -1456,6 +1478,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-clip :after org)
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
+   (use-package ox-pandoc :after org)
+   (use-package ox-slimhtml :after org)
    #+END_SRC
 *** COMMENT My crazy numbered paragraphs idea
     #+begin_src emacs-lisp
@@ -1467,6 +1491,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                (num (org-export-get-headline-number)))
           (concat headline contents)))
     #+end_src
+*** TODO Check out [[https://github.com/yejianye/toolbox/blob/bd08a355dbc6804aa507c29a60053837eaa2e99c/emacs/funcs.el#L49][toolbox/funcs.el at bd08a355dbc6804aa507c29a60053837eaa2e99c · yejianye/toolbox]]
 ** Agenda
 
    #+begin_src emacs-lisp
