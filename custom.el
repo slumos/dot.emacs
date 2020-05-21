@@ -38,6 +38,10 @@
  '(comment-empty-lines 'eol)
  '(compilation-message-face 'default)
  '(compilation-scroll-output t)
+ '(counsel-tramp-control-master t)
+ '(counsel-tramp-control-master-path "~/.ssh/sock")
+ '(counsel-tramp-control-master-prefix "cc-vpc")
+ '(counsel-tramp-custom-connections '("/ssh:slumos@cc-vpc:/home/slumos"))
  '(custom-safe-themes
    '("b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default))
  '(display-time-24hr-format t)
@@ -53,11 +57,13 @@
      ("helv" "helvetica" "arial" "fixed")))
  '(fci-rule-color "#292617")
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
- '(forge-topic-list-limit '(60 . 0) t)
+ '(flycheck-yamllintrc nil)
+ '(forge-topic-list-limit '(60 . 0))
  '(frame-background-mode 'dark)
  '(frame-resize-pixelwise t)
  '(global-flycheck-mode t)
  '(global-prettify-symbols-mode t)
+ '(helm-dash-browser-func 'eww t)
  '(highlight-changes-colors '("#EF5350" "#7E57C2"))
  '(highlight-tail-colors
    '(("#010F1D" . 0)
@@ -128,7 +134,32 @@
  '(objed-cursor-color "#99324B")
  '(org-agenda-files
    '("~/Google Drive/Notes/DMP.org" "~/Sync/OneDrive/ST/Notes/SLUMOS.org" "~/Sync/OneDrive/ST/Notes/CASE.org" "~/Sync/OneDrive/ST/Notes/doing.org"))
- '(org-babel-tmux-terminal "open -a iTerm ." nil nil "Customized with use-package ob-tmux")
+ '(org-babel-tmux-terminal "iterm" nil nil "Customized with use-package ob-tmux")
+ '(org-capture-templates
+   '(("h" "I Helped" entry
+      (id "FC8EDFF9-9D2A-446C-9232-EDD4D896E6DD")
+      "* %?" :prepend t)
+     ("j" "Journal" entry
+      (file+olp+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
+      "* %<%R: >%? %^g
+%t")
+     ("l" "Log" entry
+      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
+      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+     ("m" "Meeting" entry
+      (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2"))
+     ("n" "Note" entry
+      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
+      "* %^{title} %U%?")
+     ("p" "Pager" entry
+      (id "198B927A-E59D-4C7B-8E25-CFDAF46D3E3C")
+      "* %T %?" :prepend t)
+     ("s" "Snippet" entry
+      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
+      "* %^{title}: %?")
+     ("t" "Task" entry
+      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
+      "* TODO %?")))
  '(org-catch-invisible-edits 'error)
  '(org-confirm-babel-evaluate nil)
  '(org-drill-done-count-color "#663311")
@@ -145,7 +176,7 @@
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(ox-pandoc helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode ox-jira rspec-mode vagrant-tramp direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms ein dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
+   '(ox-pandoc helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode ox-jira rspec-mode direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms ein dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pdf-view-midnight-colors '("#fdf4c1" . "#32302f"))

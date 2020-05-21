@@ -1,3 +1,14 @@
+# -*- mode: org; -*-
+# Time-stamp: <2020-05-19 Tue 11:35 slumos@slumos-ltm>
+#+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
+#+KEYWORDS:  emacs org
+#+LANGUAGE:  en
+#+STARTUP: entitiespretty
+#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
+#+FILETAGS: :emacs:config:
+#+CATEGORY: EMACS
+#+PROPERTY: header-args    :results silent
+
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
@@ -41,7 +52,23 @@
 	      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
 	      "* TODO %?"))))
    #+END_SRC
-** Integrations
+** Helpers
+   :PROPERTIES:
+   :test-property: test-value
+   :WORKITEM: test-workitem
+   :END:
+   #+begin_src emacs-lisp
+     (defun slumos-org-copy-current-workitem ()
+       "Copy the value of the WORKITEM property"
+       (interactive)
+       (let ((workitem (org-entry-get (point) "WORKITEM")))
+         (kill-new workitem)))
+   #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (slumos-org-copy-current-workitem)
+   #+end_src
+
 * Magit
   #+BEGIN_SRC emacs-lisp :results value silent
     (custom-set-variables
