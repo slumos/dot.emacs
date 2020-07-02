@@ -34,3 +34,4 @@
   (org-babel-load-file *emacs-org-config-file* nil))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
+(put 'narrow-to-region 'disabled nil)

@@ -9,7 +9,7 @@
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
-     (setq org-capture-templates
+     (add-to-list 'org-capture-templates
 	   (quote
 	    (("m" "Meeting" entry
 	      (id "30E45826-5558-4029-91D7-067B057B5740"))

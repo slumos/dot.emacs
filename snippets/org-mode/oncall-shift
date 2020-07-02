@@ -4,7 +4,7 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 *** `daily-oncall-checklist-scheduled-time`
-**** TODO [0/5] DAILY TRIAGE
+**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=muted%3Afalse%20group_status%3A(alert%20OR%20warn)%20triggered%3A1440][DataDog Monitors]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -23,7 +23,6 @@
 ****** TODO Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** EC2 [[https://phd.aws.amazon.com/phd/home#/event-log?Event%2520category=Scheduled%2520change&Status=Upcoming][Personal Health Dashboard]] or [[https://console.aws.amazon.com/ec2/home?region=us-east-1#Events][ash]], [[https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#Events:][dub]], [[https://us-west-2.console.aws.amazon.com/ec2/home?region=us-west-2#Events:][pdx]]
 ****** RDS
        #+begin_src sh :exports both :eval no-export :wrap src json :results raw
        aws rds describe-pending-maintenance-actions --region eu-west-1
