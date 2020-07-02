@@ -1497,6 +1497,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+end_src
 
 ** Additions
+*** TODO [[https://github.com/alphapapa/org-sticky-header][alphapapa/org-sticky-header: Show off-screen Org heading at top of window]]
+    #+begin_src emacs-lisp
+      (use-package org-sticky-header)
+    #+end_src
+
+*** TODO [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
 *** TODO [[https://github.com/ahendriksen/ob-tmux][ahendriksen/ob-tmux: Ob-tmux is an Emacs library that allows org mode to evaluate code blocks in a tmux session.]]
     #+begin_src emacs-lisp
       (use-package ob-tmux
@@ -1550,11 +1556,27 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       (org-as-mac-chrome-get-frontmost-url)
     #+end_src
 
+** Evaluation
+*** TRYING [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
+    #+begin_src emacs-lisp
+      (use-package org-babel-eval-in-repl)
+    #+end_src
+**** COMMENT testing
+     #+begin_src sh :results output raw drawer replace
+     date
+     #+end_src
+
+     #+RESULTS:
+     :results:
+     Thu May 28 10:09:39 PDT 2020
+     :end:
+
+*** TODO [[https://github.com/jackkamm/ob-session-async][jackkamm/ob-session-async: Asynchronous org-mode session evaluation]]
+*** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package ob-async)
+    #+END_SRC
 ** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
-** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
-   #+BEGIN_SRC emacs-lisp
-   (use-package ob-async)
-   #+END_SRC
 ** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
    #+begin_src emacs-lisp
      (use-package org-edna
@@ -1762,6 +1784,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :hook
        (python-mode . (lambda () (require 'lsp-python-ms))))
    #+end_src
+*** [[https://github.com/abo-abo/lpy][abo-abo/lpy: Minimal Python IDE for GNU Emacs]]
+    #+begin_src emacs-lisp
+      (use-package lpy)
+    #+end_src
+
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
