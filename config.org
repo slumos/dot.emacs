@@ -962,6 +962,12 @@
        (setq magit-completing-read-function #'ivy-completing-read))
    #+END_SRC
 
+   #+begin_src emacs-lisp
+     (use-package ivy-avy
+       :after counsel)
+   #+end_src
+
+
    #+BEGIN_SRC emacs-lisp
    (use-package counsel-projectile
      :bind
