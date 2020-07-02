@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-05-14 Thu 08:56 slumos@slumos-ltm>
+# Time-stamp: <2020-07-02 Thu 15:37 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1011,11 +1011,14 @@
    Protocol”.  This package provides remote file editing, similar to
    Ange FTP.
    #+END_QUOTE
-*** COMMENT TRAMP for Vagrant
-    #+BEGIN_SRC emacs-lisp
-      (use-package vagrant-tramp
-	:init (vagrant-tramp-add-method))
-    #+END_SRC
+*** Add handling for TOTP prompt
+    #+begin_src emacs-lisp
+      (use-package tramp
+        :custom
+        (tramp-password-prompt-regexp "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *"))
+    #+end_src
+
+
 ** Functions
    By me or collected from awesome people.
 *** colorize ansi file
