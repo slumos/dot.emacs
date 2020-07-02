@@ -1305,7 +1305,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+end_src
 
-* [#B] Magit
+* Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
   Magit—like Org—is a total killer app and probably one of the reasons
@@ -1332,7 +1332,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       (auto-revert-verbose t))
   #+END_SRC
 
-* Org [0/5]                                                             :org:
+* Org [0/7]                                                             :org:
 ** Initialization
    #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
      (use-package org
@@ -1438,30 +1438,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      ;; (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
    #+END_SRC
 
-   Pops up the agenda when emacs is idle. Remind me what I should be
-   doing instead of whatever I am doing.
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-       (defun jump-to-org-agenda ()
-         (interactive)
-         (let ((buf (get-buffer "*Org Agenda*"))
-               wind)
-           (if buf
-               (if (setq wind (get-buffer-window buf))
-                   (select-window wind)
-                 (if (called-interactively-p)
-                     (progn
-                       (select-window (display-buffer buf t t))
-                       (org-fit-window-to-buffer)
-                       ;; (org-agenda-redo)
-                       )
-                   (with-selected-window (display-buffer buf)
-                     (org-fit-window-to-buffer)
-                     ;; (org-agenda-redo)
-                     )))
-             (call-interactively #'org-agenda-list))))
-;       (run-with-idle-timer 900 t #'jump-to-org-agenda)
-   #+END_SRC
+   [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+   #+begin_src emacs-lisp
+   (use-package idle-org-agenda
+     :after org-agenda
+     :config (idle-org-agenda-mode))
+   #+end_src
 
    No love for zsh??
    #+BEGIN_SRC emacs-lisp
