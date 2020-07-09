@@ -442,6 +442,18 @@
     #+end_src
 
 ** Theme
+   Theme loading and org-bullets don't get along perfectly, and
+   leading *'s usually get unhidden. This is solved simply by calling
+   font-lock-fontify-buffer, so let's advise load-theme to do that for
+   us.
+
+   #+begin_src emacs-lisp
+     (defun load-theme--fontify (theme &rest args)
+       (font-lock-flush))
+     (advice-add 'load-theme :after #'load-theme--fontify)
+   #+end_src
+
+
    #+BEGIN_SRC emacs-lisp :tangle no
      (use-package smyx-theme
        :config
@@ -1210,6 +1222,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+RESULTS:
    | (lambda nil (yas-minor-mode 1) (yas-reload-all)) | org-bullets-mode | (lambda nil (magit-wip-after-save-mode t) (magit-wip-after-apply-mode t) (magit-wip-before-change-mode t)) | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load |
 
+   Invisible edits
+   #+begin_src emacs-lisp
+   (setq org-catch-invisible-edits 'show-and-error)
+   #+end_src
+
+   #+RESULTS:
+   : show-and-error
+
+
    Pops up the agenda when emacs is idle. Remind me what I should be
    doing instead of whatever I am doing.
 
@@ -1486,6 +1507,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 ** Dockerfile
    (use-package dockerfile-mode)
+** [[https://elixir-lang.org][Elixir]]
+   #+begin_src emacs-lisp
+   (leaf elixir-mode)
+   #+end_src
+
 ** [[https://fennel-lang.org/][Fennel]]
    Seeing if I can configure Hammerspoon with Fennel
    #+begin_src emacs-lisp
@@ -1773,7 +1799,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (when (file-exists-p *user-localhost-config-file*)
        (load *user-localhost-config-file*))
    #+END_SRC
-** Work/Life Balance?
+** COMMENT Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
 				("steven.local" "personal.org")
@@ -1798,6 +1824,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
 				 ("steven.lan" "personal.org")
+                                 ("steven.local" "personal.org")
 				 ("slumos-ltm.internal.salesforce.com" "work.org")))
 	    (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)
