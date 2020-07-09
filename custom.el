@@ -108,6 +108,7 @@
      ("~/Projects/puppet" . 1))))
  '(magit-wip-mode t)
  '(objed-cursor-color "#99324B")
+ '(org-agenda-block-separator 9473)
  '(org-agenda-files
    (quote
     ("~/Sync/Notes/CASE.org" "~/Sync/Notes/Inbox.org" "~/Sync/Notes/SLUMOS.org")))
@@ -133,9 +134,6 @@
      ("melpa" . "https://melpa.org/packages/")
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/"))))
- '(package-selected-packages
-   (quote
-    (flycheck-rust rustic dap-mode lsp-java counsel-dash lispy lsp-ui company-lsp lsp-mode fennel-mode almost-mono-themes with-emacs jq-mode gruvbox-theme suscolors-theme exotica-theme hydandata-light-theme kaolin-themes madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme spacemacs-theme tangotango-theme white-theme gnu-elpa-keyring-update json-reformatter-jq s3ed orgit ein-notebook ob-async dumb-jump org-jira frog-menu use-package-hydra hydra-use-package pipenv eglot spray nose quelpa-use-package quelpa ivy-rich company-restclient org-edna go-mode doom-modeline web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax rspec-mode puppet-mode ox-jira ox-gfm ox-clip org-bullets org-plus-contrib indent-tools vagrant-tramp ivy-prescient ws-butler which-key ace-link xterm-color spaceline-all-the-icons spaceline exec-path-from-shell paradox forge counsel-tramp flycheck-yamllint language-detection enh-ruby-mode ox-confluence nord yaml-imenu constant-theme ghub elpy flycheck-mode flycheck markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string night-owl-theme default-text-scale spinner company-jedi jedi copy-as-format company ob-ipython ein ace-mc dockerfile-mode lastpass focus lua-mode circe circe-notifications nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode counsel-projectile counsel json-mode js2-mode ob-restclient editorconfig all-the-icons-ivy avy undo-tree groovy-mode inf-ruby all-the-icons org-id ob-sh ivy-hydra flx zoom-frm magit)))
  '(paperless-capture-directory "~/Sync/OneDrive/Inbox")
  '(paperless-root-directory "~/Sync/OneDrive/Documents")
  '(paradox-automatically-star t)
