@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-07-20 Mon 16:02 slumos@slumos-ltm>
+# Time-stamp: <2020-07-20 Mon 16:23 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1507,7 +1507,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+begin_src emacs-lisp
       (add-to-list 'org-capture-templates
                    '(("c" "Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
-                      "%(org-chef-get-recipe-from-url"
+                      "%(org-chef-get-recipe-from-url)"
                       :empty-lines 1)
                      ("m" "Manual Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
                       "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
