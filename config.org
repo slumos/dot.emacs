@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-07-02 Thu 15:37 slumos@slumos-ltm>
+# Time-stamp: <2020-07-20 Mon 16:02 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -48,6 +48,12 @@
           "XDG_DATA_HOME"
           "XDG_RUNTIME_DIR")))
    #+END_SRC
+
+   XDG WHAT
+   #+BEGIN_SRC emacs-lisp
+   (require 'xdg)
+   #+END_SRC
+
 ** Daemon
    #+begin_src emacs-lisp
      (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
@@ -179,11 +185,6 @@
       (setq inhibit-startup-screen t)
     #+END_SRC
 ** Dedicated directory for backup files
-   XDG WHAT
-   #+BEGIN_SRC emacs-lisp
-   (require 'xdg)
-   #+END_SRC
-
    #+BEGIN_SRC emacs-lisp
      (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
      (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
@@ -658,15 +659,15 @@
 	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
 	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
      #+END_SRC
-**** [[https://github.com/tumashu/posframe][tumashu/posframe: Pop a posframe (just a child-frame) at point]]
+**** COMMENT [[https://github.com/tumashu/posframe][tumashu/posframe: Pop a posframe (just a child-frame) at point]]
      #+begin_src emacs-lisp
-       (leaf ivy-posframe
-         :after ivy
-         :custom ((ivy-posframe-mode . t)
-                  (ivy-posframe-display-functions-alist
-                   . '((swiper . nil)
-                       (swiper-isearch . nil)
-                       (t . ivy-posframe-display-at-frame-center)))))
+       ;; (leaf ivy-posframe
+       ;;   :after ivy
+       ;;   :custom ((ivy-posframe-mode . t)
+       ;;            (ivy-posframe-display-functions-alist
+       ;;             . '((swiper . nil)
+       ;;                 (swiper-isearch . nil)
+       ;;                 (t . ivy-posframe-display-at-frame-center)))))
      #+end_src
 
 ** auto-revert
@@ -695,6 +696,7 @@
 
 * Helpers
 ** TODO Organize this mess!
+** TODO auto-save-visited-mode
 ** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
    Need to look deeper, but I think it only takes you to the file
    level? I use few large org files rather than many small ones so not
@@ -1497,6 +1499,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+end_src
 
 ** Additions
+*** [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+    #+begin_src emacs-lisp
+      (use-package org-chef)
+    #+end_src
+
+    #+begin_src emacs-lisp
+      (add-to-list 'org-capture-templates
+                   '(("c" "Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
+                      "%(org-chef-get-recipe-from-url"
+                      :empty-lines 1)
+                     ("m" "Manual Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
+                      "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
+    #+end_src
+
 *** TODO [[https://github.com/alphapapa/org-sticky-header][alphapapa/org-sticky-header: Show off-screen Org heading at top of window]]
     #+begin_src emacs-lisp
       (use-package org-sticky-header)

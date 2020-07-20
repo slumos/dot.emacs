@@ -35,3 +35,4 @@
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
 (put 'narrow-to-region 'disabled nil)
+(put 'magit-clean 'disabled nil)
