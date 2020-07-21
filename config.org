@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-07-20 Mon 16:23 slumos@slumos-ltm>
+# Time-stamp: <2020-07-21 Tue 16:16 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1573,6 +1573,27 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+end_src
 
 ** Evaluation
+*** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
+    #+begin_src emacs-lisp
+      (defun org-babel-execute:passthrough (body params) body)
+      (defalias 'org-babel-execute:json 'org-babel-execute:passthrough)
+      (add-to-list 'org-babel-load-languages '(passthrough . t))
+    #+end_src
+
+*** [[https://emacs.stackexchange.com/questions/13244/edebug-orgmode-source-code-blocks-with-input-variables][org mode - Edebug orgmode source code blocks with input variables - Emacs Stack Exchange]]
+    #+begin_src emacs-lisp
+      (defun org-src-debug ()
+        "Put a call to this function at the beginning of the org source block to debug it."
+        (save-excursion
+          (let ((pt (let ((case-fold-search t)) (org-babel-where-is-src-block-head))))
+            (unless pt (error "Not at source block"))
+            (goto-char pt)
+            (org-edit-src-code)
+            (let ((parse-sexp-ignore-comments t))
+              (goto-char (point-min))
+              (forward-sexp 2)
+              (edebug-defun)))))
+    #+end_src
 *** TRYING [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
     #+begin_src emacs-lisp
       (use-package org-babel-eval-in-repl)
