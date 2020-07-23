@@ -89,12 +89,12 @@
             (condition-case err
                 (package-install 'leaf)
               (error
-               (package-refresh-contents)       ; renew local melpa cache if fail
+               (package-refresh-contents)  ; renew local melpa cache if fail
                (package-install 'leaf))))
 
           (leaf leaf-keywords
-                :ensure t
-                :config (leaf-keywords-init))
+            :ensure t
+            :config (leaf-keywords-init))
 
           (leaf leaf
             :custom ((leaf-defaults . '(:ensure t)))))
@@ -103,7 +103,7 @@
           ;; optional packages if you want to use :hydra, :el-get,,,
           (leaf hydra :ensure t)
           (leaf el-get :ensure t
-                :custom ((el-get-git-shallow-clone  . t)))))
+            :custom ((el-get-git-shallow-clone  . t)))))
     #+end_src
 
 ** Religion
@@ -442,12 +442,28 @@
     #+end_src
 
 ** Theme
+   Theme loading and org-bullets don't get along perfectly, and
+   leading *'s usually get unhidden. This is solved simply by calling
+   font-lock-fontify-buffer, so let's advise load-theme to do that for
+   us.
+
+   #+begin_src emacs-lisp
+     (defun load-theme--fontify (theme &rest args)
+       (font-lock-flush))
+     (advice-add 'load-theme :after #'load-theme--fontify)
+   #+end_src
+
+
    #+BEGIN_SRC emacs-lisp :tangle no
      (use-package smyx-theme
        :config
        (set-face-attribute 'org-todo nil :box nil)
        (set-face-attribute 'org-done nil :box nil))
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package gruvbox-theme)
+   #+end_src
 
 ** Code
    #+BEGIN_SRC emacs-lisp
@@ -514,6 +530,11 @@
    #+BEGIN_SRC emacs-lisp
      (setq vc-follow-symlinks t)
    #+END_SRC
+
+   #+begin_src emacs-lisp
+   (custom-set-variables '(frame-resize-pixelwise t))
+   #+end_src
+
 * Helpers
 ** COMMENT AWSCLI Completion
    #+begin_src emacs-lisp
@@ -521,6 +542,18 @@
        :commands (awscli-capf-add)
        :hook (org-mode . awscli-capf-add))
    #+end_src
+** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
+   Need to look deeper, but I think it only takes you to the file
+   level? I use few large org files rather than many small ones so not
+   sure this helps me.
+   #+begin_src emacs-lisp
+     (leaf deft
+       :commands (deft)
+       :setq
+       (deft-directory . "~/Google Drive/Notes")
+       (deft-recursive . t))
+   #+end_src
+
 
 ** Hydra
    #+begin_src emacs-lisp
@@ -633,7 +666,7 @@
 	       "
 		    ^Up^            ^Down^        ^Other^
 	       ----------------------------------------------
-	       [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+	       [_p_]   Prev    [_n_]   Next    [_l_] Edit lines
 	       [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
 	       [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
 	       ^ ^             ^ ^             [_q_] Quit
@@ -649,34 +682,6 @@
 	       ("r" mc/mark-all-in-region-regexp :exit t)
 	       ("q" nil)))
    #+end_src
-
-   #+BEGIN_SRC emacs-lisp :noweb yes :tangle no
-     (use-package multiple-cursors
-       :after use-package-hydra
-       :bind
-       ("C-S-m" . hydra-multiple-cursors/body)
-       :hydra
-       (hydra-multiple-cursors
-	(:hint nil)
-	"
-	       ^Up^            ^Down^        ^Other^
-	  ----------------------------------------------
-	  [_p_]   Next    [_n_]   Next    [_l_] Edit lines
-	  [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
-	  [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
-	  ^ ^             ^ ^             [_q_] Quit
-	  "
-	("l" mc/edit-lines :exit t)
-	("a" mc/mark-all-like-this :exit t)
-	("n" mc/mark-next-like-this)
-	("N" mc/skip-to-next-like-this)
-	("M-n" mc/unmark-next-like-this)
-	("p" mc/mark-previous-like-this)
-	("P" mc/skip-to-previous-like-this)
-	("M-p" mc/unmark-previous-like-this)
-	("r" mc/mark-all-in-region-regexp :exit t)
-	("q" nil)))
-   #+END_SRC
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
@@ -940,11 +945,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** [[https://github.com/storvik/emacs-lastpass][storvik/emacs-lastpass: Emacs LastPass command wrapper.]]
    #+BEGIN_SRC emacs-lisp
-   (use-package lastpass
-     :config
-     (setq lastpass-user user-mail-address)
-     (setq lastpass-multifactor-use-passcode nil)
-     (lastpass-auth-source-enable))
+        (use-package lastpass
+          :config
+          (setq lastpass-user user-mail-address)
+          (setq lastpass-multifactor-use-passcode nil)
+          (lastpass-auth-source-enable)
+          :hook
+          (lastpass-logged-in-hook . #'lastpass-auth-source-enable))
+
    #+END_SRC
 ** Edit the web with +Atom+ Emacs
    #+BEGIN_SRC emacs-lisp
@@ -1096,6 +1104,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :bind
       ("\C-x g" . magit-status)
       :custom
+      (forge-topic-list-limit '(60 . 0))
       (magit-file-mode t)
       (magit-clone-default-directory "~/Projects/")
       (magit-repository-directories
@@ -1199,11 +1208,28 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    Good for editing this file. Expand =<el= to an emacs-lisp src block.
    Update: Org 9.2 killed it ... T-T
-   #+BEGIN_SRC emacs-lisp
-     ;; Can't figure out how to make noweb expansion skip a single block...
-     ;; (add-to-list 'org-structure-template-alist '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-     ;; (add-to-list 'org-structure-template-alist '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"))
-   #+END_SRC
+
+   Decided to switch to yas-mode, and it's come in handy in hand for
+   many other things. One favorite use is to make repeatable
+   checklists in org. Unfortunately, those are hidden away in my
+   work-specific config.
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook (lambda ()
+                                (yas-minor-mode 1)
+                                (yas-reload-all)))
+   #+end_src
+
+   #+RESULTS:
+   | (lambda nil (yas-minor-mode 1) (yas-reload-all)) | org-bullets-mode | (lambda nil (magit-wip-after-save-mode t) (magit-wip-after-apply-mode t) (magit-wip-before-change-mode t)) | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load |
+
+   Invisible edits
+   #+begin_src emacs-lisp
+   (setq org-catch-invisible-edits 'show-and-error)
+   #+end_src
+
+   #+RESULTS:
+   : show-and-error
+
 
    Pops up the agenda when emacs is idle. Remind me what I should be
    doing instead of whatever I am doing.
@@ -1389,6 +1415,29 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+begin_src emacs-lisp
       (use-package orgit)
     #+end_src
+*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
+    #+begin_src emacs-lisp
+      (leaf ivy-omni-org
+        :after counsel
+        :commands (ivy-omni-org)
+        :bind ("C-c b" . ivy-omni-org)
+        :custom
+        (ivy-omni-org-file-sources . (slumos/ivy-omni-org-sources)))
+
+      (defun slumos/ivy-omni-org-sources ()
+        (-uniq (-concat
+                (directory-files org-directory t "\\.org\\'")
+                (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
+                (directory-files user-emacs-directory "\\.org\\'"))))
+    #+end_src
+*** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
+    #+begin_src emacs-lisp
+      (leaf org-ql
+        :el-get
+        ("alphapapa/org-ql" :type github)
+        :custom
+        (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
+    #+end_src
 
 ** My Personal Hacks
 *** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
@@ -1401,7 +1450,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
     Strip content-free stuff that gets tacked onto the title of every page.
 
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp :tangle no
       (defun slumos/org-grab-link-after (s)
         (replace-regexp-in-string " | Salesforce$" "" s))
 
@@ -1438,14 +1487,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :config
       (org-babel-do-load-languages
        'org-babel-load-languages
-       '((restclient . t))))
-  #+END_SRC
-* BROKEN COMMENT Polymode
-  The main thing I want to use this for is Org, but it breaks folding and I haven't had time to figure out wtf.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package poly-org
-      :ensure polymode)
+       '((restclient . t)
+         (python . t))))
   #+END_SRC
 * Language Modes
 ** Misc
@@ -1464,11 +1507,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
 ** Dockerfile
    (use-package dockerfile-mode)
+** [[https://elixir-lang.org][Elixir]]
+   #+begin_src emacs-lisp
+   (leaf elixir-mode)
+   #+end_src
+
 ** [[https://fennel-lang.org/][Fennel]]
    Seeing if I can configure Hammerspoon with Fennel
    #+begin_src emacs-lisp
      (use-package fennel-mode
-       :mode "\\.fnl\\'")
+       :mode "\\.fnl\\'"
+       :hook
+       (fennel-mode . lispy-mode)
+       (emacs-lisp-mode . lispy-mode))
    #+end_src
 
 ** flycheck
@@ -1748,7 +1799,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (when (file-exists-p *user-localhost-config-file*)
        (load *user-localhost-config-file*))
    #+END_SRC
-** Work/Life Balance?
+** COMMENT Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
 				("steven.local" "personal.org")
@@ -1773,6 +1824,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
 				 ("steven.lan" "personal.org")
+                                 ("steven.local" "personal.org")
 				 ("slumos-ltm.internal.salesforce.com" "work.org")))
 	    (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)
@@ -1800,13 +1852,14 @@ monthly increases
 
    #+RESULTS:
    :results:
-   | mouse-wheel-scroll-amount      | ((quote (1 ((shift) . 5) ((control)))))                                   | nil                                   |
-   | magit-file-mode                | (t)                                                                       | Customized with use-package magit     |
-   | transient-default-level        | (5)                                                                       | Customized with use-package magit     |
-   | magit-repository-directories   | ((quote ((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1)))) | Customized with use-package magit     |
-   | magit-clone-default-directory  | (~/Projects/)                                                             | Customized with use-package magit     |
-   | doom-modeline-icon             | (t)                                                                       | Use all-the-icons                     |
-   | auto-revert-verbose            | (t)                                                                       | Customized with use-package magit     |
-   | yas-snippet-dirs               | ((quote (/Users/slumos/.config/emacs/snippets)))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter | ((quote magit-auto-revert-repository-buffers-p))                          | Customized with use-package magit     |
+   | magit-file-mode                        | (t)                                                                | Customized with use-package magit     |
+   | transient-default-level                | (5)                                                                | Customized with use-package magit     |
+   | magit-repository-directories           | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
+   | magit-clone-default-directory          | (~/Projects/)                                                      | Customized with use-package magit     |
+   | doom-modeline-icon                     | (t)                                                                | Use all-the-icons                     |
+   | auto-revert-verbose                    | (t)                                                                | Customized with use-package magit     |
+   | forge-topic-list-limit                 | ('(60 . 0))                                                        | Customized with use-package magit     |
+   | org-ql-search-directories-files-regexp | (\\.org\\(_done\\)?\\')                                             | nil                                   |
+   | yas-snippet-dirs                       | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
+   | auto-revert-buffer-list-filter         | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
    :end:

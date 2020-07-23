@@ -3,7 +3,7 @@
 ;; 2014-04-05 first
 ;; 2017-05-01 do over
 
-(require 'cl)
+(require 'cl-lib)
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (locate-user-emacs-file "custom.el"))
@@ -30,6 +30,6 @@
 ;; Load rest of config from Org file
 (defconst *emacs-org-config-file* (locate-user-emacs-file "config.org"))
 (when (file-exists-p *emacs-org-config-file*)
-  (org-babel-load-file *emacs-org-config-file* t))
+  (org-babel-load-file *emacs-org-config-file*))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
