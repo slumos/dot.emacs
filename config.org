@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-07-21 Tue 16:16 slumos@slumos-ltm>
+# Time-stamp: <2020-08-07 Fri 10:11 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -198,6 +198,8 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "<C-backspace>") #'delete-indentation)
    #+end_src
+*** TODO [[https://github.com/Kungsgeten/ryo-modal][Kungsgeten/ryo-modal: Roll your own modal mode]]
+    Compare to [[https://github.com/DogLooksGood/meow][DogLooksGood/meow: Modal Editing On Wheel]]
 * Preferences
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
@@ -572,7 +574,14 @@
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
     #+end_src
 ** Themes
-*** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
+*** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
+    #+begin_src emacs-lisp
+      (use-package almost-mono-themes
+        :config
+        (load-theme 'almost-mono-gray))
+    #+end_src
+
+*** COMMENT [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
     #+begin_src emacs-lisp
       (use-package mlso-theme
         :config (load-theme 'mlso t))
@@ -822,7 +831,7 @@
           ("C-." . avy-goto-char)
           ("M-g M-g" . avy-goto-line))
     #+END_SRC
-*** [[https://github.com/jacktasia/dumb-jump][jacktasia/dumb-jump: an Emacs "jump to definition" package]]
+*** COMMENT [[https://github.com/jacktasia/dumb-jump][jacktasia/dumb-jump: an Emacs "jump to definition" package]]
     #+BEGIN_SRC emacs-lisp
       (use-package dumb-jump
 	:bind (("M-g o" . dumb-jump-go-other-window)
@@ -1499,7 +1508,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+end_src
 
 ** Additions
-*** [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+*** COMMENT [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
     #+begin_src emacs-lisp
       (use-package org-chef)
     #+end_src
@@ -1573,13 +1582,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+end_src
 
 ** Evaluation
+*** Structure Templates
+    #+begin_src emacs-lisp
+      (add-to-list 'org-structure-template-alist
+                   '("sj" . "src shell :results output :wrap src"))
+    #+end_src
+
 *** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
     #+begin_src emacs-lisp
       (defun org-babel-execute:passthrough (body params) body)
       (defalias 'org-babel-execute:json 'org-babel-execute:passthrough)
       (add-to-list 'org-babel-load-languages '(passthrough . t))
     #+end_src
-
 *** [[https://emacs.stackexchange.com/questions/13244/edebug-orgmode-source-code-blocks-with-input-variables][org mode - Edebug orgmode source code blocks with input variables - Emacs Stack Exchange]]
     #+begin_src emacs-lisp
       (defun org-src-debug ()

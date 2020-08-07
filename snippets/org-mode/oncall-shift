@@ -35,6 +35,12 @@
        aws elasticache describe-events --region us-east-1
        aws elasticache describe-events --region us-west-2
        #+end_src
+****** Redshift
+       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
+       aws redshift describe-events --region eu-west-1
+       aws redshift describe-events --region us-east-1
+       aws redshift describe-events --region us-west-2
+       #+end_src
 ***** TODO Review email notifications. Update or create Work Items, raise awareness if necessary.
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** cron errors

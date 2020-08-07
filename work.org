@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-07-07 Tue 11:28 slumos@slumos-ltm>
+# Time-stamp: <2020-08-02 Sun 23:25 slumos@slumos-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -29,7 +29,7 @@
      (setq org-capture-templates
 	   (quote
 	    (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
-	      "* %<%R: >%? %^g\n%t")
+	      "* %^T %?")
 	     ("k" "linK" entry
 	      (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
 	      "* %U %?")
