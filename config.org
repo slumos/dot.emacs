@@ -1149,6 +1149,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (setq org-capture-templates nil)
    #+end_src
 
+
+   Took a while to warm up to =visual-line-mode= but I've come to like it with =org-mode=.
+   #+begin_src emacs-lisp
+   (use-package visual-line-mode :hook org-mode)
+   #+end_src
+
 ** Binds
    :PROPERTIES:
    :header-args: :noweb-ref org-binds :tangle no
@@ -1302,21 +1308,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    lines that way all the time ... (see?)
 
    #+BEGIN_SRC emacs-lisp
-   ;(org-ellipsis " ⌄")
-   (org-ellipsis " ⬎")
+   ;(setq org-ellipsis " ⌄")
+   (org-ellipsis "⬎")
    ;(org-ellipsis " ⤵")
-   ;(org-ellipsis " 〉")
+   ;(setq org-ellipsis " 〉")
    ;(org-ellipsis " ⤵")
    #+END_SRC
-
-   Took a while to warm up to =visual-line-mode= but I've come to like it with =org-mode=.
-   #+begin_src emacs-lisp
-   (use-package visual-line-mode :hook org-mode)
-   #+end_src
-
-   #+RESULTS:
-   : #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (:use-package (24390 52651 106679 0) :init (24390 52651 106664 0) :init-secs (0 0 86 0) :use-package-secs (0 5 794481 0)))
-
 
 ** Exporting
    #+BEGIN_SRC emacs-lisp
@@ -1329,7 +1326,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+begin_src emacs-lisp
      (use-package org-noter
        :custom
-       (org-noter-always-create-frame nil))
+       (org-noter-always-create-frame nil)
+       (org-noter-auto-save-last-location t))
      #+end_src
 ** TODO Hydra
 *** Easy table field marking
@@ -1470,12 +1468,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 *** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
     #+begin_src emacs-lisp
       (leaf org-ql
-        :el-get
-        ("alphapapa/org-ql" :type github)
         :custom
         (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
     #+end_src
-
 ** My Personal Hacks
 *** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
