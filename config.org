@@ -441,29 +441,27 @@
 
     #+end_src
 
-** Theme
-   Theme loading and org-bullets don't get along perfectly, and
-   leading *'s usually get unhidden. This is solved simply by calling
-   font-lock-fontify-buffer, so let's advise load-theme to do that for
-   us.
+** Themes
+*** [[https://github.com/cryon/almost-mono-themes][almost-mono]]
+    #+begin_src emacs-lisp
+      (use-package almost-mono-themes
+        :config
+        (load-theme 'almost-mono-gray))
+    #+end_src
+*** COMMENT [[https://github.com/jannis/emacs-constant-theme][constant]]
+    #+begin_src emacs-lisp
+      (use-package constant-theme
+        :config
+        (load-theme 'constant))
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (defun load-theme--fontify (theme &rest args)
-       (font-lock-flush))
-     (advice-add 'load-theme :after #'load-theme--fontify)
-   #+end_src
-
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package smyx-theme
-       :config
-       (set-face-attribute 'org-todo nil :box nil)
-       (set-face-attribute 'org-done nil :box nil))
-   #+END_SRC
-
-   #+begin_src emacs-lisp
-     (use-package gruvbox-theme)
-   #+end_src
+*** COMMENT smyx
+    #+begin_src emacs-lisp
+      (use-package smyx-theme
+        :config
+        (set-face-attribute 'org-todo nil :box nil)
+        (set-face-attribute 'org-done nil :box nil))
+    #+end_src
 
 ** Code
    #+BEGIN_SRC emacs-lisp
@@ -548,6 +546,7 @@
 ** Text
    #+begin_src emacs-lisp
    (use-package flyspell-mode
+     :ensure nil
      :hook text-mode)
    #+end_src
 
@@ -1152,7 +1151,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    Took a while to warm up to =visual-line-mode= but I've come to like it with =org-mode=.
    #+begin_src emacs-lisp
-   (use-package visual-line-mode :hook org-mode)
+   (use-package visual-line-mode :hook org-mode :ensure nil)
    #+end_src
 
 ** Binds
