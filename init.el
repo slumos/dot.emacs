@@ -1,9 +1,7 @@
-;; Literate Emacs config what!
+ ;; Literate Emacs config what!
 ;; See emacs.org.
 ;; 2014-04-05 first
 ;; 2017-05-01 do over
-
-(require 'cl)
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))
@@ -25,8 +23,6 @@
      ("elpy"	.  100)
      ("melpa" .  50)
      ("gnu"	.  10))))
-
-(package-initialize)
 
 ;; Load rest of config from Org file
 (defconst *emacs-org-config-file* (expand-file-name "config.org" user-emacs-directory))

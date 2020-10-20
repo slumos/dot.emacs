@@ -12,6 +12,7 @@
 ****** For known issues, write a comment on the event linking to the appropriate Work Item. Raise awareness if necessary.
 ****** Make sure you know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ****** Clear out any stale entries in the [[https://app.datadoghq.com/monitors#downtime][downtime schedule]] that might cause a missed alert
+***** TODO Visit the [[https://puppet-ui-prod.krxd.net/#/enforcement/status][Puppet Overview dashboard]]; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Notes

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: shell block with json output
+# key: <sj
+# --
+#+begin_src shell :results output :wrap src json
+$0
+#+end_src
