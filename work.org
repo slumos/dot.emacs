@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-10-23 Fri 17:09 slumos@stevenlum-ltm>
+# Time-stamp: <2020-11-02 Mon 14:07 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -75,6 +75,7 @@
     (custom-set-variables
       '(magit-repository-directories
           '(("~/Projects" . 1)
+            ("~/Projects/ads" . 1)
             ("~/Projects/datadog" . 1)
             ("~/Projects/java" . 1)
             ("~/Projects/konsole" . 1)
