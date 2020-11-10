@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-10-20 Tue 13:12 slumos@stevenlum-ltm>
+# Time-stamp: <2020-11-10 Tue 14:19 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -142,7 +142,7 @@
         (menu-bar-mode -1))
       (setq inhibit-startup-screen t)
     #+END_SRC
-** COMMENT Dedicated directory for backup files
+** Dedicated directory for backup files
    #+BEGIN_SRC emacs-lisp
      (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
      (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
