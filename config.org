@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-11-10 Tue 14:22 slumos@stevenlum-ltm>
+# Time-stamp: <2020-11-11 Wed 11:08 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1939,24 +1939,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 
 * Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** COMMENT Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-                                 ("stevenlum-ltm.internal.salesforce.com" "work.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+                                 ("steven.lan" "personal.org")
+                                 (rx "salesforce.com" "work.org")))
+            (local-config (expand-file-name local-config-name user-emacs-directory)))
        (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
+           (org-babel-load-file local-config)))
    #+END_SRC
 * Notes
 ** TODO COMMENT [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-04/msg00874.html][[O] Cool trick on how to eval bash/zsh babel blocks in emacs]]
