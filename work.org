@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-11-02 Mon 14:07 slumos@stevenlum-ltm>
+# Time-stamp: <2020-11-17 Tue 14:02 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -77,6 +77,7 @@
           '(("~/Projects" . 1)
             ("~/Projects/ads" . 1)
             ("~/Projects/datadog" . 1)
+            ("~/Projects/falcon" . 1)
             ("~/Projects/java" . 1)
             ("~/Projects/konsole" . 1)
             ("~/Projects/puppet" . 1)
@@ -106,3 +107,7 @@
          "KAIJU_REFRESH_TOKEN"
          "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
+* Debug
+  #+begin_src emacs-lisp
+    (message "Loaded work.org")
+  #+end_src

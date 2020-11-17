@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-11-11 Wed 11:08 slumos@stevenlum-ltm>
+# Time-stamp: <2020-11-13 Fri 14:59 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -712,6 +712,10 @@
    (use-package direnv)
    #+end_src
 
+** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
+   #+begin_src emacs-lisp
+   (use-package wgrep)
+   #+end_src
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
@@ -746,7 +750,6 @@
             "textutil -stdin -format html -convert rtf -stdout | pbcopy")
            (bury-buffer))))
    #+end_src
-
 
 ** COMMENT aggressive-indent
    #+begin_src emacs-lisp
@@ -1026,7 +1029,6 @@
         :custom
         (tramp-password-prompt-regexp "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *"))
     #+end_src
-
 
 ** Functions
    By me or collected from awesome people.

@@ -170,7 +170,7 @@
  '(sml/active-foreground-color "#424242")
  '(sml/inactive-background-color "#4fa8a8")
  '(sml/inactive-foreground-color "#424242")
- '(time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
+ '(time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q" t)
  '(tramp-completion-use-auth-sources nil)
  '(tramp-password-prompt-regexp
    "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *")
