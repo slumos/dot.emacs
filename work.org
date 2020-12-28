@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-11-17 Tue 14:02 slumos@stevenlum-ltm>
+# Time-stamp: <2020-12-07 Mon 10:03 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -75,7 +75,7 @@
     (custom-set-variables
       '(magit-repository-directories
           '(("~/Projects" . 1)
-            ("~/Projects/ads" . 1)
+            ("~/Projects/ad-studio" . 1)
             ("~/Projects/datadog" . 1)
             ("~/Projects/falcon" . 1)
             ("~/Projects/java" . 1)
@@ -84,6 +84,13 @@
             ("~/Projects/sfdc-slumos" . 1)
             ("~/Projects/tf" . 1))))
   #+END_SRC
+
+  #+begin_src emacs-lisp
+    (add-to-list 'forge-alist
+                 '("git.soma.salesforce.com" "https://git.soma.salesforce.com/api/v3" "git.soma.salesforce.com"
+                   forge-github-repository))
+  #+end_src
+
 * Environment
   #+BEGIN_SRC emacs-lisp
     (exec-path-from-shell-copy-envs
