@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-12-28 Mon 11:32 slumos@stevenlum-ltm>
+# Time-stamp: <2020-12-31 Thu 10:31 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -286,8 +286,9 @@
 
     #+begin_src emacs-lisp
       (use-package pragmatapro-lig
+        :commands (pragmatapro-lig-mode)
         :straight (:host github :repo "lumiknit/emacs-pragmatapro-ligatures")
-        :config (pragmatapro-lig-global-mode 1))
+        :hook prog-mode)
     #+end_src
 *** Emoji 😂
     #+begin_src emacs-lisp
@@ -300,36 +301,37 @@
 ** Themes
 *** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
     #+begin_src emacs-lisp
-      (use-package almost-mono-themes)
+      (use-package almost-mono-themes :defer t)
     #+end_src
 
 *** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
     #+begin_src emacs-lisp
-      (use-package mlso-theme)
+      (use-package mlso-theme :defer t)
     #+end_src
 
 *** symx
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
-	:config
-	(set-face-attribute 'org-todo nil :box nil)
-	(set-face-attribute 'org-done nil :box nil))
+        :defer t
+        :config
+        (set-face-attribute 'org-todo nil :box nil)
+        (set-face-attribute 'org-done nil :box nil))
     #+END_SRC
 *** nordless
     #+BEGIN_SRC emacs-lisp
-      (use-package nordless-theme)
+      (use-package nordless-theme :defer t)
     #+END_SRC
 *** gruvbox
     #+begin_src emacs-lisp
-      (use-package gruvbox-theme)
+      (use-package gruvbox-theme :defer t)
     #+end_src
 *** parchment
     #+begin_src emacs-lisp
-      (use-package parchment-theme)
+      (use-package parchment-theme :defer t)
     #+end_src
 *** tao-yin
     #+begin_src emacs-lisp
-    (use-package tao-theme)
+    (use-package tao-theme :defer t)
     #+end_src
 
 ** Code
