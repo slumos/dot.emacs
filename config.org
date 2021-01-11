@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-12-31 Thu 10:31 slumos@stevenlum-ltm>
+# Time-stamp: <2021-01-11 Mon 10:52 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -285,10 +285,9 @@
     #+end_src
 
     #+begin_src emacs-lisp
-      (use-package pragmatapro-lig
-        :commands (pragmatapro-lig-mode)
-        :straight (:host github :repo "lumiknit/emacs-pragmatapro-ligatures")
-        :hook prog-mode)
+      (add-to-list 'load-path (expand-file-name "lisp/emacs-pragmatapro-ligatures" user-emacs-directory))
+      (require 'pragmatapro-lig)
+      (add-hook 'prog-mode-hook #'pragmatapro-lig-mode)
     #+end_src
 *** Emoji 😂
     #+begin_src emacs-lisp
@@ -304,11 +303,36 @@
       (use-package almost-mono-themes :defer t)
     #+end_src
 
+*** gruvbox
+    #+begin_src emacs-lisp
+      (use-package gruvbox-theme :defer t)
+    #+end_src
 *** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
     #+begin_src emacs-lisp
       (use-package mlso-theme :defer t)
     #+end_src
 
+*** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
+    #+begin_src emacs-lisp
+      (use-package modus-themes
+        :init
+        (setq modus-themes-slanted-constructs t
+              modus-themes-bold-constructs t
+              modus-themes-syntax 'faint
+              modus-themes-paren-match 'subtle-bold)
+        (use-package modus-operandi-theme)
+        (use-package modus-vivendi-theme))
+    #+end_src
+
+*** nordless
+    #+BEGIN_SRC emacs-lisp
+      (use-package nordless-theme :defer t)
+    #+END_SRC
+
+*** parchment
+    #+begin_src emacs-lisp
+      (use-package parchment-theme :defer t)
+    #+end_src
 *** symx
     #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
@@ -317,18 +341,6 @@
         (set-face-attribute 'org-todo nil :box nil)
         (set-face-attribute 'org-done nil :box nil))
     #+END_SRC
-*** nordless
-    #+BEGIN_SRC emacs-lisp
-      (use-package nordless-theme :defer t)
-    #+END_SRC
-*** gruvbox
-    #+begin_src emacs-lisp
-      (use-package gruvbox-theme :defer t)
-    #+end_src
-*** parchment
-    #+begin_src emacs-lisp
-      (use-package parchment-theme :defer t)
-    #+end_src
 *** tao-yin
     #+begin_src emacs-lisp
     (use-package tao-theme :defer t)
@@ -417,6 +429,39 @@
    but with user@host appended.
    #+begin_src emacs-lisp
    (custom-set-default 'time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
+   #+end_src
+
+** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
+   #+begin_src emacs-lisp
+     ;; Path to nano emacs modules (mandatory)
+     (add-to-list 'load-path "~/Projects/nano-emacs")
+     (add-to-list 'load-path ".")
+
+     ;; Window layout (optional)
+     (require 'nano-layout)
+
+     ;; Theming Command line options (this will cancel warning messages)
+     (add-to-list 'command-switch-alist '("-dark"   . (lambda (args))))
+     (add-to-list 'command-switch-alist '("-light"  . (lambda (args))))
+     (add-to-list 'command-switch-alist '("-default"  . (lambda (args))))
+
+     (cond
+      ((member "-default" command-line-args) t)
+      ((member "-dark" command-line-args) (require 'nano-theme-dark))
+      (t (require 'nano-theme-light)))
+
+     ;; Theme
+     (require 'nano-faces)
+     (nano-faces)
+
+     (require 'nano-theme)
+     (nano-theme)
+
+     ;; Nano default settings (optional)
+     (require 'nano-defaults)
+
+     ;; Nano header & mode lines (optional)
+     (require 'nano-modeline)
    #+end_src
 
 * Helpers
