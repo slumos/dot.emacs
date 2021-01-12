@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-01-11 Mon 10:52 slumos@stevenlum-ltm>
+# Time-stamp: <2021-01-12 Tue 11:05 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -300,7 +300,7 @@
 ** Themes
 *** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
     #+begin_src emacs-lisp
-      (use-package almost-mono-themes :defer t)
+      (use-package almost-mono-themes)
     #+end_src
 
 *** gruvbox
@@ -1703,9 +1703,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode
-       :config
-       (setq web-mode-content-types-alist '(("json" . "spinnaker/.*\\.j2\\'")))
-       )
+       :mode "\\.j2$"
+       :config (setq web-mode-content-types-alist '(("json" . "spinnaker/.*\\.j2\\'"))))
    #+END_SRC
 ** TOML
    #+BEGIN_SRC emacs-lisp :tangle no
