@@ -18,10 +18,18 @@
 ****** Notes
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
+***** TODO Review the [[https://eureka.sfdcsec.com/poc/vuln_plugin_details_table.php?str=cloud_name:MarketingCloud%20-%20DMP][Eureka Security & Compliance Dashboard]]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Look for anything with severity `P0` (these will need rapid remediation)
+****** Engage the relevant team members (PE), create or update relevant Work Items
 ***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
 ****** TODO Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
+****** Of late there are 2 jobs that create files with ownership that Cloudbees cannot clean up on its own. If you want to quiet the "Asynchronous Resource Disposer", try:
+       #+begin_src sh
+       clush -w cloudbees-agent-a00[1-3]-ash-prod 'sudo chown -R c_cloudbees:c_cloudbees /data/c_cloudbees/cje/workspace/rb_dataconsole-pr-{unit-tests,migrations}*'
+       #+end_src
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** RDS
