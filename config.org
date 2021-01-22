@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-01-12 Tue 11:05 slumos@stevenlum-ltm>
+# Time-stamp: <2021-01-21 Thu 14:54 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1110,7 +1110,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
          ("~/Projects/iac" . 1)
          ("~/Projects/puppet" . 1)))
       (transient-default-level 5)
-      ;(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
       (auto-revert-verbose t))
   #+END_SRC
 
