@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-12-07 Mon 10:03 slumos@stevenlum-ltm>
+# Time-stamp: <2021-01-22 Fri 13:40 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -28,30 +28,33 @@
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
-	   (quote
-	    (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
-	      "* %^T %?")
-	     ("k" "linK" entry
-	      (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
-	      "* %U %?")
-	     ("l" "Log" entry
-	      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
-	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
-	     ("m" "Meeting" entry
-	      (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2"))
-	     ("n" "Note" entry
-	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
-	      "* %^{title} %U%?")
+           (quote
+            (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
+              "* %^T %?")
+             ("k" "linK" entry
+              (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
+              "* %U %?")
+             ("l" "Log" entry
+              (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
+              "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+             ("m" "Meeting" entry
+              (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2")
+              :jump-to-captured t)
+             ("n" "Note" entry
+              (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
+              "* %^{title} %U%?")
              ("p" "Pager" entry
               (id "198B927A-E59D-4C7B-8E25-CFDAF46D3E3C")
               "* %T %?"
+              :jump-to-captured t
               :prepend t)
-	     ("s" "Snippet" entry
-	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
-	      "* %^{title}: %?")
-	     ("t" "Task" entry
-	      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
-	      "* TODO %?"))))
+             ("s" "Snippet" entry
+              (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
+              "* %^{title}: %?"
+              :jump-to-captured t)
+             ("t" "Task" entry
+              (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
+              "* TODO %?"))))
    #+END_SRC
 ** Helpers
    :PROPERTIES:
