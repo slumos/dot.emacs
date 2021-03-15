@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-01-21 Thu 14:54 slumos@stevenlum-ltm>
+# Time-stamp: <2021-03-10 Wed 15:34 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -614,7 +614,7 @@
        :hydra (hydra-multiple-cursors
                (:hint nil)
              "
-            Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+            Up^^             Down^^           Miscellaneous
            ------------------------------------------------------------------
             [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
             [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
@@ -1114,10 +1114,33 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
   #+END_SRC
 
   #+begin_src emacs-lisp
-    (use-package forge
-      :after magit
-      :custom
-      (forge-topic-list-limit '(60 . 0)))
+    ;; Security has pretty much killed this.
+    ;; (use-package forge
+    ;;   :after magit
+    ;;   :custom
+    ;;   (forge-topic-list-limit '(60 . 0)))
+  #+end_src
+
+  Based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
+  #+begin_src emacs-lisp
+    (defun slumos/parse-git-repo-url (url)
+      "convert a git remote location as a HTTP URL"
+      (if (string-match "^http" url)
+          url
+        (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
+                                  "https://\\2/\\3"
+                                  url)))
+    (defun slumos/magit-open-repo ()
+      "open remote repo URL"
+      (interactive)
+      (let ((url (magit-get "remote" "origin" "url")))
+        (progn
+          (browse-url (slumos/parse-git-repo-url url))
+          (message "opening repo %s" url))))
+
+    (add-hook 'magit-mode-hook
+              (lambda ()
+                (local-set-key (kbd "o") #'slumos/magit-open-repo)))
   #+end_src
 
 * Org [0/7]                                                             :org:
@@ -1468,7 +1491,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
-       :mode "\\.groovy\\'")
+       :mode "\\.groovy\\'"
+       :custom
+       (groovy-indent-offset 2))
    #+END_SRC
 ** Java
    #+begin_src emacs-lisp
