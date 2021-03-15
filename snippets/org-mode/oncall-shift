@@ -20,7 +20,7 @@
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
 ***** TODO Review the [[https://eureka.sfdcsec.com/poc/vuln_plugin_details_table.php?str=cloud_name:MarketingCloud%20-%20DMP][Eureka Security & Compliance Dashboard]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** Look for anything with severity `P0` (these will need rapid remediation)
+****** Look for anything with severity P0 (these will need rapid remediation)
 ****** Engage the relevant team members (PE), create or update relevant Work Items
 ***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -33,23 +33,23 @@
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** RDS
-       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-       aws rds describe-pending-maintenance-actions --region eu-west-1
-       aws rds describe-pending-maintenance-actions --region us-east-1
-       aws rds describe-pending-maintenance-actions --region us-west-2
-       #+end_src
+         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
+         aws rds describe-pending-maintenance-actions --region eu-west-1
+         aws rds describe-pending-maintenance-actions --region us-east-1
+         aws rds describe-pending-maintenance-actions --region us-west-2
+         #+end_src
 ****** Elasticache
-       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-       aws elasticache describe-events --region eu-west-1
-       aws elasticache describe-events --region us-east-1
-       aws elasticache describe-events --region us-west-2
-       #+end_src
+         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
+         aws elasticache describe-events --region eu-west-1
+         aws elasticache describe-events --region us-east-1
+         aws elasticache describe-events --region us-west-2
+         #+end_src
 ****** Redshift
-       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-       aws redshift describe-events --region eu-west-1
-       aws redshift describe-events --region us-east-1
-       aws redshift describe-events --region us-west-2
-       #+end_src
+         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
+         aws redshift describe-events --region eu-west-1
+         aws redshift describe-events --region us-east-1
+         aws redshift describe-events --region us-west-2
+         #+end_src
 ***** TODO Review email notifications. Update or create Work Items, raise awareness if necessary.
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** cron errors
