@@ -1,6 +1,6 @@
-brew install emacs-head@27 \
+brew install emacs-head@28 \
+  --verbose \
   --with-cocoa \
-  --with-imagemagick \
   --with-no-frame-refocus \
   --with-pdumper \
   --with-xwidgets \
