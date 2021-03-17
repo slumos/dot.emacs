@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-03-10 Wed 15:34 slumos@stevenlum-ltm>
+# Time-stamp: <2021-03-16 Tue 19:11 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1360,6 +1360,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       (leaf org-ql
         :custom
         (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
+    #+end_src
+
+*** [[https://github.com/alphapapa/org-web-tools/blob/master/README.org][org-web-tools/README.org at master · alphapapa/org-web-tools · GitHub]]
+    #+begin_src emacs-lisp
+      (use-package org-web-tools)
     #+end_src
 
 ** My Personal Hacks
