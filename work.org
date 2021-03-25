@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-03-04 Thu 17:41 slumos@stevenlum-ltm>
+# Time-stamp: <2021-03-25 Thu 08:11 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -85,6 +85,7 @@
             ("~/Projects/konsole" . 1)
             ("~/Projects/krux" . 1)
             ("~/Projects/puppet" . 1)
+            ("~/Projects/scala" . 1)
             ("~/Projects/sfdc-slumos" . 1)
             ("~/Projects/tf" . 1))))
   #+END_SRC
