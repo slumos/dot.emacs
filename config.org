@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-03-25 Thu 21:48 slumos@stevenlum-ltm>
+# Time-stamp: <2021-03-26 Fri 09:09 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -33,13 +33,13 @@
       '(package-archives
         '(("org"   .  "https://orgmode.org/elpa/")
           ("melpa" .  "https://melpa.org/packages/")
-          ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
+          ("elpy"  .  "https://jorgenschaefer.github.io/packages/")
           ("gnu"   .  "https://elpa.gnu.org/packages/")))
       '(package-archive-priorities
-        '(("org"	.  100)
-          ("elpy"	.  100)
+        '(("org"   .  100)
+          ("elpy"  .  100)
           ("melpa" .  50)
-          ("gnu"	.  10))))
+          ("gnu"   .  10))))
      (package-initialize)
    #+end_src
 *** =use-package=
