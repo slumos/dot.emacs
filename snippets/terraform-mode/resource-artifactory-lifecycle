@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: resource-artifactory-lifecycle
+# key: resource-artifactory-lifecycle
+# --
+
+lifecycle {
+  ignore_changes = [
+    content_synchronisation,
+  ]
+}

@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: resource-artifactory-remote
+# key: resource-artifactory-remote
+# --
+resource artifactory_remote_repository "$1" {
+  key             = "$1"
+  description     = "Proxy for $2"
+  notes           = "Managed by krux/tf-service-artifactory"
+  package_type    = "${3:$$(yas-choose-value '("maven" "pypi" "sbt"))}"
+  repo_layout_ref = "${4:$$(yas-choose-value '("ivy-default" "maven-2-default" "sbt-default" "simple-default"))}"
+  url             = "$2"
+
+  excludes_pattern = join(",", local.maven_exclude_pattern_list)
+
+  lifecycle {
+    ignore_changes = [
+      content_synchronisation,
+    ]
+  }
+}
+
+$0
