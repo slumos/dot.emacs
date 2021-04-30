@@ -1,9 +1,9 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-03-26 Fri 09:09 slumos@stevenlum-ltm>
+# Time-stamp: <2021-04-29 Thu 17:28 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty
+#+STARTUP: entitiespretty overview
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
@@ -33,7 +33,7 @@
       '(package-archives
         '(("org"   .  "https://orgmode.org/elpa/")
           ("melpa" .  "https://melpa.org/packages/")
-          ("elpy"  .  "https://jorgenschaefer.github.io/packages/")
+;          ("elpy"  .  "https://jorgenschaefer.github.io/packages/")
           ("gnu"   .  "https://elpa.gnu.org/packages/")))
       '(package-archive-priorities
         '(("org"   .  100)
@@ -351,8 +351,13 @@
    (show-paren-mode t)
    #+END_SRC
 ** Mode Line
+*** Clock
+    #+begin_src emacs-lisp
+      (display-time)
+    #+end_src
+
 *** Deploy fanciness
-**** TRYING Doom Mode Line
+**** Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
 	 :hook
@@ -360,77 +365,6 @@
 	 :custom
 	 (doom-modeline-icon t "Use all-the-icons"))
        #+end_src
-**** SKIP Spaceline
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package spaceline-config
-	 :ensure spaceline
-	 :config (spaceline-spacemacs-theme))
-     #+END_SRC
-**** All The Icons!
-     I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
-     #+BEGIN_SRC emacs-lisp
-     (use-package all-the-icons)
-     #+END_SRC
-
-     A bit too noisy for me...
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package all-the-icons-ivy
-         :init (all-the-icons-ivy-setup))
-     #+END_SRC
-**** [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package spaceline-all-the-icons
-	 :after spaceline
-	 :config
-	 (setq spaceline-all-the-icons-separator-type 'arrow)
-	 (setq spaceline-all-the-icons-icon-set-modified 'circle)
-	 (spaceline-all-the-icons-theme)
-	 (spaceline-all-the-icons--setup-git-ahead)
-	 (spaceline-all-the-icons--setup-paradox)
-	 (spaceline-toggle-all-the-icons-narrowed-on))
-     #+END_SRC
-**** Color in comint
-     #+BEGIN_SRC emacs-lisp
-       (use-package xterm-color
-	 :init
-	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
-	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
-     #+END_SRC
-**** COMMENT [[https://github.com/tumashu/posframe][tumashu/posframe: Pop a posframe (just a child-frame) at point]]
-     #+begin_src emacs-lisp
-       ;; (leaf ivy-posframe
-       ;;   :after ivy
-       ;;   :custom ((ivy-posframe-mode . t)
-       ;;            (ivy-posframe-display-functions-alist
-       ;;             . '((swiper . nil)
-       ;;                 (swiper-isearch . nil)
-       ;;                 (t . ivy-posframe-display-at-frame-center)))))
-     #+end_src
-
-** auto-revert
-   Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
-   now because I need to use TRAMP which conflicts with it...
-   #+BEGIN_SRC emacs-lisp
-     (setq auto-revert-check-vc-info nil)
-     (global-auto-revert-mode)
-   #+END_SRC
-** Me
-   #+BEGIN_SRC emacs-lisp
-   (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
-   #+END_SRC
-** Misc
-   #+BEGIN_SRC emacs-lisp
-     (setq vc-follow-symlinks t)
-   #+END_SRC
-
-   I like to use time-stamp for Org files as check that Syncthing is
-   working—at a glance, on my phone, and in case either of those
-   things screws up mtime. This makes it look like an Org timestamp
-   but with user@host appended.
-   #+begin_src emacs-lisp
-   (custom-set-default 'time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
-   #+end_src
-
 ** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
    #+begin_src emacs-lisp
      ;; Path to nano emacs modules (mandatory)
@@ -503,6 +437,37 @@
        (counsel-M-x "hydra-.*/body "))
      (global-set-key (kbd "C-c h") #'invoke-hydra)
    #+end_src
+*** Hydras
+**** Commonly visited files
+     #+name: commonly-visited-files-shortcuts
+     | key | path                         | name            |
+     |-----+------------------------------+-----------------|
+     | c   | ~/.config/emacs/config.org   | main config     |
+     | P   | ~/.config/emacs/personal.org | personal config |
+     | W   | ~/.config/emacs/work.org     | work config     |
+
+     #+begin_src emacs-lisp :var bindings=commonly-visited-files-shortcuts :results value code replace
+       (cl-loop for row in bindings
+         collect
+         (list
+          (car row)
+          '(find-file (elt 1 row))
+          ))
+
+     #+end_src
+
+     #+RESULTS:
+     #+begin_src emacs-lisp
+     (("c"
+       (find-file
+        (elt 1 row)))
+      ("P"
+       (find-file
+        (elt 1 row)))
+      ("W"
+       (find-file
+        (elt 1 row))))
+     #+end_src
 
 ** TODO slumos-org-copy-subtree-to-system
    The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
@@ -853,7 +818,6 @@
             (ansi-color-apply-on-region (region-beginning) (region-end))
           (ansi-color-apply-on-region (point-min) (point-max))))
     #+end_src
-
 *** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
@@ -881,11 +845,10 @@
   (kill-new (file-truename buffer-file-name))
 )
 #+END_SRC
-
 *** rename-file-and-buffer
-Another /omg, why wasn't this in Emacs 18/ moment.
+    Another /omg, why wasn't this in Emacs 18/ moment.
 
-From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+    From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 
 #+BEGIN_SRC emacs-lisp
   (defun rename-file-and-buffer ()
@@ -1181,6 +1144,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     (add-hook 'magit-mode-hook
               (lambda ()
                 (local-set-key (kbd "o") #'slumos/magit-open-repo)))
+  #+end_src
+
+  Inspired by [[https://emacs.stackexchange.com/questions/30487/add-copy-to-kill-ring-current-branch-name-with-magit][Add (copy) to kill ring current branch name with Magit - Emacs Stack Exchange]]
+  #+begin_src emacs-lisp
+    (defun slumos/magit-copy-buffer-current-branch ()
+      "Copy current branch name to clipboard"
+      (interactive)
+      (let ((branch (magit-get-current-branch)))
+        (if branch
+            (progn (kill-new branch)
+                   (message "%s" branch))
+          (user-error "There is not current branch"))))
   #+end_src
 
 * Org [0/7]                                                             :org:
@@ -1497,6 +1472,101 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        ((emacs-lisp-mode-hook
        fennel-mode-hook) . lispy-mode))
     #+end_src
+**** hydra
+     [[https://sachachua.com/dotemacs/#hydra-lispy][Thanks again Sacha!]]
+
+     #+NAME: lispy-bindings-ref
+     | key | function                      | column   |
+     |-----+-------------------------------+----------|
+     | <   | lispy-barf                    |          |
+     | A   | lispy-beginning-of-defun      |          |
+     | j   | lispy-down                    |          |
+     | Z   | lispy-edebug-stop             |          |
+     | B   | lispy-ediff-regions           |          |
+     | G   | lispy-goto-local              |          |
+     | h   | lispy-left                    |          |
+     | N   | lispy-narrow                  |          |
+     | y   | lispy-occur                   |          |
+     | o   | lispy-other-mode              |          |
+     | J   | lispy-outline-next            |          |
+     | K   | lispy-outline-prev            |          |
+     | P   | lispy-paste                   |          |
+     | l   | lispy-right                   |          |
+     | I   | lispy-shifttab                |          |
+     | >   | lispy-slurp                   |          |
+     | SPC | lispy-space                   |          |
+     | xB  | lispy-store-region-and-buffer |          |
+     | u   | lispy-undo                    |          |
+     | k   | lispy-up                      |          |
+     | v   | lispy-view                    |          |
+     | V   | lispy-visit                   |          |
+     | W   | lispy-widen                   |          |
+     | D   | pop-tag-mark                  |          |
+     | x   | see                           |          |
+     | L   | unbound                       |          |
+     | U   | unbound                       |          |
+     | X   | unbound                       |          |
+     | Y   | unbound                       |          |
+     | H   | lispy-ace-symbol-replace      | Edit     |
+     | c   | lispy-clone                   | Edit     |
+     | C   | lispy-convolute               | Edit     |
+     | n   | lispy-new-copy                | Edit     |
+     | O   | lispy-oneline                 | Edit     |
+     | r   | lispy-raise                   | Edit     |
+     | R   | lispy-raise-some              | Edit     |
+     | \   | lispy-splice                  | Edit     |
+     | S   | lispy-stringify               | Edit     |
+     | i   | lispy-tab                     | Edit     |
+     | xj  | lispy-debug-step-in           | Eval     |
+     | xe  | lispy-edebug                  | Eval     |
+     | xT  | lispy-ert                     | Eval     |
+     | e   | lispy-eval                    | Eval     |
+     | E   | lispy-eval-and-insert         | Eval     |
+     | xr  | lispy-eval-and-replace        | Eval     |
+     | p   | lispy-eval-other-window       | Eval     |
+     | q   | lispy-ace-paren               | Move     |
+     | z   | lispy-knight                  | Move     |
+     | s   | lispy-move-down               | Move     |
+     | w   | lispy-move-up                 | Move     |
+     | t   | lispy-teleport                | Move     |
+     | Q   | lispy-ace-char                | Nav      |
+     | -   | lispy-ace-subword             | Nav      |
+     | a   | lispy-ace-symbol              | Nav      |
+     | b   | lispy-back                    | Nav      |
+     | d   | lispy-different               | Nav      |
+     | f   | lispy-flow                    | Nav      |
+     | F   | lispy-follow                  | Nav      |
+     | g   | lispy-goto                    | Nav      |
+     | xb  | lispy-bind-variable           | Refactor |
+     | xf  | lispy-flatten                 | Refactor |
+     | xc  | lispy-to-cond                 | Refactor |
+     | xd  | lispy-to-defun                | Refactor |
+     | xi  | lispy-to-ifs                  | Refactor |
+     | xl  | lispy-to-lambda               | Refactor |
+     | xu  | lispy-unbind-variable         | Refactor |
+     | M   | lispy-multiline               | Other    |
+     | xh  | lispy-describe                | Other    |
+     | m   | lispy-mark-list               | Other    |
+
+     #+BEGIN_SRC emacs-lisp :var bindings=lispy-bindings-ref :colnames yes :results silent :exports code
+       (eval
+        (append
+         '(defhydra my/lispy-cheat-sheet (:hint nil :foreign-keys run)
+            ("<f14>" nil "Exit" :exit t))
+         (cl-loop for x in bindings
+                  unless (string= "" (elt x 2))
+                  collect
+                  (list (car x)
+                        (intern (elt x 1))
+                        (when (string-match "lispy-\\(?:eval-\\)?\\(.+\\)"
+                                            (elt x 1))
+                          (match-string 1 (elt x 1)))
+                        :column
+                        (elt x 2)))))
+       (with-eval-after-load "lispy"
+         (define-key lispy-mode-map (kbd "s-l") 'my/lispy-cheat-sheet/body))
+     #+END_SRC
+
 ** Dash
    #+begin_src emacs-lisp
      (use-package counsel-dash
@@ -1796,6 +1866,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                                  ("steven.lan" "personal.org")
                                  (rx "salesforce.com" "work.org")))
             (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (message "work/life loading %s on %s" local-config (system-name))
        (if (file-exists-p local-config)
            (org-babel-load-file local-config)))
    #+END_SRC

@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-03-25 Thu 08:11 slumos@stevenlum-ltm>
+# Time-stamp: <2021-04-29 Thu 10:52 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -44,8 +44,9 @@
               (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
               "* %^{title} %U%?")
              ("p" "Pager" entry
-              (id "198B927A-E59D-4C7B-8E25-CFDAF46D3E3C")
+              (file+olp+datetree "DMP.org" "On call" "Pages")
               "* %T %?"
+              :time-prompt t
               :jump-to-captured t
               :prepend t)
              ("s" "Snippet" entry
@@ -85,6 +86,7 @@
             ("~/Projects/konsole" . 1)
             ("~/Projects/krux" . 1)
             ("~/Projects/puppet" . 1)
+            ("~/Projects/python" . 1)
             ("~/Projects/scala" . 1)
             ("~/Projects/sfdc-slumos" . 1)
             ("~/Projects/tf" . 1))))

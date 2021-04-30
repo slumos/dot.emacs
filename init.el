@@ -4,6 +4,7 @@
 ;; 2017-05-01 do over
 
 (setq byte-compile-warnings '(not obsolete))
+(setq comp-deferred-compilation t)
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (expand-file-name "custom.el" user-emacs-directory))

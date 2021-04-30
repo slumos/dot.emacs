@@ -3,8 +3,13 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        dabbrev-expand
+        hydra--negative-argument
+        hydra-multiple-cursors/body
+        hydra-multiple-cursors/mc/insert-numbers-and-exit
         indent-for-tab-command
         ivy-alt-done
+        kill-region
         lispy-braces
         lispy-brackets
         lispy-delete
@@ -125,6 +130,9 @@
 (setq mc/cmds-to-run-once
       '(
         counsel-M-x
+        hydra-multiple-cursors/mc/insert-letters-and-exit
+        hydra-multiple-cursors/mc/mark-all-like-this-and-exit
         hydra-multiple-cursors/mc/mark-next-like-this
+        ivy-switch-buffer
         lispy-cursor-down
         ))

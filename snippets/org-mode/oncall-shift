@@ -6,16 +6,10 @@
 *** `daily-oncall-checklist-scheduled-time`
 **** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=muted%3Afalse%20group_status%3A(alert%20OR%20warn)%20triggered%3A1440][DataDog Monitors]]
-      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** Fix any low-hanging fruit. See [[https://confluence.internal.salesforce.com/display/EN/Common+Triage+Issues][Common Triage Issues]] for examples.
-****** For known issues, write a comment on the event linking to the appropriate Work Item. Raise awareness if necessary.
-****** Make sure you know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
-****** Clear out any stale entries in the [[https://app.datadoghq.com/monitors#downtime][downtime schedule]] that might cause a missed alert
-***** TODO Visit the [[https://puppet-ui-prod.krxd.net/#/enforcement/status][Puppet Overview dashboard]]; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Notes
+****** Puppet Overview dashboard; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
 ***** TODO Review the [[https://eureka.sfdcsec.com/poc/vuln_plugin_details_table.php?str=cloud_name:MarketingCloud%20-%20DMP][Eureka Security & Compliance Dashboard]]
