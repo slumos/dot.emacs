@@ -1090,6 +1090,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+begin_src emacs-lisp
 
    #+end_src
+** Spelling
+   #+begin_src emacs-lisp
+     (dolist (hook '(text-mode))
+       (add-hook hook (lambda () (flyspell-mode 1))))
+     (dolist (hook '(prog-mode))
+       (add-hook hook (lambda () (flyspell-prog-mode))))
+   #+end_src
+
 
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
