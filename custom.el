@@ -13,7 +13,7 @@
  '(auth-source-debug 'trivia)
  '(auth-source-save-behavior 'ask)
  '(auth-sources nil)
- '(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
+ '(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
  '(auto-revert-verbose t)
  '(beacon-color "#cc6666")
  '(char-menu
