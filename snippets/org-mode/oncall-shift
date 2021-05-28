@@ -4,7 +4,7 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 *** `daily-oncall-checklist-scheduled-time`
-**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
+$0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
