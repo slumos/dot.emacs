@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-05-10 Mon 14:31 slumos@stevenlum-ltm>
+# Time-stamp: <2021-05-20 Thu 10:35 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -15,19 +15,18 @@
      (setq org-directory "~/Sync/GDrive/Notes")
      (setq slumos-org-directory "~/Sync/ST/Notes")
      (setq org-agenda-files (list
-                             (expand-file-name "ADS.org" org-directory)
                              (expand-file-name "DMP.org" org-directory)
                              (expand-file-name "config.org" user-emacs-directory)
                              (expand-file-name "Inbox.org" slumos-org-directory)))
    #+END_SRC
 
-   I want everything searched for IDs.
+   I want everything searched for IDs. But it's soooo slow.
    #+begin_src emacs-lisp
-     (custom-set-variables
-      '(org-id-extra-files
-        (cl-loop for dir in (list org-directory slumos-org-directory)
-                 append
-                 (directory-files dir t "\\.org\\'"))))
+     ;; (custom-set-variables
+     ;;  '(org-id-extra-files
+     ;;    (cl-loop for dir in (list org-directory slumos-org-directory)
+     ;;             append
+     ;;             (directory-files dir t "\\.org\\'"))))
    #+end_src
 
 ** org-ql
@@ -60,7 +59,7 @@
               :jump-to-captured t
               :prepend t)
              ("s" "Snippet" entry
-              (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
+              (file+olp "~/Sync/OneDrive/Notes/NOTES.org" "Snippets")
               "* %^{title}: %?"
               :jump-to-captured t)
              ("t" "Task" entry
