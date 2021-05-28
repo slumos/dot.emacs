@@ -440,34 +440,30 @@
    #+end_src
 *** Hydras
 **** Commonly visited files
+
+     This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
      #+name: commonly-visited-files-shortcuts
-     | key | path                         | name            |
-     |-----+------------------------------+-----------------|
-     | c   | ~/.config/emacs/config.org   | main config     |
-     | P   | ~/.config/emacs/personal.org | personal config |
-     | W   | ~/.config/emacs/work.org     | work config     |
+     | key | path                            | name            |
+     |-----+---------------------------------+-----------------|
+     | c   | ~/.config/emacs/config.org      | main config     |
+     | N   | ~/Sync/OneDrive/Notes/NOTES.org | NOTES.org       |
+     | n   | ~/Sync/GDrive/Notes/Notes.org   | Work notes      |
+     | k   | ~/Sync/GDrive/Notes/DMP.org     | Krux work       |
+     | p   | ~/.config/emacs/personal.org    | personal config |
+     | s   | ~/Sync/ST/Notes/SLUMOS.org      | SLUMOS.org      |
+     | w   | ~/.config/emacs/work.org        | work config     |
 
-     #+begin_src emacs-lisp :var bindings=commonly-visited-files-shortcuts :results value code replace
-       (cl-loop for row in bindings
-         collect
-         (list
-          (car row)
-          '(find-file (elt 1 row))
-          ))
-
+     #+name: table-to-find-file-heads
+     #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
+       (cl-loop for row in table
+         do
+         (print (list (car row) (list 'find-file (elt row 1)) (elt row 2) :column "File Shortcuts")))
      #+end_src
 
-     #+RESULTS:
-     #+begin_src emacs-lisp
-     (("c"
-       (find-file
-        (elt 1 row)))
-      ("P"
-       (find-file
-        (elt 1 row)))
-      ("W"
-       (find-file
-        (elt 1 row))))
+     #+begin_src emacs-lisp :noweb yes
+       (defhydra hydra-commonly-visited-files-shortcuts (:color blue)
+         <<table-to-find-file-heads(table=commonly-visited-files-shortcuts)>>)
+       (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
      #+end_src
 
 ** TODO slumos-org-copy-subtree-to-system
@@ -1098,7 +1094,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (dolist (hook '(prog-mode))
        (add-hook hook (lambda () (flyspell-prog-mode))))
    #+end_src
-
 
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
