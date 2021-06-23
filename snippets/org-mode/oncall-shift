@@ -24,6 +24,12 @@ $0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.c
        #+begin_src sh
        clush -w cloudbees-agent-a00[1-3]-ash-prod 'sudo chown -R c_cloudbees:c_cloudbees /data/c_cloudbees/cje/workspace/rb_dataconsole-pr-{unit-tests,migrations}*'
        #+end_src
+***** TODO Review Available CD4PE Upgrades
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+******* Check the [[https://puppet-cicd-prod.krxd.net:8800/app/cd4pe/version-history][Continuous Delivery for Puppet Enterprise Version History]]
+******* If there is a new version, review Release Notes and pre-flight checks.
+******** If the upgrade looks easy, click Deploy button, watch, verify the new version number in the bottom-left corner of the console.
+******** If the upgrade looks complicated, make a ticket for it to be done.
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** RDS

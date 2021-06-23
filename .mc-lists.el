@@ -125,6 +125,7 @@
         special-lispy-widen
         special-lispy-x
         special-pop-tag-mark
+        swiper-isearch
         ))
 
 (setq mc/cmds-to-run-once
@@ -135,4 +136,5 @@
         hydra-multiple-cursors/mc/mark-next-like-this
         ivy-switch-buffer
         lispy-cursor-down
+        wgrep-finish-edit
         ))

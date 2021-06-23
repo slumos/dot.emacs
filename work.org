@@ -1,9 +1,9 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-05-20 Thu 10:35 slumos@stevenlum-ltm>
+# Time-stamp: <2021-06-22 Tue 12:37 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty
+#+STARTUP: entitiespretty overview
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
