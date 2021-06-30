@@ -43,6 +43,7 @@ $0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.c
          aws elasticache describe-events --region eu-west-1
          aws elasticache describe-events --region us-east-1
          aws elasticache describe-events --region us-west-2
+         aws elasticache describe-update-actions --query 'UpdateActions[].{severity: ServiceUpdateSeverity, update: ServiceUpdateName, cluster: ReplicationGroupId, due: ServiceUpdateRecommendedApplyByDate}'
          #+end_src
 ****** Redshift
          #+begin_src sh :exports both :eval no-export :wrap src json :results raw
