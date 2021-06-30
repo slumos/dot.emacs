@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-06-24 Thu 09:39 slumos@stevenlum-ltm>
+# Time-stamp: <2021-06-30 Wed 16:31 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -456,6 +456,7 @@
      | n   | ~/Sync/GDrive/Notes/Notes.org   | Work notes      |
      | k   | ~/Sync/GDrive/Notes/DMP.org     | Krux work       |
      | p   | ~/.config/emacs/personal.org    | personal config |
+     | r   | ~/Synt/ST/Notes/Cookbook.org    | cookbook        |
      | s   | ~/Sync/ST/Notes/SLUMOS.org      | SLUMOS.org      |
      | w   | ~/.config/emacs/work.org        | work config     |
 
