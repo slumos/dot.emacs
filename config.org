@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-06-30 Wed 16:31 slumos@stevenlum-ltm>
+# Time-stamp: <2021-07-15 Thu 11:55 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -459,6 +459,7 @@
      | r   | ~/Synt/ST/Notes/Cookbook.org    | cookbook        |
      | s   | ~/Sync/ST/Notes/SLUMOS.org      | SLUMOS.org      |
      | w   | ~/.config/emacs/work.org        | work config     |
+     | z   | ~/.zshrc                        | zshrc           |
 
      #+name: table-to-find-file-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
@@ -472,8 +473,15 @@
          <<table-to-find-file-heads(table=commonly-visited-files-shortcuts)>>)
        (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
      #+end_src
-
-** TODO slumos-org-copy-subtree-to-system
+** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
+   #+begin_src emacs-lisp
+     (use-package helpful
+       :after counsel
+       :config
+       (setq counsel-describe-function-function #'helpful-callable)
+       (setq counsel-describe-variable-function #'helpful-variable))
+   #+end_src
+** TODO slumos-org-copy-to-clipboard
    The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
    See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
 
@@ -733,8 +741,8 @@
        ("C-s" . swiper-isearch)
        ("M-x" . counsel-M-x)
        ("C-x C-f" . counsel-find-file)
-       ("<f1> f" . counsel-describe-function)
-       ("<f1> v" . counsel-describe-variable)
+       ("C-h f" . counsel-describe-function)
+       ("C-h v" . counsel-describe-variable)
        ("C-c u" . counsel-unicode-char)
        ("C-c r" . counsel-rg)
        :map ivy-minibuffer-map
