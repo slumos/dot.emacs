@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-07-15 Thu 11:55 slumos@stevenlum-ltm>
+# Time-stamp: <2021-07-28 Wed 16:34 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -413,7 +413,7 @@
        (deft-directory . "~/Google Drive/Notes")
        (deft-recursive . t))
    #+end_src
-** [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
+** COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
    #+begin_src emacs-lisp
      (use-package package-loading-notifier
        :init
@@ -1781,7 +1781,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** Ruby
    #+BEGIN_SRC emacs-lisp
      (use-package ruby-mode
-       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\||Puppetfile\\)\\'")
+       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\(\\.local\\)?\\||Puppetfile\\)\\'")
 
      (use-package inf-ruby
        :no-require t)
@@ -1793,7 +1793,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package ruby-hash-syntax
        :bind
        (:map ruby-mode-map
-	     ("C-c #" . ruby-toggle-hash-syntax)))
+             ("C-c #" . ruby-toggle-hash-syntax)))
 
      (use-package seeing-is-believing
        :bind (("<s-return>" . seeing-is-believing)))
