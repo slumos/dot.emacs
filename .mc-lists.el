@@ -131,6 +131,8 @@
 (setq mc/cmds-to-run-once
       '(
         counsel-M-x
+        hydra-multiple-cursors/ignore
+        hydra-multiple-cursors/mc/add-cursor-on-click
         hydra-multiple-cursors/mc/insert-letters-and-exit
         hydra-multiple-cursors/mc/mark-all-like-this-and-exit
         hydra-multiple-cursors/mc/mark-next-like-this

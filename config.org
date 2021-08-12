@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-07-28 Wed 16:34 slumos@stevenlum-ltm>
+# Time-stamp: <2021-08-12 Thu 14:30 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1700,6 +1700,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 ** jq mode
    #+begin_src emacs-lisp
      (use-package jq-mode)
+   #+end_src
+** Kubernetes / Helm
+   #+begin_src emacs-lisp
+     (use-package k8s-mode
+       :ensure t
+       :hook (k8s-mode . yas-minor-mode))
    #+end_src
 ** Lua
    I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday

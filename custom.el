@@ -87,7 +87,7 @@
  '(magit-diff-use-overlays nil)
  '(magit-repository-directories
    '(("~/Projects" . 1)
-     ("~/Projects/ad-studio" . 1)
+     ("~/Projects/aws" . 1)
      ("~/Projects/datadog" . 1)
      ("~/Projects/falcon" . 1)
      ("~/Projects/java" . 1)
@@ -101,6 +101,7 @@
  '(magit-wip-mode t)
  '(objed-cursor-color "#99324B")
  '(org-agenda-files nil)
+ '(org-agenda-span 'day)
  '(org-capture-bookmark nil)
  '(org-catch-invisible-edits 'error)
  '(org-confirm-babel-evaluate nil)
