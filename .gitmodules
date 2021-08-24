@@ -1,3 +1,6 @@
 [submodule "lisp/gojira"]
 	path = lisp/gojira
 	url = https://github.com/toshism/gojira.git
+[submodule "lisp/emacs-pragmatapro-ligatures"]
+	path = lisp/emacs-pragmatapro-ligatures
+	url = https://github.com/lumiknit/emacs-pragmatapro-ligatures.git
