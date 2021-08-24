@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-08-12 Thu 14:30 slumos@stevenlum-ltm>
+# Time-stamp: <2021-08-24 Tue 11:20 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -549,7 +549,7 @@
    (use-package copy-as-format)
    #+END_SRC
 ** Jumping
-*** [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
+*** COMMENT [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
     #+BEGIN_SRC emacs-lisp
       (use-package ace-link
 	:config
@@ -582,6 +582,13 @@
 	       ("M-g z" . dumb-jump-go-prefer-external-other-window))
 	:config (setq dumb-jump-selector 'ivy))
     #+END_SRC
+*** [[https://github.com/noctuid/link-hint.el][noctuid/link-hint.el: Pentadactyl-like Link Hinting in Emacs with Avy]]
+    #+begin_src emacs-lisp
+      (use-package link-hint
+        :bind
+        ("M-o" . link-hint-open-link))
+    #+end_src
+
 ** multiple-cursors
    [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
    [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][multiple cursors · abo-abo/hydra Wiki]]
