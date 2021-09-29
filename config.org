@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-08-24 Tue 11:20 slumos@stevenlum-ltm>
+# Time-stamp: <2021-09-29 Wed 09:31 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -316,12 +316,31 @@
     #+begin_src emacs-lisp
       (use-package modus-themes
         :init
-        (setq modus-themes-slanted-constructs t
-              modus-themes-bold-constructs t
-              modus-themes-syntax 'faint
-              modus-themes-paren-match 'subtle-bold)
-        (use-package modus-operandi-theme)
-        (use-package modus-vivendi-theme)
+        (setq
+         ;; headings
+         modus-themes-headings '((1 . (rainbow))
+                                 (t . t))
+         modus-themes-scale-headings nil
+         modus-themes-variable-pitch-headings t
+
+         ;; org
+         modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                                   (header-date . (grayscale bold-today)))
+
+         ;; text
+         modus-themes-bold-constructs t
+         modus-themes-italic-constructs t
+         modus-themes-slanted-constructs t
+
+         ;; other
+         modus-themes-hl-line 'accented
+         modus-themes-mode-line '(accented borderless)
+         modus-themes-paren-match 'subtle-bold
+         modus-themes-syntax '(faint alt-syntax)
+         modus-themes-variable-pitch-ui t
+         )
+        (modus-themes-load-themes)
+        :config
         (modus-themes-load-operandi))
     #+end_src
 
@@ -449,17 +468,18 @@
 
      This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
      #+name: commonly-visited-files-shortcuts
-     | key | path                            | name            |
-     |-----+---------------------------------+-----------------|
-     | c   | ~/.config/emacs/config.org      | main config     |
-     | N   | ~/Sync/OneDrive/Notes/NOTES.org | NOTES.org       |
-     | n   | ~/Sync/GDrive/Notes/Notes.org   | Work notes      |
-     | k   | ~/Sync/GDrive/Notes/DMP.org     | Krux work       |
-     | p   | ~/.config/emacs/personal.org    | personal config |
-     | r   | ~/Synt/ST/Notes/Cookbook.org    | cookbook        |
-     | s   | ~/Sync/ST/Notes/SLUMOS.org      | SLUMOS.org      |
-     | w   | ~/.config/emacs/work.org        | work config     |
-     | z   | ~/.zshrc                        | zshrc           |
+     | key | path                               | name             |
+     |-----+------------------------------------+------------------|
+     | a   | ~/.config/alacritty/alacritty.yml  | alacritty config |
+     | c   | ~/.config/emacs/config.org         | main config      |
+     | N   | ~/Sync/OneDrive/Notes/NOTES.org    | NOTES.org        |
+     | n   | ~/Sync/GDrive/Notes/Notes.org      | Work notes       |
+     | k   | ~/Sync/GDrive/Notes/DMP.org        | Krux work        |
+     | p   | ~/.config/emacs/personal.org       | personal config  |
+     | r   | ~/Synt/ST/Notes/Cookbook.org       | cookbook         |
+     | s   | ~/Sync/ST/Notes/SLUMOS.org         | SLUMOS.org       |
+     | w   | ~/.config/emacs/work.org           | work config      |
+     | z   | ~/.zshrc                           | zshrc            |
 
      #+name: table-to-find-file-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
@@ -794,7 +814,7 @@
        (setq ivy-format-function #'ivy-format-function-line))
    #+end_src
 
-*** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
+*** COMMENT [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
     #+BEGIN_SRC emacs-lisp
       (use-package counsel-tramp
 	:hook
@@ -1726,22 +1746,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package markdown-mode
        :commands (markdown-mode gfm-mode)
        :mode (("README\\.md\\'" . gfm-mode)
-	      ("\\.md\\'" . markdown-mode)
-	      ("\\.markdown\\'" . markdown-mode))
+              ("\\.md\\'" . markdown-mode)
+              ("\\.markdown\\'" . markdown-mode))
        :init
-       (setq markdown-command "cmark-gfm"))
-       ;; :config
-       ;; stolen from http://stackoverflow.com/a/26297700
-       ;; makes markdown tables saner via orgtbl-mode
-       ;; (require 'org-table)
-       ;; (defun cleanup-org-tables ()
-       ;;   (save-excursion
-       ;;     (goto-char (point-min))
-       ;;     (while (search-forward "-+-" nil t) (replace-match "-|-"))))
-       ;; (add-hook 'markdown-mode-hook #'orgtbl-mode)
-       ;; (add-hook 'markdown-mode-hook
-       ;; 	    (lambda()
-       ;; 	      (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
+       (setq markdown-command "cmark-gfm"
+             ;;; ripped from https://github.com/hlissner/doom-emacs/blob/ce3188/modules/lang/markdown/config.el#L28
+             ;; HACK Due to jrblevin/markdown-mode#578, invoking `imenu' throws a
+             ;;      'wrong-type-argument consp nil' error if you use native-comp.
+             markdown-nested-imenu-heading-index (not (ignore-errors (native-comp-available-p)))))
    #+END_SRC
 ** MinecraftForge
 *** TODO [[https://github.com/qwattash/forge-mode][qwattash/forge-mode: Emacs minor mode for minecraft forge development]]
@@ -1806,7 +1818,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package ruby-hash-syntax
        :bind
        (:map ruby-mode-map
-             ("C-c #" . ruby-toggle-hash-syntax)))
+             ("C-c #" . ruby-hash-syntax-toggle)))
 
      (use-package seeing-is-believing
        :bind (("<s-return>" . seeing-is-believing)))

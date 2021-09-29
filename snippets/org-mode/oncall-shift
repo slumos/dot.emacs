@@ -3,8 +3,9 @@
 # key: <shift
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
-*** `daily-oncall-checklist-scheduled-time`
-$0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
+$0*** `daily-oncall-checklist-scheduled-time`
+    (this list last updated on <2021-09-02 Thu>)
+**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -12,10 +13,12 @@ $0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.c
 ****** Puppet Overview dashboard; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
-***** TODO Review the [[https://eureka.sfdcsec.com/poc/vuln_plugin_details_table.php?str=cloud_name:MarketingCloud%20-%20DMP][Eureka Security & Compliance Dashboard]]
+***** TODO Review the [[https://gus.lightning.force.com/analytics/lens/0FKAH0000002eEp4AI][Security & Compliance Dashboard]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Look for anything with severity P0 (these will need rapid remediation)
 ****** Engage the relevant team members (PE), create or update relevant Work Items
+***** TODO In [[https://app.snyk.io/org/marketing-cloud-audience-studio][Snyk Security Issues Reports]], look for High Severity issues in repos we manage
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
@@ -51,6 +54,21 @@ $0**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.c
          aws redshift describe-events --region us-east-1
          aws redshift describe-events --region us-west-2
          #+end_src
+***** TODO Look for any certificates expiring within 60 days, https://gus.lightning.force.com/lightning/o/sfcerts__Certificate__c/list with filter on common name contains krxd.net or krux.com and status=enrolled: create a GUS ticket if not yet in backlog (OK to batch multiple certs in one GUS ticket)
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Instructions
+       Please follow the instructions below for inspecting your expiring certificates on each of your hosts:
+       1. Visit the Certificates Dashboard: https://sfdc.co/Certificates
+       2. Under the Tags widget on the left hand side: select Krux and then click Apply
+       3. Under the Expiry Period Range widget: select 31 - 60 days and then click Apply
+       4. Utilize the calendar heatmap to visualize the expiry timelines
+       5. Utilize the data table at the bottom of the dashboard to view detailed information around your expiring certificates such as:
+          1) Subject Common Name
+          2) Issuer Common Name
+          3) Hostname
+          4) IP Address
+          5) Port
+          6) SHA 256 Fingerprint
 ***** TODO Review email notifications. Update or create Work Items, raise awareness if necessary.
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** cron errors

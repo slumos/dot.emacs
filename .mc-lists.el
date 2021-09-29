@@ -127,6 +127,7 @@
         special-lispy-x
         special-pop-tag-mark
         swiper-isearch
+        yaml-electric-backspace
         ))
 
 (setq mc/cmds-to-run-once
@@ -138,6 +139,7 @@
         hydra-multiple-cursors/mc/insert-letters-and-exit
         hydra-multiple-cursors/mc/mark-all-like-this-and-exit
         hydra-multiple-cursors/mc/mark-next-like-this
+        hydra-multiple-cursors/nil
         ivy-switch-buffer
         lispy-cursor-down
         wgrep-finish-edit
