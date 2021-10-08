@@ -54,7 +54,7 @@ $0*** `daily-oncall-checklist-scheduled-time`
          aws redshift describe-events --region us-east-1
          aws redshift describe-events --region us-west-2
          #+end_src
-***** TODO Look for any certificates expiring within 60 days, https://gus.lightning.force.com/lightning/o/sfcerts__Certificate__c/list with filter on common name contains krxd.net or krux.com and status=enrolled: create a GUS ticket if not yet in backlog (OK to batch multiple certs in one GUS ticket)
+***** TODO Look for any certificates expiring within 60 days, https://gus.my.salesforce.com/analytics/wave/dashboard?assetId=0FKB0000000VNxBOAW&orgId=00DT0000000Dpvc&loginHost=usa12.sfdc-ypmv18.salesforce.com&urlType=sharing&pageId=112df963-8b04-4a03-abc1-0cc174a9e255&savedViewId=8wkEE00000032A9YAI&analyticsContext=analyticsTab with filter on common name contains krxd.net or krux.com and status=enrolled: create a GUS ticket if not yet in backlog (OK to batch multiple certs in one GUS ticket)
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Instructions
        Please follow the instructions below for inspecting your expiring certificates on each of your hosts:
