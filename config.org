@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-09-29 Wed 09:31 slumos@stevenlum-ltm>
+# Time-stamp: <2021-10-07 Thu 23:07 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -320,7 +320,6 @@
          ;; headings
          modus-themes-headings '((1 . (rainbow))
                                  (t . t))
-         modus-themes-scale-headings nil
          modus-themes-variable-pitch-headings t
 
          ;; org
@@ -1215,6 +1214,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :config
        <<org-config>>)
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package org-mac-link
+       :quelpa ((org-mac-link
+                 :fetcher git
+                 :url "https://gitlab.com/aimebertrand/org-mac-link.git")
+                :upgrade t)
+       :commands (org-mac-grab-link))
+   #+end_src
 
 ** Binds
    :PROPERTIES:
