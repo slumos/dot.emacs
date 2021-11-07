@@ -6,12 +6,15 @@
      (setq org-agenda-files
 	   '("~/Sync/Notes/Inbox.org"
 	     "~/Sync/Notes/CASE.org"
+             "~/Sync/Notes/CHLOE.org"
+             "~/Sync/Notes/CURRENT.org"
 	     "~/Sync/Notes/PROJECTS.org"
-	     "~/Sync/Notes/SLUMOS.org"))
+             "~/Sync/Notes/ROSALIND.org"
+	     "~/Sync/Notes/SLUMOS.org"
+             "~/Sync/Notes/TODO.org"))
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
-     (setq org-capture-templates nil)
      (add-to-list 'org-capture-templates '("m" "Meeting" entry (id "30E45826-5558-4029-91D7-067B057B5740")))
      (add-to-list 'org-capture-templates '("l" "Log" entry (id "45F1430A-CE5D-4A2E-A5D8-D72C93313666")
                                            "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t))
@@ -27,7 +30,9 @@
      ;; http://irreal.org/blog/?p=5325
      (add-to-list 'org-capture-templates '("j" "Journal" entry
                                           (file+datetree "~/Sync/Notes/JOURNAL.org")
-                                          "* %^g\n%t"))
+                                          "* %t %?"
+                                          :jump-to-captured t
+                                          :immediate-finish t))
 
      (add-to-list 'org-capture-templates '("t" "Task" entry
                                           (id "2CF309C5-3F4E-4C98-AE0D-ACFAAF79C016")

@@ -25,7 +25,6 @@
      ("elpy"	.  100)
      ("melpa" .  50)
      ("gnu"	.  10))))
-(package-initialize)
 
 ;; Load rest of config from Org file
 (defconst *emacs-org-config-file* (locate-user-emacs-file "config.org"))
@@ -33,3 +32,4 @@
   (org-babel-load-file *emacs-org-config-file*))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
+(put 'erase-buffer 'disabled nil)

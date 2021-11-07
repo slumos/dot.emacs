@@ -1,4 +1,4 @@
-# -*- mode: org; -*-
+# -*- mode: org; org-confirm-babel-evaluate: nil; fill-column: 120 -*-
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -45,12 +45,10 @@
       '(package-archives
         '(("org"   .  "https://orgmode.org/elpa/")
           ("melpa" .  "https://melpa.org/packages/")
-          ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
           ("gnu"   .  "https://elpa.gnu.org/packages/")))
       '(package-archive-priorities
         '(("org"	.  100)
           ("elpy"	.  100)
-          ("melpa" .  50)
           ("gnu"	.  10))))
      (package-initialize)
    #+end_src
@@ -79,6 +77,31 @@
       (use-package quelpa :demand t)
       (use-package quelpa-use-package :demand t)
     #+end_src
+*** straight
+    I am so over package authors pushing their favorite non-package.el
+    packaging system onto me. Why do you want your packages to have a
+    dependency like that?
+
+    =straight.el= in particular requires all this crap. Why can't at least the packaging system du jour be installable by =package.el=?
+
+    #+begin_src emacs-lisp
+      (defvar bootstrap-version)
+      (let ((bootstrap-file
+             (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+            (bootstrap-version 5))
+        (unless (file-exists-p bootstrap-file)
+          (with-current-buffer
+              (url-retrieve-synchronously
+               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+               'silent 'inhibit-cookies)
+            (goto-char (point-max))
+            (eval-print-last-sexp)))
+        (load bootstrap-file nil 'nomessage))
+    #+end_src
+
+
+
+
 *** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
     #+begin_src emacs-lisp
       (prog1 "prepare leaf"
@@ -534,6 +557,38 @@
    #+end_src
 
 * Helpers
+** TRYING [[https://github.com/ibizaman/emacs-conflict][ibizaman/emacs-conflict: Resolve conflicts happening when using file synchronization tools]]
+   #+begin_src emacs-lisp
+     (use-package emacs-conflict
+       :straight (emacs-conflict :type git :host github :repo "ibizaman/emacs-conflict" :branch "master"))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     ;; diff hooks for org mode
+     (add-hook 'ediff-select-hook 'f-ediff-org-unfold-tree-element)
+     (add-hook 'ediff-unselect-hook 'f-ediff-org-fold-tree)
+     ;; Check for org mode and existence of buffer
+     (defun f-ediff-org-showhide(buf command &rest cmdargs)
+       "If buffer exists and is orgmode then execute command"
+       (if buf
+           (if (eq (buffer-local-value 'major-mode (get-buffer buf)) 'org-mode)
+               (save-excursion (set-buffer buf) (apply command cmdargs)))))
+
+     (defun f-ediff-org-unfold-tree-element ()
+       "Unfold tree at diff location"
+       (f-ediff-org-showhide ediff-buffer-A 'org-reveal)
+       (f-ediff-org-showhide ediff-buffer-B 'org-reveal)
+       (f-ediff-org-showhide ediff-buffer-C 'org-reveal))
+
+     (defun f-ediff-org-fold-tree ()
+       "Fold tree back to top level"
+       (f-ediff-org-showhide ediff-buffer-A 'hide-sublevels 1)
+       (f-ediff-org-showhide ediff-buffer-B 'hide-sublevels 1)
+       (f-ediff-org-showhide ediff-buffer-C 'hide-sublevels 1))
+
+   #+end_src
+
+
 ** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
    #+begin_src emacs-lisp
      (use-package helpful
@@ -1011,54 +1066,62 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        ("r"  . pdf-view-reset-slice)
        :hydra
        (hydra-pdf-tools
-	(:color blue :hint nil)
-	"
-									   ╭───────────┐
-	    Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
-	╭──────────────────────────────────────────────────────────────────┴───────────╯
-	      ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
-	      ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
-	      ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
-	      ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
-	 _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
-	      ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
-	      ^^_n_^^      ^ ^  _r_eset slice box
-	      ^^^↓^^^
-	      ^^_G_^^
-	--------------------------------------------------------------------------------
-	     "
-	("\\" hydra-master/body "back")
-	("<ESC>" nil "quit")
-	("al" pdf-annot-list-annotations)
-	("ad" pdf-annot-delete)
-	("aa" pdf-annot-attachment-dired)
-	("am" pdf-annot-add-markup-annotation)
-	("at" pdf-annot-add-text-annotation)
-	("y"  pdf-view-kill-ring-save)
-	("+" pdf-view-enlarge :color red)
-	("-" pdf-view-shrink :color red)
-	("0" pdf-view-scale-reset)
-	("H" pdf-view-fit-height-to-window)
-	("W" pdf-view-fit-width-to-window)
-	("P" pdf-view-fit-page-to-window)
-	("n" pdf-view-next-page-command :color red)
-	("p" pdf-view-previous-page-command :color red)
-	("d" pdf-view-dark-minor-mode)
-	("b" pdf-view-set-slice-from-bounding-box)
-	("r" pdf-view-reset-slice)
-	("g" pdf-view-first-page)
-	("G" pdf-view-last-page)
-	("e" pdf-view-goto-page)
-	("o" pdf-outline)
-	("s" pdf-occur)
-	("i" pdf-misc-display-metadata)
-	("u" pdf-view-revert-buffer)
-	("F" pdf-links-action-perfom)
-	("f" pdf-links-isearch-link)
-	("B" pdf-history-backward :color red)
-	("N" pdf-history-forward :color red)
-	("l" image-forward-hscroll :color red)
-	("h" image-backward-hscroll :color red)))
+        (:color blue :hint nil)
+        "
+                                                                           ╭───────────┐
+            Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
+        ╭──────────────────────────────────────────────────────────────────┴───────────╯
+              ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
+              ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
+              ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
+              ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
+         _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
+              ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
+              ^^_n_^^      ^ ^  _r_eset slice box
+              ^^^↓^^^
+              ^^_G_^^
+        --------------------------------------------------------------------------------
+             "
+        ("\\" hydra-master/body "back")
+        ("<ESC>" nil "quit")
+        ("al" pdf-annot-list-annotations)
+        ("ad" pdf-annot-delete)
+        ("aa" pdf-annot-attachment-dired)
+        ("am" pdf-annot-add-markup-annotation)
+        ("at" pdf-annot-add-text-annotation)
+        ("y"  pdf-view-kill-ring-save)
+        ("+" pdf-view-enlarge :color red)
+        ("-" pdf-view-shrink :color red)
+        ("0" pdf-view-scale-reset)
+        ("H" pdf-view-fit-height-to-window)
+        ("W" pdf-view-fit-width-to-window)
+        ("P" pdf-view-fit-page-to-window)
+        ("n" pdf-view-next-page-command :color red)
+        ("p" pdf-view-previous-page-command :color red)
+        ("d" pdf-view-dark-minor-mode)
+        ("b" pdf-view-set-slice-from-bounding-box)
+        ("r" pdf-view-reset-slice)
+        ("g" pdf-view-first-page)
+        ("G" pdf-view-last-page)
+        ("e" pdf-view-goto-page)
+        ("o" pdf-outline)
+        ("s" pdf-occur)
+        ("i" pdf-misc-display-metadata)
+        ("u" pdf-view-revert-buffer)
+        ("F" pdf-links-action-perfom)
+        ("f" pdf-links-isearch-link)
+        ("B" pdf-history-backward :color red)
+        ("N" pdf-history-forward :color red)
+        ("l" image-forward-hscroll :color red)
+        ("h" image-backward-hscroll :color red)))
+    #+end_src
+** COMMENT [[https://github.com/fuxialexander/org-pdftools][fuxialexander/org-pdftools: A custom org link type for pdf-tools]]
+   #+begin_src emacs-lisp
+     (use-package org-pdftools
+       :hook (org-load . org-pdftools-setup-link))
+
+     (use-package org-noter-pdftools
+       :after org-noter)
    #+end_src
 ** smerge hydra from [[https://github.com/alphapapa/unpackaged.el#smerge-mode][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
    #+begin_src emacs-lisp
@@ -1291,20 +1354,20 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (add-hook 'before-save-hook 'time-stamp)
    #+END_SRC
-** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :hook (org-mode . org-bullets-mode)
-       :config (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
 ** Custom
    :PROPERTIES:
    :header-args: :noweb-ref org-custom :tangle no
    :END:
 
-   Regular ellipsis drives me insane because I tend to end regular
-   lines that way all the time ... (see?)
+   This directory is synchronized between all my devices using Syncthing, which I have not really got the hang of yet
+   and end up with too many conflict files constantly. Need to figure this out.
+
+   #+begin_src emacs-lisp
+     (org-directory (expand-file-name "~/Sync/Notes"))
+   #+end_src
+
+
+   Regular ellipsis drives me insane because I tend to end regular lines that way all the time ... (see?)
 
    #+BEGIN_SRC emacs-lisp
    ;(setq org-ellipsis " ⌄")
@@ -1314,12 +1377,18 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    ;(org-ellipsis " ⤵")
    #+END_SRC
 
+** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
+** Bullets
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :hook (org-mode . org-bullets-mode)
+       :config (setq org-bullets-bullet-list '("‣")))
+   #+END_SRC
 ** Exporting
    #+BEGIN_SRC emacs-lisp
-   ;(use-package ox-confluence :after org)
-   (use-package ox-clip :after org)
-   (use-package ox-gfm :after org)
-   (use-package ox-jira :after org)
+     (use-package ox-clip :after org)
+     (use-package ox-gfm :after org)
+     (use-package ox-slimhtml :after org)
    #+END_SRC
 ** org-noter
    #+begin_src emacs-lisp
@@ -1440,9 +1509,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
     #+begin_src emacs-lisp
       (use-package org-chef
         :config
-        (add-to-list 'org-capture-templates '("c" "Cookbook" entry (file "~/Sync/Notes/Cookbook.org") "%(org-chef-get-recipe-from-url)"))
-        (add-to-list 'org-capture-templates '("m" "Manual Cookbook" entry (file "~/Sync/Notes/Cookbook.org")
-                                              "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
+        (setq org-capture-templates
+              (append org-capture-templates
+                      '(("r" "Recipe from:")
+                        ("rc" "Chrome" entry (file "Cookbook.org") "%(slumos-recipe-from-chrome)" :jump-to-captured t)
+                        ("ru" "URL" entry (file "~/Sync/Notes/Cookbook.org") "%(org-chef-get-recipe-from-url)" :jump-to-captured t)
+                        ("rh" "Hand" entry (file "~/Sync/Notes/Cookbook.org")
+                         "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))))
     #+end_src
 
 *** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
@@ -1573,7 +1646,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (use-package groovy-mode
        :mode "\\.groovy\\'")
    #+END_SRC
-** Java
+** COMMENT Java
    #+begin_src emacs-lisp
      (exec-path-from-shell-copy-env "JAVA_HOME")
    #+end_src
@@ -1804,14 +1877,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :mode "\\(.yaml\\|.yml\\)$"
        :config (add-hook 'yaml-mode-hook #'flycheck-mode))
    #+END_SRC
-* pdf-tools
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (use-package pdf-tools
-      :load-path "lisp/pdf-tools/lisp"
-      :magic ("%PDF" . pdf-view-mode)
-      :config
-      (pdf-tools-install))
-  #+END_SRC
 * Paperless
   #+BEGIN_SRC emacs-lisp
     (use-package paperless
