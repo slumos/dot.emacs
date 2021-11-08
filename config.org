@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-10-07 Thu 23:07 slumos@stevenlum-ltm>
+# Time-stamp: <2021-11-08 Mon 12:01 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -296,6 +296,11 @@
            "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
         (set-fontset-font
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+    #+end_src
+*** [[https://www.nerdfonts.com/cheat-sheet][Nerd Fonts]]
+    #+begin_src emacs-lisp
+      (use-package nerd-fonts
+        :straight (nerd-fonts :type git :host github :repo "twlz0ne/nerd-fonts.el"))
     #+end_src
 ** Themes
 *** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
@@ -1271,8 +1276,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+BEGIN_SRC emacs-lisp
      (setq org-use-speed-commands
-	   (lambda () (or (eq (point) 1)
-			  (looking-at org-outline-regexp-bol))))
+           (lambda () (or
+                  (eq (point) 1)
+                  ;; (looking-at org-outline-regexp-bol)
+                  (and (looking-at org-outline-regexp) (looking-back "^\\**")))))
    #+END_SRC
 
    Set up some modules by default. I use =org-id= for capture targets,
@@ -1328,6 +1335,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+BEGIN_SRC emacs-lisp
      (add-hook 'before-save-hook 'time-stamp)
    #+END_SRC
+
+   Finally experimenting with mixed fonts!
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook 'mixed-pitch-mode)
+   #+end_src
+
 ** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
 ** Bullets
    #+BEGIN_SRC emacs-lisp

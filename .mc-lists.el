@@ -128,11 +128,13 @@
         special-pop-tag-mark
         swiper-isearch
         yaml-electric-backspace
+        yaml-electric-dash-and-dot
         ))
 
 (setq mc/cmds-to-run-once
       '(
         counsel-M-x
+        hydra--digit-argument
         hydra-multiple-cursors/ignore
         hydra-multiple-cursors/mc/add-cursor-on-click
         hydra-multiple-cursors/mc/edit-lines-and-exit

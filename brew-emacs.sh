@@ -1,4 +1,4 @@
-brew install emacs-plus@28 \
+brew reinstall emacs-plus@28 \
      --verbose \
      --display-times \
      --with-native-comp \
