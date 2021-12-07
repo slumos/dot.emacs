@@ -1,4 +1,4 @@
- ;; Literate Emacs config what!
+;; Literate Emacs config what!
 ;; See emacs.org.
 ;; 2014-04-05 first
 ;; 2017-05-01 do over
