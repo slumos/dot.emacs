@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-07-26 Mon 18:11 slumos@stevenlum-ltm>
+# Time-stamp: <2021-11-15 Mon 15:41 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -12,12 +12,13 @@
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-     (setq org-directory "~/Sync/GDrive/Notes")
-     (setq slumos-org-directory "~/Sync/ST/Notes")
-     (setq org-agenda-files (list
-                             (expand-file-name "DMP.org" org-directory)
-                             (expand-file-name "config.org" user-emacs-directory)
-                             (expand-file-name "Inbox.org" slumos-org-directory)))
+          (setq org-directory "~/Sync/GDrive/Notes")
+          (setq slumos-org-directory "~/Sync/ST/Notes")
+          (setq org-agenda-files (list
+                                  (expand-file-name "DMP.org" org-directory)
+                                  (expand-file-name "config.org" user-emacs-directory)
+                                  (expand-file-name "Inbox.org" slumos-org-directory)
+                                  (expand-file-name "SLUMOS.org" slumos-org-directory)))
    #+END_SRC
 
    I want everything searched for IDs. But it's soooo slow.

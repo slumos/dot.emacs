@@ -4,7 +4,8 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 $0*** `daily-oncall-checklist-scheduled-time`
-    (this list last updated on <2021-09-02 Thu>)
+    (this list last updated on <2021-11-11 Thu>) (remember to update @krux-pe-oncall group)
+      Slack → People and user groups (⇧⌘E) → User groups tab → search for krux-pe → Click on group → Edit group members. (Holy shit... I will try to find a quicker method.)
 **** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
@@ -25,7 +26,7 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** TODO Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
 ****** Of late there are 2 jobs that create files with ownership that Cloudbees cannot clean up on its own. If you want to quiet the "Asynchronous Resource Disposer", try:
        #+begin_src sh
-       clush -w cloudbees-agent-a00[1-3]-ash-prod 'sudo chown -R c_cloudbees:c_cloudbees /data/c_cloudbees/cje/workspace/rb_dataconsole-pr-{unit-tests,migrations}*'
+       clush -Bw "cloudbees-agent-a00[1-3]-ash-prod" sudo find /data/c_cloudbees/cje -not -user c_cloudbees -exec 'chown c_cloudbees:c_cloudbees \{\} \;'
        #+end_src
 ***** TODO Review Available CD4PE Upgrades
       SCHEDULED: `daily-oncall-checklist-scheduled-time`

@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-11-08 Mon 12:01 slumos@stevenlum-ltm>
+# Time-stamp: <2021-12-01 Wed 12:16 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -31,16 +31,14 @@
    #+begin_src emacs-lisp
      (custom-set-variables
       '(package-archives
-        '(("org"   .  "https://orgmode.org/elpa/")
-          ("melpa" .  "https://melpa.org/packages/")
-;          ("elpy"  .  "https://jorgenschaefer.github.io/packages/")
-          ("gnu"   .  "https://elpa.gnu.org/packages/")))
+        '(("gnu"    .  "https://elpa.gnu.org/packages/")
+          ("melpa"  .  "https://melpa.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
       '(package-archive-priorities
-        '(("org"   .  100)
-          ("elpy"  .  100)
-          ("melpa" .  50)
-          ("gnu"   .  10))))
-     (package-initialize)
+        '(("melpa"  .  50)
+          ("gnu"    .  10)
+          ("nongnu" . 10))))
+     (package-initialize t)
    #+end_src
 *** =use-package=
     John Wiegley is an Emacs badass. I am not even kidding.
@@ -197,7 +195,7 @@
 ** Daemon
    #+begin_src emacs-lisp
      (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
-     (server-start)
+     ;(server-start)
    #+end_src
 
 ** Handling of BROKEN/SKIP states (should not be tangled)
@@ -323,9 +321,10 @@
         :init
         (setq
          ;; headings
-         modus-themes-headings '((1 . (rainbow))
+         modus-themes-headings '((t . (rainbow regular))
                                  (t . t))
          modus-themes-variable-pitch-headings t
+         modus-themes-scale-headings nil
 
          ;; org
          modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
@@ -368,6 +367,15 @@
 *** tao-yin
     #+begin_src emacs-lisp
     (use-package tao-theme :defer t)
+    #+end_src
+
+*** Dark/light switching on macOS
+    #+begin_src emacs-lisp
+      (defun slumos/handle-appearance-change (appearance)
+        (pcase appearance
+          ('light (modus-themes-load-operandi))
+          ('dark (modus-themes-load-vivendi))))
+      (add-hook 'ns-system-appearance-change-functions #'slumos/handle-appearance-change)
     #+end_src
 
 ** Code
@@ -472,18 +480,18 @@
 
      This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
      #+name: commonly-visited-files-shortcuts
-     | key | path                               | name             |
-     |-----+------------------------------------+------------------|
-     | a   | ~/.config/alacritty/alacritty.yml  | alacritty config |
-     | c   | ~/.config/emacs/config.org         | main config      |
-     | N   | ~/Sync/OneDrive/Notes/NOTES.org    | NOTES.org        |
-     | n   | ~/Sync/GDrive/Notes/Notes.org      | Work notes       |
-     | k   | ~/Sync/GDrive/Notes/DMP.org        | Krux work        |
-     | p   | ~/.config/emacs/personal.org       | personal config  |
-     | r   | ~/Synt/ST/Notes/Cookbook.org       | cookbook         |
-     | s   | ~/Sync/ST/Notes/SLUMOS.org         | SLUMOS.org       |
-     | w   | ~/.config/emacs/work.org           | work config      |
-     | z   | ~/.zshrc                           | zshrc            |
+     | key | path                              | name                     |
+     |-----+-----------------------------------+--------------------------|
+     | a   | ~/.config/alacritty/alacritty.yml | alacritty config         |
+     | c   | ~/.config/emacs/config.org        | main config (config.org) |
+     | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                |
+     | n   | ~/Sync/GDrive/Notes/Notes.org     | Work notes (Notes.org)   |
+     | k   | ~/Sync/GDrive/Notes/DMP.org       | Krux work (DMP.org)      |
+     | p   | ~/.config/emacs/personal.org      | personal config          |
+     | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
+     | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
+     | w   | ~/.config/emacs/work.org          | work config              |
+     | z   | ~/.zshrc                          | zshrc                    |
 
      #+name: table-to-find-file-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
@@ -1495,7 +1503,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
               (forward-sexp 2)
               (edebug-defun)))))
     #+end_src
-*** TRYING [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
+*** TRYING COMMENT [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
     #+begin_src emacs-lisp
       (use-package org-babel-eval-in-repl)
     #+end_src
@@ -1509,22 +1517,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      Thu May 28 10:09:39 PDT 2020
      :end:
 
-*** TODO [[https://github.com/jackkamm/ob-session-async][jackkamm/ob-session-async: Asynchronous org-mode session evaluation]]
-*** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
-    #+BEGIN_SRC emacs-lisp
-    (use-package ob-async)
-    #+END_SRC
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
-** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-   #+begin_src emacs-lisp
-     (use-package org-edna
-       :after org
-       :config (org-edna-load))
-   #+end_src
-
-** TODO Blogging with Hugo
-   - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-** TODO calfw calfw-org-agenda
 * Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -1662,7 +1654,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :ensure flycheck
        :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
-*** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
+*** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-lint from this example]]
 ** Go
    #+begin_src emacs-lisp
      (use-package go-mode
