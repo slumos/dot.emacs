@@ -4,7 +4,7 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 $0*** `daily-oncall-checklist-scheduled-time`
-    (this list last updated on <2021-11-11 Thu>) (remember to update @krux-pe-oncall group)
+    (this list last updated on <2022-01-03 Mon>) (remember to update @krux-pe-oncall group)
       Slack → People and user groups (⇧⌘E) → User groups tab → search for krux-pe → Click on group → Edit group members. (Holy shit... I will try to find a quicker method.)
 **** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -14,6 +14,10 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** Puppet Overview dashboard; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
+***** TODO Review [[https://gus.lightning.force.com/lightning/r/Report/00OEE0000009f3x2AA/view?queryScope=userFolders][Cloud Config Bugs (Aaron Kulick) | Salesforce]]
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Via the custom report, verify there are no AWS Security Vulnerability issues outstanding and triage (0 records is good).
+****** Typical issues include duplicate IAM credentials, no MFA, etc.   Resolve actively (delete oldest credential) or engage with the user to resolve urgently.
 ***** TODO Review the [[https://gus.lightning.force.com/analytics/lens/0FKAH0000002eEp4AI][Security & Compliance Dashboard]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Look for anything with severity P0 (these will need rapid remediation)
@@ -36,25 +40,33 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ******** If the upgrade looks complicated, make a ticket for it to be done.
 ***** TODO Check for pending AWS maintenance
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** EC2
+#+begin_src shell :results output table drawer :colnames '(instance status eventArns)
+  eventArns="$(aws health describe-events --filter 'services=EC2' --query 'events[?statusCode != \`closed\`].arn | {eventArns:@}')"
+  aws health describe-affected-entities \
+        --filter "$eventArns" \
+        --query 'entities[?starts_with(entityValue, \`i\`)].[entityValue,statusCode,eventArn]' \
+        --output text
+#+end_src
 ****** RDS
-         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-         aws rds describe-pending-maintenance-actions --region eu-west-1
-         aws rds describe-pending-maintenance-actions --region us-east-1
-         aws rds describe-pending-maintenance-actions --region us-west-2
-         #+end_src
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws rds describe-pending-maintenance-actions --region eu-west-1
+aws rds describe-pending-maintenance-actions --region us-east-1
+aws rds describe-pending-maintenance-actions --region us-west-2
+#+end_src
 ****** Elasticache
-         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-         aws elasticache describe-events --region eu-west-1
-         aws elasticache describe-events --region us-east-1
-         aws elasticache describe-events --region us-west-2
-         aws elasticache describe-update-actions --query 'UpdateActions[].{severity: ServiceUpdateSeverity, update: ServiceUpdateName, cluster: ReplicationGroupId, due: ServiceUpdateRecommendedApplyByDate}'
-         #+end_src
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws elasticache describe-events --region eu-west-1
+aws elasticache describe-events --region us-east-1
+aws elasticache describe-events --region us-west-2
+aws elasticache describe-update-actions --query 'UpdateActions[].{severity: ServiceUpdateSeverity, update: ServiceUpdateName, cluster: ReplicationGroupId, due: ServiceUpdateRecommendedApplyByDate}'
+#+end_src
 ****** Redshift
-         #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-         aws redshift describe-events --region eu-west-1
-         aws redshift describe-events --region us-east-1
-         aws redshift describe-events --region us-west-2
-         #+end_src
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws redshift describe-events --region eu-west-1
+aws redshift describe-events --region us-east-1
+aws redshift describe-events --region us-west-2
+#+end_src
 ***** TODO Look for any certificates expiring within 60 days, https://gus.my.salesforce.com/analytics/wave/dashboard?assetId=0FKB0000000VNxBOAW&orgId=00DT0000000Dpvc&loginHost=usa12.sfdc-ypmv18.salesforce.com&urlType=sharing&pageId=112df963-8b04-4a03-abc1-0cc174a9e255&savedViewId=8wkEE00000032A9YAI&analyticsContext=analyticsTab with filter on common name contains krxd.net or krux.com and status=enrolled: create a GUS ticket if not yet in backlog (OK to batch multiple certs in one GUS ticket)
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Instructions
