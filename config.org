@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2021-12-01 Wed 12:16 slumos@stevenlum-ltm>
+# Time-stamp: <2022-01-06 Thu 11:48 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -7,7 +7,7 @@
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
-#+PROPERTY: header-args    :results silent
+#+PROPERTY: header-args :results silent
 
 [[http://oremacs.com/lispy/][lispy.el function reference]]
 
@@ -1250,10 +1250,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+END_SRC
 ** Config
    :PROPERTIES:
-   :header-args: :noweb-ref org-config :tangle no
+   :header-args: :noweb-ref org-config :tangle no :results silent
    :END:
    #+begin_src emacs-lisp
-   (custom-set-variables '(org-catch-invisible-edits 'error))
+     (custom-set-variables
+      '(org-catch-invisible-edits 'error)
+      '(org-cycle-include-plain-lists 'integrate))
    #+end_src
 
    Regular ellipsis drives me insane because I tend to end regular
@@ -1348,6 +1350,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+begin_src emacs-lisp
      (add-hook 'org-mode-hook 'mixed-pitch-mode)
    #+end_src
+
+   #+RESULTS:
+
+   I think this will make my oncall-shift snippet work better.
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook
+               (lambda () (setq-local yas-indent-line 'fixed)))
+   #+end_src
+
+   #+RESULTS:
 
 ** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
 ** Bullets
