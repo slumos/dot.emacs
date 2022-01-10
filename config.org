@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-01-06 Thu 11:48 slumos@stevenlum-ltm>
+# Time-stamp: <2022-01-10 Mon 09:31 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -310,6 +310,7 @@
     #+begin_src emacs-lisp
       (use-package gruvbox-theme :defer t)
     #+end_src
+
 *** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
     #+begin_src emacs-lisp
       (use-package mlso-theme :defer t)
@@ -321,14 +322,14 @@
         :init
         (setq
          ;; headings
-         modus-themes-headings '((t . (rainbow regular))
+         modus-themes-headings '((t . (variable-pitch rainbow regular))
                                  (t . t))
-         modus-themes-variable-pitch-headings t
          modus-themes-scale-headings nil
 
          ;; org
          modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
                                    (header-date . (grayscale bold-today)))
+         modus-themes-org-blocks 'gray-background
 
          ;; text
          modus-themes-bold-constructs t
@@ -337,6 +338,7 @@
 
          ;; other
          modus-themes-hl-line 'accented
+         modus-themes-lang-checkers '(straight-underline faint)
          modus-themes-mode-line '(accented borderless)
          modus-themes-paren-match 'subtle-bold
          modus-themes-syntax '(faint alt-syntax)
