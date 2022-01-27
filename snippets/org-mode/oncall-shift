@@ -17,7 +17,7 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ***** TODO Review [[https://gus.lightning.force.com/lightning/r/Report/00OEE0000009f3x2AA/view?queryScope=userFolders][Cloud Config Bugs (Aaron Kulick) | Salesforce]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Via the custom report, verify there are no AWS Security Vulnerability issues outstanding and triage (0 records is good).
-****** Typical issues include duplicate IAM credentials, no MFA, etc.   Resolve actively (delete oldest credential) or engage with the user to resolve urgently.
+****** Typical issues include duplicate IAM credentials, no MFA, etc. *Resolve actively (delete oldest credential) or engage with the user to resolve urgently.*
 ***** TODO Review the [[https://gus.lightning.force.com/analytics/lens/0FKAH0000002eEp4AI][Security & Compliance Dashboard]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Look for anything with severity P0 (these will need rapid remediation)
