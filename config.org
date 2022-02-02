@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-01-26 Wed 14:48 slumos@stevenlum-ltm>
+# Time-stamp: <2022-02-01 Tue 16:04 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -316,7 +316,7 @@
       (use-package mlso-theme :defer t)
     #+end_src
 
-*** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
+*** COMMENT [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
     #+begin_src emacs-lisp
       (use-package modus-themes
         :init
@@ -337,10 +337,10 @@
          modus-themes-slanted-constructs t
 
          ;; other
-         modus-themes-hl-line 'accented
+         modus-themes-hl-line '(accented)
          modus-themes-lang-checkers '(straight-underline faint)
          modus-themes-mode-line '(accented borderless)
-         modus-themes-paren-match 'subtle-bold
+         modus-themes-paren-match '(subtle-bold)
          modus-themes-syntax '(faint alt-syntax)
          modus-themes-variable-pitch-ui t
          )
@@ -492,6 +492,7 @@
      | p   | ~/.config/emacs/personal.org      | personal config          |
      | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
      | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
+     | t   | ~/.config/home/tmux.conf          | tmux config              |
      | w   | ~/.config/emacs/work.org          | work config              |
      | z   | ~/.zshrc                          | zshrc                    |
 
