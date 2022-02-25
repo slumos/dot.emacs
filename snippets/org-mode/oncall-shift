@@ -4,7 +4,7 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 $0*** `daily-oncall-checklist-scheduled-time`
-    (this list last updated on <2022-01-03 Mon>) (remember to update @krux-pe-oncall group)
+    (this list last updated on <2022-02-24 Thu>) (remember to update @krux-pe-oncall group)
       Slack → People and user groups (⇧⌘E) → User groups tab → search for krux-pe → Click on group → Edit group members. (Holy shit... I will try to find a quicker method.)
 **** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -24,6 +24,9 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** Engage the relevant team members (PE), create or update relevant Work Items
 ***** TODO In [[https://app.snyk.io/org/marketing-cloud-audience-studio][Snyk Security Issues Reports]], look for High Severity issues in repos we manage
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO Review [[https://cb.krxd.net/cje][Cloudbees]] for runaway jobs
+      Some jobs may legitimately take multiple hours, so you may need to review a job’s buildTimeTrend in order to make a good judgement.
+      Cancel any runaway jobs and inform the job initiators.
 ***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
@@ -59,7 +62,6 @@ aws rds describe-pending-maintenance-actions --region us-west-2
 aws elasticache describe-events --region eu-west-1
 aws elasticache describe-events --region us-east-1
 aws elasticache describe-events --region us-west-2
-aws elasticache describe-update-actions --query 'UpdateActions[].{severity: ServiceUpdateSeverity, update: ServiceUpdateName, cluster: ReplicationGroupId, due: ServiceUpdateRecommendedApplyByDate}'
 #+end_src
 ****** Redshift
 #+begin_src sh :exports both :eval no-export :wrap src json :results raw
