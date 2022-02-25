@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-02-01 Tue 16:04 slumos@stevenlum-ltm>
+# Time-stamp: <2022-02-17 Thu 13:55 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -316,7 +316,7 @@
       (use-package mlso-theme :defer t)
     #+end_src
 
-*** COMMENT [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
+*** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
     #+begin_src emacs-lisp
       (use-package modus-themes
         :init
@@ -452,7 +452,6 @@
        :init
        (package-loading-notifier-mode 1))
    #+end_src
-
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
    #+begin_src emacs-lisp
    (use-package direnv)
@@ -1153,7 +1152,15 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    #+end_src
 
 ** TODO [[https://github.com/emacs-languagetool/flycheck-languagetool][flycheck-languagetool]]
-* Magit
+
+** Projectile
+  #+BEGIN_SRC emacs-lisp
+    (use-package projectile
+      :config
+      (projectile-mode 1))
+  #+END_SRC
+* Apps
+** Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
   Magit—like Org—is a total killer app and probably one of the reasons
@@ -1220,8 +1227,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
           (user-error "There is not current branch"))))
   #+end_src
 
-* Org [0/5]                                                             :org:
-** Initialization
+** Org [0/5]                                                            :org:
+*** Initialization
    #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
      (use-package org
        :commands (org-agenda org-capture org-store-link)
@@ -1240,7 +1247,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        :commands (org-mac-grab-link))
    #+end_src
 
-** Binds
+*** Binds
    :PROPERTIES:
    :header-args: :noweb-ref org-binds :tangle no
    :END:
@@ -1251,7 +1258,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       ("C-c l" . org-store-link)
       ("C-c g" . org-mac-grab-link))
    #+END_SRC
-** Config
+*** Config
    :PROPERTIES:
    :header-args: :noweb-ref org-config :tangle no :results silent
    :END:
@@ -1364,14 +1371,14 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
 
-** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
-** Bullets
+*** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
+*** Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
        :hook (org-mode . org-bullets-mode)
        :config (setq org-bullets-bullet-list '("‣")))
    #+END_SRC
-** Prettify
+*** Prettify
    #+begin_src emacs-lisp
      (defun slumos/org-prettify ()
        (interactive)
@@ -1380,7 +1387,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                ("DONE" . ""))))
    #+end_src
 
-** Exporting
+*** Exporting
    #+BEGIN_SRC emacs-lisp
    ;(use-package ox-confluence :after org)
    (use-package ox-clip :after org)
@@ -1389,7 +1396,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    (use-package ox-pandoc :after org)
    (use-package ox-slimhtml :after org)
    #+END_SRC
-*** COMMENT My crazy numbered paragraphs idea
+**** COMMENT My crazy numbered paragraphs idea
     #+begin_src emacs-lisp
       (defun numbered-paragraphs-headline (headline contents info)
         "Transcode HEADLINE as a plain numbered paragraph. CONTENTS is
@@ -1399,8 +1406,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                (num (org-export-get-headline-number)))
           (concat headline contents)))
     #+end_src
-*** TODO Check out [[https://github.com/yejianye/toolbox/blob/bd08a355dbc6804aa507c29a60053837eaa2e99c/emacs/funcs.el#L49][toolbox/funcs.el at bd08a355dbc6804aa507c29a60053837eaa2e99c · yejianye/toolbox]]
-** Agenda
+**** TODO Check out [[https://github.com/yejianye/toolbox/blob/bd08a355dbc6804aa507c29a60053837eaa2e99c/emacs/funcs.el#L49][toolbox/funcs.el at bd08a355dbc6804aa507c29a60053837eaa2e99c · yejianye/toolbox]]
+*** Agenda
 
    #+begin_src emacs-lisp
      (setq org-agenda-custom-commands
@@ -1413,8 +1420,8 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                (agenda)))))
    #+end_src
 
-** Additions
-*** COMMENT [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+*** Additions
+**** COMMENT [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
     #+begin_src emacs-lisp
       (use-package org-chef)
     #+end_src
@@ -1428,13 +1435,13 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                       "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
     #+end_src
 
-*** TODO [[https://github.com/alphapapa/org-sticky-header][alphapapa/org-sticky-header: Show off-screen Org heading at top of window]]
+**** TODO [[https://github.com/alphapapa/org-sticky-header][alphapapa/org-sticky-header: Show off-screen Org heading at top of window]]
     #+begin_src emacs-lisp
       (use-package org-sticky-header)
     #+end_src
 
-*** TODO [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
-*** TODO [[https://github.com/ahendriksen/ob-tmux][ahendriksen/ob-tmux: Ob-tmux is an Emacs library that allows org mode to evaluate code blocks in a tmux session.]]
+**** TODO [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+**** TODO [[https://github.com/ahendriksen/ob-tmux][ahendriksen/ob-tmux: Ob-tmux is an Emacs library that allows org mode to evaluate code blocks in a tmux session.]]
     #+begin_src emacs-lisp
       (use-package ob-tmux
         :custom
@@ -1442,11 +1449,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       )
     #+end_src
 
-*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+**** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
     #+begin_src emacs-lisp
       (use-package orgit)
     #+end_src
-*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
+**** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
     #+begin_src emacs-lisp
       (leaf ivy-omni-org
         :after counsel
@@ -1461,26 +1468,26 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                 (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
                 (directory-files user-emacs-directory "\\.org\\'"))))
     #+end_src
-*** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
+**** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
     #+begin_src emacs-lisp
       (leaf org-ql
         :custom
         (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
     #+end_src
 
-*** [[https://github.com/alphapapa/org-web-tools/blob/master/README.org][org-web-tools/README.org at master · alphapapa/org-web-tools · GitHub]]
+**** [[https://github.com/alphapapa/org-web-tools/blob/master/README.org][org-web-tools/README.org at master · alphapapa/org-web-tools · GitHub]]
     #+begin_src emacs-lisp
       (use-package org-web-tools)
     #+end_src
 
-** My Personal Hacks
-*** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
+*** My Personal Hacks
+**** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
       (defun slumos/org-add-aws-sh-properties ()
         (interactive)
         (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
     #+END_SRC
-*** COMMENT Post-process grabbed links
+**** COMMENT Post-process grabbed links
 
     Strip content-free stuff that gets tacked onto the title of every page.
 
@@ -1492,19 +1499,19 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       (org-as-mac-chrome-get-frontmost-url)
     #+end_src
 
-** Evaluation
-*** Structure Templates
+*** Evaluation
+**** Structure Templates
     #+begin_src emacs-lisp
       (add-to-list 'org-structure-template-alist
                    '("sj" . "src shell :results output :wrap src json"))
     #+end_src
-*** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
+**** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
     #+begin_src emacs-lisp
       (defun org-babel-execute:passthrough (body params) body)
       (defalias 'org-babel-execute:json 'org-babel-execute:passthrough)
       (add-to-list 'org-babel-load-languages '(passthrough . t))
     #+end_src
-*** [[https://emacs.stackexchange.com/questions/13244/edebug-orgmode-source-code-blocks-with-input-variables][org mode - Edebug orgmode source code blocks with input variables - Emacs Stack Exchange]]
+**** [[https://emacs.stackexchange.com/questions/13244/edebug-orgmode-source-code-blocks-with-input-variables][org mode - Edebug orgmode source code blocks with input variables - Emacs Stack Exchange]]
     #+begin_src emacs-lisp
       (defun org-src-debug ()
         "Put a call to this function at the beginning of the org source block to debug it."
@@ -1518,11 +1525,11 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
               (forward-sexp 2)
               (edebug-defun)))))
     #+end_src
-*** TRYING COMMENT [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
+**** TRYING COMMENT [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
     #+begin_src emacs-lisp
       (use-package org-babel-eval-in-repl)
     #+end_src
-**** COMMENT testing
+***** COMMENT testing
      #+begin_src sh :results output raw drawer replace
      date
      #+end_src
@@ -1532,12 +1539,23 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      Thu May 28 10:09:39 PDT 2020
      :end:
 
-* Projectile
-  #+BEGIN_SRC emacs-lisp
-    (use-package projectile
-      :config
-      (projectile-mode 1))
-  #+END_SRC
+** [[https://github.com/kubernetes-el/kubernetes-el][kubernetes-el/kubernetes-el: Manage Kubernetes clusters with Emacs.]]
+    #+begin_src emacs-lisp
+      (use-package kubernetes
+        :commands (kubernetes-overview)
+        :init
+        ;; workaround https://github.com/kubernetes-el/kubernetes-el/issues/265
+        (defmacro kubernetes-utils--save-window-state (&rest body)
+          `(let ((pos (point)) (col (current-column)) (window-start-line (window-start)) (inhibit-redisplay t))
+             (save-excursion ,@body)
+             (goto-char pos)
+             (move-to-column col)
+             (set-window-start (selected-window) window-start-line)))
+        :config
+        (setq kubernetes-poll-frequency 3600
+              kubernetes-redraw-frequency 3600))
+    #+end_src
+
 * Language Modes
 ** Misc
 *** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
@@ -1979,12 +1997,12 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
 
    #+RESULTS:
    :results:
-   | magit-file-mode               | (t)                                                                | Customized with use-package magit     |
-   | transient-default-level       | (5)                                                                | Customized with use-package magit     |
-   | magit-repository-directories  | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory | (~/Projects/)                                                      | Customized with use-package magit     |
-   | doom-modeline-icon            | (t)                                                                | Use all-the-icons                     |
-   | auto-revert-verbose           | (t)                                                                | Customized with use-package magit     |
-   | forge-topic-list-limit        | ('(60 . 0))                                                        | Customized with use-package magit     |
-   | yas-snippet-dirs              | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
+   | lsp-log-io                             | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | leaf-defaults                          | ('(:ensure t))     | Customized with leaf in `leaf' block at `/Users/slumos/.config/emacs/config.el'   |
+   | lsp-log-max                            | (2000)             | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-auto-guess-root                    | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-enable-completion-at-point         | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-ui-doc-enable                      | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | org-ql-search-directories-files-regexp | (\.org\(_done\)?\') | Customized with leaf in `org-ql' block at `/Users/slumos/.config/emacs/config.el' |
+   | el-get-git-shallow-clone               | (t)                | Customized with leaf in `el-get' block at `/Users/slumos/.config/emacs/config.el' |
    :end:
