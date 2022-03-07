@@ -24,25 +24,25 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** Engage the relevant team members (PE), create or update relevant Work Items
 ***** TODO In [[https://app.snyk.io/org/marketing-cloud-audience-studio][Snyk Security Issues Reports]], look for High Severity issues in repos we manage
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO Review [[https://cb.krxd.net/cje][Cloudbees]] for runaway jobs
-      Some jobs may legitimately take multiple hours, so you may need to review a job’s buildTimeTrend in order to make a good judgement.
-      Cancel any runaway jobs and inform the job initiators.
-***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
+***** TODO [[https://cb.krxd.net/cje][Cloudbees]] Checks
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-      If you see a red square with a number on the nav bar, click that to see whether an update is needed.
-****** TODO Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
+****** Check for runaway jobs
+       Some jobs may legitimately take multiple hours, so you may need to review a job’s buildTimeTrend in order to make a good judgement.
+       Cancel any runaway jobs and inform the job initiators.
+****** Review Available updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
+       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
+****** Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
 ****** Of late there are 2 jobs that create files with ownership that Cloudbees cannot clean up on its own. If you want to quiet the "Asynchronous Resource Disposer", try:
        #+begin_src sh
        clush -Bw "cloudbees-agent-a00[1-3]-ash-prod" sudo find /data/c_cloudbees/cje -not -user c_cloudbees -exec 'chown c_cloudbees:c_cloudbees \{\} \;'
        #+end_src
-***** TODO Review Available CD4PE Upgrades
+***** TODO Review Available CD4PE Upgrades ([[https://puppet-cicd-prod.krxd.net:8800/app/cd4pe/version-history][Continuous Delivery for Puppet Enterprise Version History]])
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-******* Check the [[https://puppet-cicd-prod.krxd.net:8800/app/cd4pe/version-history][Continuous Delivery for Puppet Enterprise Version History]]
-******* If there is a new version, review Release Notes and pre-flight checks.
+******** If there is a new version, review Release Notes and pre-flight checks.
 ******** If the upgrade looks easy, click Deploy button, watch, verify the new version number in the bottom-left corner of the console.
 ******** If the upgrade looks complicated, make a ticket for it to be done.
 ***** TODO Check for pending AWS maintenance
-      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+ SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** EC2
 #+begin_src shell :results output table drawer :colnames '(instance status eventArns)
   eventArns="$(aws health describe-events --filter 'services=EC2' --query 'events[?statusCode != \`closed\`].arn | {eventArns:@}')"
