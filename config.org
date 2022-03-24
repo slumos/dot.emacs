@@ -755,7 +755,94 @@
     #+end_src
 
 *** My Personal Hacks
-**** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
+**** Copy org link as rich text
+***** HTML
+#+begin_src emacs-lisp :results replace drawer
+  (defun slumos/org-link-at-point-as-html ()
+    (let* ((ctx (org-element-context))
+           (type (org-element-type ctx))
+           (beg (org-element-property :begin ctx))
+           (end (org-element-property :end ctx))
+           (backend (or (org-export-get-backend 'slimhtml)
+                        (org-export-get-backend 'html))))
+      (if (eq type 'link)
+          (org-export-string-as (buffer-substring beg end) 'slimhtml t)
+        (user-error "no link found at point"))))
+
+  (defun slumos/org-copy-link-at-point-as-html ()
+    (interactive)
+    (kill-new (slumos/org-link-at-point-as-html)))
+#+end_src
+
+#+RESULTS:
+:results:
+slumos/org-copy-link-at-point-as-html
+:end:
+
+***** COMMENT Clipboard
+#+begin_src emacs-lisp
+  (defun slumos/org-copy-link-at-point-to-clipboard-rich ()
+    (interactive)
+    (let* ((html (slumos/org-link-at-point-as-html)))
+      (with-temp-buffer
+        (insert html)
+        (shell-command-on-region
+         (point-min)
+         (point-max)
+         ))))
+#+end_src
+**** TODO slumos-org-copy-to-clipboard
+   The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
+   See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
+
+   #+begin_src emacs-lisp
+     (defun slumos-org-copy-to-clipboard ()
+       "Copy org subtree to system clipboard as rich text"
+       (interactive)
+       (let* ((backend (or (org-export-get-backend 'slimhtml)
+                           (org-export-get-backend 'html)))
+              (html-buf (org-export-to-buffer backend "*html-buf*" nil t nil nil '(:toc nil) (lambda () (html-mode)))))
+         (with-current-buffer html-buf
+           (shell-command-on-region
+            (point-min)
+            (point-max)
+            "textutil -stdin -format html -convert rtf -stdout | pbcopy")
+           (bury-buffer))))
+   #+end_src
+**** DONE crazy find and copy workitem
+#+begin_src emacs-lisp
+  (defun slumos/org-copy-workitem-id-for-subtree ()
+    "Find a workitem id in a property or title above point and copy it to the clipboard"
+    (interactive)
+    (let ((wid (slumos/org-find-workitem-for-subtree)))
+      (if wid
+          (progn
+            (kill-new wid)
+            (message "%s" wid))
+        (user-error "failed to find a WorkItem ID"))))
+
+  (defun slumos/org-find-workitem-for-subtree ()
+    (cl-loop for headline in (slumos/org-subtree-headlines)
+             for wi-prop = (org-element-property :WORKITEM headline)
+             for title = (org-element-property :title headline)
+             if wi-prop return wi-prop
+             if (and title (string-match "W-\[0-9\]\+" title)) return (match-string 0 title)))
+
+  (defun slumos/org-subtree-headlines ()
+    (save-excursion
+      (org-with-wide-buffer
+       (slumos/org--subtree-headlines-from-point))))
+
+  (defun slumos/org--subtree-headlines-from-point ()
+      (unless (org-at-heading-p) (outline-previous-visible-heading 1))
+      (let* ((this (org-element-at-point)))
+        (if (org-up-heading-safe)
+            (cons this (slumos/org--subtree-headlines-from-point))
+          (list this))))
+#+end_src
+
+*
+* COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
       (defun slumos/org-add-aws-sh-properties ()
         (interactive)
@@ -1303,7 +1390,7 @@
   (defhydra slumos-hydra-copy-something-as-kill (:color blue)
     "copy as kill"
       ("b" slumos/magit-copy-buffer-current-branch "current branch (magit buffer)")
-      ("w" slumos-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
+      ("w" slumos/org-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
   (global-set-key (kbd "C-c w") #'slumos-hydra-copy-something-as-kill/body)
 #+end_src
 
@@ -1315,60 +1402,7 @@
        (setq counsel-describe-function-function #'helpful-callable)
        (setq counsel-describe-variable-function #'helpful-variable))
    #+end_src
-** TODO slumos-org-copy-to-clipboard
-   The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
-   See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
-
-   #+begin_src emacs-lisp
-     (defun slumos-org-copy-to-clipboard ()
-       "Copy org subtree to system clipboard as rich text"
-       (interactive)
-       (let* ((backend (or (org-export-get-backend 'slimhtml)
-                           (org-export-get-backend 'html)))
-              (html-buf (org-export-to-buffer backend "*html-buf*" nil t nil nil '(:toc nil) (lambda () (html-mode)))))
-         (with-current-buffer html-buf
-           (shell-command-on-region
-            (point-min)
-            (point-max)
-            "textutil -stdin -format html -convert rtf -stdout | pbcopy")
-           (bury-buffer))))
-   #+end_src
-** DONE crazy find and copy workitem
-#+begin_src emacs-lisp
-  (defun slumos-copy-workitem-id-for-subtree ()
-    "Find a workitem id somewhere in the current tree and copy it to the clipboard"
-    (interactive)
-    (let ((wid (slumos-crazy-find-workitem-id-for-subtree)))
-      (if wid
-          (progn (kill-new wid)
-                 (message "%s" wid))
-        (user-error "Didn't find a WorkItem"))))
-
-  (defun slumos-crazy-find-workitem-id-for-subtree ()
-    (let ((headlines (slumos-get-current-subtree-headlines))
-          (workitem))
-      (cl-loop for headline in headlines do
-               with parent = (org-element-property :parent headline)
-               with title = (or (org-element-property
-               (let* ((parent (org-element-property :parent headline))
-                      (title (or (org-element-property :raw-value headline)
-                                 (org-element-property :raw-value parent))))
-                 if (string-match "W-\[0-9\]\+" title)
-                 return (match-string 0 title)))))
-
-  (defun slumos-get-current-subtree-headlines ()
-    "Return a list of headings in the current subtree"
-    (save-excursion
-      (let ((headings))
-        (unless (org-at-heading-p) (outline-previous-visible-heading 1))
-        (if (org-at-heading-p) (push (org-element-context) headings))
-        (org-with-wide-buffer
-         (while (org-up-heading-safe)
-           (if (org-at-heading-p) (push (org-element-context) headings))))
-        headings)))
-#+end_src
-
-** COMMENT aggressive-indent
+* COMMENT aggressive-indent
    #+begin_src emacs-lisp
      (use-package aggressive-indent
        :defer t
@@ -1435,25 +1469,6 @@
         :bind
         ("M-o" . link-hint-open-link))
     #+end_src
-**** Copy org link as rich text
-***** HTML
-#+begin_src emacs-lisp
-  (defun slumos/org-link-at-point-as-html ()
-    (let* ((ctx (org-element-context))
-           (type (org-element-type ctx))
-           (beg (org-element-property :begin ctx))
-           (end (org-element-property :end ctx)))
-      (if (eq type 'link)
-          (org-export-string-as (buffer-substring beg end) 'slimhtml t)
-        (user-error "no link found at point"))))
-
-  (defun slumos/org-copy-link-at-point-as-html ()
-    (interactive)
-    (kill-new (slumos/org-link-at-point-as-html)))
-#+end_src
-***** Clipboard
-
-
 * multiple-cursors
    [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
    [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][multiple cursors · abo-abo/hydra Wiki]]
