@@ -472,9 +472,10 @@
       "convert a git remote location as a HTTP URL"
       (if (string-match "^http" url)
           url
-        (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
+        (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git\\)?"
                                   "https://\\2/\\3"
                                   url)))
+
     (defun slumos/magit-open-repo ()
       "open remote repo URL"
       (interactive)
