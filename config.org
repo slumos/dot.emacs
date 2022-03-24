@@ -1,9 +1,9 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-03-14 Mon 15:19 slumos@stevenlum-ltm>
+# Time-stamp: <2022-03-24 Thu 14:28 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty overview
+#+STARTUP: entitiespretty overview noindent
 #+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
@@ -646,7 +646,7 @@
    #+RESULTS:
 
 *** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
-*** Bullets
+*** COMMENT Bullets
    #+BEGIN_SRC emacs-lisp
      (use-package org-bullets
        :hook (org-mode . org-bullets-mode)
@@ -656,7 +656,9 @@
 **** [[https://github.com/minad/org-modern][minad/org-modern: Modern Org Style]]
 #+begin_src emacs-lisp
   (use-package org-modern
-    :hook (org-mode . org-modern-mode))
+    :hook
+    (org-mode . org-modern-mode)
+    (org-agenda-finalize-hook . org-modern-agenda))
 #+end_src
 
 *** Exporting
