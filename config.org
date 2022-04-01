@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-03-24 Thu 16:36 slumos@stevenlum-ltm>
+# Time-stamp: <2022-04-01 Fri 16:47 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -812,8 +812,9 @@
     #+end_src
 *** slumos hacks
 **** Copy org link as rich text
+***** TODO Factor out all this duplication...
 ***** HTML
-#+begin_src emacs-lisp :results replace drawer
+#+begin_src emacs-lisp
   (defun slumos/org-link-at-point-as-html ()
     (let* ((ctx (org-element-context))
            (type (org-element-type ctx))
@@ -828,14 +829,9 @@
   (defun slumos/org-copy-link-at-point-as-html ()
     (interactive)
     (kill-new (slumos/org-link-at-point-as-html)))
-#+end_src
+  #+end_src
 
-#+RESULTS:
-:results:
-slumos/org-copy-link-at-point-as-html
-:end:
-
-***** COMMENT Clipboard
+***** Clipboard
 #+begin_src emacs-lisp
   (defun slumos/org-copy-link-at-point-to-clipboard-rich ()
     (interactive)
@@ -845,8 +841,12 @@ slumos/org-copy-link-at-point-as-html
         (shell-command-on-region
          (point-min)
          (point-max)
-         ))))
+         "textutil -stdin -format html -convert rtf -stdout | pbcopy"))))
+
+  ;; (with-current-buffer "DMP.org"
+  ;;   (slumos/org-copy-link-at-point-to-clipboard-rich))
 #+end_src
+
 **** TODO slumos-org-copy-to-clipboard
    The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
    See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
@@ -865,7 +865,13 @@ slumos/org-copy-link-at-point-as-html
             "textutil -stdin -format html -convert rtf -stdout | pbcopy")
            (bury-buffer))))
    #+end_src
-**** DONE crazy find and copy workitem
+**** Do stuff with "WorkItems"
+(WorkItem is SFDC for "ticket")
+
+My work notes have a headline for each sprint, and below that a headline for each workitem, which is a link to the workitem starting with the workitem ID (which matches W-[0-9]+). This could easily be adapted to JIRA by matching [A-Z]+-[0-9]+ (and now that I wrote that I'm going to just redo it that way lol).
+
+The main goal of these is to make it super easy to get the ID or a full rich text link into the system clipboard for pasting into commit messages, Slack, email, etc.
+
 #+begin_src emacs-lisp
   (defun slumos/org-copy-workitem-id-for-subtree ()
     "Find a workitem id in a property or title above point and copy it to the clipboard"
@@ -876,6 +882,7 @@ slumos/org-copy-link-at-point-as-html
             (kill-new wid)
             (message "%s" wid))
         (user-error "failed to find a WorkItem ID"))))
+
 
   (defun slumos/org-find-workitem-for-subtree ()
     (cl-loop for headline in (slumos/org-subtree-headlines)
@@ -897,14 +904,13 @@ slumos/org-copy-link-at-point-as-html
           (list this))))
 #+end_src
 
-*
-**** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
+***** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
     #+BEGIN_SRC emacs-lisp
       (defun slumos/org-add-aws-sh-properties ()
         (interactive)
         (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
     #+END_SRC
-**** COMMENT Post-process grabbed links
+***** COMMENT Post-process grabbed links
 
     Strip content-free stuff that gets tacked onto the title of every page.
 
@@ -915,6 +921,31 @@ slumos/org-copy-link-at-point-as-html
       (advice-add #'org-as-mac-chrome-get-frontmost-url :filter-return #'slumos/org-grab-link-after)
       (org-as-mac-chrome-get-frontmost-url)
     #+end_src
+**** Messing around
+#+begin_src emacs-lisp :results replace drawer pp :tangle no
+  (require 'dash)
+  (defun slumos/org-find-workitem-headline-for-subtree ()
+    (--first (string-match "W-\[0-9\].*" (org-element-property :title it)) (slumos/org-subtree-headlines)))
+
+  (with-current-buffer "DMP.org"
+      (slumos/org-find-workitem-headline-for-subtree))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+(headline
+ (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000sO211YAC/view][W-10819701: Upgrade Cloudbees JDK to Java 11+]]" :begin 891 :end 1911 :pre-blank 0 :contents-begin 1031 :contents-end 1911 :level 2 :priority nil :tags nil :todo-keyword
+             #("START" 0 1
+               (fontified t face org-modern-todo display
+                          #(" S" 1 2
+                            (cursor t))
+                          org-category "DMP")
+               1 4
+               (fontified t face org-modern-todo org-category "DMP")
+               4 5
+               (fontified t face org-modern-todo display "T " org-category "DMP"))
+             :todo-type todo :post-blank 0 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 891 :title "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000sO211YAC/view][W-10819701: Upgrade Cloudbees JDK to Java 11+]]"))
+#+end_example
 
 * Language Modes
 ** Misc
@@ -1402,6 +1433,13 @@ slumos/org-copy-link-at-point-as-html
        (setq counsel-describe-function-function #'helpful-callable)
        (setq counsel-describe-variable-function #'helpful-variable))
    #+end_src
+** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
+#+begin_src emacs-lisp
+  (use-package elisp-demos
+    :after helpful
+    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+#+end_src
+
 * COMMENT aggressive-indent
    #+begin_src emacs-lisp
      (use-package aggressive-indent
