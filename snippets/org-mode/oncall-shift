@@ -24,7 +24,7 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** Engage the relevant team members (PE), create or update relevant Work Items
 ***** TODO In [[https://app.snyk.io/org/marketing-cloud-audience-studio][Snyk Security Issues Reports]], look for High Severity issues in repos we manage
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO [[https://cb.krxd.net/cje][Cloudbees]] Checks
+***** TODO [[https://cb.krxd.net/cje][Cloudbees]] Checks ([[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]] plugins)
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** Check for runaway jobs
        Some jobs may legitimately take multiple hours, so you may need to review a job’s buildTimeTrend in order to make a good judgement.
