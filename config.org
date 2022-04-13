@@ -781,6 +781,14 @@
   (defun slumos/org-copy-link-at-point-as-html ()
     (interactive)
     (kill-new (slumos/org-link-at-point-as-html)))
+
+  (defun slumos/copy-html-to-pasteboard (html)
+    (let* ((hex (string-join (--map (format "%0X" it) (string-to-list html))))
+           (script (format "set the clipboard to «data HTML%s»" hex)))
+      (do-applescript script)))
+
+;;  (with-current-buffer "DMP.org"
+;;    (slumos/org-link-at-point-as-html))
   #+end_src
 
 **** Clipboard
