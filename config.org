@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-04-12 Tue 18:50 slumos@stevenlum-ltm>
+# Time-stamp: <2022-04-21 Thu 12:00 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1433,6 +1433,13 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
         :bind
         ("M-o" . link-hint-open-link))
     #+end_src
+** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
+#+begin_src emacs-lisp
+  (use-package vundo
+    :config
+    (setq vundo-glyph-alist vundo-unicode-symbols))
+#+end_src
+
 * multiple-cursors
    [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
    [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][multiple cursors · abo-abo/hydra Wiki]]
