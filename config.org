@@ -391,13 +391,20 @@
     #+end_src
 
 *** Deploy fanciness
+**** Filenames
+#+begin_src emacs-lisp
+  (custom-set-variables '(find-file-visit-truename t))
+#+end_src
 **** Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
-	 :hook
-	 (after-init . doom-modeline-mode)
-	 :custom
-	 (doom-modeline-icon t "Use all-the-icons"))
+         :hook
+         (after-init . doom-modeline-mode)
+         :custom
+         (doom-modeline-icon t "Use all-the-icons")
+         (doom-modeline-buffer-file-name-style 'truncate-nil)
+         (doom-modeline-bar-width 8)
+         (doom-modeline-hud t))
        #+end_src
 ** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
    #+begin_src emacs-lisp
