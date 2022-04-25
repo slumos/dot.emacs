@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-02-22 Tue 10:47 slumos@stevenlum-ltm>
+# Time-stamp: <2022-04-25 Mon 10:39 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -132,6 +132,12 @@
          "KAIJU_REFRESH_TOKEN"
          "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
+* [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
+#+begin_src emacs-lisp
+  (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
+  (setq bug-reference-url-format "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=%s")
+#+end_src
+
 * Debug
   #+begin_src emacs-lisp
     (message "Loaded work.org")
