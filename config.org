@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-04-21 Thu 12:00 slumos@stevenlum-ltm>
+# Time-stamp: <2022-05-03 Tue 13:30 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1965,6 +1965,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
    #+BEGIN_SRC emacs-lisp
      (use-package restclient)
+     (use-package restclient-jq)
      (use-package ob-restclient
        :config
        (org-babel-do-load-languages
