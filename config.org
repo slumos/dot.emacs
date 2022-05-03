@@ -1374,6 +1374,15 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
       ("w" slumos/org-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
   (global-set-key (kbd "C-c w") #'slumos-hydra-copy-something-as-kill/body)
 #+end_src
+** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
+#+begin_src emacs-lisp
+  (use-package aas
+    :config
+    (aas-set-snippets 'global
+                      ";arr" "⇒"
+                      ";larr" "⟹")
+    (aas-global-mode))
+#+end_src
 
 ** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
    #+begin_src emacs-lisp
