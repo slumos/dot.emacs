@@ -1645,6 +1645,17 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        (setq ivy-format-function #'ivy-format-function-line))
    #+end_src
 
+#+begin_src emacs-lisp
+  (use-package ivy-posframe
+    :disabled
+    :after ivy
+    :hook ivy-mode
+    :config
+    (setq ivy-posframe-display-functions-alist
+          '((swiper . nil)
+            (t . ivy-posframe-display-at-frame-center))))
+#+end_src
+
 *** COMMENT [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
     #+BEGIN_SRC emacs-lisp
       (use-package counsel-tramp
