@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-05-03 Tue 13:30 slumos@stevenlum-ltm>
+# Time-stamp: <2022-05-05 Thu 16:28 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -322,9 +322,9 @@
         :init
         (setq
          ;; headings
-         modus-themes-headings '((t . (variable-pitch rainbow regular))
-                                 (t . t))
-         modus-themes-scale-headings nil
+         modus-themes-headings '((1 . (1.2 variable monochrome))
+                                 (2 . (1.1 variable rainbow regular))
+                                 (t . (variable-pitch rainbow regular)))
 
          ;; org
          modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
@@ -517,16 +517,6 @@
        :config
        <<org-config>>)
    #+END_SRC
-
-   #+begin_src emacs-lisp
-     (use-package org-mac-link
-       :quelpa ((org-mac-link
-                 :fetcher git
-                 :url "https://gitlab.com/aimebertrand/org-mac-link.git")
-                :upgrade t)
-       :commands (org-mac-grab-link))
-   #+end_src
-
 ** Binds
    :PROPERTIES:
    :header-args: :noweb-ref org-binds :tangle no
@@ -543,13 +533,15 @@
    :header-args: :noweb-ref org-config :tangle no :results silent
    :END:
    #+begin_src emacs-lisp
-     (custom-set-variables
-      '(org-catch-invisible-edits 'error)
-      '(org-cycle-include-plain-lists 'integrate))
+          (custom-set-variables
+           '(org-catch-invisible-edits 'error)
+           '(org-cycle-include-plain-lists 'integrate)
+           '(org-fontify-whole-heading-line t))
    #+end_src
 
    Regular ellipsis drives me insane because I tend to end regular
    lines that way all the time ... (see?)
+
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables
       '(org-ellipsis " ⬎"))
@@ -617,7 +609,7 @@
 				(magit-wip-before-change-mode t)))
    #+END_SRC
 
-   [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+**** [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
    #+begin_src emacs-lisp
    (use-package idle-org-agenda
      :after org-agenda
@@ -659,6 +651,8 @@
 *** [[https://github.com/minad/org-modern][minad/org-modern: Modern Org Style]]
 #+begin_src emacs-lisp
   (use-package org-modern
+    :custom
+    (org-modern-star ["◉""○""◈""◇""—"])
     :hook
     (org-mode . org-modern-mode)
     (org-agenda-finalize . org-modern-agenda)
@@ -666,6 +660,7 @@
     (setq org-modern-table-vertical 1)
     (setq org-modern-table-horizontal 1))
 #+end_src
+
 ** Agenda
 
    #+begin_src emacs-lisp
@@ -740,6 +735,16 @@
     #+end_src
 
 *** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
+*** org-mac-link
+   #+begin_src emacs-lisp
+     (use-package org-mac-link
+       :quelpa ((org-mac-link
+                 :fetcher git
+                 :url "https://gitlab.com/aimebertrand/org-mac-link.git")
+                :upgrade t)
+       :commands (org-mac-grab-link))
+   #+end_src
+
 ** Evaluation
 *** Structure Templates
     #+begin_src emacs-lisp
