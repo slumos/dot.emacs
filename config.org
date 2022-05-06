@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-05-05 Thu 16:28 slumos@stevenlum-ltm>
+# Time-stamp: <2022-05-06 Fri 11:58 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -322,7 +322,7 @@
         :init
         (setq
          ;; headings
-         modus-themes-headings '((1 . (1.2 variable monochrome))
+         modus-themes-headings '((1 . (1.2 variable monochrome regular))
                                  (2 . (1.1 variable rainbow regular))
                                  (t . (variable-pitch rainbow regular)))
 
