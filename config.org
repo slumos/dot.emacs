@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-05-06 Fri 11:58 slumos@stevenlum-ltm>
+# Time-stamp: <2022-06-20 Mon 11:24 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -322,8 +322,8 @@
         :init
         (setq
          ;; headings
-         modus-themes-headings '((1 . (1.2 variable monochrome regular))
-                                 (2 . (1.1 variable rainbow regular))
+         modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+                                 (2 . (1.1 variable-pitch rainbow regular))
                                  (t . (variable-pitch rainbow regular)))
 
          ;; org
@@ -526,7 +526,7 @@
      (("C-c a" . org-agenda)
       ("C-c c" . org-capture)
       ("C-c l" . org-store-link)
-      ("C-c g" . org-mac-grab-link))
+      ("C-c g" . org-mac-link-get-link))
    #+END_SRC
 ** Config
    :PROPERTIES:
@@ -660,6 +660,12 @@
     (setq org-modern-table-vertical 1)
     (setq org-modern-table-horizontal 1))
 #+end_src
+*** COMMENT [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
+#+begin_src emacs-lisp
+  (use-package org-modern-indent
+    :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "master")
+    :hook (org-mode . org-modern-indent))
+#+end_src
 
 ** Agenda
 
@@ -742,7 +748,7 @@
                  :fetcher git
                  :url "https://gitlab.com/aimebertrand/org-mac-link.git")
                 :upgrade t)
-       :commands (org-mac-grab-link))
+       :commands (org-mac-link-get-link))
    #+end_src
 
 ** Evaluation
@@ -1384,8 +1390,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
   (use-package aas
     :config
     (aas-set-snippets 'global
-                      ";arr" "⇒"
-                      ";larr" "⟹")
+      ";->" "→"
+      ";arr" "⇒"
+      ";larr" "⟹")
     (aas-global-mode))
 #+end_src
 
