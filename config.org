@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-06-20 Mon 11:24 slumos@stevenlum-ltm>
+# Time-stamp: <2022-07-26 Tue 10:26 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -401,10 +401,15 @@
          :hook
          (after-init . doom-modeline-mode)
          :custom
-         (doom-modeline-icon t "Use all-the-icons")
-         (doom-modeline-buffer-file-name-style 'truncate-nil)
          (doom-modeline-bar-width 8)
-         (doom-modeline-hud t))
+         (doom-modeline-buffer-file-name-style 'truncate-nil)
+         (doom-modeline-enable-word-count t)
+         (doom-modeline-env-version t)
+         (doom-modeline-hud t)
+         (doom-modeline-icon t "Use all-the-icons")
+         (doom-modeline-vcs-max-length 25) ; feature_slumos_W123456789_something
+         ;(doom-modeline-buffer-file-name-style 'file-name) ;; if TRAMP is super-slow
+         )
        #+end_src
 ** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
    #+begin_src emacs-lisp
@@ -1127,13 +1132,23 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_SRC
 
    Putting JSON here too...meh.
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
      (use-package json-mode
        :mode "\\.json\\(\\.erb\\)?\'"
        :config
        (add-hook 'json-mode-hook #'flycheck-mode)
        (org-babel-do-load-languages 'org-babel-load-languages '((jq . t))))
    #+END_SRC
+
+   Trying out jsonian
+   #+begin_src emacs-lisp
+     (use-package jsonian
+       :straight (:type git :host github :repo "iwahbe/jsonian")
+       :mode "\\.json\'"
+       :after so-long
+       :custom (jsonian-no-so-long-mode))
+   #+end_src
+
 ** jq mode
    #+begin_src emacs-lisp
      (use-package jq-mode)
@@ -1144,13 +1159,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        :ensure t
        :hook (k8s-mode . yas-minor-mode))
    #+end_src
-** Lua
-   I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
-   [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
-   #+BEGIN_SRC emacs-lisp
-   (use-package lua-mode
-     :mode "\\(\\.lua\\|\\.rockspec\\)\\'")
-   #+END_SRC
 ** Markdown
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
@@ -2007,7 +2015,9 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
       :config
-      (projectile-mode 1))
+      (projectile-mode 1)
+      :custom
+      (projectile-file-exists-local-cache-expire 300))
   #+END_SRC
 * Context-specific
 ** Work/Life Balance?

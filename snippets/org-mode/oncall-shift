@@ -4,7 +4,7 @@
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
 $0*** `daily-oncall-checklist-scheduled-time`
-    (this list last updated on <2022-02-24 Thu>) (remember to update @krux-pe-oncall group)
+    (this list last updated on <2022-07-14 Thu>) (remember to update @krux-pe-oncall group)
       Slack → People and user groups (⇧⌘E) → User groups tab → search for krux-pe → Click on group → Edit group members. (Holy shit... I will try to find a quicker method.)
 **** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
@@ -86,6 +86,6 @@ aws redshift describe-events --region us-west-2
           6) SHA 256 Fingerprint
 ***** TODO Review email notifications. Update or create Work Items, raise awareness if necessary.
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** cron errors
+****** [[https://mail.google.com/mail/u/0/?zx=7nq94zf9a8r#search/label%3A0---triage-cron+is%3Aunread][cron errors]]
 ****** AWS reports
 ****** GitHub Security Alert Digests (gmail filter =from:notifications@github.com subject:"security vulnerability"=)

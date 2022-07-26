@@ -5,6 +5,7 @@
       '(
         counsel-unicode-char
         dabbrev-expand
+        electric-newline-and-maybe-indent
         hydra--negative-argument
         hydra-multiple-cursors/body
         hydra-multiple-cursors/mc/insert-numbers-and-exit
@@ -133,6 +134,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
         counsel-M-x
         hydra--digit-argument
         hydra-multiple-cursors/ignore
