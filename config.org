@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-07-26 Tue 10:26 slumos@stevenlum-ltm>
+# Time-stamp: <2022-07-29 Fri 16:10 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -207,6 +207,7 @@
      (setq inhibit-startup-screen t)
    #+END_SRC
 * Preferences
+Deploy the fanciness.
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
    (prefer-coding-system 'utf-8)
@@ -390,12 +391,11 @@
       (display-time)
     #+end_src
 
-*** Deploy fanciness
-**** Filenames
+*** Filenames
 #+begin_src emacs-lisp
   (custom-set-variables '(find-file-visit-truename t))
 #+end_src
-**** Doom Mode Line
+*** Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
          :hook
@@ -443,6 +443,13 @@
      ;; Nano header & mode lines (optional)
      (require 'nano-modeline)
    #+end_src
+** [[https://github.com/minad/goggles][minad/goggles: goggles.el - Pulse modified region]]
+#+begin_src emacs-lisp
+(use-package goggles
+  :hook ((prog-mode text-mode) . goggles-mode)
+  :config
+  (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
+#+end_src
 
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
