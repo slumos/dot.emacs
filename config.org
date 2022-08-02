@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-08-02 Tue 15:15 slumos@stevenlum-ltm>
+# Time-stamp: <2022-08-02 Tue 15:16 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -443,14 +443,6 @@ Deploy the fanciness.
      ;; Nano header & mode lines (optional)
      (require 'nano-modeline)
    #+end_src
-** [[https://github.com/minad/goggles][minad/goggles: goggles.el - Pulse modified region]]
-#+begin_src emacs-lisp
-(use-package goggles
-  :hook ((prog-mode text-mode) . goggles-mode)
-  :config
-  (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
-#+end_src
-
 * Magit
   [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
