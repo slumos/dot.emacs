@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-07-29 Fri 16:10 slumos@stevenlum-ltm>
+# Time-stamp: <2022-08-02 Tue 15:15 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1306,7 +1306,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode
        :hook
-       (terraform-mode . terraform-format-on-save-mode)
+       ;(terraform-mode . terraform-format-on-save-mode)
        (terraform-mode . flycheck-mode))
    #+END_SRC
 ** Web (HTML, etc)
@@ -1331,6 +1331,13 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 * Helpers
 ** TODO Organize this mess!
 ** TODO auto-save-visited-mode
+** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+#+begin_src emacs-lisp
+  (use-package apheleia
+    :init
+    (apheleia-global-mode 1))
+#+end_src
+
 ** COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
    #+begin_src emacs-lisp
      (use-package package-loading-notifier

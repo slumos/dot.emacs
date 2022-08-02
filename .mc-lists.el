@@ -19,6 +19,7 @@
         lispy-parens
         lispy-quotes
         org-beginning-of-line
+        org-delete-char
         org-end-of-line
         org-insert-todo-heading
         org-metaright
