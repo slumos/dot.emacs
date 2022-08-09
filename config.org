@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-08-02 Tue 15:16 slumos@stevenlum-ltm>
+# Time-stamp: <2022-08-09 Tue 15:24 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -65,23 +65,29 @@
       (use-package quelpa :demand t)
       (use-package quelpa-use-package :demand t)
     #+end_src
-*** straight
-    #+begin_src emacs-lisp
-      (defvar bootstrap-version)
-      (let ((bootstrap-file
-             (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-            (bootstrap-version 5))
-        (unless (file-exists-p bootstrap-file)
-          (with-current-buffer
-              (url-retrieve-synchronously
-               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-               'silent 'inhibit-cookies)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-        (load bootstrap-file nil 'nomessage))
-    #+end_src
+*** straight - native comp temporarily disabled until
+#+begin_src emacs-lisp
+  (custom-set-variables '(straight-disable-native-compilation t))
+#+end_src
 
-*** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
+#+begin_src emacs-lisp
+  (setq comp-deferred-compilation-black-list '())
+
+  (defvar bootstrap-version)
+    (let ((bootstrap-file
+           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+          (bootstrap-version 6))
+      (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+#+end_src
+
+* TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
     #+begin_src emacs-lisp
       (prog1 "prepare leaf"
         (prog1 "leaf"
@@ -664,7 +670,7 @@ Deploy the fanciness.
     (setq org-modern-table-vertical 1)
     (setq org-modern-table-horizontal 1))
 #+end_src
-*** COMMENT [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
+*** [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
 #+begin_src emacs-lisp
   (use-package org-modern-indent
     :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "master")
@@ -1323,7 +1329,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 * Helpers
 ** TODO Organize this mess!
 ** TODO auto-save-visited-mode
-** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+** TODO COMMENT [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
   (use-package apheleia
     :init
