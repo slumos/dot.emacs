@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-08-09 Tue 15:24 slumos@stevenlum-ltm>
+# Time-stamp: <2022-09-06 Tue 10:44 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -275,7 +275,10 @@ Deploy the fanciness.
                       "      " "     " "    " "     " "     " "     "))))
     #+end_src
 
+    #+begin_src c
     ligature test [ERROR] --> ==> => <= >=
+    #+end_src
+**** TODO [[https://github.com/mickeynp/ligature.el/issues/8][Adding support for additional fonts · Issue #8 · mickeynp/ligature.el]]
 *** prettify-symbols setup
     Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-prettify-symbols-v0.827.el
     #+begin_src emacs-lisp
@@ -313,6 +316,34 @@ Deploy the fanciness.
       (use-package almost-mono-themes)
     #+end_src
 
+*** [[https://protesilaos.com/emacs/ef-themes][Ef (εὖ) themes for GNU Emacs | Protesilaos Stavrou]]
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :init
+    (setq
+     ;; headings
+     ef-themes-headings '((0 . (1.2 variable-pitch grayscale light regular))
+                             (1 . (1.1 variable-pitch rainbow light))
+                             (t . (variable-pitch rainbow regular)))
+
+     ;; org
+     ef-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                               (header-date . (grayscale bold-today)))
+     ef-themes-org-blocks 'gray-background
+
+     ;; text
+     ef-themes-bold-constructs t
+     ef-themes-italic-constructs t
+     ef-themes-slanted-constructs t
+
+     ;; other
+     ef-themes-hl-line '(accented)
+     ef-themes-lang-checkers '(straight-underline faint)
+     ef-themes-mode-line '(accented borderless)
+     ef-themes-paren-match '(subtle-bold)
+     ef-themes-syntax '(faint alt-syntax)
+     ef-themes-variable-pitch-ui t))
+#+end_src
 *** gruvbox
     #+begin_src emacs-lisp
       (use-package gruvbox-theme :defer t)
@@ -673,7 +704,7 @@ Deploy the fanciness.
 #+begin_src emacs-lisp
   (use-package org-modern-indent
     :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "master")
-    :hook (org-mode . org-modern-indent))
+    :hook (org-mode . org-modern-indent-mode))
 #+end_src
 
 ** Agenda
@@ -704,11 +735,6 @@ Deploy the fanciness.
                       "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
     #+end_src
 
-*** TODO [[https://github.com/alphapapa/org-sticky-header][alphapapa/org-sticky-header: Show off-screen Org heading at top of window]]
-    #+begin_src emacs-lisp
-      (use-package org-sticky-header)
-    #+end_src
-
 *** TODO [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
 *** TODO [[https://github.com/ahendriksen/ob-tmux][ahendriksen/ob-tmux: Ob-tmux is an Emacs library that allows org mode to evaluate code blocks in a tmux session.]]
     #+begin_src emacs-lisp
@@ -718,7 +744,7 @@ Deploy the fanciness.
       )
     #+end_src
 
-*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+*** COMMENT [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
     #+begin_src emacs-lisp
       (use-package orgit)
     #+end_src
@@ -1113,7 +1139,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
    #+begin_src emacs-lisp
      (use-package lsp-java
-       :hook ((java-mode-hook . lsp)))
+       :hook ((java-mode-hook . lsp-deferred)))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -1302,8 +1328,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 ** Terraform (HCL)
    #+BEGIN_SRC emacs-lisp
      (use-package terraform-mode
+       :config
+       (setq lsp-disabled-clients '(tfls))
        :hook
        ;(terraform-mode . terraform-format-on-save-mode)
+       (terraform-mode . apheleia-mode)
+       (terraform-mode . lsp-deferred)
        (terraform-mode . flycheck-mode))
    #+END_SRC
 ** Web (HTML, etc)
@@ -1328,11 +1358,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 * Helpers
 ** TODO Organize this mess!
 ** TODO auto-save-visited-mode
-** TODO COMMENT [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+** TODO [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
-  (use-package apheleia
-    :init
-    (apheleia-global-mode 1))
+  (use-package apheleia)
 #+end_src
 
 ** COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
@@ -1578,8 +1606,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    This cleans up trailing whitespace only on lines I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
-       :config
-       (ws-butler-global-mode t))
+       :hook (prog-mode . ws-butler-mode))
    #+END_SRC
 ** yasnippet
    #+begin_src emacs-lisp
@@ -1785,7 +1812,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
             (rename-file filename new-name t)
             (set-visited-file-name new-name t t)))))))
 #+END_SRC
-
+**** TODO replace rename-file-and-buffer with rename-visited-file (Emacs 29)
 *** compile-notify
 
 #+BEGIN_SRC emacs-lisp
