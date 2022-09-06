@@ -644,7 +644,6 @@ Deploy the fanciness.
    (use-package ox-gfm :after org)
    (use-package ox-jira :after org)
    (use-package ox-pandoc :after org)
-   (use-package ox-slimhtml :after org)
    #+END_SRC
 *** COMMENT My crazy numbered paragraphs idea
     #+begin_src emacs-lisp
