@@ -13,14 +13,16 @@ next-output-file-name () {
 
 set -x
 
-logfile="$(next-output-file-name brew-emacs.out)"
+version=${1-28}
+logfile="$(next-output-file-name "brew-emacs@${version}.out")"
 
 brew install \
-  d12frosted/emacs-plus/emacs-plus@28 \
+  --debug \
+  "d12frosted/emacs-plus/emacs-plus@${version}" \
   --display-times \
   --with-native-comp \
   --with-no-frame-refocus \
   --with-xwidgets \
   --with-imagemagick \
-  --with-modern-nuvola-icon \
-| tee "$logfile"
+  --with-modern-nuvola-icon 
+#| tee "$logfile"
