@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-09-06 Tue 10:44 slumos@stevenlum-ltm>
+# Time-stamp: <2022-09-29 Thu 13:07 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -65,7 +65,7 @@
       (use-package quelpa :demand t)
       (use-package quelpa-use-package :demand t)
     #+end_src
-*** straight - native comp temporarily disabled until
+*** COMMENT straight - native comp temporarily disabled until
 #+begin_src emacs-lisp
   (custom-set-variables '(straight-disable-native-compilation t))
 #+end_src
@@ -305,7 +305,7 @@ Deploy the fanciness.
         (set-fontset-font
          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
     #+end_src
-*** [[https://www.nerdfonts.com/cheat-sheet][Nerd Fonts]]
+*** COMMENT [[https://www.nerdfonts.com/cheat-sheet][Nerd Fonts]]
     #+begin_src emacs-lisp
       (use-package nerd-fonts
         :straight (nerd-fonts :type git :host github :repo "twlz0ne/nerd-fonts.el"))
@@ -347,11 +347,6 @@ Deploy the fanciness.
 *** gruvbox
     #+begin_src emacs-lisp
       (use-package gruvbox-theme :defer t)
-    #+end_src
-
-*** [[https://github.com/Mulling/mlso-theme][Mulling/mlso-theme: A dark, medium-contrast theme for emacs]]
-    #+begin_src emacs-lisp
-      (use-package mlso-theme :defer t)
     #+end_src
 
 *** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
@@ -432,7 +427,7 @@ Deploy the fanciness.
 #+begin_src emacs-lisp
   (custom-set-variables '(find-file-visit-truename t))
 #+end_src
-*** Doom Mode Line
+*** COMMENT Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
          :hook
@@ -583,9 +578,15 @@ Deploy the fanciness.
    Regular ellipsis drives me insane because I tend to end regular
    lines that way all the time ... (see?)
 
+   Good choices: ⬎ [+]  
+   
    #+BEGIN_SRC emacs-lisp
-     (custom-set-variables
-      '(org-ellipsis " ⬎"))
+  (custom-set-variables
+   '(org-ellipsis " "))
+
+  (set-face-attribute 'org-ellipsis nil
+                      :inherit '(fg-dim default)
+                      :height 0.6)
    #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
@@ -700,10 +701,11 @@ Deploy the fanciness.
     (setq org-modern-table-vertical 1)
     (setq org-modern-table-horizontal 1))
 #+end_src
-*** [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
+*** COMMENT [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
 #+begin_src emacs-lisp
+  ; https://github.com/jdtsmith/org-modern-indent.git
   (use-package org-modern-indent
-    :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "master")
+    :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "main")
     :hook (org-mode . org-modern-indent-mode))
 #+end_src
 
@@ -1106,7 +1108,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      (exec-path-from-shell-copy-env "JAVA_HOME")
    #+end_src
 
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (leaf company
        :after java-mode
        :hook java-mode-hook
@@ -1162,16 +1164,17 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_SRC
 
    Putting JSON here too...meh.
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package json-mode
-       :mode "\\.json\\(\\.erb\\)?\'"
-       :config
-       (add-hook 'json-mode-hook #'flycheck-mode)
-       (org-babel-do-load-languages 'org-babel-load-languages '((jq . t))))
+   #+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :mode "\\.json\\(\\.erb\\)?\'"
+    :config
+    (add-hook 'json-mode-hook #'flycheck-mode)
+    (add-hook 'json-mode-hook #'yas-minor-mode)
+    (org-babel-do-load-languages 'org-babel-load-languages '((jq . t))))
    #+END_SRC
 
    Trying out jsonian
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (use-package jsonian
        :straight (:type git :host github :repo "iwahbe/jsonian")
        :mode "\\.json\'"
@@ -1750,9 +1753,13 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_QUOTE
 *** Add handling for TOTP prompt
     #+begin_src emacs-lisp
-      (use-package tramp
-        :custom
-        (tramp-password-prompt-regexp "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *"))
+  (use-package tramp
+    :custom
+    (tramp-password-prompt-regexp "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *")
+    :config
+    (add-to-list 'tramp-connection-properties
+                 (list (regexp-quote "krxd.net")
+                       "remote-shell" "/bin/bash")))
     #+end_src
 
 ** Functions

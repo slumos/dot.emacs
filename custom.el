@@ -3,15 +3,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-term-color-vector
-   [unspecified "#eeeeee" "#bcbcbc" "#8700af" "#d70087" "#d75f00" "#005faf" "#d75f00" "#878787"] t)
  '(auth-source-cache-expiry 86400)
  '(auth-source-debug 'trivia)
  '(auth-source-save-behavior 'ask)
  '(auth-sources nil)
  '(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
  '(avy-style 'pre)
- '(beacon-color "#cc6666")
  '(char-menu
    '("—" "‘’" "“”" "…" "«»" "–"
      ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
@@ -52,7 +49,6 @@
      ("courier" "CMU Typewriter Text" "fixed")
      ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
      ("helv" "helvetica" "arial" "fixed")))
- '(fci-rule-color "#292617" t)
  '(find-file-visit-truename t)
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
  '(flycheck-yamllintrc nil)
@@ -61,18 +57,11 @@
  '(frame-resize-pixelwise t)
  '(global-flycheck-mode nil)
  '(global-prettify-symbols-mode t)
- '(highlight-changes-colors '("#EF5350" "#7E57C2"))
- '(hl-paren-background-colors '("#e8fce8" "#c1e7f8" "#f8e8e8"))
- '(hl-paren-colors '("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11"))
- '(hl-sexp-background-color "#060404")
  '(indent-tabs-mode nil)
  '(ivy-omni-org-file-sources nil t)
  '(ivy-rich-mode t)
  '(ivy-rich-parse-remote-buffer nil)
  '(ivy-rich-switch-buffer-project-max-length 32)
- '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
  '(js-indent-level 2)
  '(leaf-defaults '(:ensure t))
  '(line-number-mode t)
@@ -102,13 +91,14 @@
      ("~/Projects/sfdc-slumos" . 1)
      ("~/Projects/tf" . 1)))
  '(magit-wip-mode t)
- '(objed-cursor-color "#99324B")
+ '(org-agenda-files
+   '("~/Sync/GDrive/Notes/DMP.org" "/Users/slumos/.config/emacs/config.org" "/Users/slumos/Sync/ST/Notes/Inbox.org" "/Users/slumos/Sync/ST/Notes/SLUMOS.org" "/Users/slumos/Sync/ST/Notes/TODO.org"))
  '(org-agenda-span 'day)
  '(org-capture-bookmark nil)
  '(org-catch-invisible-edits 'error)
  '(org-confirm-babel-evaluate nil)
  '(org-cycle-include-plain-lists 'integrate)
- '(org-ellipsis " ⬎")
+ '(org-ellipsis " ")
  '(org-fontify-whole-heading-line t)
  '(org-ql-search-directories-files-regexp "\\.org\\(_done\\)?\\'" t)
  '(org-variable-pitch-fixed-font "PragmataPro")
@@ -121,11 +111,9 @@
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(pragmatapro-lig-mode rspec-mode inf-ruby ein org-sticky-header deadgrep jinja2-mode mmm-jinja2 mmm-mode org-ml expand-region org-variable-pitch idle-org-agenda edit-indirect lpy almost-mono-themes monochrome-theme nothing-theme spacemacs-theme ivy-avy vscode-dark-plus-theme org-babel-eval-in-repl ob-session-async org-chef ox-pandoc helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm))
+   '(nerd-fonts lastfm restclient-jq restclient pdf-tools counsel-projectile multiple-cursors vundo link-hint paradox elisp-demos helpful aas apheleia pragmatapro-lig-mode rspec-mode inf-ruby ein org-sticky-header deadgrep jinja2-mode mmm-jinja2 mmm-mode org-ml expand-region org-variable-pitch idle-org-agenda edit-indirect lpy almost-mono-themes monochrome-theme nothing-theme spacemacs-theme ivy-avy vscode-dark-plus-theme org-babel-eval-in-repl ob-session-async org-chef ox-pandoc helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji lsp-docker mlso-theme docker-compose-mode dockerfile-mode direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy lsp-python-ms dap-mode ivy-rich doom-modeline ivy-posframe posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lsp-ui lush-theme company-lsp rustic flycheck-rust rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format company ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson markdown-mode json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
- '(pos-tip-background-color "#F1EBDD")
- '(pos-tip-foreground-color "#011627")
  '(python-pytest-executable "pipenv run pytest")
  '(safe-local-variable-values '((dockerfile-image-name . "puppet-dev")))
  '(server-mode t)
@@ -134,11 +122,8 @@
  '(sh-indentation 2)
  '(sh-learn-basic-offset 'usually)
  '(slumos/ivy-omni-org-sources nil t)
- '(sml/active-background-color "#98ece8")
- '(sml/active-foreground-color "#424242")
- '(sml/inactive-background-color "#4fa8a8")
- '(sml/inactive-foreground-color "#424242")
  '(straight-disable-native-compilation t)
+ '(straight-disable-native-compile t)
  '(time-stamp-format "%Y-%02m-%02d %3a %02H:%02M %l@%q")
  '(tramp-completion-use-auth-sources nil)
  '(tramp-syntax 'default nil (tramp))
@@ -151,9 +136,7 @@
  '(web-mode-enable-auto-indentation nil)
  '(web-mode-enable-auto-pairing nil)
  '(web-mode-markup-indent-offset 2)
- '(web-mode-sql-indent-offset 2)
- '(weechat-color-list
-   '(unspecified "#011627" "#010F1D" "#DC2E29" "#EF5350" "#D76443" "#F78C6C" "#D8C15E" "#FFEB95" "#5B8FFF" "#82AAFF" "#AB69D7" "#C792EA" "#AFEFE2" "#7FDBCA" "#D6DEEB" "#FFFFFF")))
+ '(web-mode-sql-indent-offset 2))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -17,13 +17,11 @@
 ;; of org-mode when calling org-babel-load-file below.
 (custom-set-variables
  '(package-archives
-   '(("org"   .  "https://orgmode.org/elpa/")
-     ("melpa" .  "https://melpa.org/packages/")
+   '(("melpa" .  "https://melpa.org/packages/")
      ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
      ("gnu"   .  "https://elpa.gnu.org/packages/")))
  '(package-archive-priorities
-   '(("org"	.  100)
-     ("elpy"	.  100)
+   '(("elpy"	.  100)
      ("melpa" .  50)
      ("gnu"	.  10))))
 

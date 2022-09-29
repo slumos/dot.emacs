@@ -45,15 +45,15 @@ $0*** `daily-oncall-checklist-scheduled-time`
  SCHEDULED: `daily-oncall-checklist-scheduled-time`
 ****** EC2
 #+begin_src shell :results output table drawer :colnames '(instance status eventArns)
-  eventArns="\$(aws health describe-events --filter 'services=EC2,eventTypeCategories=issue,scheduledChange' --query 'events[?statusCode != \`closed\`].arn | {eventArns:@}' --output text)"
-
-  if [[ -n "\${eventArns}" ]]; then
+  set -x
+  eventArns="$(aws health describe-events --filter 'services=EC2,eventTypeCategories=issue,scheduledChange' --query 'events[?statusCode != \`closed\`].arn' --output text)"
+  if [[ -n "${eventArns}" ]]; then
     aws health describe-affected-entities \
-        --filter "\$eventArns" \
+        --filter "eventArns=$eventArns" \
         --query 'entities[?starts_with(entityValue, \`i\`)].[entityValue,statusCode,eventArn]' \
         --output text
   else
-    print "eventArns='\${eventArns}'"
+    print "eventArns='${eventArns}'"
   fi
 #+end_src
 ****** RDS
