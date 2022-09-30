@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-09-29 Thu 13:07 slumos@stevenlum-ltm>
+# Time-stamp: <2022-09-30 Fri 15:41 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -351,35 +351,38 @@ Deploy the fanciness.
 
 *** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
     #+begin_src emacs-lisp
-      (use-package modus-themes
-        :init
-        (setq
-         ;; headings
-         modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
-                                 (2 . (1.1 variable-pitch rainbow regular))
-                                 (t . (variable-pitch rainbow regular)))
+  (use-package modus-themes
+    :init
+    (setq
+     ;; headings
+     modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+                             (2 . (1.1 variable-pitch rainbow regular))
+                             (t . (variable-pitch rainbow regular)))
 
-         ;; org
-         modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
-                                   (header-date . (grayscale bold-today)))
-         modus-themes-org-blocks 'gray-background
+     ;; org
+     modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                               (header-date . (grayscale bold-today)))
+     modus-themes-org-blocks 'gray-background
 
-         ;; text
-         modus-themes-bold-constructs t
-         modus-themes-italic-constructs t
-         modus-themes-slanted-constructs t
+     ;; text
+     modus-themes-bold-constructs t
+     modus-themes-italic-constructs t
+     modus-themes-slanted-constructs t
 
-         ;; other
-         modus-themes-hl-line '(accented)
-         modus-themes-lang-checkers '(straight-underline faint)
-         modus-themes-mode-line '(accented borderless)
-         modus-themes-paren-match '(subtle-bold)
-         modus-themes-syntax '(faint alt-syntax)
-         modus-themes-variable-pitch-ui t
-         )
-        (modus-themes-load-themes)
-        :config
-        (modus-themes-load-operandi))
+     ;; other
+     modus-themes-hl-line '(accented)
+     modus-themes-lang-checkers '(straight-underline faint)
+     modus-themes-mode-line '(accented borderless)
+     modus-themes-syntax '(faint alt-syntax)
+     modus-themes-variable-pitch-ui t)
+
+    (defun slumos-modus-themes-custom-faces ()
+      (set-face-attribute 'org-ellipsis nil :foreground (modus-themes-color 'bg-active) :height 0.6))
+
+    (modus-themes-load-themes)
+    :config
+    (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
+    (modus-themes-load-operandi))
     #+end_src
 
 *** nordless
