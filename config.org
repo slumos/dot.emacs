@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-09-30 Fri 15:41 slumos@stevenlum-ltm>
+# Time-stamp: <2022-10-26 Wed 12:27 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1355,21 +1355,25 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
-     (use-package yaml-imenu)
-     (use-package yaml-mode
-       :mode "\\(.yaml\\|.yml\\)$"
-       :config (add-hook 'yaml-mode-hook #'flycheck-mode)
-       :hook (yaml-imenu-enable))
+  (use-package yaml-mode
+    :mode "\\(.yaml\\|.yml\\)$"
+    :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+
+  (use-package yaml-pro
+    :hook (yaml-mode . yaml-pro-mode))
+
+  (use-package yaml-imenu
+    :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
 ** TODO Organize this mess!
-** TODO auto-save-visited-mode
-** TODO [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+** TRYING [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
-  (use-package apheleia)
+  (use-package apheleia
+    :hook (prog-mode . apheleia-mode))
 #+end_src
 
-** COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
+** TRYING COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
    #+begin_src emacs-lisp
      (use-package package-loading-notifier
        :init
@@ -1414,7 +1418,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      | p   | ~/.config/emacs/personal.org      | personal config          |
      | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
      | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
-     | t   | ~/.config/home/tmux.conf          | tmux config              |
+     | t   | ~/Sync/ST/Notes/TODO.org          | TODO.org                 |
      | w   | ~/.config/emacs/work.org          | work config              |
      | z   | ~/.zshrc                          | zshrc                    |
 
