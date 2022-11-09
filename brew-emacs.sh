@@ -13,16 +13,25 @@ next-output-file-name () {
 
 set -x
 
-version=${1-28}
-logfile="$(next-output-file-name "brew-emacs@${version}.out")"
+formula="d12frosted/emacs-plus/emacs-plus"
+formula_version=29
+
+case "${1-x}" in
+  @..) formula_version="${1#@}" ;;
+esac
+
+logfile="$(next-output-file-name "${formula:t}@${formula_version}.out")"
+
+print "brew install ${formula}@${formula_version}? (^C to abort, enter to continue)"
+read enter
 
 brew install \
   --debug \
-  "d12frosted/emacs-plus/emacs-plus@${version}" \
+  "${formula}@${formula_version}" \
   --display-times \
   --with-native-comp \
   --with-no-frame-refocus \
   --with-xwidgets \
   --with-imagemagick \
   --with-modern-nuvola-icon 
-#| tee "$logfile"
+| tee "$logfile"
