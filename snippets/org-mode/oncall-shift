@@ -36,8 +36,14 @@ $0*** `daily-oncall-checklist-scheduled-time`
        #+begin_src sh
        clush -Bw "cloudbees-agent-a00[1-3]-ash-prod" sudo find /data/c_cloudbees/cje -not -user c_cloudbees -exec 'chown c_cloudbees:c_cloudbees \{\} \;'
        #+end_src
-***** TODO Review Available CD4PE Upgrades ([[https://puppet-cicd-prod.krxd.net:8800/app/cd4pe/version-history][Continuous Delivery for Puppet Enterprise Version History]])
+***** TODO Review Available CD4PE Upgrades
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      #+begin_src sh
+      kubectl kots admin-console -n pam
+      #+end_src
+
+      https://localhost:8800
+
 ******** If there is a new version, review Release Notes and pre-flight checks.
 ******** If the upgrade looks easy, click Deploy button, watch, verify the new version number in the bottom-left corner of the console.
 ******** If the upgrade looks complicated, make a ticket for it to be done.
@@ -46,14 +52,14 @@ $0*** `daily-oncall-checklist-scheduled-time`
 ****** EC2
 #+begin_src shell :results output table drawer :colnames '(instance status eventArns)
   set -x
-  eventArns="$(aws health describe-events --filter 'services=EC2,eventTypeCategories=issue,scheduledChange' --query 'events[?statusCode != \`closed\`].arn' --output text)"
-  if [[ -n "${eventArns}" ]]; then
+  eventArns=("\${(@f)\$(aws health describe-events --filter 'services=EC2,eventTypeCategories=issue,scheduledChange' --query 'events[?statusCode != \`closed\`]|[].[arn]' --output text)}")
+  if [[ -n "\${eventArns}" ]]; then
     aws health describe-affected-entities \
-        --filter "eventArns=$eventArns" \
+        --filter "eventArns=\${(j:,:)eventArns}" \
         --query 'entities[?starts_with(entityValue, \`i\`)].[entityValue,statusCode,eventArn]' \
         --output text
   else
-    print "eventArns='${eventArns}'"
+    print "eventArns='\${eventArns}'"
   fi
 #+end_src
 ****** RDS
