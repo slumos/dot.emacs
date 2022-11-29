@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-10-26 Wed 12:27 slumos@stevenlum-ltm>
+# Time-stamp: <2022-11-29 Tue 09:19 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -2071,6 +2071,16 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :custom
       (projectile-file-exists-local-cache-expire 300))
   #+END_SRC
+* Apps
+** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon - mastodon.el - Codeberg.org]]
+#+begin_src emacs-lisp
+  (use-package mastodon
+    :config
+    (setq mastodon-instance-url "https://emacs.ch"
+          mastodon-active-user "slumos"))
+#+end_src
+
+
 * Context-specific
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
