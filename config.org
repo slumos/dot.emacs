@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-11-29 Tue 09:19 slumos@stevenlum-ltm>
+# Time-stamp: <2022-12-28 Wed 12:24 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -28,6 +28,7 @@
       do that and then *not* use Unicode in my editor config.
 * Basics
 ** Emacs Packages
+For debugging
    #+begin_src emacs-lisp
      (custom-set-variables
       '(package-archives
@@ -42,6 +43,16 @@
    #+end_src
 *** =use-package=
     John Wiegley is an Emacs badass. I am not even kidding.
+
+#+begin_src emacs-lisp
+  (if init-file-debug
+      (setq use-package-verbose t
+            use-package-expand-minimally nil
+            use-package-compute-statistics t
+            debug-on-error t)
+    (setq use-package-verbose nil
+          use-package-expand-minimally t))
+#+end_src
 
     #+begin_src emacs-lisp
       (unless (package-installed-p 'use-package)
@@ -351,38 +362,35 @@ Deploy the fanciness.
 
 *** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
     #+begin_src emacs-lisp
-  (use-package modus-themes
-    :init
-    (setq
-     ;; headings
-     modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
-                             (2 . (1.1 variable-pitch rainbow regular))
-                             (t . (variable-pitch rainbow regular)))
+      (use-package modus-themes
+        :init
+        (setq
+         ;; headings
+         modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+                                 (2 . (1.1 variable-pitch rainbow regular))
+                                 (t . (variable-pitch rainbow regular)))
 
-     ;; org
-     modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
-                               (header-date . (grayscale bold-today)))
-     modus-themes-org-blocks 'gray-background
+         ;; org
+         modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                                   (header-date . (grayscale bold-today)))
+         modus-themes-org-blocks 'gray-background
 
-     ;; text
-     modus-themes-bold-constructs t
-     modus-themes-italic-constructs t
-     modus-themes-slanted-constructs t
+         ;; text
+         modus-themes-bold-constructs t
+         modus-themes-italic-constructs t
+         modus-themes-slanted-constructs t
 
-     ;; other
-     modus-themes-hl-line '(accented)
-     modus-themes-lang-checkers '(straight-underline faint)
-     modus-themes-mode-line '(accented borderless)
-     modus-themes-syntax '(faint alt-syntax)
-     modus-themes-variable-pitch-ui t)
+         ;; other
+         modus-themes-hl-line '(accented)
+         modus-themes-lang-checkers '(straight-underline faint)
+         modus-themes-mode-line '(accented borderless)
+         modus-themes-syntax '(faint alt-syntax)
+         modus-themes-variable-pitch-ui t
 
-    (defun slumos-modus-themes-custom-faces ()
-      (set-face-attribute 'org-ellipsis nil :foreground (modus-themes-color 'bg-active) :height 0.6))
+         modus-themes-common-palette-overrides '((org-ellipsis bg-active)))
 
-    (modus-themes-load-themes)
-    :config
-    (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
-    (modus-themes-load-operandi))
+        :config
+        (modus-themes-load-theme 'modus-operandi))
     #+end_src
 
 *** nordless
@@ -697,9 +705,9 @@ Deploy the fanciness.
   (use-package org-modern
     :custom
     (org-modern-star ["◉""○""◈""◇""—"])
-    :hook
-    (org-mode . org-modern-mode)
-    (org-agenda-finalize . org-modern-agenda)
+    ;; :hook
+    ;; (org-mode . org-modern-mode)
+    ;; (org-agenda-finalize . org-modern-agenda)
     :config
     (setq org-modern-table-vertical 1)
     (setq org-modern-table-horizontal 1))
@@ -714,7 +722,7 @@ Deploy the fanciness.
 
 ** Agenda
 
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (setq org-agenda-custom-commands
            '(("ca" "Daily Agenda View"
               ((org-ql-block '(and (path "DMP")
@@ -901,7 +909,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
             (message "%s" wid))
         (user-error "failed to find a WorkItem ID"))))
 
-
   (defun slumos/org-find-workitem-for-subtree ()
     (cl-loop for headline in (slumos/org-subtree-headlines)
              for wi-prop = (org-element-property :WORKITEM headline)
@@ -921,6 +928,55 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
             (cons this (slumos/org--subtree-headlines-from-point))
           (list this))))
 #+end_src
+
+#+begin_src emacs-lisp :results replace drawer pp :tangle no
+  (with-current-buffer "DMP.org"
+    (let* ((headlines (slumos/org-subtree-headlines))
+           (headline (car headlines))
+           (title (org-element-property :title headline)))
+      headline))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+(headline
+ (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view][W-10679745: Migrate krux.periodic.navegg chronos job to k8s | Work]]" :begin 1108 :end 1348 :pre-blank 0 :contents-begin 1269 :contents-end 1347 :robust-begin 1271 :robust-end 1345 :level 2 :priority nil :tags nil :todo-keyword
+             #("START" 0 5
+               (fontified nil line-prefix
+                          #("*" 0 1
+                            (face org-indent))
+                          wrap-prefix
+                          #("*** " 0 1
+                            (face org-indent)
+                            1 4
+                            (face org-indent))
+                          face
+                          (org-todo org-level-2)
+                          org-todo-head
+                          #("TODO" 0 4
+                            (face org-todo))))
+             :todo-type todo :post-blank 1 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 1108 :title
+             ((link
+               (:type "https" :path "//gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view" :format bracket :raw-link "https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view" :application nil :search-option nil :begin 1117 :end 1268 :contents-begin 1200 :contents-end 1266 :post-blank 0 :parent
+                      (headline #1))
+               #("W-10679745: Migrate krux.periodic.navegg chronos job to k8s | Work" 0 66
+                 (:parent #3))))
+             :parent
+             (headline
+              (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view][2022.12a]]" :begin 1010 :end 54188 :pre-blank 0 :contents-begin 1108 :contents-end 54187 :robust-begin 1110 :robust-end 54185 :level 1 :priority nil :tags nil :todo-keyword nil :todo-type nil :post-blank 1 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 1010 :title
+                          ((link
+                            (:type "https" :path "//gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view" :format bracket :raw-link "https://gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view" :application nil :search-option nil :begin 1012 :end 1107 :contents-begin 1097 :contents-end 1105 :post-blank 0 :parent
+                                   (headline #3))
+                            #("2022.12a" 0 8
+                              (:parent #5))))
+                          :parent
+                          (org-data
+                           (:begin 1 :contents-begin 1 :contents-end 2234182 :end 2234182 :robust-begin 3 :robust-end 2234180 :post-blank 0 :post-affiliated 1 :path "/Users/slumos/Sync/GDrive/Notes/DMP.org" :mode org-data :CATEGORY "DMP" :cached t))
+                          :cached t :org-element--cache-sync-key
+                          (3 . 1010)))
+             :cached t :org-element--cache-sync-key
+             (3 . 1108)))
+#+end_example
 
 *** COMMENT Post-process grabbed links
 
@@ -958,6 +1014,15 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
                (fontified t face org-modern-todo display "T " org-category "DMP"))
              :todo-type todo :post-blank 0 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 891 :title "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000sO211YAC/view][W-10819701: Upgrade Cloudbees JDK to Java 11+]]"))
 #+end_example
+
+* Other Apps
+** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon - mastodon.el - Codeberg.org]]
+#+begin_src emacs-lisp
+  (use-package mastodon
+    :config
+    (setq mastodon-instance-url "https://emacs.ch"
+          mastodon-active-user "slumos"))
+#+end_src
 
 * Language Modes
 ** Misc
@@ -1111,24 +1176,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      (exec-path-from-shell-copy-env "JAVA_HOME")
    #+end_src
 
-   #+begin_src emacs-lisp :tangle no
-     (leaf company
-       :after java-mode
-       :hook java-mode-hook
-       :custom
-       ((company-backends . '(company-lsp))))
-   #+end_src
-
    #+begin_src emacs-lisp
      (leaf lsp-mode
        :commands lsp)
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (leaf company-lsp
-       :commands company-lsp
-       :config
-       (add-to-list 'company-backends 'company-lsp))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -1472,17 +1522,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
    #+END_SRC
-** Better packages ux
-   #+BEGIN_SRC emacs-lisp
-     (leaf paradox
-       :require t
-       :commands
-       list-packages
-       paradox-list-packages
-       :init
-       (paradox-enable)
-       (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
-   #+END_SRC
 ** Font scale for all frames
    #+BEGIN_SRC emacs-lisp
      (use-package default-text-scale
@@ -1746,9 +1785,8 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     #+END_SRC
 *** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
     #+BEGIN_SRC emacs-lisp
-    (use-package ivy-prescient
-      :init
-      (ivy-prescient-mode))
+      (use-package prescient)
+      (use-package ivy-prescient)
     #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
 *** TODO [[https://github.com/emacs-taskrunner/emacs-taskrunner/blob/master/taskrunner.el][emacs-taskrunner/taskrunner.el]]
@@ -2071,16 +2109,6 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       :custom
       (projectile-file-exists-local-cache-expire 300))
   #+END_SRC
-* Apps
-** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon - mastodon.el - Codeberg.org]]
-#+begin_src emacs-lisp
-  (use-package mastodon
-    :config
-    (setq mastodon-instance-url "https://emacs.ch"
-          mastodon-active-user "slumos"))
-#+end_src
-
-
 * Context-specific
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
