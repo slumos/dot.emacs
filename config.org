@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-12-28 Wed 12:24 slumos@stevenlum-ltm>
+# Time-stamp: <2022-12-28 Wed 14:29 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -387,7 +387,7 @@ Deploy the fanciness.
          modus-themes-syntax '(faint alt-syntax)
          modus-themes-variable-pitch-ui t
 
-         modus-themes-common-palette-overrides '((org-ellipsis bg-active)))
+         modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-subtle)))
 
         :config
         (modus-themes-load-theme 'modus-operandi))
@@ -589,15 +589,15 @@ Deploy the fanciness.
    Regular ellipsis drives me insane because I tend to end regular
    lines that way all the time ... (see?)
 
-   Good choices: ⬎ [+]  
+   Good choices: =⬎= =[+]= = =
    
    #+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   '(org-ellipsis " "))
+     (custom-set-variables
+      '(org-ellipsis " "))
 
-  (set-face-attribute 'org-ellipsis nil
-                      :inherit '(fg-dim default)
-                      :height 0.6)
+     (set-face-attribute 'org-ellipsis nil
+                         :inherit '(comment)
+                         :height 0.6)
    #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
@@ -1025,6 +1025,15 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_src
 
 * Language Modes
+** [[https://emacs-tree-sitter.github.io/][Tree Sitter]]
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :config
+    (global-tree-sitter-mode)
+    (setq tree-sitter-debug-jump-buttons t
+          tree-sitter-debug-highlight-jump-region nil))
+#+end_src
+
 ** Misc
 *** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
     #+begin_src emacs-lisp
@@ -1127,14 +1136,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        (with-eval-after-load "lispy"
          (define-key lispy-mode-map (kbd "s-l") 'my/lispy-cheat-sheet/body))
      #+END_SRC
-
-** Dash
-   #+begin_src emacs-lisp
-     (use-package counsel-dash
-       :hook (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3")))
-       :custom
-       (helm-dash-browser-func 'eww))
-   #+end_src
 
 ** TODO [[https://github.com/doublep/eldev][doublep/eldev: Elisp Development Tool]]
 ** Dockerfile
@@ -1786,7 +1787,8 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 *** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
     #+BEGIN_SRC emacs-lisp
       (use-package prescient)
-      (use-package ivy-prescient)
+      (use-package ivy-prescient
+        :config (ivy-prescient-mode 1))
     #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
 *** TODO [[https://github.com/emacs-taskrunner/emacs-taskrunner/blob/master/taskrunner.el][emacs-taskrunner/taskrunner.el]]
