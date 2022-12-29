@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-12-28 Wed 14:29 slumos@stevenlum-ltm>
+# Time-stamp: <2022-12-29 Thu 10:48 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -360,7 +360,7 @@ Deploy the fanciness.
       (use-package gruvbox-theme :defer t)
     #+end_src
 
-*** [[https://protesilaos.com/modus-themes/#h:1af85373-7f81-4c35-af25-afcef490c111][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
+*** [[https://protesilaos.com/emacs/modus-themes][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
     #+begin_src emacs-lisp
       (use-package modus-themes
         :init
@@ -387,9 +387,15 @@ Deploy the fanciness.
          modus-themes-syntax '(faint alt-syntax)
          modus-themes-variable-pitch-ui t
 
-         modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-subtle)))
+         modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-nuanced)
+                                                  (prose-todo red)))
+
+        (defun slumos-modus-themes-custom-faces ()
+          (modus-themes-with-colors
+            (set-face-attribute 'org-ellipsis nil :foreground comment :height 0.6)))
 
         :config
+        (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
         (modus-themes-load-theme 'modus-operandi))
     #+end_src
 
@@ -595,9 +601,9 @@ Deploy the fanciness.
      (custom-set-variables
       '(org-ellipsis " "))
 
-     (set-face-attribute 'org-ellipsis nil
-                         :inherit '(comment)
-                         :height 0.6)
+;     (set-face-attribute 'org-ellipsis nil
+;                         :inherit '(comment)
+;                         :height 0.6)
    #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
