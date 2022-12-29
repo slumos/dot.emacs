@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-12-29 Thu 10:48 slumos@stevenlum-ltm>
+# Time-stamp: <2022-12-29 Thu 14:58 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1022,6 +1022,19 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_example
 
 * Other Apps
+** [[https://github.com/skeeto/elfeed][skeeto/elfeed: An Emacs web feeds client]]
+#+begin_src emacs-lisp
+  (use-package elfeed)
+  (use-package elfeed-org
+    :config
+    (setq rmh-elfeed-org-files (list (expand-file-name "config.org" user-emacs-directory)))
+    :init
+    (elfeed-org))
+#+end_src
+*** elfeed-org configuration                                         :elfeed:
+**** Emacs                                                            :emacs:
+***** http://planet.emacsen.org/atom.xml
+***** [[https://sachachua.com/blog/feed/][Sacha Chua]]
 ** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon - mastodon.el - Codeberg.org]]
 #+begin_src emacs-lisp
   (use-package mastodon
