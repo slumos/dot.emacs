@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-12-29 Thu 14:58 slumos@stevenlum-ltm>
+# Time-stamp: <2022-12-30 Fri 12:14 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -69,6 +69,12 @@ For debugging
       (setq use-package-minimum-reported-time 0)
       (setq use-package-verbose t)
     #+end_src
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'vc-use-package)
+    (package-vc-install "https://github.com/slotThe/vc-use-package"))
+  (require 'vc-use-package)
+#+end_src
 
     Adds the =:quelpa= keyword for extra laziness when installing sutff outside
     of package archives.
@@ -1035,7 +1041,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 **** Emacs                                                            :emacs:
 ***** http://planet.emacsen.org/atom.xml
 ***** [[https://sachachua.com/blog/feed/][Sacha Chua]]
-** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon - mastodon.el - Codeberg.org]]
+**** Friends                                                        :friends:
+***** [[https://davidmcrampton.com/?feed=rss2][https://davidmcrampton.com/?feed=rss2]]
+** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon]]
 #+begin_src emacs-lisp
   (use-package mastodon
     :config
@@ -1437,18 +1445,42 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_SRC
 * Helpers
 ** TODO Organize this mess!
-** TRYING [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
+"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :config (marginalia-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+
+** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
   (use-package apheleia
     :hook (prog-mode . apheleia-mode))
 #+end_src
 
-** TRYING COMMENT [[https://github.com/tttuuu888/package-loading-notifier][tttuuu888/package-loading-notifier: Notify when packages are loaded]]
-   #+begin_src emacs-lisp
-     (use-package package-loading-notifier
-       :init
-       (package-loading-notifier-mode 1))
-   #+end_src
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
    #+begin_src emacs-lisp
    (use-package direnv)

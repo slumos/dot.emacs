@@ -11,13 +11,11 @@ next-output-file-name () {
   print "ERROR"
 }
 
-set -x
-
 formula="d12frosted/emacs-plus/emacs-plus"
 formula_version=29
 
 case "${1-x}" in
-  @..) formula_version="${1#@}" ;;
+  @??) formula_version="${1#@}" ;;
 esac
 
 logfile="$(next-output-file-name "${formula:t}@${formula_version}.out")"
@@ -25,13 +23,18 @@ logfile="$(next-output-file-name "${formula:t}@${formula_version}.out")"
 print "brew install ${formula}@${formula_version}? (^C to abort, enter to continue)"
 read enter
 
+print "logging to ${logfile}"
+
+export CFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
+export LDFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
+
 brew install \
-  --debug \
+  --keep-tmp \
   "${formula}@${formula_version}" \
+  --no-binaries \
   --display-times \
-  --with-native-comp \
   --with-no-frame-refocus \
   --with-xwidgets \
   --with-imagemagick \
-  --with-modern-nuvola-icon 
-| tee "$logfile"
+  --with-modern-nuvola-icon \
+|& tee "$logfile"
