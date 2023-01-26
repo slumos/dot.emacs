@@ -1,13 +1,36 @@
+# -*- mode: org; -*-
+# Time-stamp: <2022-09-14 Wed 14:33 slumos@stevenlum-ltm>
+#+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
+#+KEYWORDS:  emacs org
+#+LANGUAGE:  en
+#+STARTUP: entitiespretty overview
+#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
+#+FILETAGS: :emacs:config:
+#+CATEGORY: EMACS
+#+PROPERTY: header-args    :results silent
+
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-     (setq org-directory "~/Google Drive/Notes")
-     (setq slumos-org-directory "~/Sync/OneDrive/ST/Notes")
-     (setq org-agenda-files (list
-			     (expand-file-name "DMP.org" org-directory)
-			     (expand-file-name "config.org" user-emacs-directory)
-			     (expand-file-name "Inbox.org" slumos-org-directory)))
+            (setq org-directory "~/Sync/GDrive/Notes")
+            (setq slumos-org-directory "~/Sync/ST/Notes")
+            (setq org-agenda-files (list
+                                    (expand-file-name "DMP.org" org-directory)
+                                    (expand-file-name "config.org" user-emacs-directory)
+                                    (expand-file-name "Inbox.org" slumos-org-directory)
+                                    (expand-file-name "SLUMOS.org" slumos-org-directory)
+                                    (expand-file-name "TODO.org" slumos-org-directory)))
    #+END_SRC
+
+   I want everything searched for IDs. But it's soooo slow.
+   #+begin_src emacs-lisp
+     ;; (custom-set-variables
+     ;;  '(org-id-extra-files
+     ;;    (cl-loop for dir in (list org-directory slumos-org-directory)
+     ;;             append
+     ;;             (directory-files dir t "\\.org\\'"))))
+   #+end_src
+
 ** org-ql
    #+begin_src emacs-lisp :tangle no
      (use-package org-ql
@@ -16,47 +39,85 @@
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
-	   (quote
-	    (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
-	      "* %<%R: >%? %^g\n%t")
-	     ("k" "linK" entry
-	      (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
-	      "* %U %?")
-	     ("l" "Log" entry
-	      (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
-	      "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
-	     ("m" "Meeting" entry
-	      (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2"))
-	     ("n" "Note" entry
-	      (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
-	      "* %^{title} %U%?")
+           (quote
+            (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
+              "* %^T %?")
+             ("k" "linK" entry
+              (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
+              "* %U %?")
+             ("l" "Log" entry
+              (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
+              "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+             ("m" "Meeting" entry
+              (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2")
+              :jump-to-captured t)
+             ("n" "Note" entry
+              (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
+              "* %^{title} %U%?")
              ("p" "Pager" entry
-              (id "198B927A-E59D-4C7B-8E25-CFDAF46D3E3C")
+              (file+olp+datetree "DMP.org" "On call" "Pages")
               "* %T %?"
+              :time-prompt t
+              :jump-to-captured t
               :prepend t)
-	     ("s" "Snippet" entry
-	      (id "F4FAAF53-8B41-48E9-BD20-F124545776EB")
-	      "* %^{title}: %?")
-	     ("t" "Task" entry
-	      (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
-	      "* TODO %?"))))
+             ("s" "Snippet" entry
+              (file+olp "~/Sync/OneDrive/Notes/NOTES.org" "Snippets")
+              "* %^{title}: %?"
+              :jump-to-captured t)
+             ("t" "Task" entry
+              (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
+              "* TODO %?"))))
    #+END_SRC
-** Integrations
+** Helpers
+   :PROPERTIES:
+   :test-property: test-value
+   :WORKITEM: test-workitem
+   :END:
+   #+begin_src emacs-lisp
+     (defun slumos-org-copy-current-workitem ()
+       "Copy the value of the WORKITEM property"
+       (interactive)
+       (let ((workitem (org-entry-get (point) "WORKITEM")))
+         (kill-new workitem)))
+   #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (slumos-org-copy-current-workitem)
+   #+end_src
+
 * Magit
   #+BEGIN_SRC emacs-lisp :results value silent
-      (custom-set-variables
-        '(magit-repository-directories
-            '(("~/Projects" . 1)
-              ("~/Projects/java" . 1)
-              ("~/Projects/puppet" . 1)
-              ("~/Projects/sfdc-slumos" . 1)
-              ("~/Projects/tf" . 1))))
+    (custom-set-variables
+      '(magit-repository-directories
+          '(("~/Projects" . 1)
+            ("~/Projects/aws" . 1)
+            ("~/Projects/datadog" . 1)
+            ("~/Projects/falcon" . 1)
+            ("~/Projects/java" . 1)
+            ("~/Projects/k8s" . 1)
+            ("~/Projects/konsole" . 1)
+            ("~/Projects/krux" . 1)
+            ("~/Projects/puppet" . 1)
+            ("~/Projects/python" . 1)
+            ("~/Projects/scala" . 1)
+            ("~/Projects/sfdc-slumos" . 1)
+            ("~/Projects/tf" . 1))))
   #+END_SRC
+
+  #+begin_src emacs-lisp
+    ;; (setq forge-alist
+    ;;              '("git.soma.salesforce.com" "https://git.soma.salesforce.com/api/v3" "git.soma.salesforce.com"
+    ;;                forge-github-repository))
+  #+end_src
+
 * Environment
   #+BEGIN_SRC emacs-lisp
     (exec-path-from-shell-copy-envs
      '("DATADOG_API_KEY"
-       "DATADOG_APP_KEY"))
+       "DATADOG_APP_KEY"
+       "DYN_CUSTOMER_NAME"
+       "DYN_USERNAME"
+       "DYN_PASSWORD"))
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
@@ -72,3 +133,13 @@
          "KAIJU_REFRESH_TOKEN"
          "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
+* [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
+#+begin_src emacs-lisp
+  (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
+  (setq bug-reference-url-format "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=%s")
+#+end_src
+
+* Debug
+  #+begin_src emacs-lisp
+    (message "Loaded work.org")
+  #+end_src

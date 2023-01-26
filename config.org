@@ -1,12 +1,15 @@
-# -*- mode: org; org-confirm-babel-evaluate: nil; fill-column: 120 -*-
+# -*- mode: org; -*-
+# Time-stamp: <2022-12-30 Fri 12:14 slumos@stevenlum-ltm>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
-#+STARTUP: entitiespretty fold
-#+TODO: TODO(t) TRYING(r) BROKEN(b) SKIP(s) | DONE(d)
+#+STARTUP: entitiespretty overview noindent
+#+TODO: TODO(t) TRYING(r) BROKEN(t) SKIP(s) | DONE(d)
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
-#+PROPERTY: header-args    :results silent
+#+PROPERTY: header-args :results silent
+
+[[http://oremacs.com/lispy/][lispy.el function reference]]
 
 * Introduction
   I know, I'm supposed to only care about writing code and not
@@ -23,37 +26,33 @@
       but more than that—because I like Unicode enough to buy a
       programming font with decent Unicode support. I'm hardly going to
       do that and then *not* use Unicode in my editor config.
-* Startup
-** Daemon
-   #+BEGIN_SRC emacs-lisp
-   (setq server-use-tcp t)
-   (server-force-delete) ; attempt to work around segfault bug
-   (server-start)
-   #+END_SRC
-** Handling of BROKEN/SKIP states (should not be tangled)
-   I just learned about COMMENT status (=C-c ;=) and decided to punt
-   on this for now while trying that instead.
-** Initial buffers (=*scratch*=)
-   #+BEGIN_SRC emacs-lisp
-     (setq initial-scratch-message nil)
-     (setq inhibit-startup-screen t)
-   #+END_SRC
 * Basics
 ** Emacs Packages
+For debugging
    #+begin_src emacs-lisp
      (custom-set-variables
       '(package-archives
-        '(("org"   .  "https://orgmode.org/elpa/")
-          ("melpa" .  "https://melpa.org/packages/")
-          ("gnu"   .  "https://elpa.gnu.org/packages/")))
+        '(("gnu"    .  "https://elpa.gnu.org/packages/")
+          ("melpa"  .  "https://melpa.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
       '(package-archive-priorities
-        '(("org"	.  100)
-          ("elpy"	.  100)
-          ("gnu"	.  10))))
-     (package-initialize)
+        '(("melpa"  .  50)
+          ("gnu"    .  10)
+          ("nongnu" . 10))))
+     (package-initialize t)
    #+end_src
 *** =use-package=
     John Wiegley is an Emacs badass. I am not even kidding.
+
+#+begin_src emacs-lisp
+  (if init-file-debug
+      (setq use-package-verbose t
+            use-package-expand-minimally nil
+            use-package-compute-statistics t
+            debug-on-error t)
+    (setq use-package-verbose nil
+          use-package-expand-minimally t))
+#+end_src
 
     #+begin_src emacs-lisp
       (unless (package-installed-p 'use-package)
@@ -71,38 +70,41 @@
       (setq use-package-verbose t)
     #+end_src
 
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'vc-use-package)
+    (package-vc-install "https://github.com/slotThe/vc-use-package"))
+  (require 'vc-use-package)
+#+end_src
+
     Adds the =:quelpa= keyword for extra laziness when installing sutff outside
     of package archives.
     #+begin_src emacs-lisp
       (use-package quelpa :demand t)
       (use-package quelpa-use-package :demand t)
     #+end_src
-*** straight
-    I am so over package authors pushing their favorite non-package.el
-    packaging system onto me. Why do you want your packages to have a
-    dependency like that?
+*** COMMENT straight - native comp temporarily disabled until
+#+begin_src emacs-lisp
+  (custom-set-variables '(straight-disable-native-compilation t))
+#+end_src
 
-    =straight.el= in particular requires all this crap. Why can't at least the packaging system du jour be installable by =package.el=?
+#+begin_src emacs-lisp
+  (setq comp-deferred-compilation-black-list '())
 
-    #+begin_src emacs-lisp
-      (defvar bootstrap-version)
-      (let ((bootstrap-file
-             (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-            (bootstrap-version 5))
-        (unless (file-exists-p bootstrap-file)
-          (with-current-buffer
-              (url-retrieve-synchronously
-               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-               'silent 'inhibit-cookies)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-        (load bootstrap-file nil 'nomessage))
-    #+end_src
+  (defvar bootstrap-version)
+    (let ((bootstrap-file
+           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+          (bootstrap-version 6))
+      (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+#+end_src
 
-
-
-
-*** TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
+* TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
     #+begin_src emacs-lisp
       (prog1 "prepare leaf"
         (prog1 "leaf"
@@ -114,6 +116,10 @@
               (error
                (package-refresh-contents)  ; renew local melpa cache if fail
                (package-install 'leaf))))
+
+          ;; (leaf feather
+          ;;    :el-get conao3
+          ;;    :config (feather-mode))
 
           (leaf leaf-keywords
             :ensure t
@@ -128,7 +134,6 @@
           (leaf el-get :ensure t
             :custom ((el-get-git-shallow-clone  . t)))))
     #+end_src
-
 ** Religion
 *** Canon
     Rollback sacrilege committed in recent years (decades...)
@@ -143,9 +148,11 @@
     #+END_SRC
 *** Buckeys
     #+BEGIN_SRC emacs-lisp
-      (setq mac-function-modifier 'hyper
-	    mac-command-modifier  'meta ; That's right.
-	    mac-option-modifier   'super)
+      (pcase window-system
+	('ns
+         (setq mac-command-modifier 'meta) ; That's right.
+         (setq mac-option-modifier 'super)
+         (setq ns-function-modifier 'hyper)))
     #+END_SRC
 *** Noise. Make less.
     The advent of the tool bar — or was it fringe? ugh... — was great
@@ -165,16 +172,6 @@
         (menu-bar-mode -1))
       (setq inhibit-startup-screen t)
     #+END_SRC
-** Dedicated directory for backup files
-   XDG WHAT
-   #+BEGIN_SRC emacs-lisp
-   (require 'xdg)
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
-     (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
-   #+END_SRC
 ** Import Environment
    #+BEGIN_SRC emacs-lisp
      (use-package exec-path-from-shell
@@ -188,12 +185,23 @@
         '("AWS_CONFIG_FILE"
           "EMAIL"
           "LANG"
+          "TMPDIR"
           "XDG_CACHE_HOME"
           "XDG_CONFIG_DIRS"
           "XDG_CONFIG_HOME"
           "XDG_DATA_DIRS"
           "XDG_DATA_HOME"
           "XDG_RUNTIME_DIR")))
+   #+END_SRC
+
+   XDG WHAT
+   #+BEGIN_SRC emacs-lisp
+   (require 'xdg)
+   #+END_SRC
+** Dedicated directory for backup files
+   #+BEGIN_SRC emacs-lisp
+     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
+     (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
    #+END_SRC
 ** Tuning
    Who remembers Eight Megs And Constantly Swapping?
@@ -204,286 +212,228 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "<C-backspace>") #'delete-indentation)
    #+end_src
+*** TODO [[https://github.com/Kungsgeten/ryo-modal][Kungsgeten/ryo-modal: Roll your own modal mode]]
+    Compare to [[https://github.com/DogLooksGood/meow][DogLooksGood/meow: Modal Editing On Wheel]]
+* Startup
+** Daemon
+   #+begin_src emacs-lisp
+     (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
+     ;(server-start)
+   #+end_src
+
+** Handling of BROKEN/SKIP states (should not be tangled)
+   I just learned about COMMENT status (=C-c ;=) and decided to punt
+   on this for now while trying that instead.
+** Initial buffers (=*scratch*=)
+   #+BEGIN_SRC emacs-lisp
+     (setq initial-scratch-message nil)
+     (setq inhibit-startup-screen t)
+   #+END_SRC
 * Preferences
+Deploy the fanciness.
 ** Utf-8
    #+BEGIN_SRC emacs-lisp
    (prefer-coding-system 'utf-8)
    #+END_SRC
-** PragmataPro
-   #+BEGIN_SRC emacs-lisp
-     (set-frame-font "PragmataPro Liga-16")
-   #+END_SRC
+** Fonts
+*** PragmataPro
+    #+BEGIN_SRC emacs-lisp
+      (set-frame-font "PragmataPro Mono Liga-16")
+    #+END_SRC
 
-   #+begin_src emacs-lisp
-     (if (fboundp 'mac-auto-operator-composition-mode)
-	 (mac-auto-operator-composition-mode 1))
-   #+end_src
+    #+begin_src emacs-lisp
+      (if (fboundp 'mac-auto-operator-composition-mode)
+	  (mac-auto-operator-composition-mode 1))
+    #+end_src
 
-   ligature test [ERROR] --> ==> => <= >=
+    Copied from [[https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-char-menu-config-sample.el][pragmatapro/pragmatapro-char-menu-config-sample.el at master · fabrizioschiavi/pragmatapro]]
+    #+begin_src emacs-lisp
+      ;;; Char menu allows you to enter unicode characters easily. It automatically
+      ;;; chooses jump keys to select the glyph you would like to use. This can be a
+      ;;; nice alternative to using and memorizing prettified symbols.
+
+      (use-package char-menu
+        :ensure t
+        :bind ("M-p" . char-menu)
+        :custom
+        (char-menu '("—" "‘’" "“”" "…" "«»" "–"
+                     ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
+                     ("Mathematical Operators"
+                      "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉" "∊" "∋" "∌" "∍" "∎" "∏"
+                      "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙" "√" "∛" "∜" "∝" "∞" "∟"
+                      "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩" "∪" "∫" "∬" "∭" "∮" "∯"
+                      "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹" "∺" "∻" "∼" "∽" "∾" "∿"
+                      "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉" "≊" "≋" "≌" "≍" "≎" "≏"
+                      "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙" "≚" "≛" "≜" "≝" "≞" "≟"
+                      "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩" "≪" "≫" "≬" "≭" "≮" "≯"
+                      "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹" "≺" "≻" "≼" "≽" "≾" "≿"
+                      "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉" "⊊" "⊋" "⊌" "⊍" "⊎" "⊏"
+                      "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙" "⊚" "⊛" "⊜" "⊝" "⊞" "⊟"
+                      "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩" "⊪" "⊫" "⊬" "⊭" "⊮" "⊯"
+                      "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹" "⊺" "⊻" "⊼" "⊽" "⊾" "⊿"
+                      "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉" "⋊" "⋋" "⋌" "⋍" "⋎" "⋏"
+                      "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙" "⋚" "⋛" "⋜" "⋝" "⋞" "⋟"
+                      "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩" "⋪" "⋫" "⋬" "⋭" "⋮" "⋯"
+                      "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹" "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
+                     ("Superscripts & Subscripts"
+                      "⁰" "ⁱ"   "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺" "⁻" "⁼" "⁽" "⁾" "ⁿ"
+                      "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊" "₋" "₌" "₍₎"
+                      "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
+                     ("Arrows"     "←" "→" "↑" "↓" "⇐" "⇒" "⇑" "⇓")
+                     ("Greek"      "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ"
+                      "ν" "ξ" "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
+                     ("Enclosed Alphanumerics"
+                      "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ"
+                      "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ" "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ"
+                      "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ" "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ"
+                      "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ" "ⓧ" "ⓨ" "ⓩ" "⓪")
+                     ("Annotations"
+                      "      " "      " "     " "     " "        " "    " "      " "      "
+                      "      " "     " "    " "     " "     " "     "))))
+    #+end_src
+
+    #+begin_src c
+    ligature test [ERROR] --> ==> => <= >=
+    #+end_src
+**** TODO [[https://github.com/mickeynp/ligature.el/issues/8][Adding support for additional fonts · Issue #8 · mickeynp/ligature.el]]
 *** prettify-symbols setup
     Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-prettify-symbols-v0.827.el
     #+begin_src emacs-lisp
-      (setq prettify-symbols-unprettify-at-point 'right-edge)
-
-      (defconst pragmatapro-prettify-symbols-alist
-	(mapcar (lambda (s)
-		  `(,(car s)
-		    .
-		    ,(vconcat
-		      (apply 'vconcat
-			     (make-list
-			      (- (length (car s)) 1)
-			      (vector (decode-char 'ucs #X0020) '(Br . Bl))))
-		      (vector (decode-char 'ucs (cadr s))))))
-		'(("[ERROR]"   #XE380)
-		  ("[DEBUG]"   #XE381)
-		  ("[INFO]"    #XE382)
-		  ("[WARN]"    #XE383)
-		  ("[WARNING]" #XE384)
-		  ("[ERR]"     #XE385)
-		  ("[FATAL]"   #XE386)
-		  ("[TRACE]"   #XE387)
-		  ("[FIXME]"   #XE388)
-		  ("[TODO]"    #XE389)
-		  ("[BUG]"     #XE38A)
-		  ("[NOTE]"    #XE38B)
-		  ("[HACK]"    #XE38C)
-		  ("[MARK]"    #XE38D)
-		  ("!!"        #XE900)
-		  ("!="        #XE901)
-		  ("!=="       #XE902)
-		  ("!!!"       #XE903)
-		  ("!≡"        #XE904)
-		  ("!≡≡"       #XE905)
-		  ("!>"        #XE906)
-		  ("!=<"       #XE907)
-		  ("#("        #XE920)
-		  ("#_"        #XE921)
-		  ("#{"        #XE922)
-		  ("#?"        #XE923)
-		  ("#>"        #XE924)
-		  ("##"        #XE925)
-		  ("#_("       #XE926)
-		  ("%="        #XE930)
-		  ("%>"        #XE931)
-		  ("%>%"       #XE932)
-		  ("%<%"       #XE933)
-		  ("&%"        #XE940)
-		  ("&&"        #XE941)
-		  ("&*"        #XE942)
-		  ("&+"        #XE943)
-		  ("&-"        #XE944)
-		  ("&/"        #XE945)
-		  ("&="        #XE946)
-		  ("&&&"       #XE947)
-		  ("&>"        #XE948)
-		  ("$>"        #XE955)
-		  ("***"       #XE960)
-		  ("*="        #XE961)
-		  ("*/"        #XE962)
-		  ("*>"        #XE963)
-		  ("++"        #XE970)
-		  ("+++"       #XE971)
-		  ("+="        #XE972)
-		  ("+>"        #XE973)
-		  ("++="       #XE974)
-		  ("--"        #XE980)
-		  ("-<"        #XE981)
-		  ("-<<"       #XE982)
-		  ("-="        #XE983)
-		  ("->"        #XE984)
-		  ("->>"       #XE985)
-		  ("---"       #XE986)
-		  ("-->"       #XE987)
-		  ("-+-"       #XE988)
-		  ("-\\/"      #XE989)
-		  ("-|>"       #XE98A)
-		  ("-<|"       #XE98B)
-		  (".."        #XE990)
-		  ("..."       #XE991)
-		  ("..<"       #XE992)
-		  (".>"        #XE993)
-		  (".~"        #XE994)
-		  (".="        #XE995)
-		  ("/*"        #XE9A0)
-		  ("//"        #XE9A1)
-		  ("/>"        #XE9A2)
-		  ("/="        #XE9A3)
-		  ("/=="       #XE9A4)
-		  ("///"       #XE9A5)
-		  ("/**"       #XE9A6)
-		  (":::"       #XE9AF)
-		  ("::"        #XE9B0)
-		  (":="        #XE9B1)
-		  (":≡"        #XE9B2)
-		  (":>"        #XE9B3)
-		  (":=>"       #XE9B4)
-		  (":("        #XE9B5)
-		  (":-("       #XE9B6)
-		  (":)"        #XE9B7)
-		  (":-)"       #XE9B8)
-		  (":/"        #XE9B9)
-		  (":\\"       #XE9BA)
-		  (":3"        #XE9BB)
-		  (":D"        #XE9BC)
-		  (":P"        #XE9BD)
-		  (":>:"       #XE9BE)
-		  (":<:"       #XE9BF)
-		  ("<$>"       #XE9C0)
-		  ("<*"        #XE9C1)
-		  ("<*>"       #XE9C2)
-		  ("<+>"       #XE9C3)
-		  ("<-"        #XE9C4)
-		  ("<<"        #XE9C5)
-		  ("<<<"       #XE9C6)
-		  ("<<="       #XE9C7)
-		  ("<="        #XE9C8)
-		  ("<=>"       #XE9C9)
-		  ("<>"        #XE9CA)
-		  ("<|>"       #XE9CB)
-		  ("<<-"       #XE9CC)
-		  ("<|"        #XE9CD)
-		  ("<=<"       #XE9CE)
-		  ("<~"        #XE9CF)
-		  ("<~~"       #XE9D0)
-		  ("<<~"       #XE9D1)
-		  ("<$"        #XE9D2)
-		  ("<+"        #XE9D3)
-		  ("<!>"       #XE9D4)
-		  ("<@>"       #XE9D5)
-		  ("<#>"       #XE9D6)
-		  ("<%>"       #XE9D7)
-		  ("<^>"       #XE9D8)
-		  ("<&>"       #XE9D9)
-		  ("<?>"       #XE9DA)
-		  ("<.>"       #XE9DB)
-		  ("</>"       #XE9DC)
-		  ("<\\>"      #XE9DD)
-		  ("<\">"      #XE9DE)
-		  ("<:>"       #XE9DF)
-		  ("<~>"       #XE9E0)
-		  ("<**>"      #XE9E1)
-		  ("<<^"       #XE9E2)
-		  ("<!"        #XE9E3)
-		  ("<@"        #XE9E4)
-		  ("<#"        #XE9E5)
-		  ("<%"        #XE9E6)
-		  ("<^"        #XE9E7)
-		  ("<&"        #XE9E8)
-		  ("<?"        #XE9E9)
-		  ("<."        #XE9EA)
-		  ("</"        #XE9EB)
-		  ("<\\"       #XE9EC)
-		  ("<\""       #XE9ED)
-		  ("<:"        #XE9EE)
-		  ("<->"       #XE9EF)
-		  ("<!--"      #XE9F0)
-		  ("<--"       #XE9F1)
-		  ("<~<"       #XE9F2)
-		  ("<==>"      #XE9F3)
-		  ("<|-"       #XE9F4)
-		  ("<<|"       #XE9F5)
-		  ("<-<"       #XE9F7)
-		  ("<-->"      #XE9F8)
-		  ("<<=="      #XE9F9)
-		  ("<=="       #XE9FA)
-		  ("==<"       #XEA00)
-		  ("=="        #XEA01)
-		  ("==="       #XEA02)
-		  ("==>"       #XEA03)
-		  ("=>"        #XEA04)
-		  ("=~"        #XEA05)
-		  ("=>>"       #XEA06)
-		  ("=/="       #XEA07)
-		  ("=~="       #XEA08)
-		  ("==>>"      #XEA09)
-		  ("≡≡"        #XEA10)
-		  ("≡≡≡"       #XEA11)
-		  ("≡:≡"       #XEA12)
-		  (">-"        #XEA20)
-		  (">="        #XEA21)
-		  (">>"        #XEA22)
-		  (">>-"       #XEA23)
-		  (">=="       #XEA24)
-		  (">>>"       #XEA25)
-		  (">=>"       #XEA26)
-		  (">>^"       #XEA27)
-		  (">>|"       #XEA28)
-		  (">!="       #XEA29)
-		  (">->"       #XEA2A)
-		  ("??"        #XEA40)
-		  ("?~"        #XEA41)
-		  ("?="        #XEA42)
-		  ("?>"        #XEA43)
-		  ("???"       #XEA44)
-		  ("?."        #XEA45)
-		  ("^="        #XEA48)
-		  ("^."        #XEA49)
-		  ("^?"        #XEA4A)
-		  ("^.."       #XEA4B)
-		  ("^<<"       #XEA4C)
-		  ("^>>"       #XEA4D)
-		  ("^>"        #XEA4E)
-		  ("\\\\"      #XEA50)
-		  ("\\>"       #XEA51)
-		  ("\\/-"      #XEA52)
-		  ("@>"        #XEA57)
-		  ("|="        #XEA60)
-		  ("||"        #XEA61)
-		  ("|>"        #XEA62)
-		  ("|||"       #XEA63)
-		  ("|+|"       #XEA64)
-		  ("|->"       #XEA65)
-		  ("|-->"      #XEA66)
-		  ("|=>"       #XEA67)
-		  ("|==>"      #XEA68)
-		  ("|>-"       #XEA69)
-		  ("|<<"       #XEA6A)
-		  ("||>"       #XEA6B)
-		  ("|>>"       #XEA6C)
-		  ("|-"        #XEA6D)
-		  ("||-"       #XEA6E)
-		  ("~="        #XEA70)
-		  ("~>"        #XEA71)
-		  ("~~>"       #XEA72)
-		  ("~>>"       #XEA73)
-		  ("[["        #XEA80)
-		  ("]]"        #XEA81)
-		  ("\">"       #XEA90)
-		  ("_|_"       #XEA97)
-		  )))
-
-      (defun add-pragmatapro-prettify-symbols-alist ()
-	(dolist (alias pragmatapro-prettify-symbols-alist)
-	  (push alias prettify-symbols-alist)))
-
-      (add-hook 'prog-mode-hook
-		#'add-pragmatapro-prettify-symbols-alist)
-
-      (global-prettify-symbols-mode +1)
-
+      (custom-set-variables
+       '(face-font-family-alternatives
+	 (quote
+	  (("Monospace" "PragmataPro Liga" "courier" "fixed")
+	   ("Monospace Serif" "PragmataPro Liga" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+	   ("courier" "CMU Typewriter Text" "fixed")
+	   ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
+	   ("helv" "helvetica" "arial" "fixed")))))
     #+end_src
 
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path (expand-file-name "lisp/emacs-pragmatapro-ligatures" user-emacs-directory))
+      (require 'pragmatapro-lig)
+      (add-hook 'prog-mode-hook #'pragmatapro-lig-mode)
+    #+end_src
+*** Emoji 😂
+    #+begin_src emacs-lisp
+      (if (version< "27.0" emacs-version)
+          (set-fontset-font
+           "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+        (set-fontset-font
+         t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+    #+end_src
+*** COMMENT [[https://www.nerdfonts.com/cheat-sheet][Nerd Fonts]]
+    #+begin_src emacs-lisp
+      (use-package nerd-fonts
+        :straight (nerd-fonts :type git :host github :repo "twlz0ne/nerd-fonts.el"))
+    #+end_src
 ** Themes
-*** [[https://github.com/cryon/almost-mono-themes][almost-mono]]
+*** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
     #+begin_src emacs-lisp
-      (use-package almost-mono-themes
-        :config
-        (load-theme 'almost-mono-gray))
-    #+end_src
-*** COMMENT [[https://github.com/jannis/emacs-constant-theme][constant]]
-    #+begin_src emacs-lisp
-      (use-package constant-theme
-        :config
-        (load-theme 'constant))
+      (use-package almost-mono-themes)
     #+end_src
 
-*** COMMENT smyx
+*** [[https://protesilaos.com/emacs/ef-themes][Ef (εὖ) themes for GNU Emacs | Protesilaos Stavrou]]
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :init
+    (setq
+     ;; headings
+     ef-themes-headings '((0 . (1.2 variable-pitch grayscale light regular))
+                             (1 . (1.1 variable-pitch rainbow light))
+                             (t . (variable-pitch rainbow regular)))
+
+     ;; org
+     ef-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                               (header-date . (grayscale bold-today)))
+     ef-themes-org-blocks 'gray-background
+
+     ;; text
+     ef-themes-bold-constructs t
+     ef-themes-italic-constructs t
+     ef-themes-slanted-constructs t
+
+     ;; other
+     ef-themes-hl-line '(accented)
+     ef-themes-lang-checkers '(straight-underline faint)
+     ef-themes-mode-line '(accented borderless)
+     ef-themes-paren-match '(subtle-bold)
+     ef-themes-syntax '(faint alt-syntax)
+     ef-themes-variable-pitch-ui t))
+#+end_src
+*** gruvbox
     #+begin_src emacs-lisp
+      (use-package gruvbox-theme :defer t)
+    #+end_src
+
+*** [[https://protesilaos.com/emacs/modus-themes][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
+    #+begin_src emacs-lisp
+      (use-package modus-themes
+        :init
+        (setq
+         ;; headings
+         modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+                                 (2 . (1.1 variable-pitch rainbow regular))
+                                 (t . (variable-pitch rainbow regular)))
+
+         ;; org
+         modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                                   (header-date . (grayscale bold-today)))
+         modus-themes-org-blocks 'gray-background
+
+         ;; text
+         modus-themes-bold-constructs t
+         modus-themes-italic-constructs t
+         modus-themes-slanted-constructs t
+
+         ;; other
+         modus-themes-hl-line '(accented)
+         modus-themes-lang-checkers '(straight-underline faint)
+         modus-themes-mode-line '(accented borderless)
+         modus-themes-syntax '(faint alt-syntax)
+         modus-themes-variable-pitch-ui t
+
+         modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-nuanced)
+                                                  (prose-todo red)))
+
+        (defun slumos-modus-themes-custom-faces ()
+          (modus-themes-with-colors
+            (set-face-attribute 'org-ellipsis nil :foreground comment :height 0.6)))
+
+        :config
+        (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
+        (modus-themes-load-theme 'modus-operandi))
+    #+end_src
+
+*** nordless
+    #+BEGIN_SRC emacs-lisp
+      (use-package nordless-theme :defer t)
+    #+END_SRC
+
+*** parchment
+    #+begin_src emacs-lisp
+      (use-package parchment-theme :defer t)
+    #+end_src
+*** symx
+    #+BEGIN_SRC emacs-lisp :tangle no
       (use-package smyx-theme
+        :defer t
         :config
         (set-face-attribute 'org-todo nil :box nil)
         (set-face-attribute 'org-done nil :box nil))
+    #+END_SRC
+*** tao-yin
+    #+begin_src emacs-lisp
+    (use-package tao-theme :defer t)
+    #+end_src
+
+*** Dark/light switching on macOS
+    #+begin_src emacs-lisp
+      (defun slumos/handle-appearance-change (appearance)
+        (pcase appearance
+          ('light (modus-themes-load-operandi))
+          ('dark (modus-themes-load-vivendi))))
+      (add-hook 'ns-system-appearance-change-functions #'slumos/handle-appearance-change)
     #+end_src
 
 ** Code
@@ -491,138 +441,1055 @@
    (show-paren-mode t)
    #+END_SRC
 ** Mode Line
-*** Deploy fanciness
-**** TRYING [[https://github.com/seagle0128/doom-modeline][Doom Mode Line]]
+*** Clock
+    #+begin_src emacs-lisp
+      (display-time)
+    #+end_src
+
+*** Filenames
+#+begin_src emacs-lisp
+  (custom-set-variables '(find-file-visit-truename t))
+#+end_src
+*** COMMENT Doom Mode Line
      #+begin_src emacs-lisp
        (use-package doom-modeline
-	 :hook
-	 (after-init . doom-modeline-mode)
-	 :custom
-	 (doom-modeline-icon t "Use all-the-icons"))
+         :hook
+         (after-init . doom-modeline-mode)
+         :custom
+         (doom-modeline-bar-width 8)
+         (doom-modeline-buffer-file-name-style 'truncate-nil)
+         (doom-modeline-enable-word-count t)
+         (doom-modeline-env-version t)
+         (doom-modeline-hud t)
+         (doom-modeline-icon t "Use all-the-icons")
+         (doom-modeline-vcs-max-length 25) ; feature_slumos_W123456789_something
+         ;(doom-modeline-buffer-file-name-style 'file-name) ;; if TRAMP is super-slow
+         )
        #+end_src
-**** SKIP COMMENT Spaceline
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package spaceline-config
-	 :ensure spaceline
-	 :config (spaceline-spacemacs-theme))
-     #+END_SRC
-**** All The Icons!
-     I'm not bothering to automate this now: On a new system, you gotta =M-x all-the-icons-install-fonts=
-     #+BEGIN_SRC emacs-lisp
-     (use-package all-the-icons)
-     #+END_SRC
+** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
+   #+begin_src emacs-lisp
+     ;; Path to nano emacs modules (mandatory)
+     (add-to-list 'load-path "~/Projects/nano-emacs")
+     (add-to-list 'load-path ".")
 
-     A bit too noisy for me...
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package all-the-icons-ivy
-         :init (all-the-icons-ivy-setup))
-     #+END_SRC
-**** BROKEN COMMENT [[https://github.com/domtronn/spaceline-all-the-icons.el][domtronn/spaceline-all-the-icons.el: A Spaceline Mode Line theme using All The Icons for Emacs]]
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package spaceline-all-the-icons
-	 :after spaceline
-	 :config
-	 (setq spaceline-all-the-icons-separator-type 'arrow)
-	 (setq spaceline-all-the-icons-icon-set-modified 'circle)
-	 (spaceline-all-the-icons-theme)
-	 (spaceline-all-the-icons--setup-git-ahead)
-	 (spaceline-all-the-icons--setup-paradox)
-	 (spaceline-toggle-all-the-icons-narrowed-on))
-     #+END_SRC
-**** Color in comint
-     #+BEGIN_SRC emacs-lisp
-       (use-package xterm-color
-	 :init
-	 (setq comint-output-filter-functions (remove #'ansi-color-process-output comint-output-filter-functions))
-	 (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter))
-     #+END_SRC
-** auto-revert
-   Really want to set =auto-revert-check-vc-info= to =t=, but =nil= for
-   now because I need to use TRAMP which conflicts with it...
-   #+BEGIN_SRC emacs-lisp
-     (setq auto-revert-check-vc-info nil)
-     (global-auto-revert-mode)
+     ;; Window layout (optional)
+     (require 'nano-layout)
+
+     ;; Theming Command line options (this will cancel warning messages)
+     (add-to-list 'command-switch-alist '("-dark"   . (lambda (args))))
+     (add-to-list 'command-switch-alist '("-light"  . (lambda (args))))
+     (add-to-list 'command-switch-alist '("-default"  . (lambda (args))))
+
+     (cond
+      ((member "-default" command-line-args) t)
+      ((member "-dark" command-line-args) (require 'nano-theme-dark))
+      (t (require 'nano-theme-light)))
+
+     ;; Theme
+     (require 'nano-faces)
+     (nano-faces)
+
+     (require 'nano-theme)
+     (nano-theme)
+
+     ;; Nano default settings (optional)
+     (require 'nano-defaults)
+
+     ;; Nano header & mode lines (optional)
+     (require 'nano-modeline)
+   #+end_src
+* Magit
+  [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
+
+  Magit—like Org—is a total killer app and probably one of the reasons
+  Emacs had a revival in the recent(ish) years.
+
+  Just like [[http://mh-e.sourceforge.net/][MH-E]] back in the day, it's not about avoiding the CLI,
+  it's about heads-up display of the important stuff and driving the
+  CLI with single keystrokes.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :bind
+      ("\C-x g" . magit-status)
+      :custom
+      (magit-file-mode t)
+      (magit-clone-default-directory "~/Projects/")
+      (magit-repository-directories
+       '(("~/Projects" . 1)
+         ("~/Projects/iac" . 1)
+         ("~/Projects/puppet" . 1)))
+      (transient-default-level 5)
+      (auto-revert-verbose t))
+  #+END_SRC
+
+  #+begin_src emacs-lisp
+    ;; Security has pretty much killed this.
+    ;; (use-package forge
+    ;;   :after magit
+    ;;   :custom
+    ;;   (forge-topic-list-limit '(60 . 0)))
+  #+end_src
+
+  Based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
+  #+begin_src emacs-lisp
+    (defun slumos/parse-git-repo-url (url)
+      "convert a git remote location as a HTTP URL"
+      (if (string-match "^http" url)
+          url
+        (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git\\)?"
+                                  "https://\\2/\\3"
+                                  url)))
+
+    (defun slumos/magit-open-repo ()
+      "open remote repo URL"
+      (interactive)
+      (let ((url (magit-get "remote" "origin" "url")))
+        (progn
+          (browse-url (slumos/parse-git-repo-url url))
+          (message "opening repo %s" url))))
+
+    (add-hook 'magit-mode-hook
+              (lambda ()
+                (local-set-key (kbd "o") #'slumos/magit-open-repo)))
+  #+end_src
+
+  Inspired by [[https://emacs.stackexchange.com/questions/30487/add-copy-to-kill-ring-current-branch-name-with-magit][Add (copy) to kill ring current branch name with Magit - Emacs Stack Exchange]]
+  #+begin_src emacs-lisp
+    (defun slumos/magit-copy-buffer-current-branch ()
+      "Copy current branch name to clipboard"
+      (interactive)
+      (let ((branch (magit-get-current-branch)))
+        (if branch
+            (progn (kill-new branch)
+                   (message "%s" branch))
+          (user-error "There is not current branch"))))
+  #+end_src
+
+** Initialization
+* Org                                                                   :org:
+   #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
+     (use-package org
+       :commands (org-agenda org-capture org-store-link)
+       :bind
+       <<org-binds>>
+       :config
+       <<org-config>>)
    #+END_SRC
-** Me
+** Binds
+   :PROPERTIES:
+   :header-args: :noweb-ref org-binds :tangle no
+   :END:
+   Pretty basic stuff here.
    #+BEGIN_SRC emacs-lisp
-   (setq user-mail-address (or (getenv "EMAIL") "steven@lumos.us"))
+     (("C-c a" . org-agenda)
+      ("C-c c" . org-capture)
+      ("C-c l" . org-store-link)
+      ("C-c g" . org-mac-link-get-link))
    #+END_SRC
+** Config
+   :PROPERTIES:
+   :header-args: :noweb-ref org-config :tangle no :results silent
+   :END:
+   #+begin_src emacs-lisp
+          (custom-set-variables
+           '(org-catch-invisible-edits 'error)
+           '(org-cycle-include-plain-lists 'integrate)
+           '(org-fontify-whole-heading-line t))
+   #+end_src
+
+   Regular ellipsis drives me insane because I tend to end regular
+   lines that way all the time ... (see?)
+
+   Good choices: =⬎= =[+]= = =
+   
+   #+BEGIN_SRC emacs-lisp
+     (custom-set-variables
+      '(org-ellipsis " "))
+
+;     (set-face-attribute 'org-ellipsis nil
+;                         :inherit '(comment)
+;                         :height 0.6)
+   #+END_SRC
+
+   My muscle memory is completely stuck on =M-< TAB=. This just
+   enables what I'm pretty sure was a default in some distant past.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq org-cycle-global-at-bob t)
+   #+END_SRC
+
+   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-refile-use-outline-path 'file
+	   org-outline-path-complete-in-steps nil
+	   org-refile-targets '((org-agenda-files :maxlevel . 2)))
+   #+END_SRC
+
+   That's why I also like to enable speed commands when point is at
+   beginning-of-buffer. This means that immediately after opening an
+   org file, you can jump to the first heading just by tapping =n=.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-use-speed-commands
+           (lambda () (or
+                  (eq (point) 1)
+                  ;; (looking-at org-outline-regexp-bol)
+                  (and (looking-at org-outline-regexp) (looking-back "^\\**")))))
+   #+END_SRC
+
+   Set up some modules by default. I use =org-id= for capture targets,
+   =org-mac-link= *all* the damn time, and =ob-shell= for
+   some—ahem—"literate" DevOps. More like notebook DevOps in practice,
+   but still awesome.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq org-modules '(org-id org-mac-link org-protocol ob-shell))
+   (org-load-modules-maybe t)
+   #+END_SRC
+
+   I don't use =hl-line-mode= often, but when I do, it's in buffers
+   that are lists of things.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+   #+END_SRC
+
+   #+BEGIN_QUOTE
+   After saving, also commit to a worktree work-in-progress ref.
+
+   After saving the current file-visiting buffer this mode also
+   commits the changes to the worktree work-in-progress ref for
+   the current branch.
+   #+END_QUOTE
+
+   How awesome does that sound? To call back all your saves is just
+   =M-x magit-wip-log-current=.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook (lambda ()
+				(magit-wip-after-save-mode t)
+				(magit-wip-after-apply-mode t)
+				(magit-wip-before-change-mode t)))
+   #+END_SRC
+
+**** [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+   #+begin_src emacs-lisp
+   (use-package idle-org-agenda
+     :after org-agenda
+     :config (idle-org-agenda-mode))
+   #+end_src
+
+   Decided to add a save timestamp to help me tell that whatever I'm
+   editing is up to date with other copies.
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'time-stamp)
+   #+END_SRC
+
+   I think this will make my oncall-shift snippet work better.
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook
+               (lambda () (setq-local yas-indent-line 'fixed)))
+   #+end_src
+**** Exporting
+   #+BEGIN_SRC emacs-lisp
+   ;(use-package ox-confluence :after org)
+   (use-package ox-clip :after org)
+   (use-package ox-gfm :after org)
+   (use-package ox-jira :after org)
+   (use-package ox-pandoc :after org)
+   #+END_SRC
+*** COMMENT My crazy numbered paragraphs idea
+    #+begin_src emacs-lisp
+      (defun numbered-paragraphs-headline (headline contents info)
+        "Transcode HEADLINE as a plain numbered paragraph. CONTENTS is
+      headline contents. INFO is plist used as a communication
+      channel."
+        (let* ((level (org-export-get-relative-level headline info))
+               (num (org-export-get-headline-number)))
+          (concat headline contents)))
+    #+end_src
+*** TODO Check out [[https://github.com/yejianye/toolbox/blob/bd08a355dbc6804aa507c29a60053837eaa2e99c/emacs/funcs.el#L49][toolbox/funcs.el at bd08a355dbc6804aa507c29a60053837eaa2e99c · yejianye/toolbox]]
+** Fanciness
+*** [[https://github.com/minad/org-modern][minad/org-modern: Modern Org Style]]
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :custom
+    (org-modern-star ["◉""○""◈""◇""—"])
+    ;; :hook
+    ;; (org-mode . org-modern-mode)
+    ;; (org-agenda-finalize . org-modern-agenda)
+    :config
+    (setq org-modern-table-vertical 1)
+    (setq org-modern-table-horizontal 1))
+#+end_src
+*** COMMENT [[https://github.com/jdtsmith/org-modern-indent/][jdtsmith/org-modern-indent: org-modern and org-indent, working together]]
+#+begin_src emacs-lisp
+  ; https://github.com/jdtsmith/org-modern-indent.git
+  (use-package org-modern-indent
+    :straight (:type git :host github :repo "jdtsmith/org-modern-indent" :branch "main")
+    :hook (org-mode . org-modern-indent-mode))
+#+end_src
+
+** Agenda
+
+   #+begin_src emacs-lisp :tangle no
+     (setq org-agenda-custom-commands
+           '(("ca" "Daily Agenda View"
+              ((org-ql-block '(and (path "DMP")
+                                   (todo "BLOCKED" "START" "WORK"))
+                             ((org-ql-block-header "Progress")))
+               (org-ql-block '(and (path "DMP") (planning :from -1 :to 7))
+                             ((org-ql-block-headher "Plan")))
+               (agenda)))))
+   #+end_src
+
+** Additions
+*** COMMENT [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+    #+begin_src emacs-lisp
+      (use-package org-chef)
+    #+end_src
+
+    #+begin_src emacs-lisp
+      (add-to-list 'org-capture-templates
+                   '(("c" "Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
+                      "%(org-chef-get-recipe-from-url)"
+                      :empty-lines 1)
+                     ("m" "Manual Cookbook" entry (file "~/Sync/OneDrive/ST/Notes/Cookbook.org")
+                      "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))
+    #+end_src
+
+*** TODO [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
+*** TODO [[https://github.com/ahendriksen/ob-tmux][ahendriksen/ob-tmux: Ob-tmux is an Emacs library that allows org mode to evaluate code blocks in a tmux session.]]
+    #+begin_src emacs-lisp
+      (use-package ob-tmux
+        :custom
+        (org-babel-tmux-terminal "iterm")
+      )
+    #+end_src
+
+*** COMMENT [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
+    #+begin_src emacs-lisp
+      (use-package orgit)
+    #+end_src
+*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
+    #+begin_src emacs-lisp
+      (leaf ivy-omni-org
+        :after counsel
+        :commands (ivy-omni-org)
+        :bind ("C-c b" . ivy-omni-org)
+        :custom
+        (ivy-omni-org-file-sources . (slumos/ivy-omni-org-sources)))
+
+      (defun slumos/ivy-omni-org-sources ()
+        (-uniq (-concat
+                (directory-files org-directory t "\\.org\\'")
+                (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
+                (directory-files user-emacs-directory "\\.org\\'"))))
+    #+end_src
+*** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
+    #+begin_src emacs-lisp
+      (leaf org-ql
+        :custom
+        (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
+    #+end_src
+
+*** [[https://github.com/alphapapa/org-web-tools/blob/master/README.org][org-web-tools/README.org at master · alphapapa/org-web-tools · GitHub]]
+    #+begin_src emacs-lisp
+      (use-package org-web-tools)
+    #+end_src
+
+*** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
+*** org-mac-link
+   #+begin_src emacs-lisp
+     (use-package org-mac-link
+       :quelpa ((org-mac-link
+                 :fetcher git
+                 :url "https://gitlab.com/aimebertrand/org-mac-link.git")
+                :upgrade t)
+       :commands (org-mac-link-get-link))
+   #+end_src
+
+** Evaluation
+*** Structure Templates
+    #+begin_src emacs-lisp
+      (add-to-list 'org-structure-template-alist '("sj" . "src shell :results output :wrap src json"))
+      (add-to-list 'org-structure-template-alist '("st" . "src shell :results output :wrap src text"))
+    #+end_src
+*** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
+    #+begin_src emacs-lisp
+      (defun org-babel-execute:passthrough (body params) body)
+      (defalias 'org-babel-execute:json 'org-babel-execute:passthrough)
+      (add-to-list 'org-babel-load-languages '(passthrough . t))
+    #+end_src
+*** [[https://emacs.stackexchange.com/questions/13244/edebug-orgmode-source-code-blocks-with-input-variables][org mode - Edebug orgmode source code blocks with input variables - Emacs Stack Exchange]]
+    #+begin_src emacs-lisp
+      (defun org-src-debug ()
+        "Put a call to this function at the beginning of the org source block to debug it."
+        (save-excursion
+          (let ((pt (let ((case-fold-search t)) (org-babel-where-is-src-block-head))))
+            (unless pt (error "Not at source block"))
+            (goto-char pt)
+            (org-edit-src-code)
+            (let ((parse-sexp-ignore-comments t))
+              (goto-char (point-min))
+              (forward-sexp 2)
+              (edebug-defun)))))
+    #+end_src
+*** TRYING COMMENT [[https://github.com/diadochos/org-babel-eval-in-repl][diadochos/org-babel-eval-in-repl: Send and eval org-mode babel code blocks in various REPLs (therefore it's async)]]
+    #+begin_src emacs-lisp
+      (use-package org-babel-eval-in-repl)
+    #+end_src
+** slumos hacks
+*** Copy org link as rich text
+**** HTML
+#+begin_src emacs-lisp
+  (defun slumos/org-link-at-point-as-html ()
+    (let* ((ctx (org-element-context))
+           (type (org-element-type ctx))
+           (beg (org-element-property :begin ctx))
+           (end (org-element-property :end ctx))
+           (backend (or (org-export-get-backend 'slimhtml)
+                        (org-export-get-backend 'html))))
+      (if (eq type 'link)
+          (org-export-string-as (buffer-substring beg end) 'slimhtml t)
+        (user-error "no link found at point"))))
+
+  (defun slumos/org-copy-link-at-point-as-html ()
+    (interactive)
+    (kill-new (slumos/org-link-at-point-as-html)))
+
+  (defun slumos/copy-html-to-pasteboard (html)
+    (let* ((hex (string-join (--map (format "%0X" it) (string-to-list html))))
+           (script (format "set the clipboard to «data HTML%s»" hex)))
+      (do-applescript script)))
+
+;;  (with-current-buffer "DMP.org"
+;;    (slumos/org-link-at-point-as-html))
+  #+end_src
+
+**** Clipboard
+#+begin_src emacs-lisp
+  (defun slumos/org-copy-link-at-point-to-clipboard-rich ()
+    (interactive)
+    (let* ((html (slumos/org-link-at-point-as-html)))
+      (with-temp-buffer
+        (insert html)
+        (shell-command-on-region
+         (point-min)
+         (point-max)
+         "textutil -stdin -format html -convert rtf -stdout | pbcopy"))))
+
+  ;; (with-current-buffer "DMP.org"
+  ;;   (slumos/org-copy-link-at-point-to-clipboard-rich))
+#+end_src
+
+*** TODO slumos-org-copy-to-clipboard
+   The idea of this is to copy HTML to the macOS clipboard and tag it as HTML so that it pastes properly.
+   See [[https://stackoverflow.com/questions/11085654/apple-script-how-can-i-copy-html-content-to-the-clipboard][macos - Apple Script : How can I copy html content to the clipboard? - Stack Overflow]]
+
+   #+begin_src emacs-lisp
+     (defun slumos-org-copy-to-clipboard ()
+       "Copy org subtree to system clipboard as rich text"
+       (interactive)
+       (let* ((backend (or (org-export-get-backend 'slimhtml)
+                           (org-export-get-backend 'html)))
+              (html-buf (org-export-to-buffer backend "*html-buf*" nil t nil nil '(:toc nil) (lambda () (html-mode)))))
+         (with-current-buffer html-buf
+           (shell-command-on-region
+            (point-min)
+            (point-max)
+            "textutil -stdin -format html -convert rtf -stdout | pbcopy")
+           (bury-buffer))))
+   #+end_src
+*** Do stuff with "WorkItems"
+(WorkItem is SFDC for "ticket")
+
+My work notes have a headline for each sprint, and below that a headline for each workitem, which is a link to the workitem starting with the workitem ID (which matches W-[0-9]+). This could easily be adapted to JIRA by matching [A-Z]+-[0-9]+ (and now that I wrote that I'm going to just redo it that way lol).
+
+The main goal of these is to make it super easy to get the ID or a full rich text link into the system clipboard for pasting into commit messages, Slack, email, etc.
+
+#+begin_src emacs-lisp
+  (defun slumos/org-copy-workitem-id-for-subtree ()
+    "Find a workitem id in a property or title above point and copy it to the clipboard"
+    (interactive)
+    (let ((wid (slumos/org-find-workitem-for-subtree)))
+      (if wid
+          (progn
+            (kill-new wid)
+            (message "%s" wid))
+        (user-error "failed to find a WorkItem ID"))))
+
+  (defun slumos/org-find-workitem-for-subtree ()
+    (cl-loop for headline in (slumos/org-subtree-headlines)
+             for wi-prop = (org-element-property :WORKITEM headline)
+             for title = (org-element-property :title headline)
+             if wi-prop return wi-prop
+             if (and title (string-match "W-\[0-9\]\+" title)) return (match-string 0 title)))
+
+  (defun slumos/org-subtree-headlines ()
+    (save-excursion
+      (org-with-wide-buffer
+       (slumos/org--subtree-headlines-from-point))))
+
+  (defun slumos/org--subtree-headlines-from-point ()
+      (unless (org-at-heading-p) (outline-previous-visible-heading 1))
+      (let* ((this (org-element-at-point)))
+        (if (org-up-heading-safe)
+            (cons this (slumos/org--subtree-headlines-from-point))
+          (list this))))
+#+end_src
+
+#+begin_src emacs-lisp :results replace drawer pp :tangle no
+  (with-current-buffer "DMP.org"
+    (let* ((headlines (slumos/org-subtree-headlines))
+           (headline (car headlines))
+           (title (org-element-property :title headline)))
+      headline))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+(headline
+ (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view][W-10679745: Migrate krux.periodic.navegg chronos job to k8s | Work]]" :begin 1108 :end 1348 :pre-blank 0 :contents-begin 1269 :contents-end 1347 :robust-begin 1271 :robust-end 1345 :level 2 :priority nil :tags nil :todo-keyword
+             #("START" 0 5
+               (fontified nil line-prefix
+                          #("*" 0 1
+                            (face org-indent))
+                          wrap-prefix
+                          #("*** " 0 1
+                            (face org-indent)
+                            1 4
+                            (face org-indent))
+                          face
+                          (org-todo org-level-2)
+                          org-todo-head
+                          #("TODO" 0 4
+                            (face org-todo))))
+             :todo-type todo :post-blank 1 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 1108 :title
+             ((link
+               (:type "https" :path "//gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view" :format bracket :raw-link "https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000n9ZsEYAU/view" :application nil :search-option nil :begin 1117 :end 1268 :contents-begin 1200 :contents-end 1266 :post-blank 0 :parent
+                      (headline #1))
+               #("W-10679745: Migrate krux.periodic.navegg chronos job to k8s | Work" 0 66
+                 (:parent #3))))
+             :parent
+             (headline
+              (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view][2022.12a]]" :begin 1010 :end 54188 :pre-blank 0 :contents-begin 1108 :contents-end 54187 :robust-begin 1110 :robust-end 54185 :level 1 :priority nil :tags nil :todo-keyword nil :todo-type nil :post-blank 1 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 1010 :title
+                          ((link
+                            (:type "https" :path "//gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view" :format bracket :raw-link "https://gus.lightning.force.com/lightning/r/ADM_Sprint__c/a0lEE000000CWm1YAG/view" :application nil :search-option nil :begin 1012 :end 1107 :contents-begin 1097 :contents-end 1105 :post-blank 0 :parent
+                                   (headline #3))
+                            #("2022.12a" 0 8
+                              (:parent #5))))
+                          :parent
+                          (org-data
+                           (:begin 1 :contents-begin 1 :contents-end 2234182 :end 2234182 :robust-begin 3 :robust-end 2234180 :post-blank 0 :post-affiliated 1 :path "/Users/slumos/Sync/GDrive/Notes/DMP.org" :mode org-data :CATEGORY "DMP" :cached t))
+                          :cached t :org-element--cache-sync-key
+                          (3 . 1010)))
+             :cached t :org-element--cache-sync-key
+             (3 . 1108)))
+#+end_example
+
+*** COMMENT Post-process grabbed links
+
+    Strip content-free stuff that gets tacked onto the title of every page.
+
+    #+begin_src emacs-lisp
+      (defun slumos/org-grab-link-after (s)
+        (replace-regexp-in-string " | Salesforce$" "" s))
+
+      (advice-add #'org-as-mac-chrome-get-frontmost-url :filter-return #'slumos/org-grab-link-after)
+      (org-as-mac-chrome-get-frontmost-url)
+    #+end_src
+*** Messing around
+#+begin_src emacs-lisp :results replace drawer pp :tangle no
+  (require 'dash)
+  (defun slumos/org-find-workitem-headline-for-subtree ()
+    (--first (string-match "W-\[0-9\].*" (org-element-property :title it)) (slumos/org-subtree-headlines)))
+
+  (with-current-buffer "DMP.org"
+      (slumos/org-find-workitem-headline-for-subtree))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+(headline
+ (:raw-value "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000sO211YAC/view][W-10819701: Upgrade Cloudbees JDK to Java 11+]]" :begin 891 :end 1911 :pre-blank 0 :contents-begin 1031 :contents-end 1911 :level 2 :priority nil :tags nil :todo-keyword
+             #("START" 0 1
+               (fontified t face org-modern-todo display
+                          #(" S" 1 2
+                            (cursor t))
+                          org-category "DMP")
+               1 4
+               (fontified t face org-modern-todo org-category "DMP")
+               4 5
+               (fontified t face org-modern-todo display "T " org-category "DMP"))
+             :todo-type todo :post-blank 0 :footnote-section-p nil :archivedp nil :commentedp nil :post-affiliated 891 :title "[[https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07EE00000sO211YAC/view][W-10819701: Upgrade Cloudbees JDK to Java 11+]]"))
+#+end_example
+
+* Other Apps
+** [[https://github.com/skeeto/elfeed][skeeto/elfeed: An Emacs web feeds client]]
+#+begin_src emacs-lisp
+  (use-package elfeed)
+  (use-package elfeed-org
+    :config
+    (setq rmh-elfeed-org-files (list (expand-file-name "config.org" user-emacs-directory)))
+    :init
+    (elfeed-org))
+#+end_src
+*** elfeed-org configuration                                         :elfeed:
+**** Emacs                                                            :emacs:
+***** http://planet.emacsen.org/atom.xml
+***** [[https://sachachua.com/blog/feed/][Sacha Chua]]
+**** Friends                                                        :friends:
+***** [[https://davidmcrampton.com/?feed=rss2][https://davidmcrampton.com/?feed=rss2]]
+** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon]]
+#+begin_src emacs-lisp
+  (use-package mastodon
+    :config
+    (setq mastodon-instance-url "https://emacs.ch"
+          mastodon-active-user "slumos"))
+#+end_src
+
+* Language Modes
+** [[https://emacs-tree-sitter.github.io/][Tree Sitter]]
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :config
+    (global-tree-sitter-mode)
+    (setq tree-sitter-debug-jump-buttons t
+          tree-sitter-debug-highlight-jump-region nil))
+#+end_src
+
 ** Misc
+*** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
+    #+begin_src emacs-lisp
+    (leaf lispy
+       :hook
+       ((emacs-lisp-mode-hook
+       fennel-mode-hook) . lispy-mode))
+    #+end_src
+**** hydra
+     [[https://sachachua.com/dotemacs/#hydra-lispy][Thanks again Sacha!]]
+
+     #+NAME: lispy-bindings-ref
+     | key | function                      | column   |
+     |-----+-------------------------------+----------|
+     | <   | lispy-barf                    |          |
+     | A   | lispy-beginning-of-defun      |          |
+     | j   | lispy-down                    |          |
+     | Z   | lispy-edebug-stop             |          |
+     | B   | lispy-ediff-regions           |          |
+     | G   | lispy-goto-local              |          |
+     | h   | lispy-left                    |          |
+     | N   | lispy-narrow                  |          |
+     | y   | lispy-occur                   |          |
+     | o   | lispy-other-mode              |          |
+     | J   | lispy-outline-next            |          |
+     | K   | lispy-outline-prev            |          |
+     | P   | lispy-paste                   |          |
+     | l   | lispy-right                   |          |
+     | I   | lispy-shifttab                |          |
+     | >   | lispy-slurp                   |          |
+     | SPC | lispy-space                   |          |
+     | xB  | lispy-store-region-and-buffer |          |
+     | u   | lispy-undo                    |          |
+     | k   | lispy-up                      |          |
+     | v   | lispy-view                    |          |
+     | V   | lispy-visit                   |          |
+     | W   | lispy-widen                   |          |
+     | D   | pop-tag-mark                  |          |
+     | x   | see                           |          |
+     | L   | unbound                       |          |
+     | U   | unbound                       |          |
+     | X   | unbound                       |          |
+     | Y   | unbound                       |          |
+     | H   | lispy-ace-symbol-replace      | Edit     |
+     | c   | lispy-clone                   | Edit     |
+     | C   | lispy-convolute               | Edit     |
+     | n   | lispy-new-copy                | Edit     |
+     | O   | lispy-oneline                 | Edit     |
+     | r   | lispy-raise                   | Edit     |
+     | R   | lispy-raise-some              | Edit     |
+     | \   | lispy-splice                  | Edit     |
+     | S   | lispy-stringify               | Edit     |
+     | i   | lispy-tab                     | Edit     |
+     | xj  | lispy-debug-step-in           | Eval     |
+     | xe  | lispy-edebug                  | Eval     |
+     | xT  | lispy-ert                     | Eval     |
+     | e   | lispy-eval                    | Eval     |
+     | E   | lispy-eval-and-insert         | Eval     |
+     | xr  | lispy-eval-and-replace        | Eval     |
+     | p   | lispy-eval-other-window       | Eval     |
+     | q   | lispy-ace-paren               | Move     |
+     | z   | lispy-knight                  | Move     |
+     | s   | lispy-move-down               | Move     |
+     | w   | lispy-move-up                 | Move     |
+     | t   | lispy-teleport                | Move     |
+     | Q   | lispy-ace-char                | Nav      |
+     | -   | lispy-ace-subword             | Nav      |
+     | a   | lispy-ace-symbol              | Nav      |
+     | b   | lispy-back                    | Nav      |
+     | d   | lispy-different               | Nav      |
+     | f   | lispy-flow                    | Nav      |
+     | F   | lispy-follow                  | Nav      |
+     | g   | lispy-goto                    | Nav      |
+     | xb  | lispy-bind-variable           | Refactor |
+     | xf  | lispy-flatten                 | Refactor |
+     | xc  | lispy-to-cond                 | Refactor |
+     | xd  | lispy-to-defun                | Refactor |
+     | xi  | lispy-to-ifs                  | Refactor |
+     | xl  | lispy-to-lambda               | Refactor |
+     | xu  | lispy-unbind-variable         | Refactor |
+     | M   | lispy-multiline               | Other    |
+     | xh  | lispy-describe                | Other    |
+     | m   | lispy-mark-list               | Other    |
+
+     #+BEGIN_SRC emacs-lisp :var bindings=lispy-bindings-ref :colnames yes :results silent :exports code
+       (eval
+        (append
+         '(defhydra my/lispy-cheat-sheet (:hint nil :foreign-keys run)
+            ("<f14>" nil "Exit" :exit t))
+         (cl-loop for x in bindings
+                  unless (string= "" (elt x 2))
+                  collect
+                  (list (car x)
+                        (intern (elt x 1))
+                        (when (string-match "lispy-\\(?:eval-\\)?\\(.+\\)"
+                                            (elt x 1))
+                          (match-string 1 (elt x 1)))
+                        :column
+                        (elt x 2)))))
+       (with-eval-after-load "lispy"
+         (define-key lispy-mode-map (kbd "s-l") 'my/lispy-cheat-sheet/body))
+     #+END_SRC
+
+** TODO [[https://github.com/doublep/eldev][doublep/eldev: Elisp Development Tool]]
+** Dockerfile
+   (use-package dockerfile-mode)
+** [[https://fennel-lang.org/][Fennel]]
+   Seeing if I can configure Hammerspoon with Fennel
+   #+begin_src emacs-lisp
+     (use-package fennel-mode
+       :mode "\\.fnl\\'"
+       :hook
+       (fennel-mode . lispy-mode)
+       (emacs-lisp-mode . lispy-mode))
+   #+end_src
+
+** flycheck
    #+BEGIN_SRC emacs-lisp
-     (setq vc-follow-symlinks t)
+     (use-package flycheck-mode
+       :ensure flycheck
+       :hook (puppet-mode ruby-mode json-mode python-mode))
+   #+END_SRC
+*** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-lint from this example]]
+** Go
+   #+begin_src emacs-lisp
+     (use-package go-mode
+       :bind
+       (:map go-mode-map
+	     ("M-." . godef-jump)))
+   #+end_src
+
+** Groovy
+   #+BEGIN_SRC emacs-lisp
+     (use-package groovy-mode
+       :mode "\\.groovy\\'"
+       :custom
+       (groovy-indent-offset 2))
+   #+END_SRC
+** Java
+   #+begin_src emacs-lisp
+     (exec-path-from-shell-copy-env "JAVA_HOME")
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-mode
+       :commands lsp)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (leaf lsp-ui
+       :hook (lsp-mode-hook . lsp-ui-mode)
+       :custom
+       ((lsp-auto-guess-root . t)
+        (lsp-enable-completion-at-point . t)
+        (lsp-log-io . t)
+        (lsp-log-max . 2000)
+        (lsp-ui-doc-enable . t)))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package lsp-java
+       :hook ((java-mode-hook . lsp-deferred)))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (use-package dap-mode
+       :hook ((java-mode-hook . dap-mode)
+              (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
+       :config
+       (dap-mode 1)
+       (dap-ui-mode 1))
+   #+end_src
+
+   #+begin_src emacs-lisp :tangle no
+     (leaf dap-java
+       :package (dap-mode))
+   #+end_src
+
+** Javascript
+   #+BEGIN_SRC emacs-lisp
+     (use-package js2-mode :mode "\\.js\'")
+   #+END_SRC
+
+   Putting JSON here too...meh.
+   #+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :mode "\\.json\\(\\.erb\\)?\'"
+    :config
+    (add-hook 'json-mode-hook #'flycheck-mode)
+    (add-hook 'json-mode-hook #'yas-minor-mode)
+    (org-babel-do-load-languages 'org-babel-load-languages '((jq . t))))
+   #+END_SRC
+
+   Trying out jsonian
+   #+begin_src emacs-lisp :tangle no
+     (use-package jsonian
+       :straight (:type git :host github :repo "iwahbe/jsonian")
+       :mode "\\.json\'"
+       :after so-long
+       :custom (jsonian-no-so-long-mode))
+   #+end_src
+
+** jq mode
+   #+begin_src emacs-lisp
+     (use-package jq-mode)
+   #+end_src
+** Kubernetes / Helm
+   #+begin_src emacs-lisp
+     (use-package k8s-mode
+       :ensure t
+       :hook (k8s-mode . yas-minor-mode))
+   #+end_src
+** Markdown
+   #+BEGIN_SRC emacs-lisp
+     (use-package markdown-mode
+       :commands (markdown-mode gfm-mode)
+       :mode (("README\\.md\\'" . gfm-mode)
+              ("\\.md\\'" . markdown-mode)
+              ("\\.markdown\\'" . markdown-mode))
+       :init
+       (setq markdown-command "cmark-gfm"
+             ;;; ripped from https://github.com/hlissner/doom-emacs/blob/ce3188/modules/lang/markdown/config.el#L28
+             ;; HACK Due to jrblevin/markdown-mode#578, invoking `imenu' throws a
+             ;;      'wrong-type-argument consp nil' error if you use native-comp.
+             markdown-nested-imenu-heading-index (not (ignore-errors (native-comp-available-p)))))
+   #+END_SRC
+** MinecraftForge
+*** TODO [[https://github.com/qwattash/forge-mode][qwattash/forge-mode: Emacs minor mode for minecraft forge development]]
+
+** Puppet
+   #+BEGIN_SRC emacs-lisp
+     (use-package puppet-mode
+       :mode "\\.pp\\'"
+       :config
+       (unbind-key "$" puppet-mode-map)
+       (setq-local align-region-separate 'group)
+       (add-to-list 'puppet-mode-align-rules
+		    '(puppet-assignment-literal
+		      (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+		      (repeat . t)
+		      (modes . '(puppet-mode)))))
+   #+END_SRC
+** Python
+   #+BEGIN_SRC emacs-lisp
+     (use-package python
+       :mode ("\\.py\\'" . python-mode)
+       :interpreter ("python" . python-mode))
    #+END_SRC
 
    #+begin_src emacs-lisp
-   (custom-set-variables '(frame-resize-pixelwise t))
+     (use-package elpy)
    #+end_src
 
+   IPython / Jupyter Notebook client
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ein
+       :commands (ein:notebooklist-login
+                  ein:notebooklist-open)
+       :config
+       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
+   #+END_SRC
+
+   Language Server Protocol
+   #+begin_src emacs-lisp
+     (use-package lsp-python-ms
+       :hook
+       (python-mode . (lambda () (require 'lsp-python-ms))))
+   #+end_src
+*** [[https://github.com/abo-abo/lpy][abo-abo/lpy: Minimal Python IDE for GNU Emacs]]
+    #+begin_src emacs-lisp
+      (use-package lpy)
+    #+end_src
+
+** Ruby
+   #+BEGIN_SRC emacs-lisp
+     (use-package ruby-mode
+       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\(\\.local\\)?\\||Puppetfile\\)\\'")
+
+     (use-package inf-ruby
+       :no-require t)
+
+     (use-package rspec-mode
+       :config
+       (inf-ruby-switch-setup))
+
+     (use-package ruby-hash-syntax
+       :bind
+       (:map ruby-mode-map
+             ("C-c #" . ruby-hash-syntax-toggle)))
+
+     (use-package seeing-is-believing
+       :bind (("<s-return>" . seeing-is-believing)))
+
+     (use-package chruby)
+   #+END_SRC
+
+   #+begin_src emacs-lisp
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((ruby . t)))
+   #+end_src
+
+   #+BEGIN_SRC emacs-lisp
+     ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
+     (require 'align)
+
+     (add-to-list 'align-rules-list
+		  '(ruby-comma-delimiter
+		    (regexp . ",\\(\\s-*\\)[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-hash-literal
+		    (regexp . "\\(\\s-*\\)=>\\s-*[^# \t\n]")
+		    (group 2 3)
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-hash-literal2
+		    (regexp . "[a-z0-9]:\\(\\s-*\\)[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-assignment-literal
+		    (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+		    (repeat . t)
+		    (modes  . '(ruby-mode))))
+
+     (add-to-list 'align-rules-list
+		  '(ruby-xmpfilter-mark
+		    (regexp . "\\(\\s-*\\)# => [^#\t\n]")
+		    (repeat . nil)
+		    (modes  . '(ruby-mode))))
+   #+END_SRC
+
+** Rust
+   #+begin_src emacs-lisp
+   (use-package rustic)
+   #+end_src
+
+   #+begin_src emacs-lisp
+   (use-package flycheck-rust)
+   #+end_src
+
+** Terraform (HCL)
+   #+BEGIN_SRC emacs-lisp
+     (use-package terraform-mode
+       :config
+       (setq lsp-disabled-clients '(tfls))
+       :hook
+       ;(terraform-mode . terraform-format-on-save-mode)
+       (terraform-mode . apheleia-mode)
+       (terraform-mode . lsp-deferred)
+       (terraform-mode . flycheck-mode))
+   #+END_SRC
+** Web (HTML, etc)
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode
+       :mode "\\.j2$"
+       :config (setq web-mode-content-types-alist '(("json" . "spinnaker/.*\\.j2\\'"))))
+   #+END_SRC
+** TOML
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package toml-mode
+       :mode "Pipfile\\'")
+   #+END_SRC
+** YAML
+   #+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :mode "\\(.yaml\\|.yml\\)$"
+    :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+
+  (use-package yaml-pro
+    :hook (yaml-mode . yaml-pro-mode))
+
+  (use-package yaml-imenu
+    :hook (yaml-mode . yaml-imenu-enable))
+   #+END_SRC
 * Helpers
-** TRYING [[https://github.com/ibizaman/emacs-conflict][ibizaman/emacs-conflict: Resolve conflicts happening when using file synchronization tools]]
+** TODO Organize this mess!
+** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
+"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :config (marginalia-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+
+** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+#+begin_src emacs-lisp
+  (use-package apheleia
+    :hook (prog-mode . apheleia-mode))
+#+end_src
+
+** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
    #+begin_src emacs-lisp
-     (use-package emacs-conflict
-       :straight (emacs-conflict :type git :host github :repo "ibizaman/emacs-conflict" :branch "master"))
+   (use-package direnv)
    #+end_src
 
+** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
    #+begin_src emacs-lisp
-     ;; diff hooks for org mode
-     (add-hook 'ediff-select-hook 'f-ediff-org-unfold-tree-element)
-     (add-hook 'ediff-unselect-hook 'f-ediff-org-fold-tree)
-     ;; Check for org mode and existence of buffer
-     (defun f-ediff-org-showhide(buf command &rest cmdargs)
-       "If buffer exists and is orgmode then execute command"
-       (if buf
-           (if (eq (buffer-local-value 'major-mode (get-buffer buf)) 'org-mode)
-               (save-excursion (set-buffer buf) (apply command cmdargs)))))
-
-     (defun f-ediff-org-unfold-tree-element ()
-       "Unfold tree at diff location"
-       (f-ediff-org-showhide ediff-buffer-A 'org-reveal)
-       (f-ediff-org-showhide ediff-buffer-B 'org-reveal)
-       (f-ediff-org-showhide ediff-buffer-C 'org-reveal))
-
-     (defun f-ediff-org-fold-tree ()
-       "Fold tree back to top level"
-       (f-ediff-org-showhide ediff-buffer-A 'hide-sublevels 1)
-       (f-ediff-org-showhide ediff-buffer-B 'hide-sublevels 1)
-       (f-ediff-org-showhide ediff-buffer-C 'hide-sublevels 1))
-
+   (use-package wgrep)
    #+end_src
-
-
-** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
-   #+begin_src emacs-lisp
-     (use-package helpful
-       :after counsel
-       :custom
-       (counsel-describe-function-function #'helpful-callable "Enhanced describe-function")
-       (counsel-describe-function-variable #'helpful-variable "Enhanced describe-variable"))
-   #+end_src
-
-** Text
-   #+begin_src emacs-lisp
-   (use-package flyspell-mode
-     :ensure nil
-     :hook text-mode)
-   #+end_src
-
-** COMMENT AWSCLI Completion
-   #+begin_src emacs-lisp
-     (use-package awscli-capf
-       :commands (awscli-capf-add)
-       :hook (org-mode . awscli-capf-add))
-   #+end_src
-** TODO COMMENT [[https://jblevins.org/projects/deft/][Deft for Emacs]]
-   Need to look deeper, but I think it only takes you to the file
-   level? I use few large org files rather than many small ones so not
-   sure this helps me.
-   #+begin_src emacs-lisp
-     (leaf deft
-       :commands (deft)
-       :setq
-       (deft-directory . "~/Google Drive/Notes")
-       (deft-recursive . t))
-   #+end_src
-
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
@@ -635,70 +1502,88 @@
    #+begin_src emacs-lisp
      (defun invoke-hydra ()
        (interactive)
-       (counsel-M-x "hydra-.*/body "))
+       (counsel-M-x ".*hydra-.*/body "))
      (global-set-key (kbd "C-c h") #'invoke-hydra)
    #+end_src
+*** Hydras
+**** Commonly visited files
 
-** COMMENT aggressive-indent
+     This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
+     #+name: commonly-visited-files-shortcuts
+     | key | path                              | name                     |
+     |-----+-----------------------------------+--------------------------|
+     | a   | ~/.config/alacritty/alacritty.yml | alacritty config         |
+     | c   | ~/.config/emacs/config.org        | main config (config.org) |
+     | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                |
+     | n   | ~/Sync/GDrive/Notes/Notes.org     | Work notes (Notes.org)   |
+     | k   | ~/Sync/GDrive/Notes/DMP.org       | Krux work (DMP.org)      |
+     | p   | ~/.config/emacs/personal.org      | personal config          |
+     | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
+     | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
+     | t   | ~/Sync/ST/Notes/TODO.org          | TODO.org                 |
+     | w   | ~/.config/emacs/work.org          | work config              |
+     | z   | ~/.zshrc                          | zshrc                    |
+
+     #+name: table-to-find-file-heads
+     #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
+       (cl-loop for row in table
+         do
+         (print (list (car row) (list 'find-file (elt row 1)) (elt row 2) :column "File Shortcuts")))
+     #+end_src
+
+     #+begin_src emacs-lisp :noweb yes
+       (defhydra hydra-commonly-visited-files-shortcuts (:color blue)
+         <<table-to-find-file-heads(table=commonly-visited-files-shortcuts)>>)
+       (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
+     #+end_src
+**** kill-ring-saving
+#+begin_src emacs-lisp
+  (defhydra slumos-hydra-copy-something-as-kill (:color blue)
+    "copy as kill"
+      ("b" slumos/magit-copy-buffer-current-branch "current branch (magit buffer)")
+      ("w" slumos/org-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
+  (global-set-key (kbd "C-c w") #'slumos-hydra-copy-something-as-kill/body)
+#+end_src
+** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
+#+begin_src emacs-lisp
+  (use-package aas
+    :config
+    (aas-set-snippets 'global
+      ";->" "→"
+      ";arr" "⇒"
+      ";larr" "⟹")
+    (aas-global-mode))
+#+end_src
+
+** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
    #+begin_src emacs-lisp
-     (use-package aggressive-indent
-       :defer t
-       :commands (aggressive-indent-mode)
-       :quelpa (aggressive-indent
-		:fetcher github
-		:repo "Malabarba/aggressive-indent-mode")
-       :hook (ruby-mode . aggressive-indent-mode))
+     (use-package helpful
+       :after counsel
+       :config
+       (setq counsel-describe-function-function #'helpful-callable)
+       (setq counsel-describe-variable-function #'helpful-variable))
    #+end_src
+** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
+#+begin_src emacs-lisp
+  (use-package elisp-demos
+    :after helpful
+    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+#+end_src
 
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
    #+END_SRC
-** Better packages ux
+** Font scale for all frames
    #+BEGIN_SRC emacs-lisp
-     (leaf paradox
-       :require t
-       :commands
-       list-packages
-       paradox-list-packages
-       :init
-       (paradox-enable)
-       (add-hook 'paradox-menu-mode-hook #'hl-line-mode))
-   #+END_SRC
-** Better Zoom
-   _Seems to have stopped working in 26_.
-   The =zoom-frm= package improves on =text-scale-adjust= by providing
-   functions for changing size across all buffers.
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package zoom-frm
-       :load-path "lisp"
-       :ensure nil
-       :bind (("C-c C-+" . zoom-in/out)
-              ("C-c C--" . zoom-in/out)
-              ("C-c C-0" . zoom-in/out)
-              ("C-c C-=" . zoom-in/out)))
-   #+END_SRC
-   Trying out this alternative [[https://github.com/purcell/default-text-scale][=default-text-scale]]=
-   #+BEGIN_SRC emacs-lisp
-   (use-package default-text-scale
-     :config
-     (default-text-scale-mode))
+     (use-package default-text-scale
+       :init (default-text-scale-mode))
    #+END_SRC
 ** Copy region formatted for various markup systems
    #+BEGIN_SRC emacs-lisp
    (use-package copy-as-format)
    #+END_SRC
 ** Jumping
-*** [[https://github.com/abo-abo/ace-link][abo-abo/ace-link: Quickly follow links in Emacs]]
-    #+BEGIN_SRC emacs-lisp
-      (use-package ace-link
-	:config
-	(ace-link-setup-default)
-	:bind
-	(:map org-mode-map ("M-o" . ace-link-org))
-	(:map Info-mode-map ("o" . ace-link-info)))
-    #+END_SRC
 *** avy
     #+BEGIN_QUOTE
       "If you're familiar with the popular `ace-jump-mode' package, this
@@ -711,45 +1596,97 @@
           ("C-." . avy-goto-char)
           ("M-g M-g" . avy-goto-line))
     #+END_SRC
-*** [[https://github.com/jacktasia/dumb-jump][jacktasia/dumb-jump: an Emacs "jump to definition" package]]
-    #+BEGIN_SRC emacs-lisp
-      (use-package dumb-jump
-	:bind (("M-g o" . dumb-jump-go-other-window)
-	       ("M-g j" . dumb-jump-go)
-	       ("M-g i" . dumb-jump-go-prompt)
-	       ("M-g x" . dumb-jump-go-prefer-external)
-	       ("M-g z" . dumb-jump-go-prefer-external-other-window))
-	:config (setq dumb-jump-selector 'ivy))
-    #+END_SRC
-** multiple-cursors
-   [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
-   [[http://endlessparentheses.com/multiple-cursors-keybinds.html][Multiple Cursors keybinds · Endless Parentheses]]
-   [[http://pages.sachachua.com/.emacs.d/Sacha.html#org0dfa59e][Sacha Chua's Emacs configuration]] (where I stole the keymap)
+*** [[https://github.com/noctuid/link-hint.el][noctuid/link-hint.el: Pentadactyl-like Link Hinting in Emacs with Avy]]
+    #+begin_src emacs-lisp
+      (use-package link-hint
+        :bind
+        ("M-o" . link-hint-open-link))
+    #+end_src
+** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
+#+begin_src emacs-lisp
+  (use-package vundo
+    :config
+    (setq vundo-glyph-alist vundo-unicode-symbols))
+#+end_src
 
-   #+begin_src emacs-lisp
-     (leaf multiple-cursors
-       :bind ("C-c m" . hydra-multiple-cursors/body)
-       :hydra (hydra-multiple-cursors
-	       (:hint nil)
-	       "
-		    ^Up^            ^Down^        ^Other^
-	       ----------------------------------------------
-	       [_p_]   Prev    [_n_]   Next    [_l_] Edit lines
-	       [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
-	       [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
-	       ^ ^             ^ ^             [_q_] Quit
-	       "
-	       ("l" mc/edit-lines :exit t)
-	       ("a" mc/mark-all-like-this :exit t)
-	       ("n" mc/mark-next-like-this)
-	       ("N" mc/skip-to-next-like-this)
-	       ("M-n" mc/unmark-next-like-this)
-	       ("p" mc/mark-previous-like-this)
-	       ("P" mc/skip-to-previous-like-this)
-	       ("M-p" mc/unmark-previous-like-this)
-	       ("r" mc/mark-all-in-region-regexp :exit t)
-	       ("q" nil)))
+* multiple-cursors
+   [[http://emacsrocks.com/e13.html][Emacs Rocks! Episode 13: multiple-cursors]]
+   [[https://github.com/abo-abo/hydra/wiki/multiple-cursors][multiple cursors · abo-abo/hydra Wiki]]
+
+   #+begin_src emacs-lisp :noweb yes
+     (use-package multiple-cursors
+       :bind
+       ("C-c m" . hydra-multiple-cursors/body)
+       ("C->" . mc/mark-next-like-this)
+       ("C-<" . mc/mark-previous-like-this)
+       :config
+       <<mc-hydra>>)
    #+end_src
+
+*** Multiple Cursors Hydra
+    :PROPERTIES:
+    :header-args: :noweb-ref mc-hydra :tangle no
+    :END:
+    #+begin_src emacs-lisp
+      (defhydra hydra-multiple-cursors (:hint nil)
+        "
+       Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+      ------------------------------------------------------------------
+       [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+       [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+       [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search      [_q_] Quit
+       [_|_] Align with input CHAR       [Click] Cursor at point"
+        ("l" mc/edit-lines :exit t)
+        ("a" mc/mark-all-like-this :exit t)
+        ("n" mc/mark-next-like-this)
+        ("N" mc/skip-to-next-like-this)
+        ("M-n" mc/unmark-next-like-this)
+        ("p" mc/mark-previous-like-this)
+        ("P" mc/skip-to-previous-like-this)
+        ("M-p" mc/unmark-previous-like-this)
+        ("|" mc/vertical-align)
+        ("s" mc/mark-all-in-region-regexp :exit t)
+        ("0" mc/insert-numbers :exit t)
+        ("A" mc/insert-letters :exit t)
+        ("<mouse-1>" mc/add-cursor-on-click)
+        ;; Help with click recognition in this hydra
+        ("<down-mouse-1>" ignore)
+        ("<drag-mouse-1>" ignore)
+        ("q" nil))
+    #+end_src
+*** SKIP COMMENT leaf-version
+    #+begin_src emacs-lisp
+      (leaf multiple-cursors
+        :bind
+        ("C-c m" . hydra-multiple-cursors/body)
+        ("C-c n" . mc/mark-next-like-this)
+        :hydra (hydra-multiple-cursors
+                (:hint nil)
+                "
+             Up^^             Down^^           Miscellaneous
+            ------------------------------------------------------------------
+             [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+             [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+             [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search      [_q_] Quit
+             [_|_] Align with input CHAR       [Click] Cursor at point"
+                ("l" mc/edit-lines :exit t)
+                ("a" mc/mark-all-like-this :exit t)
+                ("n" mc/mark-next-like-this)
+                ("N" mc/skip-to-next-like-this)
+                ("M-n" mc/unmark-next-like-this)
+                ("p" mc/mark-previous-like-this)
+                ("P" mc/skip-to-previous-like-this)
+                ("M-p" mc/unmark-previous-like-this)
+                ("|" mc/vertical-align)
+                ("s" mc/mark-all-in-region-regexp :exit t)
+                ("0" mc/insert-numbers :exit t)
+                ("A" mc/insert-letters :exit t)
+                ("<mouse-1>" mc/add-cursor-on-click)
+                ;; Help with click recognition in this hydra
+                ("<down-mouse-1>" ignore)
+                ("<drag-mouse-1>" ignore)
+                ("q" nil)))
+    #+end_src
 ** which-key: Cool cheat-sheet for bound keys
    #+BEGIN_SRC emacs-lisp
      (use-package which-key
@@ -770,18 +1707,17 @@
    This cleans up trailing whitespace only on lines I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
-       :config
-       (ws-butler-global-mode t))
+       :hook (prog-mode . ws-butler-mode))
    #+END_SRC
 ** yasnippet
-   https://github.com/abo-abo/auto-yasnippet
    #+begin_src emacs-lisp
-     (use-package auto-yasnippet
-       :after yasnippet
-       :bind
-       ("C-o" . aya-open-line)
-       ("s-w" . aya-create)
-       ("s-y" . aya-expand))
+     (use-package yasnippet
+       :commands (yas-minor-mode)
+       :hook (org-mode . yas-minor-mode)
+       :config
+       (yas-reload-all)
+       :custom
+       (yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory))))
    #+end_src
 
    #+begin_src emacs-lisp :tangle no
@@ -831,8 +1767,8 @@
        ("C-s" . swiper-isearch)
        ("M-x" . counsel-M-x)
        ("C-x C-f" . counsel-find-file)
-       ("<f1> f" . counsel-describe-function)
-       ("<f1> v" . counsel-describe-variable)
+       ("C-h f" . counsel-describe-function)
+       ("C-h v" . counsel-describe-variable)
        ("C-c u" . counsel-unicode-char)
        ("C-c r" . counsel-rg)
        :map ivy-minibuffer-map
@@ -845,7 +1781,6 @@
        (setq ivy-height 20)
        (setq ivy-use-selectable-prompt t)
        (setq ivy-use-virtual-buffers t)
-       (setq ivy-use-selectable-prompt t)
        (setq ivy-count-format "(%d/%d) ")
        (setq ivy-display-style 'fancy)
        (setq ivy-re-builders-alist
@@ -853,6 +1788,12 @@
 	       (t . ivy--regex-plus)))
        (setq magit-completing-read-function #'ivy-completing-read))
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package ivy-avy
+       :after counsel)
+   #+end_src
+
 
    #+BEGIN_SRC emacs-lisp
    (use-package counsel-projectile
@@ -872,7 +1813,18 @@
        (setq ivy-format-function #'ivy-format-function-line))
    #+end_src
 
-*** [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
+#+begin_src emacs-lisp
+  (use-package ivy-posframe
+    :disabled
+    :after ivy
+    :hook ivy-mode
+    :config
+    (setq ivy-posframe-display-functions-alist
+          '((swiper . nil)
+            (t . ivy-posframe-display-at-frame-center))))
+#+end_src
+
+*** COMMENT [[https://github.com/masasam/emacs-counsel-tramp][masasam/emacs-counsel-tramp: Tramp ivy interface for ssh and docker and ‎vagrant]]
     #+BEGIN_SRC emacs-lisp
       (use-package counsel-tramp
 	:hook
@@ -885,9 +1837,9 @@
     #+END_SRC
 *** [[https://github.com/raxod502/prescient.el][raxod502/prescient.el: ☄️ Simple but effective sorting and filtering for Emacs.]]
     #+BEGIN_SRC emacs-lisp
-    (use-package ivy-prescient
-      :init
-      (ivy-prescient-mode))
+      (use-package prescient)
+      (use-package ivy-prescient
+        :config (ivy-prescient-mode 1))
     #+END_SRC
 *** TODO [[http://pragmaticemacs.com/emacs/save-window-layouts-with-ivy-view/][Save window layouts with ivy-view | Pragmatic Emacs]]
 *** TODO [[https://github.com/emacs-taskrunner/emacs-taskrunner/blob/master/taskrunner.el][emacs-taskrunner/taskrunner.el]]
@@ -897,11 +1849,17 @@
    Protocol”.  This package provides remote file editing, similar to
    Ange FTP.
    #+END_QUOTE
-*** TRAMP for Vagrant
-    #+BEGIN_SRC emacs-lisp
-      (use-package vagrant-tramp
-	:init (vagrant-tramp-add-method))
-    #+END_SRC
+*** Add handling for TOTP prompt
+    #+begin_src emacs-lisp
+  (use-package tramp
+    :custom
+    (tramp-password-prompt-regexp "^.*\\([pP]assword\\|[pP]assphrase\\|Verification code\\).*:? *")
+    :config
+    (add-to-list 'tramp-connection-properties
+                 (list (regexp-quote "krxd.net")
+                       "remote-shell" "/bin/bash")))
+    #+end_src
+
 ** Functions
    By me or collected from awesome people.
 *** colorize ansi file
@@ -913,7 +1871,6 @@
             (ansi-color-apply-on-region (region-beginning) (region-end))
           (ansi-color-apply-on-region (point-min) (point-max))))
     #+end_src
-
 *** insert a random password
     #+BEGIN_SRC emacs-lisp
       (defun slumos/insert-random-password ()
@@ -941,11 +1898,10 @@
   (kill-new (file-truename buffer-file-name))
 )
 #+END_SRC
-
 *** rename-file-and-buffer
-Another /omg, why wasn't this in Emacs 18/ moment.
+    Another /omg, why wasn't this in Emacs 18/ moment.
 
-From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+    From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 
 #+BEGIN_SRC emacs-lisp
   (defun rename-file-and-buffer ()
@@ -961,7 +1917,7 @@ From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buff
             (rename-file filename new-name t)
             (set-visited-file-name new-name t t)))))))
 #+END_SRC
-
+**** TODO replace rename-file-and-buffer with rename-visited-file (Emacs 29)
 *** compile-notify
 
 #+BEGIN_SRC emacs-lisp
@@ -1028,6 +1984,17 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      :init
      (atomic-chrome-start-server))
    #+END_SRC
+** Edit S3 files directly
+   [[https://github.com/mattusifer/s3ed][mattusifer/s3ed: An interface to s3 from emacs]]
+   #+begin_src emacs-lisp
+   (use-package s3ed)
+   #+end_src
+** COMMENT AWSCLI Completion
+   #+begin_src emacs-lisp
+     (use-package awscli-capf
+       :commands (awscli-capf-add)
+       :hook (org-mode . awscli-capf-add))
+   #+end_src
 ** TRYING Folding for YAML: [[https://gitlab.com/emacs-stuff/indent-tools/][indent-tools]]
 
    Obviously this does a lot more but folding YAML is why I'm looking
@@ -1066,62 +2033,54 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
        ("r"  . pdf-view-reset-slice)
        :hydra
        (hydra-pdf-tools
-        (:color blue :hint nil)
-        "
-                                                                           ╭───────────┐
-            Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
-        ╭──────────────────────────────────────────────────────────────────┴───────────╯
-              ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
-              ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
-              ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
-              ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
-         _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
-              ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
-              ^^_n_^^      ^ ^  _r_eset slice box
-              ^^^↓^^^
-              ^^_G_^^
-        --------------------------------------------------------------------------------
-             "
-        ("\\" hydra-master/body "back")
-        ("<ESC>" nil "quit")
-        ("al" pdf-annot-list-annotations)
-        ("ad" pdf-annot-delete)
-        ("aa" pdf-annot-attachment-dired)
-        ("am" pdf-annot-add-markup-annotation)
-        ("at" pdf-annot-add-text-annotation)
-        ("y"  pdf-view-kill-ring-save)
-        ("+" pdf-view-enlarge :color red)
-        ("-" pdf-view-shrink :color red)
-        ("0" pdf-view-scale-reset)
-        ("H" pdf-view-fit-height-to-window)
-        ("W" pdf-view-fit-width-to-window)
-        ("P" pdf-view-fit-page-to-window)
-        ("n" pdf-view-next-page-command :color red)
-        ("p" pdf-view-previous-page-command :color red)
-        ("d" pdf-view-dark-minor-mode)
-        ("b" pdf-view-set-slice-from-bounding-box)
-        ("r" pdf-view-reset-slice)
-        ("g" pdf-view-first-page)
-        ("G" pdf-view-last-page)
-        ("e" pdf-view-goto-page)
-        ("o" pdf-outline)
-        ("s" pdf-occur)
-        ("i" pdf-misc-display-metadata)
-        ("u" pdf-view-revert-buffer)
-        ("F" pdf-links-action-perfom)
-        ("f" pdf-links-isearch-link)
-        ("B" pdf-history-backward :color red)
-        ("N" pdf-history-forward :color red)
-        ("l" image-forward-hscroll :color red)
-        ("h" image-backward-hscroll :color red)))
-    #+end_src
-** COMMENT [[https://github.com/fuxialexander/org-pdftools][fuxialexander/org-pdftools: A custom org link type for pdf-tools]]
-   #+begin_src emacs-lisp
-     (use-package org-pdftools
-       :hook (org-load . org-pdftools-setup-link))
-
-     (use-package org-noter-pdftools
-       :after org-noter)
+	(:color blue :hint nil)
+	"
+									   ╭───────────┐
+	    Move  History   Scale/Fit     Annotations  Search/Link    Do   │ PDF Tools │
+	╭──────────────────────────────────────────────────────────────────┴───────────╯
+	      ^^_g_^^      _B_    ^↧^    _+_    ^ ^     [_al_] list    [_s_] search    [_u_] revert buffer
+	      ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   [_am_] markup  [_o_] outline   [_i_] info
+	      ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     [_at_] text    [_F_] link      [_d_] dark mode
+	      ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   [_ad_] delete  [_f_] search link
+	 _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     [_aa_] dired
+	      ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   [_y_]  yank
+	      ^^_n_^^      ^ ^  _r_eset slice box
+	      ^^^↓^^^
+	      ^^_G_^^
+	--------------------------------------------------------------------------------
+	     "
+	("\\" hydra-master/body "back")
+	("<ESC>" nil "quit")
+	("al" pdf-annot-list-annotations)
+	("ad" pdf-annot-delete)
+	("aa" pdf-annot-attachment-dired)
+	("am" pdf-annot-add-markup-annotation)
+	("at" pdf-annot-add-text-annotation)
+	("y"  pdf-view-kill-ring-save)
+	("+" pdf-view-enlarge :color red)
+	("-" pdf-view-shrink :color red)
+	("0" pdf-view-scale-reset)
+	("H" pdf-view-fit-height-to-window)
+	("W" pdf-view-fit-width-to-window)
+	("P" pdf-view-fit-page-to-window)
+	("n" pdf-view-next-page-command :color red)
+	("p" pdf-view-previous-page-command :color red)
+	("d" pdf-view-dark-minor-mode)
+	("b" pdf-view-set-slice-from-bounding-box)
+	("r" pdf-view-reset-slice)
+	("g" pdf-view-first-page)
+	("G" pdf-view-last-page)
+	("e" pdf-view-goto-page)
+	("o" pdf-outline)
+	("s" pdf-occur)
+	("i" pdf-misc-display-metadata)
+	("u" pdf-view-revert-buffer)
+	("F" pdf-links-action-perfom)
+	("f" pdf-links-isearch-link)
+	("B" pdf-history-backward :color red)
+	("N" pdf-history-forward :color red)
+	("l" image-forward-hscroll :color red)
+	("h" image-backward-hscroll :color red)))
    #+end_src
 ** smerge hydra from [[https://github.com/alphapapa/unpackaged.el#smerge-mode][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
    #+begin_src emacs-lisp
@@ -1165,779 +2124,80 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
                                         (when smerge-mode
                                           (unpackaged/smerge-hydra/body)))))
    #+end_src
-* [#B] Magit
-  [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
-
-  Magit—like Org—is a total killer app and probably one of the reasons
-  Emacs had a revival in the recent(ish) years.
-
-  Just like [[http://mh-e.sourceforge.net/][MH-E]] back in the day, it's not about avoiding the CLI,
-  it's about heads-up display of the important stuff and driving the
-  CLI with single keystrokes.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :bind
-      ("\C-x g" . magit-status)
-      :custom
-      (forge-topic-list-limit '(60 . 0))
-      (magit-file-mode t)
-      (magit-clone-default-directory "~/Projects/")
-      (magit-repository-directories
-       '(("~/Projects" . 1)
-         ("~/Projects/iac" . 1)
-         ("~/Projects/puppet" . 1)))
-      (transient-default-level 5)
-      ;(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffers-p)
-      (auto-revert-verbose t))
-  #+END_SRC
-
-* Org [0/5]                                                             :org:
-** Initialization
-   #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
-     (use-package org
-       :commands (org-agenda org-capture org-store-link)
-       :bind
-       <<org-binds>>
+** [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
+   [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package restclient)
+     (use-package restclient-jq)
+     (use-package ob-restclient
        :config
-       <<org-config>>
-       :custom
-       <<org-custom>>
-       )
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((restclient . t)
+          (python . t))))
    #+END_SRC
-
-   Enable using =add-to-list= with =org-capture-templates=
+** [[https://github.com/mihaiolteanu/lastfm.el][mihaiolteanu/lastfm.el: Last.fm API for Emacs Lisp]]
    #+begin_src emacs-lisp
-   (setq org-capture-templates nil)
+     (leaf lastfm)
+   #+end_src
+** [[https://github.com/mihaiolteanu/vuiet][mihaiolteanu/vuiet: The music player and explorer for Emacs]]
+   #+begin_src emacs-lisp
+
+   #+end_src
+** Spelling
+   #+begin_src emacs-lisp
+     (dolist (hook '(text-mode))
+       (add-hook hook (lambda () (flyspell-mode 1))))
+     (dolist (hook '(prog-mode))
+       (add-hook hook (lambda () (flyspell-prog-mode))))
    #+end_src
 
+** TODO [[https://github.com/emacs-languagetool/flycheck-languagetool][flycheck-languagetool]]
 
-   Took a while to warm up to =visual-line-mode= but I've come to like it with =org-mode=.
-   #+begin_src emacs-lisp
-   (use-package visual-line-mode :hook org-mode :ensure nil)
-   #+end_src
-
-** Binds
-   :PROPERTIES:
-   :header-args: :noweb-ref org-binds :tangle no
-   :END:
-   Pretty basic stuff here.
-   #+BEGIN_SRC emacs-lisp
-     (("C-c a" . org-agenda)
-      ("C-c c" . org-capture)
-      ("C-c l" . org-store-link)
-      ("C-c g" . org-mac-grab-link))
-   #+END_SRC
-** Config
-   :PROPERTIES:
-   :header-args: :noweb-ref org-config :tangle no
-   :END:
-
-   My muscle memory is completely stuck on =M-< TAB=. This just
-   enables what I'm pretty sure was a default in some distant past.
-
-   #+BEGIN_SRC emacs-lisp
-   (setq org-cycle-global-at-bob t)
-   #+END_SRC
-
-   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
-
-   #+BEGIN_SRC emacs-lisp
-     (setq org-refile-use-outline-path 'file
-	   org-outline-path-complete-in-steps nil
-	   org-refile-targets '((org-agenda-files :maxlevel . 2)))
-   #+END_SRC
-
-   That's why I also like to enable speed commands when point is at
-   beginning-of-buffer. This means that immediately after opening an
-   org file, you can jump to the first heading just by tapping =n=.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq org-use-speed-commands
-	   (lambda () (or (eq (point) 1)
-			  (looking-at org-outline-regexp-bol))))
-   #+END_SRC
-
-   Set up some modules by default. I use =org-id= for capture targets,
-   =org-mac-link= *all* the damn time, and =ob-shell= for
-   some—ahem—"literate" DevOps. More like notebook DevOps in practice,
-   but still awesome.
-
-   #+BEGIN_SRC emacs-lisp
-   (setq org-modules '(org-id org-mac-link org-protocol ob-shell))
-   (org-load-modules-maybe t)
-   #+END_SRC
-
-   I don't use =hl-line-mode= often, but when I do, it's in buffers
-   that are lists of things.
-
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
-   #+END_SRC
-
-   #+BEGIN_QUOTE
-   After saving, also commit to a worktree work-in-progress ref.
-
-   After saving the current file-visiting buffer this mode also
-   commits the changes to the worktree work-in-progress ref for
-   the current branch.
-   #+END_QUOTE
-
-   How awesome does that sound? To call back all your saves is just
-   =M-x magit-wip-log-current=.
-
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'org-mode-hook (lambda ()
-				(magit-wip-after-save-mode t)
-				(magit-wip-after-apply-mode t)
-				(magit-wip-before-change-mode t)))
-   #+END_SRC
-
-   Good for editing this file. Expand =<el= to an emacs-lisp src block.
-   Update: Org 9.2 killed it ... T-T
-
-   Decided to switch to yas-mode, and it's come in handy in hand for
-   many other things. One favorite use is to make repeatable
-   checklists in org. Unfortunately, those are hidden away in my
-   work-specific config.
-   #+begin_src emacs-lisp
-     (add-hook 'org-mode-hook (lambda ()
-                                (yas-minor-mode 1)
-                                (yas-reload-all)))
-   #+end_src
-
-   #+RESULTS:
-   | (lambda nil (yas-minor-mode 1) (yas-reload-all)) | org-bullets-mode | (lambda nil (magit-wip-after-save-mode t) (magit-wip-after-apply-mode t) (magit-wip-before-change-mode t)) | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load |
-
-   Invisible edits
-   #+begin_src emacs-lisp
-   (setq org-catch-invisible-edits 'show-and-error)
-   #+end_src
-
-   #+RESULTS:
-   : show-and-error
-
-
-   Pops up the agenda when emacs is idle. Remind me what I should be
-   doing instead of whatever I am doing.
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-       (defun jump-to-org-agenda ()
-         (interactive)
-         (let ((buf (get-buffer "*Org Agenda*"))
-               wind)
-           (if buf
-               (if (setq wind (get-buffer-window buf))
-                   (select-window wind)
-                 (if (called-interactively-p)
-                     (progn
-                       (select-window (display-buffer buf t t))
-                       (org-fit-window-to-buffer)
-                       ;; (org-agenda-redo)
-                       )
-                   (with-selected-window (display-buffer buf)
-                     (org-fit-window-to-buffer)
-                     ;; (org-agenda-redo)
-                     )))
-             (call-interactively #'org-agenda-list))))
-       (run-with-idle-timer 900 t #'jump-to-org-agenda)
-   #+END_SRC
-
-   No love for zsh??
-   #+BEGIN_SRC emacs-lisp
-     (add-to-list 'org-babel-shell-names "zsh")
-     (org-babel-shell-initialize)
-   #+END_SRC
-
-   Decided to add a save timestamp to help me tell that whatever I'm
-   editing is up to date with other copies.
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'before-save-hook 'time-stamp)
-   #+END_SRC
-** Custom
-   :PROPERTIES:
-   :header-args: :noweb-ref org-custom :tangle no
-   :END:
-
-   This directory is synchronized between all my devices using Syncthing, which I have not really got the hang of yet
-   and end up with too many conflict files constantly. Need to figure this out.
-
-   #+begin_src emacs-lisp
-     (org-directory (expand-file-name "~/Sync/Notes"))
-   #+end_src
-
-
-   Regular ellipsis drives me insane because I tend to end regular lines that way all the time ... (see?)
-
-   #+BEGIN_SRC emacs-lisp
-   ;(setq org-ellipsis " ⌄")
-   (org-ellipsis "⬎")
-   ;(org-ellipsis " ⤵")
-   ;(setq org-ellipsis " 〉")
-   ;(org-ellipsis " ⤵")
-   #+END_SRC
-
-** TODO Enable and play with [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.org.html][ob-sqlite]]
-** Bullets
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-bullets
-       :hook (org-mode . org-bullets-mode)
-       :config (setq org-bullets-bullet-list '("‣")))
-   #+END_SRC
-** Exporting
-   #+BEGIN_SRC emacs-lisp
-     (use-package ox-clip :after org)
-     (use-package ox-gfm :after org)
-     (use-package ox-slimhtml :after org)
-   #+END_SRC
-** org-noter
-   #+begin_src emacs-lisp
-     (use-package org-noter
-       :custom
-       (org-noter-always-create-frame nil)
-       (org-noter-auto-save-last-location t))
-     #+end_src
-** TODO Hydra
-*** Easy table field marking
-    Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
-    #+BEGIN_SRC emacs-lisp :tangle no
-      ;;;; Table Field Marking
-      (defun org-table-mark-field ()
-	"Mark the current table field."
-	(interactive)
-	;; Do not try to jump to the beginning of field if the point is already there
-	(when (not (looking-back "|[[:blank:]]?"))
-	  (org-table-beginning-of-field 1))
-	(set-mark-command nil)
-	(org-table-end-of-field 1))
-
-      (defhydra hydra-org-table-mark-field
-	(:body-pre (org-table-mark-field)
-		   :hint nil)
-	"
-	 ^^      ^🠙^     ^^
-	 ^^      _p_     ^^
-      🠘 _b_  selection  _f_ 🠚          | Org table mark ▯field▮ |
-	 ^^      _n_     ^^
-	 ^^      ^🠛^     ^^
-      "
-	("x" exchange-point-and-mark "exchange point/mark")
-	("f" (lambda (arg)
-	       (interactive "p")
-	       (when (eq 1 arg)
-		 (setq arg 2))
-	       (org-table-end-of-field arg)))
-	("b" (lambda (arg)
-	       (interactive "p")
-	       (when (eq 1 arg)
-		 (setq arg 2))
-	       (org-table-beginning-of-field arg)))
-	("n" next-line)
-	("p" previous-line)
-	("q" nil "cancel" :color blue))
-
-      (bind-keys
-       :map org-mode-map
-       :filter (org-at-table-p)
-       ("S-SPC" . hydra-org-table-mark-field/body))
-    #+END_SRC
-** Easy table field marking
-   Thanks to [[https://github.com/kaushalmodi/.emacs.d/blob/ea60f986d58b27f45d510cde1148bf6d52e10dda/setup-files/setup-org.el#L1041-L1080][.emacs.d/setup-org.el at ea60f986d58b27f45d510cde1148bf6d52e10dda · kaushalmodi/.emacs.d]]
-   #+BEGIN_SRC emacs-lisp :tangle no
-     ;;;; Table Field Marking
-     (defun org-table-mark-field ()
-       "Mark the current table field."
-       (interactive)
-       ;; Do not try to jump to the beginning of field if the point is already there
-       (when (not (looking-back "|[[:blank:]]?"))
-	 (org-table-beginning-of-field 1))
-       (set-mark-command nil)
-       (org-table-end-of-field 1))
-
-     (defhydra hydra-org-table-mark-field
-       (:body-pre (org-table-mark-field)
-		  :hint nil)
-       "
-	^^      ^🠙^     ^^
-	^^      _p_     ^^
-     🠘 _b_  selection  _f_ 🠚          | Org table mark ▯field▮ |
-	^^      _n_     ^^
-	^^      ^🠛^     ^^
-     "
-       ("x" exchange-point-and-mark "exchange point/mark")
-       ("f" (lambda (arg)
-	      (interactive "p")
-	      (when (eq 1 arg)
-		(setq arg 2))
-	      (org-table-end-of-field arg)))
-       ("b" (lambda (arg)
-	      (interactive "p")
-	      (when (eq 1 arg)
-		(setq arg 2))
-	      (org-table-beginning-of-field arg)))
-       ("n" next-line)
-       ("p" previous-line)
-       ("q" nil "cancel" :color blue))
-
-     (bind-keys
-      :map org-mode-map
-      :filter (org-at-table-p)
-      ("S-SPC" . hydra-org-table-mark-field/body))
-
-   #+END_SRC
-** TODO [[https://github.com/rudolfolah/org-doing][rudolfolah/org-doing: keep track of what you're doing right now and what you've worked on before]]
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package org-doing
-     ;;   :bind
-     ;;   ("C-c d" . org-doing)
-     ;;   :config
-     ;;   (setq org-doing-file (expand-file-name "doing.org" slumos-org-directory)))
-   #+END_SRC
-*** COMMENT My crazy numbered paragraphs idea
-    #+begin_src emacs-lisp
-      (defun numbered-paragraphs-headline (headline contents info)
-        "Transcode HEADLINE as a plain numbered paragraph. CONTENTS is
-      headline contents. INFO is plist used as a communication
-      channel."
-        (let* ((level (org-export-get-relative-level headline info))
-               (num (org-export-get-headline-number)))
-          (concat headline contents)))
-    #+end_src
-
-** Additions
-*** [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
-    #+begin_src emacs-lisp
-      (use-package org-chef
-        :config
-        (setq org-capture-templates
-              (append org-capture-templates
-                      '(("r" "Recipe from:")
-                        ("rc" "Chrome" entry (file "Cookbook.org") "%(slumos-recipe-from-chrome)" :jump-to-captured t)
-                        ("ru" "URL" entry (file "~/Sync/Notes/Cookbook.org") "%(org-chef-get-recipe-from-url)" :jump-to-captured t)
-                        ("rh" "Hand" entry (file "~/Sync/Notes/Cookbook.org")
-                         "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")))))
-    #+end_src
-
-*** [[https://github.com/magit/orgit][magit/orgit: Support for Org links to Magit buffers]]
-    #+begin_src emacs-lisp
-      (use-package orgit)
-    #+end_src
-*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
-    #+begin_src emacs-lisp
-      (leaf ivy-omni-org
-        :after counsel
-        :commands (ivy-omni-org)
-        :bind ("C-c b" . ivy-omni-org)
-        :custom
-        (ivy-omni-org-file-sources . (slumos/ivy-omni-org-sources)))
-
-      (defun slumos/ivy-omni-org-sources ()
-        (-uniq (-concat
-                (directory-files org-directory t "\\.org\\'")
-                (directory-files org-directory t "\\.sync-conflict-[-[:digit:]]+\\.org\\'")
-                (directory-files user-emacs-directory "\\.org\\'"))))
-    #+end_src
-*** [[https://github.com/alphapapa/org-ql][alphapapa/org-ql: An Org-mode query language, including search commands and saved views]]
-    #+begin_src emacs-lisp
-      (leaf org-ql
-        :custom
-        (org-ql-search-directories-files-regexp . "\\.org\\(_done\\)?\\'"))
-    #+end_src
-** My Personal Hacks
-*** COMMENT -- (Replaced by awscli YASnippet) Add the properties I like when executing aws cli commands.
-    #+BEGIN_SRC emacs-lisp
-      (defun slumos/org-add-aws-sh-properties ()
-        (interactive)
-        (org-set-property "header-args" ":exports both :eval no-export :wrap src json :results raw"))
-    #+END_SRC
-*** Post-process grabbed links
-
-    Strip content-free stuff that gets tacked onto the title of every page.
-
-    #+begin_src emacs-lisp :tangle no
-      (defun slumos/org-grab-link-after (s)
-        (replace-regexp-in-string " | Salesforce$" "" s))
-
-      (advice-add #'org-as-mac-chrome-get-frontmost-url :filter-return #'slumos/org-grab-link-after)
-      (org-as-mac-chrome-get-frontmost-url)
-    #+end_src
-
-** TODO [[https://github.com/Kungsgeten/org-brain#setup-and-requirements][Kungsgeten/org-brain: Org-mode wiki + concept-mapping]]          :long:
-** TRYING [[https://github.com/astahlman/ob-async][astahlman/ob-async: Asynchronous src_block execution for org-babel]]
-   #+BEGIN_SRC emacs-lisp
-   (use-package ob-async)
-   #+END_SRC
-** TODO [[https://www.nongnu.org/org-edna-el/][Org Edna]]
-   #+begin_src emacs-lisp
-     (use-package org-edna
-       :after org
-       :config (org-edna-load))
-   #+end_src
-
-** TODO Blogging with Hugo
-   - [[https://archive.fo/ajEiq][An Emacs Blogging Workflow | Modern Emacs]]
-** TODO calfw calfw-org-agenda
-* Projectile
+** Projectile
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
       :config
-      (projectile-mode 1))
-  #+END_SRC
-* [[https://github.com/pashky/restclient.el][pashky/restclient.el: HTTP REST client tool for emacs]]
-  [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
-  #+BEGIN_SRC emacs-lisp
-    (use-package restclient)
-    (use-package ob-restclient
-      :config
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((restclient . t)
-         (python . t))))
-  #+END_SRC
-* Language Modes
-** Misc
-*** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
-    #+begin_src emacs-lisp
-    (leaf lispy
-       :hook
-       ((emacs-lisp-mode-hook
-       fennel-mode-hook) . lispy-mode))
-    #+end_src
-** Dash
-   #+begin_src emacs-lisp
-     (use-package counsel-dash
-       :hook (elpy-mode . (lambda () (setq-local counsel-dash-docsets "Python_3"))))
-   #+end_src
-
-** Dockerfile
-   (use-package dockerfile-mode)
-** [[https://elixir-lang.org][Elixir]]
-   #+begin_src emacs-lisp
-   (leaf elixir-mode)
-   #+end_src
-
-** [[https://fennel-lang.org/][Fennel]]
-   Seeing if I can configure Hammerspoon with Fennel
-   #+begin_src emacs-lisp
-     (use-package fennel-mode
-       :mode "\\.fnl\\'"
-       :hook
-       (fennel-mode . lispy-mode)
-       (emacs-lisp-mode . lispy-mode))
-   #+end_src
-
-** flycheck
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package flycheck-mode
-     ;;   :ensure flycheck
-     ;;   :hook (puppet-mode ruby-mode json-mode python-mode))
-   #+END_SRC
-*** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-link from this example]]
-** Go
-   #+begin_src emacs-lisp
-     (use-package go-mode
-       :bind
-       (:map go-mode-map
-	     ("M-." . godef-jump)))
-   #+end_src
-
-** Groovy
-   #+BEGIN_SRC emacs-lisp
-     (use-package groovy-mode
-       :mode "\\.groovy\\'")
-   #+END_SRC
-** COMMENT Java
-   #+begin_src emacs-lisp
-     (exec-path-from-shell-copy-env "JAVA_HOME")
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (leaf company
-       :after java-mode
-       :hook java-mode-hook
-       :custom
-       ((company-backends . '(company-lsp))))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (leaf lsp-mode
-       :commands lsp
-       :init (require 'lsp-clients))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (leaf company-lsp
-       :commands company-lsp
-       :config
-       (add-to-list 'company-backends 'company-lsp))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (leaf lsp-ui
-       :hook (lsp-mode-hook . lsp-ui-mode)
-       :custom
-       ((lsp-auto-guess-root . t)
-        (lsp-enable-completion-at-point . t)
-        (lsp-log-io . t)
-        (lsp-log-max . 2000)
-        (lsp-ui-doc-enable . t)))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (use-package lsp-java
-       :hook ((java-mode-hook . lsp)))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     (use-package dap-mode
-       :hook ((java-mode-hook . dap-mode)
-              (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
-       :config
-       (dap-mode 1)
-       (dap-ui-mode 1))
-   #+end_src
-
-   #+begin_src emacs-lisp :tangle no
-     (leaf dap-java
-       :package (dap-mode))
-   #+end_src
-
-** Javascript
-   #+BEGIN_SRC emacs-lisp
-     (use-package js2-mode :mode "\\.js\'")
-   #+END_SRC
-
-   Putting JSON here too...meh.
-   #+BEGIN_SRC emacs-lisp
-     (use-package json-mode
-       :mode "\\.json\\(\\.erb\\)?\'"
-       :config
-       (add-hook 'json-mode-hook #'flycheck-mode))
-   #+END_SRC
-** [[https://github.com/ljos/jq-mode][jq-mode: Emacs major mode for editing jq queries]]
-   #+begin_src emacs-lisp
-     (use-package jq-mode)
-   #+end_src
-** Lua
-   I only really use Lua for [[https://github.com/sdegutis/mjolnir][Mjolnir]], but maybe someday
-   [[http://www.hammerspoon.org/][Hammerspoon]]. And I've played with [[https://nodemcu.com/][NodeMCU]] devices a bit...
-   #+BEGIN_SRC emacs-lisp
-   (use-package lua-mode
-     :mode "\\(\\.lua\\|\\.rockspec\\)\\'")
-   #+END_SRC
-** Markdown
-   #+BEGIN_SRC emacs-lisp
-     (use-package markdown-mode
-       :commands (markdown-mode gfm-mode)
-       :mode (("README\\.md\\'" . gfm-mode)
-	      ("\\.md\\'" . markdown-mode)
-	      ("\\.markdown\\'" . markdown-mode))
-       :init
-       (setq markdown-command "cmark-gfm"))
-       ;; :config
-       ;; stolen from http://stackoverflow.com/a/26297700
-       ;; makes markdown tables saner via orgtbl-mode
-       ;; (require 'org-table)
-       ;; (defun cleanup-org-tables ()
-       ;;   (save-excursion
-       ;;     (goto-char (point-min))
-       ;;     (while (search-forward "-+-" nil t) (replace-match "-|-"))))
-       ;; (add-hook 'markdown-mode-hook #'orgtbl-mode)
-       ;; (add-hook 'markdown-mode-hook
-       ;; 	    (lambda()
-       ;; 	      (add-hook 'after-save-hook #'cleanup-org-tables  nil 'make-it-local))))
-   #+END_SRC
-** Puppet
-   #+BEGIN_SRC emacs-lisp
-     (use-package puppet-mode
-       :mode "\\.pp\\'"
-       :config
-       (unbind-key "$" puppet-mode-map)
-       (setq-local align-region-separate 'group)
-       (add-to-list 'puppet-mode-align-rules
-		    '(puppet-assignment-literal
-		      (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
-		      (repeat . t)
-		      (modes . '(puppet-mode)))))
-   #+END_SRC
-** Python
-   #+BEGIN_SRC emacs-lisp
-     (use-package python
-       :mode ("\\.py\\'" . python-mode)
-       :interpreter ("python" . python-mode))
-   #+END_SRC
-
-   #+begin_src emacs-lisp
-     (use-package elpy)
-   #+end_src
-
-   IPython / Jupyter Notebook client
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package ein
-       :commands (ein:notebooklist-login
-                  ein:notebooklist-open)
-       :config
-       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
-   #+END_SRC
-
-** Ruby
-   #+BEGIN_SRC emacs-lisp
-     (use-package ruby-mode
-       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\||Puppetfile\\)\\'")
-
-     (use-package inf-ruby
-       :no-require t)
-
-     (use-package rspec-mode
-       :config
-       (inf-ruby-switch-setup))
-
-     (use-package ruby-hash-syntax
-       :bind
-       (:map ruby-mode-map
-	     ("C-c #" . ruby-toggle-hash-syntax)))
-
-     (use-package seeing-is-believing
-       :bind (("<s-return>" . seeing-is-believing)))
-
-     (use-package chruby)
-   #+END_SRC
-
-   #+begin_src emacs-lisp
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((ruby . t)))
-   #+end_src
-
-   #+BEGIN_SRC emacs-lisp
-     ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
-     (require 'align)
-
-     (add-to-list 'align-rules-list
-		  '(ruby-comma-delimiter
-		    (regexp . ",\\(\\s-*\\)[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
-
-     (add-to-list 'align-rules-list
-		  '(ruby-hash-literal
-		    (regexp . "\\(\\s-*\\)=>\\s-*[^# \t\n]")
-		    (group 2 3)
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
-
-     (add-to-list 'align-rules-list
-		  '(ruby-hash-literal2
-		    (regexp . "[a-z0-9]:\\(\\s-*\\)[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
-
-     (add-to-list 'align-rules-list
-		  '(ruby-assignment-literal
-		    (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
-
-     (add-to-list 'align-rules-list
-		  '(ruby-xmpfilter-mark
-		    (regexp . "\\(\\s-*\\)# => [^#\t\n]")
-		    (repeat . nil)
-		    (modes  . '(ruby-mode))))
-   #+END_SRC
-
-** Rust
-   #+begin_src emacs-lisp
-   (use-package rustic)
-   #+end_src
-
-   #+begin_src emacs-lisp
-   (use-package flycheck-rust)
-   #+end_src
-
-** Terraform (HCL)
-   #+BEGIN_SRC emacs-lisp
-     (use-package terraform-mode
-       :hook 
-       (terraform-mode . terraform-format-on-save-mode)
-       (terraform-mode . flycheck-mode))
-   #+END_SRC
-** Web (HTML, etc)
-   #+BEGIN_SRC emacs-lisp
-     (use-package web-mode)
-   #+END_SRC
-** TOML
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package toml-mode
-       :mode "Pipfile\\'")
-   #+END_SRC
-** YAML
-   #+BEGIN_SRC emacs-lisp
-     (use-package yaml-mode
-       :mode "\\(.yaml\\|.yml\\)$"
-       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
-   #+END_SRC
-* Paperless
-  #+BEGIN_SRC emacs-lisp
-    (use-package paperless
-      :load-path "lisp/paperless"
+      (projectile-mode 1)
       :custom
-      (paperless-capture-directory "~/Sync/OneDrive/Inbox")
-      (paperless-root-directory "~/Sync/OneDrive/Documents"))
+      (projectile-file-exists-local-cache-expire 300))
   #+END_SRC
 * Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** TODO Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
-** COMMENT Work/Life Balance?
-   #+BEGIN_SRC emacs-lisp
-     (let* ((local-config-name (pcase (system-name)
-				("steven.local" "personal.org")
-				("steven.lan" "personal.org")
-				("slumos-ltm.internal.salesforce.com" "work.org")))
-	   (local-config (expand-file-name local-config-name user-emacs-directory)))
-       (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
-   #+END_SRC
-
-* Context-specific
-  Yuck, barf, and bleh. Someone show me a better way!
-** Localhost
-   I just have a =localhost-[hostname]= repo for each host that's important to me.
-   #+BEGIN_SRC emacs-lisp
-     (defconst *user-localhost-config-dir* (expand-file-name "localhost" (xdg-config-home)))
-     (defconst *user-localhost-config-file* (expand-file-name "emacs.el.gpg" *user-localhost-config-dir*))
-     (when (file-exists-p *user-localhost-config-file*)
-       (load *user-localhost-config-file*))
-   #+END_SRC
 ** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
-				 ("steven.lan" "personal.org")
-                                 ("steven.local" "personal.org")
-				 ("slumos-ltm.internal.salesforce.com" "work.org")))
-	    (local-config (expand-file-name local-config-name user-emacs-directory)))
+                                 ("steven.lan" "personal.org")
+                                 (rx "salesforce.com" "work.org")))
+            (local-config (expand-file-name local-config-name user-emacs-directory)))
+       (message "work/life loading %s on %s" local-config (system-name))
        (if (file-exists-p local-config)
-	   (org-babel-load-file local-config)))
+           (org-babel-load-file local-config)))
    #+END_SRC
 * Notes
+** TODO COMMENT [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-04/msg00874.html][[O] Cool trick on how to eval bash/zsh babel blocks in emacs]]
+   #+begin_src emacs-lisp
+   (setq explicit-shell-file-name "/usr/local/bin/zsh")
+   #+end_src
+
+
+   #+begin_src emacs-lisp
+     (defadvice org-babel-execute:sh (around sacha activate)
+       (if (assoc-default :term (ad-get-arg 1) nil)
+         (let ((buffer (make-term "babel" (or explicit-shell-file-name (getenv "ESHELL") (getenv "SHELL"))))
+           (with-current-buffer buffer
+             (insert (org-babel-expand-body:generic
+                  body params (org-babel-variable-assignments:sh params)))
+             (term-send-input))
+     (pop-to-buffer buffer))
+         ad-do-it))
+   #+end_src
+
 ** TODO rcirc [[https://github.com/stevensurgnier/.emacs.d/blob/master/user/init/init-rcirc.el][.emacs.d/init-rcirc.el at master · stevensurgnier/.emacs.d]]
 ** TODO [[https://github.com/kaushalmodi/.emacs.d/commit/6beb2156b0d6181b0881cc714de1780129bb038f][Use rg (ripgrep) for projectile file caching · kaushalmodi/.emacs.d@6beb215]]
 ** TODO Check out [[https://nhoffman.github.io/.emacs.d/][init.el for Noah Hoffman]]
 ** TODO Colorize ob-shell ANSI output in org buffer?
-
-5 days
-989.75 - 10%
-monthly increases
-130 local
 ** Getting customized vars to copy to use-package blocks
-   #+begin_src emacs-lisp :results value table drawer replace :tangle no
+   #+begin_src emacs-lisp :results value table drawer replace :tangle no :wrap src text
      (let ((found nil))
            (mapatoms (lambda (sym)
                        (let ((val (get sym 'customized-value))
@@ -1947,15 +2207,13 @@ monthly increases
    #+end_src
 
    #+RESULTS:
-   :results:
-   | magit-file-mode                        | (t)                                                                | Customized with use-package magit     |
-   | transient-default-level                | (5)                                                                | Customized with use-package magit     |
-   | magit-repository-directories           | ('((~/Projects . 1) (~/Projects/iac . 1) (~/Projects/puppet . 1))) | Customized with use-package magit     |
-   | magit-clone-default-directory          | (~/Projects/)                                                      | Customized with use-package magit     |
-   | doom-modeline-icon                     | (t)                                                                | Use all-the-icons                     |
-   | auto-revert-verbose                    | (t)                                                                | Customized with use-package magit     |
-   | forge-topic-list-limit                 | ('(60 . 0))                                                        | Customized with use-package magit     |
-   | org-ql-search-directories-files-regexp | (\\.org\\(_done\\)?\\')                                             | nil                                   |
-   | yas-snippet-dirs                       | ('(/Users/slumos/.config/emacs/snippets))                          | Customized with use-package yasnippet |
-   | auto-revert-buffer-list-filter         | ('magit-auto-revert-repository-buffers-p)                          | Customized with use-package magit     |
-   :end:
+   #+begin_src text
+   | lsp-log-io                             | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | leaf-defaults                          | ('(:ensure t))     | Customized with leaf in `leaf' block at `/Users/slumos/.config/emacs/config.el'   |
+   | lsp-log-max                            | (2000)             | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-auto-guess-root                    | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-enable-completion-at-point         | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | lsp-ui-doc-enable                      | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
+   | org-ql-search-directories-files-regexp | (\.org\(_done\)?\') | Customized with leaf in `org-ql' block at `/Users/slumos/.config/emacs/config.el' |
+   | el-get-git-shallow-clone               | (t)                | Customized with leaf in `el-get' block at `/Users/slumos/.config/emacs/config.el' |
+   #+end_src

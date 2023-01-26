@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: ns1-cname
+# key: ns1-cname
+# --
+resource "ns1_record" "${1:name}" {
+  zone   = "krxd.net"
+  domain = "$1.krxd.net"
+  type   = "CNAME"
+  ttl    = 300
+
+  answers {
+    answer = $0
+  }
+}

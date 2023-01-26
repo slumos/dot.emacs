@@ -3,41 +3,100 @@
 # key: <shift
 # expand-env: ((daily-oncall-checklist-scheduled-time (format-time-string (car org-time-stamp-formats) (current-time))))
 # --
-*** `daily-oncall-checklist-scheduled-time`
-**** TODO [0/5] [date] daily triage
+$0*** `daily-oncall-checklist-scheduled-time`
+    (this list last updated on <2022-07-14 Thu>) (remember to update @krux-pe-oncall group)
+      Slack → People and user groups (⇧⌘E) → User groups tab → search for krux-pe → Click on group → Edit group members. (Holy shit... I will try to find a quicker method.)
+**** TODO [0/5] DAILY TRIAGE (check [[https://confluence.internal.salesforce.com/display/EN/PE+Daily+Triage+Process+-+on-call][PE Daily Triage Process - on-call]] for updates)
      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-***** TODO Check [[https://app.datadoghq.com/monitors/triggered?q=group_status%3A(warn%20OR%20alert)%20triggered%3A1440][DataDog]] monitors
+***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** Fix any low-hanging fruit. See [[https://confluence.internal.salesforce.com/display/EN/Common+Triage+Issues][Common Triage Issues]] for examples.
-****** For known issues, write a comment on the event linking to the appropriate Work Item. Raise awareness if necessary.
-***** TODO Review the [[https://confluence.internal.salesforce.com/display/EN/Service+Dashboards][Service Dashboards]] [[https://app.datadoghq.com/dashboard/lists/manual/22639][(Datadog When Ready)]]
-      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Notes
+****** Puppet Overview dashboard; look for failing/non-reporting nodes; know why any prod host is alerting on non-standard (production) Puppet environment, especially if >1 day
 ****** Look for anything that sticks out from the overall pattern: outliers, lines aproaching upper or lower limits (disk nearly full, etc)
 ****** Engage the relevant team members (PE or Eng), create or update relevant Work Items
-***** TODO Review Available [[https://cb.krxd.net/cje][Cloudbees]] updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
+***** TODO Review [[https://gus.lightning.force.com/lightning/r/Report/00OEE0000009f3x2AA/view?queryScope=userFolders][Cloud Config Bugs (Aaron Kulick) | Salesforce]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-      If you see a red square with a number on the nav bar, click that to see whether an update is needed.
-***** TODO Check [[https://krux.pagerduty.com/incidents?assignedToUser=PFPE6UP&status=triggered][Unassigned NOOP Incidents in PagerDuty]]
+****** Via the custom report, verify there are no AWS Security Vulnerability issues outstanding and triage (0 records is good).
+****** Typical issues include duplicate IAM credentials, no MFA, etc. *Resolve actively (delete oldest credential) or engage with the user to resolve urgently.*
+***** TODO Review the [[https://gus.lightning.force.com/analytics/lens/0FKAH0000002eEp4AI][Security & Compliance Dashboard]]
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** Investigate and fix (creating Work Items for tracking)
-****** For product developer code issues, create a Work Item for the relevant team
+****** Look for anything with severity P0 (these will need rapid remediation)
+****** Engage the relevant team members (PE), create or update relevant Work Items
+***** TODO In [[https://app.snyk.io/org/marketing-cloud-audience-studio][Snyk Security Issues Reports]], look for High Severity issues in repos we manage
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+***** TODO [[https://cb.krxd.net/cje][Cloudbees]] Checks ([[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]] plugins)
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Check for runaway jobs
+       Some jobs may legitimately take multiple hours, so you may need to review a job’s buildTimeTrend in order to make a good judgement.
+       Cancel any runaway jobs and inform the job initiators.
+****** Review Available updates: If there are unapplied security updates, follow [[https://confluence.internal.salesforce.com/display/EN/Updating+Cloudbees][Updating Cloudbees]].
+       If you see a red square with a number on the nav bar, click that to see whether an update is needed.
+****** Check the plugin-manager updates screens [[https://cb.krxd.net/cjoc/pluginManager/][cjoc]] and [[https://cb.krxd.net/cje/pluginManager/][cje]].
+****** Of late there are 2 jobs that create files with ownership that Cloudbees cannot clean up on its own. If you want to quiet the "Asynchronous Resource Disposer", try:
+       #+begin_src sh
+       clush -Bw "cloudbees-agent-a00[1-3]-ash-prod" sudo find /data/c_cloudbees/cje -not -user c_cloudbees -exec 'chown c_cloudbees:c_cloudbees \{\} \;'
+       #+end_src
+***** TODO Review Available CD4PE Upgrades
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+      #+begin_src sh
+      kubectl kots admin-console -n pam
+      #+end_src
+
+      https://localhost:8800
+
+******** If there is a new version, review Release Notes and pre-flight checks.
+******** If the upgrade looks easy, click Deploy button, watch, verify the new version number in the bottom-left corner of the console.
+******** If the upgrade looks complicated, make a ticket for it to be done.
 ***** TODO Check for pending AWS maintenance
-      SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** EC2 [[https://phd.aws.amazon.com/phd/home#/event-log?Event%2520category=Scheduled%2520change&Status=Upcoming][Personal Health Dashboard]] or [[https://console.aws.amazon.com/ec2/home?region=us-east-1#Events][ash]], [[https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#Events:][dub]], [[https://us-west-2.console.aws.amazon.com/ec2/home?region=us-west-2#Events:][pdx]]
+ SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** EC2
+#+begin_src shell :results output table drawer :colnames '(instance status eventArns)
+  set -x
+  eventArns=("\${(@f)\$(aws health describe-events --filter 'services=EC2,eventTypeCategories=issue,scheduledChange' --query 'events[?statusCode != \`closed\`]|[].[arn]' --output text)}")
+  if [[ -n "\${eventArns}" ]]; then
+    aws health describe-affected-entities \
+        --filter "eventArns=\${(j:,:)eventArns}" \
+        --query 'entities[?starts_with(entityValue, \`i\`)].[entityValue,statusCode,eventArn]' \
+        --output text
+  else
+    print "eventArns='\${eventArns}'"
+  fi
+#+end_src
 ****** RDS
-       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-       aws rds describe-pending-maintenance-actions --region eu-west-1
-       aws rds describe-pending-maintenance-actions --region us-east-1
-       aws rds describe-pending-maintenance-actions --region us-west-2
-       #+end_src
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws rds describe-pending-maintenance-actions --region eu-west-1
+aws rds describe-pending-maintenance-actions --region us-east-1
+aws rds describe-pending-maintenance-actions --region us-west-2
+#+end_src
 ****** Elasticache
-       #+begin_src sh :exports both :eval no-export :wrap src json :results raw
-       aws elasticache describe-events --region eu-west-1
-       aws elasticache describe-events --region us-east-1
-       aws elasticache describe-events --region us-west-2
-       #+end_src
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws elasticache describe-events --region eu-west-1
+aws elasticache describe-events --region us-east-1
+aws elasticache describe-events --region us-west-2
+#+end_src
+****** Redshift
+#+begin_src sh :exports both :eval no-export :wrap src json :results raw
+aws redshift describe-events --region eu-west-1
+aws redshift describe-events --region us-east-1
+aws redshift describe-events --region us-west-2
+#+end_src
+***** TODO Look for any certificates expiring within 60 days, https://gus.my.salesforce.com/analytics/wave/dashboard?assetId=0FKB0000000VNxBOAW&orgId=00DT0000000Dpvc&loginHost=usa12.sfdc-ypmv18.salesforce.com&urlType=sharing&pageId=112df963-8b04-4a03-abc1-0cc174a9e255&savedViewId=8wkEE00000032A9YAI&analyticsContext=analyticsTab with filter on common name contains krxd.net or krux.com and status=enrolled: create a GUS ticket if not yet in backlog (OK to batch multiple certs in one GUS ticket)
+      SCHEDULED: `daily-oncall-checklist-scheduled-time`
+****** Instructions
+       Please follow the instructions below for inspecting your expiring certificates on each of your hosts:
+       1. Visit the Certificates Dashboard: https://sfdc.co/Certificates
+       2. Under the Tags widget on the left hand side: select Krux and then click Apply
+       3. Under the Expiry Period Range widget: select 31 - 60 days and then click Apply
+       4. Utilize the calendar heatmap to visualize the expiry timelines
+       5. Utilize the data table at the bottom of the dashboard to view detailed information around your expiring certificates such as:
+          1) Subject Common Name
+          2) Issuer Common Name
+          3) Hostname
+          4) IP Address
+          5) Port
+          6) SHA 256 Fingerprint
 ***** TODO Review email notifications. Update or create Work Items, raise awareness if necessary.
       SCHEDULED: `daily-oncall-checklist-scheduled-time`
-****** cron errors
+****** [[https://mail.google.com/mail/u/0/?zx=7nq94zf9a8r#search/label%3Atriage-cron+is%3Aunread][cron errors]]
 ****** AWS reports
 ****** GitHub Security Alert Digests (gmail filter =from:notifications@github.com subject:"security vulnerability"=)

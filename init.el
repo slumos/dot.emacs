@@ -3,7 +3,11 @@
 ;; 2014-04-05 first
 ;; 2017-05-01 do over
 
-(require 'cl-lib)
+(eval-when-compile
+  (require 'use-package))
+
+(setq byte-compile-warnings '(not obsolete))
+(setq comp-deferred-compilation t)
 
 ;; Move customization to its own file. Has to be done here I believe.
 (defconst *custom-file* (locate-user-emacs-file "custom.el"))
@@ -16,13 +20,11 @@
 ;; of org-mode when calling org-babel-load-file below.
 (custom-set-variables
  '(package-archives
-   '(("org"   .  "https://orgmode.org/elpa/")
-     ("melpa" .  "https://melpa.org/packages/")
+   '(("melpa" .  "https://melpa.org/packages/")
      ("elpy"	.  "https://jorgenschaefer.github.io/packages/")
      ("gnu"   .  "https://elpa.gnu.org/packages/")))
  '(package-archive-priorities
-   '(("org"	.  100)
-     ("elpy"	.  100)
+   '(("elpy"	.  100)
      ("melpa" .  50)
      ("gnu"	.  10))))
 
@@ -32,4 +34,15 @@
   (org-babel-load-file *emacs-org-config-file*))
 
 ;; TODO http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
+(put 'narrow-to-region 'disabled nil)
+(put 'magit-clean 'disabled nil)
 (put 'erase-buffer 'disabled nil)
+
+;; Use a hook so the message doesn't get clobbered by other messages.
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))

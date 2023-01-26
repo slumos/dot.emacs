@@ -37,7 +37,6 @@
      (add-to-list 'org-capture-templates '("t" "Task" entry
                                           (id "2CF309C5-3F4E-4C98-AE0D-ACFAAF79C016")
                                           "* TODO %?"))
-
    #+END_SRC
 
    #+RESULTS:

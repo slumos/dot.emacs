@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: resource-artifactory-virtual
+# key: resource-artifactory-virtual
+# --
+resource artifactory_virtual_repository "$1" {
+  key             = "$1"
+  description     = "$2"
+  notes           = "Managed by krux/tf-service-artifactory"
+  package_type    = "${3:$$(yas-choose-value '("maven" "pypi" "sbt"))}"
+
+  repositories = [
+    $0
+  ]
+}

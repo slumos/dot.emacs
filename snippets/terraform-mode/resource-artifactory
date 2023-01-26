@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: resource-artifactory-remote
+# key: resource-artifactory
+# --
+resource artifactory_remote_repository "${1:name}" {
+  key          = "$1"
+  description  = "${2:description}"
+  notes        = "Managed by krux/tf-service-artifactory"
+  package_type = "${3:$$(yas-choose-value '("maven" "pypi" "sbt"))}"
+  url          = "${4:url}"
+
+
+  $0
+}
