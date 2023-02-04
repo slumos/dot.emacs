@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2022-12-30 Fri 12:14 slumos@stevenlum-ltm>
+# Time-stamp: <2023-02-04 Sat 13:37 slumos@chiana>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -71,9 +71,9 @@ For debugging
     #+end_src
 
 #+begin_src emacs-lisp
-  (unless (package-installed-p 'vc-use-package)
-    (package-vc-install "https://github.com/slotThe/vc-use-package"))
-  (require 'vc-use-package)
+;  (unless (package-installed-p 'vc-use-package)
+;    (package-install "https://github.com/slotThe/vc-use-package"))
+;  (require 'vc-use-package)
 #+end_src
 
     Adds the =:quelpa= keyword for extra laziness when installing sutff outside
@@ -177,7 +177,7 @@ For debugging
      (use-package exec-path-from-shell
        :demand t
        :config
-       (setq shell-file-name "/usr/local/bin/zsh")
+       ;(setq shell-file-name "/usr/local/bin/zsh")
        (setq exec-path-from-shell-arguments '("-l" "-i"))
        (setq exec-path-from-shell-check-startup-files nil)
        (exec-path-from-shell-initialize)
@@ -310,9 +310,9 @@ Deploy the fanciness.
     #+end_src
 
     #+begin_src emacs-lisp
-      (add-to-list 'load-path (expand-file-name "lisp/emacs-pragmatapro-ligatures" user-emacs-directory))
-      (require 'pragmatapro-lig)
-      (add-hook 'prog-mode-hook #'pragmatapro-lig-mode)
+      ;; (add-to-list 'load-path (expand-file-name "lisp/emacs-pragmatapro-ligatures" user-emacs-directory))
+      ;; (require 'pragmatapro-lig)
+      ;; (add-hook 'prog-mode-hook #'pragmatapro-lig-mode)
     #+end_src
 *** Emoji 😂
     #+begin_src emacs-lisp
@@ -1444,7 +1444,19 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
-** TODO Organize this mess!
+** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
+#+begin_src emacs-lisp
+  (use-package async)
+#+end_src
+** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
+#+begin_src emacs-lisp
+    (use-package chezmoi
+      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
+      :bind
+      ("C-c C f" . chezmoi-find)
+      ("C-c C s" . chezmoi-write)
+      ("C-c C g" . chezmoi-magit-status))
+#+end_src
 ** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
 "It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
 #+begin_src emacs-lisp
@@ -1454,6 +1466,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
 #+begin_src emacs-lisp
   (use-package embark
+    :ensure t
     :bind
     (("C-." . embark-act)
      ("C-;" . embark-dwim)
@@ -1473,7 +1486,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
-
 
 ** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
@@ -1513,11 +1525,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      | key | path                              | name                     |
      |-----+-----------------------------------+--------------------------|
      | a   | ~/.config/alacritty/alacritty.yml | alacritty config         |
-     | c   | ~/.config/emacs/config.org        | main config (config.org) |
+     | c   | ~/.emacs.d/config.org             | main config (config.org) |
      | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                |
-     | n   | ~/Sync/GDrive/Notes/Notes.org     | Work notes (Notes.org)   |
-     | k   | ~/Sync/GDrive/Notes/DMP.org       | Krux work (DMP.org)      |
-     | p   | ~/.config/emacs/personal.org      | personal config          |
+     | p   | ~/.emacs.d/personal.org           | personal config          |
      | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
      | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
      | t   | ~/Sync/ST/Notes/TODO.org          | TODO.org                 |
