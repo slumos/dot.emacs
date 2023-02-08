@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh -f
+# Build https://github.com/d12frosted/homebrew-emacs-plus with options I like
+# Usage: ./brew-emacs.sh [@<VERSION>]
 
 set -euo pipefail
 
@@ -28,13 +30,11 @@ print "logging to ${logfile}"
 export CFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
 export LDFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
 
-brew install \
-  --keep-tmp \
-  "${formula}@${formula_version}" \
-  --no-binaries \
+brew install "${formula}@${formula_version}" \
   --display-times \
-  --with-no-frame-refocus \
-  --with-xwidgets \
   --with-imagemagick \
   --with-modern-nuvola-icon \
+  --with-native-comp \
+  --with-poll \
+  --with-xwidgets \
 |& tee "$logfile"
