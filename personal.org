@@ -4,13 +4,13 @@
 ** Agenda Files
    #+BEGIN_SRC emacs-lisp
      (setq org-agenda-files
-	   '("~/Sync/Notes/Inbox.org"
-	     "~/Sync/Notes/CASE.org"
-             "~/Sync/Notes/CHLOE.org"
-             "~/Sync/Notes/CURRENT.org"
-	     "~/Sync/Notes/PROJECTS.org"
-             "~/Sync/Notes/ROSALIND.org"
-	     "~/Sync/Notes/SLUMOS.org"
+           '("~/Sync/Notes/Inbox.org"
+             ;"~/Sync/Notes/CASE.org"
+             ;"~/Sync/Notes/CHLOE.org"
+             ;"~/Sync/Notes/CURRENT.org"
+             ;"~/Sync/Notes/PROJECTS.org"
+             ;"~/Sync/Notes/ROSALIND.org"
+             ;"~/Sync/Notes/SLUMOS.org"
              "~/Sync/Notes/TODO.org"))
    #+END_SRC
 ** Capture templates
