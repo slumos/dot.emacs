@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-02-07 Tue 17:16 slumos@m2>
+# Time-stamp: <2023-02-10 Fri 13:50 slumos@m2>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -906,6 +906,11 @@ Deploy the fanciness.
 
 ** Initialization
 * Org                                                                   :org:
+#+begin_src emacs-lisp
+  (setq *slumos-org-notes-directory* (expand-file-name "~/Sync/Notes"))
+#+end_src
+
+
    #+BEGIN_SRC emacs-lisp :noweb yes :results value silent
      (use-package org
        :commands (org-agenda org-capture org-store-link)
@@ -960,9 +965,13 @@ Deploy the fanciness.
    These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
 
    #+BEGIN_SRC emacs-lisp
-     (setq org-refile-use-outline-path 'file
-	   org-outline-path-complete-in-steps nil
-	   org-refile-targets '((org-agenda-files :maxlevel . 2)))
+        (defun slumos-org-refile-files ()
+          (let ((case-fold-search nil))
+            (directory-files *slumos-org-notes-directory* t "^[[:upper:]][[:alpha:]]*.org$")))
+
+        (setq org-refile-use-outline-path 'file
+                   org-outline-path-complete-in-steps nil
+                   org-refile-targets '((slumos-org-refile-files :maxlevel . 2)))
    #+END_SRC
 
    That's why I also like to enable speed commands when point is at
@@ -1866,9 +1875,9 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      | c   | ~/.emacs.d/config.org             | main config (config.org) |
      | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                |
      | p   | ~/.emacs.d/personal.org           | personal config          |
-     | r   | ~/Synt/ST/Notes/Cookbook.org      | cookbook                 |
-     | s   | ~/Sync/ST/Notes/SLUMOS.org        | SLUMOS.org               |
-     | t   | ~/Sync/ST/Notes/TODO.org          | TODO.org                 |
+     | r   | ~/Sync/Notes/Cookbook.org         | cookbook                 |
+     | s   | ~/Sync/Notes/SLUMOS.org           | SLUMOS.org               |
+     | t   | ~/Sync/Notes/TODO.org             | TODO.org                 |
      | w   | ~/.config/emacs/work.org          | work config              |
      | z   | ~/.zshrc                          | zshrc                    |
 
