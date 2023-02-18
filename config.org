@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-02-10 Fri 13:50 slumos@m2>
+# Time-stamp: <2023-02-17 Fri 19:46 slumos@m2>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -769,8 +769,8 @@ Deploy the fanciness.
     #+begin_src emacs-lisp
       (defun slumos/handle-appearance-change (appearance)
         (pcase appearance
-          ('light (modus-themes-load-operandi))
-          ('dark (modus-themes-load-vivendi))))
+          ('light (modus-themes-load-theme 'modus-operandi-tinted))
+          ('dark (modus-themes-load-theme 'modus-vivendi-tinted))))
       (add-hook 'ns-system-appearance-change-functions #'slumos/handle-appearance-change)
     #+end_src
 
