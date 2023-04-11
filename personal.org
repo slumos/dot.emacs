@@ -10,11 +10,13 @@
              ;"~/Sync/Notes/CURRENT.org"
              ;"~/Sync/Notes/PROJECTS.org"
              ;"~/Sync/Notes/ROSALIND.org"
-             ;"~/Sync/Notes/SLUMOS.org"
+             "~/Sync/Notes/SLUMOS.org"
              "~/Sync/Notes/TODO.org"))
    #+END_SRC
 ** Capture templates
    #+BEGIN_SRC emacs-lisp
+     (unless (boundp 'org-capture-templates)
+       (setq org-capture-templates '()))
      (add-to-list 'org-capture-templates '("m" "Meeting" entry (id "30E45826-5558-4029-91D7-067B057B5740")))
      (add-to-list 'org-capture-templates '("l" "Log" entry (id "45F1430A-CE5D-4A2E-A5D8-D72C93313666")
                                            "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t))

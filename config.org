@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-03-24 Fri 12:45 slumos@m2>
+# Time-stamp: <2023-04-06 Thu 08:48 slumos@m2>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1021,7 +1021,7 @@ Deploy the fanciness.
 				(magit-wip-before-change-mode t)))
    #+END_SRC
 
-**** [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+**** COMMENT [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
    #+begin_src emacs-lisp
    (use-package idle-org-agenda
      :after org-agenda
@@ -2518,9 +2518,10 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
       (projectile-file-exists-local-cache-expire 300))
   #+END_SRC
 * Context-specific
-** COMMENT Work/Life Balance?
+** Work/Life Balance?
    #+BEGIN_SRC emacs-lisp
      (let* ((local-config-name (pcase (system-name)
+                                 ("m2.local" "personal.org")
                                  ("steven.lan" "personal.org")
                                  (rx "salesforce.com" "work.org")))
             (local-config (expand-file-name local-config-name user-emacs-directory)))
