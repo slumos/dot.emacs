@@ -736,11 +736,11 @@ Deploy the fanciness.
 
         (defun slumos-modus-themes-custom-faces ()
           (modus-themes-with-colors
-            (set-face-attribute 'org-ellipsis nil :foreground comment :height 0.6)))
+            (set-face-attribute 'org-ellipsis nil :foreground fg-heading-8 :height 0.6)))
 
         :config
         (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
-        (modus-themes-load-theme 'modus-operandi))
+        (modus-themes-load-theme 'modus-operandi-tinted))
     #+end_src
 
 *** nordless
@@ -950,9 +950,9 @@ Deploy the fanciness.
      (custom-set-variables
       '(org-ellipsis " "))
 
-;     (set-face-attribute 'org-ellipsis nil
-;                         :inherit '(comment)
-;                         :height 0.6)
+     (set-face-attribute 'org-ellipsis nil
+                         :inherit '(comment)
+                         :height 0.6)
    #+END_SRC
 
    My muscle memory is completely stuck on =M-< TAB=. This just
