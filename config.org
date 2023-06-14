@@ -1093,6 +1093,7 @@ Deploy the fanciness.
    #+end_src
 
 ** Additions
+*** TODO [[https://github.com/emacsattic/org-doing][emacsattic/org-doing]]
 *** COMMENT [[https://github.com/Chobbes/org-chef][Chobbes/org-chef: A package for making a cookbook and managing recipes with org-mode.]]
     #+begin_src emacs-lisp
       (use-package org-chef)
@@ -1375,6 +1376,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_example
 
 * Other Apps
+** TODO [[https://github.com/xenodium/chatgpt-shell][xenodium/chatgpt-shell: ChatGPT and DALL-E Emacs shells + Org babel 🦄 + a shell maker for other providers]]
 ** [[https://github.com/skeeto/elfeed][skeeto/elfeed: An Emacs web feeds client]]
 #+begin_src emacs-lisp
   (use-package elfeed)
@@ -1529,14 +1531,27 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        :hook (puppet-mode ruby-mode json-mode python-mode))
    #+END_SRC
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-lint from this example]]
-** Go
+** Go (golang)
    #+begin_src emacs-lisp
      (use-package go-mode
        :bind
        (:map go-mode-map
-	     ("M-." . godef-jump)))
+             ("M-." . godef-jump))
+       :config
+       (add-hook 'go-mode-hook (lambda () (setq tab-width 4)))
+       (add-hook 'before-save-hook 'gofmt-before-save))
    #+end_src
 
+(use-package go-mode
+  :mode ("\\.go\\'")
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq tab-width 4)
+              (add-hook 'before-save-hook 'gofmt-before-save)
+              )))
+   
 ** Groovy
    #+BEGIN_SRC emacs-lisp
      (use-package groovy-mode
