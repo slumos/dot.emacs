@@ -2185,7 +2185,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
 #+begin_src emacs-lisp
   (use-package ivy-posframe
-    :disabled
     :after ivy
     :hook ivy-mode
     :config
