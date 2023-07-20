@@ -12,14 +12,15 @@
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-            (setq org-directory "~/Sync/GDrive/Notes")
-            (setq slumos-org-directory "~/Sync/ST/Notes")
-            (setq org-agenda-files (list
-                                    (expand-file-name "DMP.org" org-directory)
-                                    (expand-file-name "config.org" user-emacs-directory)
-                                    (expand-file-name "Inbox.org" slumos-org-directory)
-                                    (expand-file-name "SLUMOS.org" slumos-org-directory)
-                                    (expand-file-name "TODO.org" slumos-org-directory)))
+     (setq org-directory "~/Sync/GDrive/Notes")
+     (setq slumos-org-directory "~/Sync/ST/Notes")
+     (setq org-agenda-files (list
+                             (expand-file-name "Quizlet.org" org-directory)
+                             ;; (expand-file-name "config.org" user-emacs-directory)
+                             ;; (expand-file-name "Inbox.org" slumos-org-directory)
+                             ;; (expand-file-name "SLUMOS.org" slumos-org-directory)
+                             ;; (expand-file-name "TODO.org" slumos-org-directory)
+                             ))
    #+END_SRC
 
    I want everything searched for IDs. But it's soooo slow.
@@ -30,7 +31,7 @@
      ;;             append
      ;;             (directory-files dir t "\\.org\\'"))))
    #+end_src
-
+** TODO [[https://github.com/nyyManni/ejira][nyyManni/ejira: Emacs JIRA integration]] or [[https://github.com/ahungry/org-jira][ahungry/org-jira: Bring Jira and OrgMode together]]
 ** org-ql
    #+begin_src emacs-lisp :tangle no
      (use-package org-ql
@@ -90,18 +91,7 @@
     (custom-set-variables
       '(magit-repository-directories
           '(("~/Projects" . 1)
-            ("~/Projects/aws" . 1)
-            ("~/Projects/datadog" . 1)
-            ("~/Projects/falcon" . 1)
-            ("~/Projects/java" . 1)
-            ("~/Projects/k8s" . 1)
-            ("~/Projects/konsole" . 1)
-            ("~/Projects/krux" . 1)
-            ("~/Projects/puppet" . 1)
-            ("~/Projects/python" . 1)
-            ("~/Projects/scala" . 1)
-            ("~/Projects/sfdc-slumos" . 1)
-            ("~/Projects/tf" . 1))))
+            ("/opt/projects" . 1))))
   #+END_SRC
 
   #+begin_src emacs-lisp
@@ -110,7 +100,7 @@
     ;;                forge-github-repository))
   #+end_src
 
-* Environment
+* COMMENT Environment
   #+BEGIN_SRC emacs-lisp
     (exec-path-from-shell-copy-envs
      '("DATADOG_API_KEY"
@@ -133,6 +123,7 @@
          "KAIJU_REFRESH_TOKEN"
          "KAIJU_ACCESS_TOKEN")))
   #+END_SRC
+** TODO [[https://github.com/kamushadenes/1password.el][kamushadenes/1password.el: Use 1Password from Emacs]]
 * [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
 #+begin_src emacs-lisp
   (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
