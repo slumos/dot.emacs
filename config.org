@@ -1884,29 +1884,32 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
      This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
      #+name: commonly-visited-files-shortcuts
-     | key | path                              | name                     |
-     |-----+-----------------------------------+--------------------------|
-     | a   | ~/.config/alacritty/alacritty.yml | alacritty config         |
-     | c   | ~/.emacs.d/config.org             | main config (config.org) |
-     | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                |
-     | p   | ~/.emacs.d/personal.org           | personal config          |
-     | q   | ~/Sync/GDrive/Notes/Quizlet.org   | Quizlet                  |
-     | r   | ~/Sync/Notes/Cookbook.org         | cookbook                 |
-     | s   | ~/Sync/Notes/SLUMOS.org           | SLUMOS.org               |
-     | t   | ~/Sync/Notes/TODO.org             | TODO.org                 |
-     | w   | ~/.emacs.d/work.org               | work config              |
-     | z   | ~/.zshrc                          | zshrc                    |
+     | key | path                              | name                     | fun          |
+     |-----+-----------------------------------+--------------------------+--------------|
+     | a   | ~/.config/alacritty/alacritty.yml | alacritty config         | find-file    |
+     | c   | ~/.emacs.d/config.org             | main config (config.org) | find-file    |
+     | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                | find-file    |
+     | p   | ~/.emacs.d/personal.org           | personal config          | find-file    |
+     | r   | ~/Sync/Notes/Cookbook.org         | cookbook                 | find-file    |
+     | s   | ~/Sync/Notes/SLUMOS.org           | SLUMOS.org               | find-file    |
+     | t   | ~/Sync/Notes/TODO.org             | TODO.org                 | find-file    |
+     | w   | ~/.config/emacs/work.org          | work config              | find-file    |
+     | z   | ~/.zshrc                          | zshrc                    | chezmoi-find |
 
-     #+name: table-to-find-file-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
-       (cl-loop for row in table
-         do
-         (print (list (car row) (list 'find-file (elt row 1)) (elt row 2) :column "File Shortcuts")))
+       (cl-loop for (key path name fun) in table do
+                (prin1 (list key path name fun)))
+     #+end_src
+
+     #+name: table-to-file-shortcuts-heads
+     #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
+       (cl-loop for (key path name fun) in table do
+                (print (list key (list (intern fun) path) name)) (list :column "File Shortcuts"))))
      #+end_src
 
      #+begin_src emacs-lisp :noweb yes
        (defhydra hydra-commonly-visited-files-shortcuts (:color blue)
-         <<table-to-find-file-heads(table=commonly-visited-files-shortcuts)>>)
+         <<table-to-file-shortcuts-heads(table=commonly-visited-files-shortcuts)>>)
        (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
      #+end_src
 **** kill-ring-saving
@@ -2188,7 +2191,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
 #+begin_src emacs-lisp
   (use-package ivy-posframe
-    :disabled
     :after ivy
     :hook ivy-mode
     :config
