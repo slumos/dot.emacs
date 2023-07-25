@@ -94,35 +94,12 @@
             ("/opt/projects" . 1))))
   #+END_SRC
 
-  #+begin_src emacs-lisp
-    ;; (setq forge-alist
-    ;;              '("git.soma.salesforce.com" "https://git.soma.salesforce.com/api/v3" "git.soma.salesforce.com"
-    ;;                forge-github-repository))
-  #+end_src
-
-* COMMENT Environment
+* Environment
   #+BEGIN_SRC emacs-lisp
     (exec-path-from-shell-copy-envs
-     '("DATADOG_API_KEY"
-       "DATADOG_APP_KEY"
-       "DYN_CUSTOMER_NAME"
-       "DYN_USERNAME"
-       "DYN_PASSWORD"))
+     '("GITHUB_EMACS_MAGIT_TOKEN"))
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (defun slumos/import-kaiju-envs ()
-      (exec-path-from-shell-copy-envs
-       '("KAIJU_OWNER_EMAIL"
-         "KAIJU_OWNER_ID"
-         "KAIJU_TEAM_NAME"
-         "KAIJU_USERNAME"
-         "KAIJU_USER_EMAIL"
-         "KAIJU_USER_ID"
-         "KAIJU_USER_ROLE_ID"
-         "KAIJU_REFRESH_TOKEN"
-         "KAIJU_ACCESS_TOKEN")))
-  #+END_SRC
 ** TODO [[https://github.com/kamushadenes/1password.el][kamushadenes/1password.el: Use 1Password from Emacs]]
 * [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
 #+begin_src emacs-lisp

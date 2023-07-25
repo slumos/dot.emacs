@@ -12,37 +12,37 @@
 [[http://oremacs.com/lispy/][lispy.el function reference]]
 
 * Introduction
-  I know, I'm supposed to only care about writing code and not
-  configuring editors.
+I know, I'm supposed to only care about writing code and not
+configuring editors.
 ** Philosophy
-   1. Emacs defaults except recent terrible changes. Looking at you
-      (transient-mark-mode t)
-   2. The Emacs way is fine
-      * custom hasn't been really hate-worthy for ages—oh, you hate
-        custom? Now who cares more about writing code than configuring
-        editors?
-      * the new package system is just fine thanks.
-   3. I went to the trouble to acquire [[http://www.fsd.it/fonts/pragmatapro.htm][Pragmata Pro]]—because it's awesome,
-      but more than that—because I like Unicode enough to buy a
-      programming font with decent Unicode support. I'm hardly going to
-      do that and then *not* use Unicode in my editor config.
+1. Emacs defaults except recent terrible changes. Looking at you
+   (transient-mark-mode t)
+2. The Emacs way is fine
+   * custom hasn't been really hate-worthy for ages—oh, you hate
+     custom? Now who cares more about writing code than configuring
+     editors?
+   * the new package system is just fine thanks.
+3. I went to the trouble to acquire [[http://www.fsd.it/fonts/pragmatapro.htm][Pragmata Pro]]—because it's awesome,
+   but more than that—because I like Unicode enough to buy a
+   programming font with decent Unicode support. I'm hardly going to
+   do that and then *not* use Unicode in my editor config.
 * Basics
 ** Emacs Packages
 For debugging
-   #+begin_src emacs-lisp
-     (custom-set-variables
-      '(package-archives
-        '(("gnu"    .  "https://elpa.gnu.org/packages/")
-          ("melpa"  .  "https://melpa.org/packages/")
-          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-      '(package-archive-priorities
-        '(("melpa"  .  50)
-          ("gnu"    .  10)
-          ("nongnu" . 10))))
-     (package-initialize t)
-   #+end_src
+#+begin_src emacs-lisp
+  (custom-set-variables
+   '(package-archives
+     '(("gnu"    .  "https://elpa.gnu.org/packages/")
+       ("melpa"  .  "https://melpa.org/packages/")
+       ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+   '(package-archive-priorities
+     '(("melpa"  .  50)
+       ("gnu"    .  10)
+       ("nongnu" . 10))))
+  (package-initialize t)
+#+end_src
 *** =use-package=
-    John Wiegley is an Emacs badass. I am not even kidding.
+John Wiegley is an Emacs badass. I am not even kidding.
 
 #+begin_src emacs-lisp
   (if init-file-debug
@@ -54,34 +54,34 @@ For debugging
           use-package-expand-minimally t))
 #+end_src
 
-    #+begin_src emacs-lisp
-      (unless (package-installed-p 'use-package)
-	(package-refresh-contents)
-	(package-install 'use-package))
-    #+end_src
-
-    #+begin_src emacs-lisp
-      (require 'use-package)
-      (setq use-package-always-defer nil)
-      (setq use-package-always-ensure t)
-      (setq use-package-compute-statistics t)
-      (setq use-package-ignore-unknown-keywords t)
-      (setq use-package-minimum-reported-time 0)
-      (setq use-package-verbose t)
-    #+end_src
-
 #+begin_src emacs-lisp
-;  (unless (package-installed-p 'vc-use-package)
-;    (package-install "https://github.com/slotThe/vc-use-package"))
-;  (require 'vc-use-package)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 #+end_src
 
-    Adds the =:quelpa= keyword for extra laziness when installing sutff outside
-    of package archives.
-    #+begin_src emacs-lisp
-      (use-package quelpa :demand t)
-      (use-package quelpa-use-package :demand t)
-    #+end_src
+#+begin_src emacs-lisp
+  (require 'use-package)
+  (setq use-package-always-defer nil)
+  (setq use-package-always-ensure t)
+  (setq use-package-compute-statistics t)
+  (setq use-package-ignore-unknown-keywords t)
+  (setq use-package-minimum-reported-time 0)
+  (setq use-package-verbose t)
+#+end_src
+
+#+begin_src emacs-lisp
+                                          ;  (unless (package-installed-p 'vc-use-package)
+                                          ;    (package-install "https://github.com/slotThe/vc-use-package"))
+                                          ;  (require 'vc-use-package)
+#+end_src
+
+Adds the =:quelpa= keyword for extra laziness when installing sutff outside
+of package archives.
+#+begin_src emacs-lisp
+  (use-package quelpa :demand t)
+  (use-package quelpa-use-package :demand t)
+#+end_src
 *** COMMENT straight - native comp temporarily disabled until
 #+begin_src emacs-lisp
   (custom-set-variables '(straight-disable-native-compilation t))
@@ -91,206 +91,206 @@ For debugging
   (setq comp-deferred-compilation-black-list '())
 
   (defvar bootstrap-version)
-    (let ((bootstrap-file
-           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-          (bootstrap-version 6))
-      (unless (file-exists-p bootstrap-file)
-        (with-current-buffer
-            (url-retrieve-synchronously
-             "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-             'silent 'inhibit-cookies)
-          (goto-char (point-max))
-          (eval-print-last-sexp)))
-      (load bootstrap-file nil 'nomessage))
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 #+end_src
 
 * TRYING [[https://github.com/conao3/leaf.el][conao3/leaf.el: Support your setting init.el like use-package]]
-    #+begin_src emacs-lisp
-      (prog1 "prepare leaf"
-        (prog1 "leaf"
-          (unless (package-installed-p 'leaf)
-            (unless (assoc 'leaf package-archive-contents)
-              (package-refresh-contents))
-            (condition-case err
-                (package-install 'leaf)
-              (error
-               (package-refresh-contents)  ; renew local melpa cache if fail
-               (package-install 'leaf))))
+#+begin_src emacs-lisp
+  (prog1 "prepare leaf"
+    (prog1 "leaf"
+      (unless (package-installed-p 'leaf)
+        (unless (assoc 'leaf package-archive-contents)
+          (package-refresh-contents))
+        (condition-case err
+            (package-install 'leaf)
+          (error
+           (package-refresh-contents)  ; renew local melpa cache if fail
+           (package-install 'leaf))))
 
-          ;; (leaf feather
-          ;;    :el-get conao3
-          ;;    :config (feather-mode))
+      ;; (leaf feather
+      ;;    :el-get conao3
+      ;;    :config (feather-mode))
 
-          (leaf leaf-keywords
-            :ensure t
-            :config (leaf-keywords-init))
+      (leaf leaf-keywords
+        :ensure t
+        :config (leaf-keywords-init))
 
-          (leaf leaf
-            :custom ((leaf-defaults . '(:ensure t)))))
+      (leaf leaf
+        :custom ((leaf-defaults . '(:ensure t)))))
 
-        (prog1 "optional packages for leaf-keywords"
-          ;; optional packages if you want to use :hydra, :el-get,,,
-          (leaf hydra :ensure t)
-          (leaf el-get :ensure t
-            :custom ((el-get-git-shallow-clone  . t)))))
-    #+end_src
+    (prog1 "optional packages for leaf-keywords"
+      ;; optional packages if you want to use :hydra, :el-get,,,
+      (leaf hydra :ensure t)
+      (leaf el-get :ensure t
+        :custom ((el-get-git-shallow-clone  . t)))))
+#+end_src
 ** Religion
 *** Canon
-    Rollback sacrilege committed in recent years (decades...)
+Rollback sacrilege committed in recent years (decades...)
 
-    I use C-SPC C-SPC frequently to get transient mark and I'm fine
-    with that.
+I use C-SPC C-SPC frequently to get transient mark and I'm fine
+with that.
 
-    #+BEGIN_SRC emacs-lisp
-      (custom-set-variables
-       '(indent-tabs-mode nil)
-       '(transient-mark-mode nil))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(indent-tabs-mode nil)
+   '(transient-mark-mode nil))
+#+END_SRC
 *** Buckeys
-    #+BEGIN_SRC emacs-lisp
-      (pcase window-system
-	('ns
-         (setq mac-command-modifier 'meta) ; That's right.
-         (setq mac-option-modifier 'super)
-         (setq ns-function-modifier 'hyper)))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (pcase window-system
+    ('ns
+     (setq mac-command-modifier 'meta) ; That's right.
+     (setq mac-option-modifier 'super)
+     (setq ns-function-modifier 'hyper)))
+#+END_SRC
 *** Noise. Make less.
-    The advent of the tool bar — or was it fringe? ugh... — was great
-    for me, because it was offensive enough to bother learning how to
-    turn it off.  Once I was in a turning off mode, I realized that
-    the only thing I actually used the scroll bar for is telling how
-    far into a buffer I was, and why should I even care about that?
+The advent of the tool bar — or was it fringe? ugh... — was great
+for me, because it was offensive enough to bother learning how to
+turn it off.  Once I was in a turning off mode, I realized that
+the only thing I actually used the scroll bar for is telling how
+far into a buffer I was, and why should I even care about that?
 
-    There's no point to turning off the menu bar in OSX. Yay for Lion
-    Full Screen though!
+There's no point to turning off the menu bar in OSX. Yay for Lion
+Full Screen though!
 
-    #+BEGIN_SRC emacs-lisp
-      (fringe-mode 0)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      (unless (memq window-system '(mac ns))
-        (menu-bar-mode -1))
-      (setq inhibit-startup-screen t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (fringe-mode 0)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (unless (memq window-system '(mac ns))
+    (menu-bar-mode -1))
+  (setq inhibit-startup-screen t)
+#+END_SRC
 ** Import Environment
-   #+BEGIN_SRC emacs-lisp
-     (use-package exec-path-from-shell
-       :demand t
-       :config
-       ;(setq shell-file-name "/usr/local/bin/zsh")
-       (setq exec-path-from-shell-arguments '("-l" "-i"))
-       (setq exec-path-from-shell-check-startup-files nil)
-       (exec-path-from-shell-initialize)
-       (exec-path-from-shell-copy-envs
-        '("AWS_CONFIG_FILE"
-          "EMAIL"
-          "LANG"
-          "TMPDIR"
-          "XDG_CACHE_HOME"
-          "XDG_CONFIG_DIRS"
-          "XDG_CONFIG_HOME"
-          "XDG_DATA_DIRS"
-          "XDG_DATA_HOME"
-          "XDG_RUNTIME_DIR")))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :demand t
+    :config
+                                          ;(setq shell-file-name "/usr/local/bin/zsh")
+    (setq exec-path-from-shell-arguments '("-l" "-i"))
+    (setq exec-path-from-shell-check-startup-files nil)
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-envs
+     '("AWS_CONFIG_FILE"
+       "EMAIL"
+       "LANG"
+       "TMPDIR"
+       "XDG_CACHE_HOME"
+       "XDG_CONFIG_DIRS"
+       "XDG_CONFIG_HOME"
+       "XDG_DATA_DIRS"
+       "XDG_DATA_HOME"
+       "XDG_RUNTIME_DIR")))
+#+END_SRC
 
-   XDG WHAT
-   #+BEGIN_SRC emacs-lisp
-   (require 'xdg)
-   #+END_SRC
+XDG WHAT
+#+BEGIN_SRC emacs-lisp
+  (require 'xdg)
+#+END_SRC
 ** Dedicated directory for backup files
-   #+BEGIN_SRC emacs-lisp
-     (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
-     (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
+  (setq backup-directory-alist (cons (cons "." *backup-dir*) nil))
+#+END_SRC
 ** Tuning
-   Who remembers Eight Megs And Constantly Swapping?
-   #+BEGIN_SRC emacs-lisp
-   (setq gc-cons-threshold (* 100 1024 1024))
-   #+END_SRC
+Who remembers Eight Megs And Constantly Swapping?
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold (* 100 1024 1024))
+#+END_SRC
 ** Keys
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "<C-backspace>") #'delete-indentation)
-   #+end_src
+#+begin_src emacs-lisp
+  (global-set-key (kbd "<C-backspace>") #'delete-indentation)
+#+end_src
 *** TODO [[https://github.com/Kungsgeten/ryo-modal][Kungsgeten/ryo-modal: Roll your own modal mode]]
-    Compare to [[https://github.com/DogLooksGood/meow][DogLooksGood/meow: Modal Editing On Wheel]]
+Compare to [[https://github.com/DogLooksGood/meow][DogLooksGood/meow: Modal Editing On Wheel]]
 * Startup
 ** Daemon
-   #+begin_src emacs-lisp
-     (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
-     ;(server-start)
-   #+end_src
+#+begin_src emacs-lisp
+  (custom-set-default 'server-socket-dir (expand-file-name "emacs" (xdg-runtime-dir)))
+                                          ;(server-start)
+#+end_src
 
 ** Handling of BROKEN/SKIP states (should not be tangled)
-   I just learned about COMMENT status (=C-c ;=) and decided to punt
-   on this for now while trying that instead.
+I just learned about COMMENT status (=C-c ;=) and decided to punt
+on this for now while trying that instead.
 ** Initial buffers (=*scratch*=)
-   #+BEGIN_SRC emacs-lisp
-     (setq initial-scratch-message nil)
-     (setq inhibit-startup-screen t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq initial-scratch-message nil)
+  (setq inhibit-startup-screen t)
+#+END_SRC
 * Preferences
 Deploy the fanciness.
 ** Utf-8
-   #+BEGIN_SRC emacs-lisp
-   (prefer-coding-system 'utf-8)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (prefer-coding-system 'utf-8)
+#+END_SRC
 ** Fonts
 *** PragmataPro
-    #+BEGIN_SRC emacs-lisp
-      (set-frame-font "PragmataPro Mono Liga-14")
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (set-frame-font "PragmataPro Mono Liga-14")
+#+END_SRC
 
-    #+begin_src emacs-lisp
-      (if (fboundp 'mac-auto-operator-composition-mode)
-	  (mac-auto-operator-composition-mode 1))
-    #+end_src
+#+begin_src emacs-lisp
+  (if (fboundp 'mac-auto-operator-composition-mode)
+      (mac-auto-operator-composition-mode 1))
+#+end_src
 
-    Copied from [[https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-char-menu-config-sample.el][pragmatapro/pragmatapro-char-menu-config-sample.el at master · fabrizioschiavi/pragmatapro]]
-    #+begin_src emacs-lisp
-      ;;; Char menu allows you to enter unicode characters easily. It automatically
-      ;;; chooses jump keys to select the glyph you would like to use. This can be a
-      ;;; nice alternative to using and memorizing prettified symbols.
+Copied from [[https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-char-menu-config-sample.el][pragmatapro/pragmatapro-char-menu-config-sample.el at master · fabrizioschiavi/pragmatapro]]
+#+begin_src emacs-lisp
+  ;;; Char menu allows you to enter unicode characters easily. It automatically
+  ;;; chooses jump keys to select the glyph you would like to use. This can be a
+  ;;; nice alternative to using and memorizing prettified symbols.
 
-      (use-package char-menu
-        :ensure t
-        :bind ("M-p" . char-menu)
-        :custom
-        (char-menu '("—" "‘’" "“”" "…" "«»" "–"
-                     ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
-                     ("Mathematical Operators"
-                      "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉" "∊" "∋" "∌" "∍" "∎" "∏"
-                      "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙" "√" "∛" "∜" "∝" "∞" "∟"
-                      "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩" "∪" "∫" "∬" "∭" "∮" "∯"
-                      "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹" "∺" "∻" "∼" "∽" "∾" "∿"
-                      "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉" "≊" "≋" "≌" "≍" "≎" "≏"
-                      "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙" "≚" "≛" "≜" "≝" "≞" "≟"
-                      "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩" "≪" "≫" "≬" "≭" "≮" "≯"
-                      "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹" "≺" "≻" "≼" "≽" "≾" "≿"
-                      "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉" "⊊" "⊋" "⊌" "⊍" "⊎" "⊏"
-                      "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙" "⊚" "⊛" "⊜" "⊝" "⊞" "⊟"
-                      "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩" "⊪" "⊫" "⊬" "⊭" "⊮" "⊯"
-                      "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹" "⊺" "⊻" "⊼" "⊽" "⊾" "⊿"
-                      "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉" "⋊" "⋋" "⋌" "⋍" "⋎" "⋏"
-                      "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙" "⋚" "⋛" "⋜" "⋝" "⋞" "⋟"
-                      "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩" "⋪" "⋫" "⋬" "⋭" "⋮" "⋯"
-                      "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹" "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
-                     ("Superscripts & Subscripts"
-                      "⁰" "ⁱ"   "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺" "⁻" "⁼" "⁽" "⁾" "ⁿ"
-                      "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊" "₋" "₌" "₍₎"
-                      "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
-                     ("Arrows"     "←" "→" "↑" "↓" "⇐" "⇒" "⇑" "⇓")
-                     ("Greek"      "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ"
-                      "ν" "ξ" "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
-                     ("Enclosed Alphanumerics"
-                      "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ"
-                      "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ" "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ"
-                      "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ" "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ"
-                      "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ" "ⓧ" "ⓨ" "ⓩ" "⓪")
-                     ("Annotations"
-                      "      " "      " "     " "     " "        " "    " "      " "      "
-                      "      " "     " "    " "     " "     " "     "))))
-    #+end_src
+  (use-package char-menu
+    :ensure t
+    :bind ("M-p" . char-menu)
+    :custom
+    (char-menu '("—" "‘’" "“”" "…" "«»" "–"
+                 ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
+                 ("Mathematical Operators"
+                  "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉" "∊" "∋" "∌" "∍" "∎" "∏"
+                  "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙" "√" "∛" "∜" "∝" "∞" "∟"
+                  "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩" "∪" "∫" "∬" "∭" "∮" "∯"
+                  "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹" "∺" "∻" "∼" "∽" "∾" "∿"
+                  "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉" "≊" "≋" "≌" "≍" "≎" "≏"
+                  "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙" "≚" "≛" "≜" "≝" "≞" "≟"
+                  "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩" "≪" "≫" "≬" "≭" "≮" "≯"
+                  "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹" "≺" "≻" "≼" "≽" "≾" "≿"
+                  "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉" "⊊" "⊋" "⊌" "⊍" "⊎" "⊏"
+                  "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙" "⊚" "⊛" "⊜" "⊝" "⊞" "⊟"
+                  "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩" "⊪" "⊫" "⊬" "⊭" "⊮" "⊯"
+                  "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹" "⊺" "⊻" "⊼" "⊽" "⊾" "⊿"
+                  "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉" "⋊" "⋋" "⋌" "⋍" "⋎" "⋏"
+                  "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙" "⋚" "⋛" "⋜" "⋝" "⋞" "⋟"
+                  "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩" "⋪" "⋫" "⋬" "⋭" "⋮" "⋯"
+                  "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹" "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
+                 ("Superscripts & Subscripts"
+                  "⁰" "ⁱ"   "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺" "⁻" "⁼" "⁽" "⁾" "ⁿ"
+                  "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊" "₋" "₌" "₍₎"
+                  "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
+                 ("Arrows"     "←" "→" "↑" "↓" "⇐" "⇒" "⇑" "⇓")
+                 ("Greek"      "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ"
+                  "ν" "ξ" "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
+                 ("Enclosed Alphanumerics"
+                  "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ"
+                  "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ" "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ"
+                  "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ" "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ"
+                  "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ" "ⓧ" "ⓨ" "ⓩ" "⓪")
+                 ("Annotations"
+                  "      " "      " "     " "     " "        " "    " "      " "      "
+                  "      " "     " "    " "     " "     " "     "))))
+#+end_src
 
 *** Ligatures
 **** ligature-mode
@@ -360,316 +360,316 @@ Deploy the fanciness.
 #+end_src
 
 *** COMMENT prettify-symbols setup
-    Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-prettify-symbols-v0.829.el
-    #+begin_src emacs-lisp
-      (setq prettify-symbols-unprettify-at-point 'right-edge)
+Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_snippets/pragmatapro-prettify-symbols-v0.829.el
+#+begin_src emacs-lisp
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
 
-      (defconst pragmatapro-prettify-symbols-alist
-        (mapcar (lambda (s)
-                  `(,(car s)
-                    .
-                    ,(vconcat
-                      (apply 'vconcat
-                             (make-list
-                              (- (length (car s)) 1)
-                              (vector (decode-char 'ucs #X0020) '(Br . Bl))))
-                      (vector (decode-char 'ucs (cadr s))))))
-                '(("[INFO ]"    #XE280)
-                  ("[WARN ]"    #XE281)
-                  ("[PASS ]"    #XE282)
-                  ("[VERBOSE]"  #XE283)
-                  ("[KO]"       #XE284)
-                  ("[OK]"       #XE285)
-                  ("[PASS]"     #XE286)
-                  ("[ERROR]"    #XE2C0)
-                  ("[DEBUG]"    #XE2C1)
-                  ("[INFO]"     #XE2C2)
-                  ("[WARN]"     #XE2C3)
-                  ("[WARNING]"  #XE2C4)
-                  ("[ERR]"      #XE2C5)
-                  ("[FATAL]"    #XE2C6)
-                  ("[TRACE]"    #XE2C7)
-                  ("[FIXME]"    #XE2C8)
-                  ("[TODO]"     #XE2C9)
-                  ("[BUG]"      #XE2CA)
-                  ("[NOTE]"     #XE2CB)
-                  ("[HACK]"     #XE2CC)
-                  ("[MARK]"     #XE2CD)
-                  ("[FAIL]"     #XE2CE)
-                  ("# ERROR"    #XE2F0)
-                  ("# DEBUG"    #XE2F1)
-                  ("# INFO"     #XE2F2)
-                  ("# WARN"     #XE2F3)
-                  ("# WARNING"  #XE2F4)
-                  ("# ERR"      #XE2F5)
-                  ("# FATAL"    #XE2F6)
-                  ("# TRACE"    #XE2F7)
-                  ("# FIXME"    #XE2F8)
-                  ("# TODO"     #XE2F9)
-                  ("# BUG"      #XE2FA)
-                  ("# NOTE"     #XE2FB)
-                  ("# HACK"     #XE2FC)
-                  ("# MARK"     #XE2FD)
-                  ("# FAIL"     #XE2FE)
-                  ("// ERROR"   #XE2E0)
-                  ("// DEBUG"   #XE2E1)
-                  ("// INFO"    #XE2E2)
-                  ("// WARN"    #XE2E3)
-                  ("// WARNING" #XE2E4)
-                  ("// ERR"     #XE2E5)
-                  ("// FATAL"   #XE2E6)
-                  ("// TRACE"   #XE2E7)
-                  ("// FIXME"   #XE2E8)
-                  ("// TODO"    #XE2E9)
-                  ("// BUG"     #XE2EA)
-                  ("// NOTE"    #XE2EB)
-                  ("// HACK"    #XE2EC)
-                  ("// MARK"    #XE2ED)
-                  ("// FAIL"    #XE2EE)
-                  ("!="         #XE900)
-                  ("!=="        #XE901)
-                  ("!=="        #XE902)
-                  ("!≡"         #XE903)
-                  ("!≡≡"        #XE904)
-                  ("#("         #XE90C)
-                  ("#_"         #XE90D)
-                  ("#{"         #XE90E)
-                  ("#?"         #XE90F)
-                  ("##"         #XE910)
-                  ("#_("        #XE911)
-                  ("#["         #XE912)
-                  ("%="         #XE920)
-                  ("&%"         #XE92C)
-                  ("&&"         #XE92D)
-                  ("&+"         #XE92E)
-                  ("&-"         #XE92F)
-                  ("&/"         #XE930)
-                  ("&="         #XE931)
-                  ("&&&"        #XE932)
-                  ("$>"         #XE93A)
-                  ("(|"         #XE940)
-                  ("*>"         #XE946)
-                  ("++"         #XE94C)
-                  ("+++"        #XE94D)
-                  ("+="         #XE94E)
-                  ("+>"         #XE94F)
-                  ("++="        #XE950)
-                  ("--"         #XE960)
-                  ("-<"         #XE961)
-                  ("-<<"        #XE962)
-                  ("-="         #XE963)
-                  ("->"         #XE964)
-                  ("->>"        #XE965)
-                  ("---"        #XE966)
-                  ("-->"        #XE967)
-                  ("-+-"        #XE968)
-                  ("-\\/"        #XE969)
-                  ("-|>"        #XE96A)
-                  ("-<|"        #XE96B)
-                  ("->-"        #XE96C)
-                  ("-<-"        #XE96D)
-                  ("-|"         #XE96E)
-                  ("-||"        #XE96F)
-                  ("-|:"        #XE970)
-                  (".="         #XE979)
-                  ("//="        #XE994)
-                  ("/="         #XE995)
-                  ("/=="        #XE996)
-                  ("/-\\"       #XE997)
-                  ("/-:"        #XE998)
-                  ("/->"        #XE999)
-                  ("/=>"        #XE99A)
-                  ("/-<"        #XE99B)
-                  ("/=<"        #XE99C)
-                  ("/=:"        #XE99D)
-                  (":="         #XE9AC)
-                  (":≡"         #XE9AD)
-                  (":=>"        #XE9AE)
-                  (":-\\"       #XE9AF)
-                  (":=\\"       #XE980)
-                  (":-/"        #XE981)
-                  (":=/"        #XE982)
-                  (":-|"        #XE983)
-                  (":=|"        #XE984)
-                  (":|-"        #XE985)
-                  (":|="        #XE986)
-                  ("<$>"        #XE9C0)
-                  ("<*"         #XE9C1)
-                  ("<*>"        #XE9C2)
-                  ("<+>"        #XE9C3)
-                  ("<-"         #XE9C4)
-                  ("<<="        #XE9C5)
-                  ("<=>"        #XE9C7)
-                  ("<>"         #XE9C8)
-                  ("<|>"        #XE9C9)
-                  ("<<-"        #XE9CA)
-                  ("<|"         #XE9CB)
-                  ("<=<"        #XE9CC)
-                  ("<~"         #XE9CD)
-                  ("<~~"        #XE9CE)
-                  ("<<~"        #XE9CF)
-                  ("<$"         #XE9D0)
-                  ("<+"         #XE9D1)
-                  ("<!>"        #XE9D2)
-                  ("<@>"        #XE9D3)
-                  ("<#>"        #XE9D4)
-                  ("<%>"        #XE9D5)
-                  ("<^>"        #XE9D6)
-                  ("<&>"        #XE9D7)
-                  ("<?>"        #XE9D8)
-                  ("<.>"        #XE9D9)
-                  ("</>"        #XE9DA)
-                  ("<\\>"       #XE9DB)
-                  ("<\">"       #XE9DC)
-                  ("<:>"        #XE9DD)
-                  ("<~>"        #XE9DE)
-                  ("<**>"       #XE9DF)
-                  ("<<^"        #XE9E0)
-                  ("<="         #XE9E1)
-                  ("<->"        #XE9E2)
-                  ("<!--"       #XE9E3)
-                  ("<--"        #XE9E4)
-                  ("<~<"        #XE9E5)
-                  ("<==>"       #XE9E6)
-                  ("<|-"        #XE9E7)
-                  ("<||"        #XE9E8)
-                  ("<<|"        #XE9E9)
-                  ("<-<"        #XE9EA)
-                  ("<-->"       #XE9EB)
-                  ("<<=="       #XE9EC)
-                  ("<=="        #XE9ED)
-                  ("<-\\"        #XE9EE)
-                  ("<-/"        #XE9EF)
-                  ("<=\\"        #XE9F0)
-                  ("<=/"        #XE9F1)
-                  ("=<<"        #XEA00)
-                  ("=="         #XEA01)
-                  ("==="        #XEA02)
-                  ("==>"        #XEA03)
-                  ("=>"         #XEA04)
-                  ("=~"         #XEA05)
-                  ("=>>"        #XEA06)
-                  ("=~="        #XEA07)
-                  ("==>>"       #XEA08)
-                  ("=>="        #XEA09)
-                  ("=<="        #XEA0A)
-                  ("=<"         #XEA0B)
-                  ("==<"        #XEA0C)
-                  ("=<|"        #XEA0D)
-                  ("=/="        #XEA0F)
-                  ("=/<"        #XEA10)
-                  ("=|"         #XEA11)
-                  ("=||"        #XEA12)
-                  ("=|:"        #XEA13)
-                  (">-"         #XEA20)
-                  (">>-"        #XEA22)
-                  (">>="        #XEA23)
-                  (">=>"        #XEA24)
-                  (">>^"        #XEA25)
-                  (">>|"        #XEA26)
-                  (">!="        #XEA27)
-                  (">->"        #XEA28)
-                  (">=="        #XEA29)
-                  (">="         #XEA2A)
-                  (">/="        #XEA2B)
-                  (">-|"        #XEA2C)
-                  (">=|"        #XEA2D)
-                  (">-\\"        #XEA2E)
-                  (">=\\"        #XEA2F)
-                  (">-/"        #XEA30)
-                  (">=/"        #XEA31)
-                  (">λ="        #XEA32)
-                  ("?."         #XEA3F)
-                  ("^="         #XEA43)
-                  ("^<<"        #XEA48)
-                  ("^>>"        #XEA49)
-                  ("\\="         #XEA54)
-                  ("\\=="        #XEA55)
-                  ("\\/="        #XEA56)
-                  ("\\-/"        #XEA57)
-                  ("\\-:"        #XEA58)
-                  ("\\->"        #XEA59)
-                  ("\\=>"        #XEA5A)
-                  ("\\-<"        #XEA5B)
-                  ("\\=<"        #XEA5C)
-                  ("\\=:"        #XEA5D)
-                  ("|="         #XEA69)
-                  ("|>="        #XEA6A)
-                  ("|>"         #XEA6B)
-                  ("|+|"        #XEA6C)
-                  ("|->"        #XEA6D)
-                  ("|-->"       #XEA6E)
-                  ("|=>"        #XEA6F)
-                  ("|==>"       #XEA70)
-                  ("|>-"        #XEA71)
-                  ("|<<"        #XEA72)
-                  ("||>"        #XEA73)
-                  ("|>>"        #XEA74)
-                  ("|-"         #XEA75)
-                  ("||-"        #XEA76)
-                  ("||="        #XEA77)
-                  ("|)"         #XEA78)
-                  ("|]"         #XEA79)
-                  ("|-:"        #XEA7A)
-                  ("|=:"        #XEA7B)
-                  ("|-<"        #XEA7C)
-                  ("|=<"        #XEA7D)
-                  ("|--<"       #XEA7E)
-                  ("|==<"       #XEA7F)
-                  ("~="         #XEA8A)
-                  ("~>"         #XEA8B)
-                  ("~~>"        #XEA8C)
-                  ("~>>"        #XEA8D)
-                  ("[["         #XEA8F)
-                  ("[|"         #XEA90)
-                  ("_|_"        #XEA97)
-                  ("]]"         #XEAA0)
-                  ("≡≡"         #XEAB3)
-                  ("≡≡≡"        #XEAB4)
-                  ("≡:≡"        #XEAB5)
-                  ("≡/"         #XEAB6)
-                  ("≡/≡"        #XEAB7)
-                  )))
+  (defconst pragmatapro-prettify-symbols-alist
+    (mapcar (lambda (s)
+              `(,(car s)
+                .
+                ,(vconcat
+                  (apply 'vconcat
+                         (make-list
+                          (- (length (car s)) 1)
+                          (vector (decode-char 'ucs #X0020) '(Br . Bl))))
+                  (vector (decode-char 'ucs (cadr s))))))
+            '(("[INFO ]"    #XE280)
+              ("[WARN ]"    #XE281)
+              ("[PASS ]"    #XE282)
+              ("[VERBOSE]"  #XE283)
+              ("[KO]"       #XE284)
+              ("[OK]"       #XE285)
+              ("[PASS]"     #XE286)
+              ("[ERROR]"    #XE2C0)
+              ("[DEBUG]"    #XE2C1)
+              ("[INFO]"     #XE2C2)
+              ("[WARN]"     #XE2C3)
+              ("[WARNING]"  #XE2C4)
+              ("[ERR]"      #XE2C5)
+              ("[FATAL]"    #XE2C6)
+              ("[TRACE]"    #XE2C7)
+              ("[FIXME]"    #XE2C8)
+              ("[TODO]"     #XE2C9)
+              ("[BUG]"      #XE2CA)
+              ("[NOTE]"     #XE2CB)
+              ("[HACK]"     #XE2CC)
+              ("[MARK]"     #XE2CD)
+              ("[FAIL]"     #XE2CE)
+              ("# ERROR"    #XE2F0)
+              ("# DEBUG"    #XE2F1)
+              ("# INFO"     #XE2F2)
+              ("# WARN"     #XE2F3)
+              ("# WARNING"  #XE2F4)
+              ("# ERR"      #XE2F5)
+              ("# FATAL"    #XE2F6)
+              ("# TRACE"    #XE2F7)
+              ("# FIXME"    #XE2F8)
+              ("# TODO"     #XE2F9)
+              ("# BUG"      #XE2FA)
+              ("# NOTE"     #XE2FB)
+              ("# HACK"     #XE2FC)
+              ("# MARK"     #XE2FD)
+              ("# FAIL"     #XE2FE)
+              ("// ERROR"   #XE2E0)
+              ("// DEBUG"   #XE2E1)
+              ("// INFO"    #XE2E2)
+              ("// WARN"    #XE2E3)
+              ("// WARNING" #XE2E4)
+              ("// ERR"     #XE2E5)
+              ("// FATAL"   #XE2E6)
+              ("// TRACE"   #XE2E7)
+              ("// FIXME"   #XE2E8)
+              ("// TODO"    #XE2E9)
+              ("// BUG"     #XE2EA)
+              ("// NOTE"    #XE2EB)
+              ("// HACK"    #XE2EC)
+              ("// MARK"    #XE2ED)
+              ("// FAIL"    #XE2EE)
+              ("!="         #XE900)
+              ("!=="        #XE901)
+              ("!=="        #XE902)
+              ("!≡"         #XE903)
+              ("!≡≡"        #XE904)
+              ("#("         #XE90C)
+              ("#_"         #XE90D)
+              ("#{"         #XE90E)
+              ("#?"         #XE90F)
+              ("##"         #XE910)
+              ("#_("        #XE911)
+              ("#["         #XE912)
+              ("%="         #XE920)
+              ("&%"         #XE92C)
+              ("&&"         #XE92D)
+              ("&+"         #XE92E)
+              ("&-"         #XE92F)
+              ("&/"         #XE930)
+              ("&="         #XE931)
+              ("&&&"        #XE932)
+              ("$>"         #XE93A)
+              ("(|"         #XE940)
+              ("*>"         #XE946)
+              ("++"         #XE94C)
+              ("+++"        #XE94D)
+              ("+="         #XE94E)
+              ("+>"         #XE94F)
+              ("++="        #XE950)
+              ("--"         #XE960)
+              ("-<"         #XE961)
+              ("-<<"        #XE962)
+              ("-="         #XE963)
+              ("->"         #XE964)
+              ("->>"        #XE965)
+              ("---"        #XE966)
+              ("-->"        #XE967)
+              ("-+-"        #XE968)
+              ("-\\/"        #XE969)
+              ("-|>"        #XE96A)
+              ("-<|"        #XE96B)
+              ("->-"        #XE96C)
+              ("-<-"        #XE96D)
+              ("-|"         #XE96E)
+              ("-||"        #XE96F)
+              ("-|:"        #XE970)
+              (".="         #XE979)
+              ("//="        #XE994)
+              ("/="         #XE995)
+              ("/=="        #XE996)
+              ("/-\\"       #XE997)
+              ("/-:"        #XE998)
+              ("/->"        #XE999)
+              ("/=>"        #XE99A)
+              ("/-<"        #XE99B)
+              ("/=<"        #XE99C)
+              ("/=:"        #XE99D)
+              (":="         #XE9AC)
+              (":≡"         #XE9AD)
+              (":=>"        #XE9AE)
+              (":-\\"       #XE9AF)
+              (":=\\"       #XE980)
+              (":-/"        #XE981)
+              (":=/"        #XE982)
+              (":-|"        #XE983)
+              (":=|"        #XE984)
+              (":|-"        #XE985)
+              (":|="        #XE986)
+              ("<$>"        #XE9C0)
+              ("<*"         #XE9C1)
+              ("<*>"        #XE9C2)
+              ("<+>"        #XE9C3)
+              ("<-"         #XE9C4)
+              ("<<="        #XE9C5)
+              ("<=>"        #XE9C7)
+              ("<>"         #XE9C8)
+              ("<|>"        #XE9C9)
+              ("<<-"        #XE9CA)
+              ("<|"         #XE9CB)
+              ("<=<"        #XE9CC)
+              ("<~"         #XE9CD)
+              ("<~~"        #XE9CE)
+              ("<<~"        #XE9CF)
+              ("<$"         #XE9D0)
+              ("<+"         #XE9D1)
+              ("<!>"        #XE9D2)
+              ("<@>"        #XE9D3)
+              ("<#>"        #XE9D4)
+              ("<%>"        #XE9D5)
+              ("<^>"        #XE9D6)
+              ("<&>"        #XE9D7)
+              ("<?>"        #XE9D8)
+              ("<.>"        #XE9D9)
+              ("</>"        #XE9DA)
+              ("<\\>"       #XE9DB)
+              ("<\">"       #XE9DC)
+              ("<:>"        #XE9DD)
+              ("<~>"        #XE9DE)
+              ("<**>"       #XE9DF)
+              ("<<^"        #XE9E0)
+              ("<="         #XE9E1)
+              ("<->"        #XE9E2)
+              ("<!--"       #XE9E3)
+              ("<--"        #XE9E4)
+              ("<~<"        #XE9E5)
+              ("<==>"       #XE9E6)
+              ("<|-"        #XE9E7)
+              ("<||"        #XE9E8)
+              ("<<|"        #XE9E9)
+              ("<-<"        #XE9EA)
+              ("<-->"       #XE9EB)
+              ("<<=="       #XE9EC)
+              ("<=="        #XE9ED)
+              ("<-\\"        #XE9EE)
+              ("<-/"        #XE9EF)
+              ("<=\\"        #XE9F0)
+              ("<=/"        #XE9F1)
+              ("=<<"        #XEA00)
+              ("=="         #XEA01)
+              ("==="        #XEA02)
+              ("==>"        #XEA03)
+              ("=>"         #XEA04)
+              ("=~"         #XEA05)
+              ("=>>"        #XEA06)
+              ("=~="        #XEA07)
+              ("==>>"       #XEA08)
+              ("=>="        #XEA09)
+              ("=<="        #XEA0A)
+              ("=<"         #XEA0B)
+              ("==<"        #XEA0C)
+              ("=<|"        #XEA0D)
+              ("=/="        #XEA0F)
+              ("=/<"        #XEA10)
+              ("=|"         #XEA11)
+              ("=||"        #XEA12)
+              ("=|:"        #XEA13)
+              (">-"         #XEA20)
+              (">>-"        #XEA22)
+              (">>="        #XEA23)
+              (">=>"        #XEA24)
+              (">>^"        #XEA25)
+              (">>|"        #XEA26)
+              (">!="        #XEA27)
+              (">->"        #XEA28)
+              (">=="        #XEA29)
+              (">="         #XEA2A)
+              (">/="        #XEA2B)
+              (">-|"        #XEA2C)
+              (">=|"        #XEA2D)
+              (">-\\"        #XEA2E)
+              (">=\\"        #XEA2F)
+              (">-/"        #XEA30)
+              (">=/"        #XEA31)
+              (">λ="        #XEA32)
+              ("?."         #XEA3F)
+              ("^="         #XEA43)
+              ("^<<"        #XEA48)
+              ("^>>"        #XEA49)
+              ("\\="         #XEA54)
+              ("\\=="        #XEA55)
+              ("\\/="        #XEA56)
+              ("\\-/"        #XEA57)
+              ("\\-:"        #XEA58)
+              ("\\->"        #XEA59)
+              ("\\=>"        #XEA5A)
+              ("\\-<"        #XEA5B)
+              ("\\=<"        #XEA5C)
+              ("\\=:"        #XEA5D)
+              ("|="         #XEA69)
+              ("|>="        #XEA6A)
+              ("|>"         #XEA6B)
+              ("|+|"        #XEA6C)
+              ("|->"        #XEA6D)
+              ("|-->"       #XEA6E)
+              ("|=>"        #XEA6F)
+              ("|==>"       #XEA70)
+              ("|>-"        #XEA71)
+              ("|<<"        #XEA72)
+              ("||>"        #XEA73)
+              ("|>>"        #XEA74)
+              ("|-"         #XEA75)
+              ("||-"        #XEA76)
+              ("||="        #XEA77)
+              ("|)"         #XEA78)
+              ("|]"         #XEA79)
+              ("|-:"        #XEA7A)
+              ("|=:"        #XEA7B)
+              ("|-<"        #XEA7C)
+              ("|=<"        #XEA7D)
+              ("|--<"       #XEA7E)
+              ("|==<"       #XEA7F)
+              ("~="         #XEA8A)
+              ("~>"         #XEA8B)
+              ("~~>"        #XEA8C)
+              ("~>>"        #XEA8D)
+              ("[["         #XEA8F)
+              ("[|"         #XEA90)
+              ("_|_"        #XEA97)
+              ("]]"         #XEAA0)
+              ("≡≡"         #XEAB3)
+              ("≡≡≡"        #XEAB4)
+              ("≡:≡"        #XEAB5)
+              ("≡/"         #XEAB6)
+              ("≡/≡"        #XEAB7)
+              )))
 
-      (defun add-pragmatapro-prettify-symbols-alist ()
-        (setq prettify-symbols-alist pragmatapro-prettify-symbols-alist))
+  (defun add-pragmatapro-prettify-symbols-alist ()
+    (setq prettify-symbols-alist pragmatapro-prettify-symbols-alist))
 
-      ;; enable prettified symbols on comments
-      (defun setup-compose-predicate ()
-        (setq prettify-symbols-compose-predicate
-              (defun my-prettify-symbols-default-compose-p (start end _match)
-                "Same as `prettify-symbols-default-compose-p', except compose symbols in comments as well."
-                (let* ((syntaxes-beg (if (memq (char-syntax (char-after start)) '(?w ?_))
-                                         '(?w ?_) '(?. ?\\)))
-                       (syntaxes-end (if (memq (char-syntax (char-before end)) '(?w ?_))
-                                         '(?w ?_) '(?. ?\\))))
-                  (not (or (memq (char-syntax (or (char-before start) ?\s)) syntaxes-beg)
-                           (memq (char-syntax (or (char-after end) ?\s)) syntaxes-end)
-                           (nth 3 (syntax-ppss))))))))
+  ;; enable prettified symbols on comments
+  (defun setup-compose-predicate ()
+    (setq prettify-symbols-compose-predicate
+          (defun my-prettify-symbols-default-compose-p (start end _match)
+            "Same as `prettify-symbols-default-compose-p', except compose symbols in comments as well."
+            (let* ((syntaxes-beg (if (memq (char-syntax (char-after start)) '(?w ?_))
+                                     '(?w ?_) '(?. ?\\)))
+                   (syntaxes-end (if (memq (char-syntax (char-before end)) '(?w ?_))
+                                     '(?w ?_) '(?. ?\\))))
+              (not (or (memq (char-syntax (or (char-before start) ?\s)) syntaxes-beg)
+                       (memq (char-syntax (or (char-after end) ?\s)) syntaxes-end)
+                       (nth 3 (syntax-ppss))))))))
 
-      ;; main hook fn, just add to text-mode/prog-mode
-      (defun prettify-hook ()
-        (add-pragmatapro-prettify-symbols-alist)
-        (setup-compose-predicate))
-    #+end_src
+  ;; main hook fn, just add to text-mode/prog-mode
+  (defun prettify-hook ()
+    (add-pragmatapro-prettify-symbols-alist)
+    (setup-compose-predicate))
+#+end_src
 *** Emoji 😂
-    #+begin_src emacs-lisp
-      (if (version< "27.0" emacs-version)
-          (set-fontset-font
-           "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-        (set-fontset-font
-         t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
-    #+end_src
+#+begin_src emacs-lisp
+  (if (version< "27.0" emacs-version)
+      (set-fontset-font
+       "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+    (set-fontset-font
+     t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+#+end_src
 *** COMMENT [[https://www.nerdfonts.com/cheat-sheet][Nerd Fonts]]
-    #+begin_src emacs-lisp
-      (use-package nerd-fonts
-        :straight (nerd-fonts :type git :host github :repo "twlz0ne/nerd-fonts.el"))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package nerd-fonts
+    :straight (nerd-fonts :type git :host github :repo "twlz0ne/nerd-fonts.el"))
+#+end_src
 ** Themes
 *** [[https://github.com/cryon/almost-mono-themes][cryon/almost-mono-themes: Almost monochromatic themes for emacs in a few variants]]
-    #+begin_src emacs-lisp
-      (use-package almost-mono-themes)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package almost-mono-themes)
+#+end_src
 
 *** [[https://protesilaos.com/emacs/ef-themes][Ef (εὖ) themes for GNU Emacs | Protesilaos Stavrou]]
 #+begin_src emacs-lisp
@@ -678,12 +678,12 @@ Deploy the fanciness.
     (setq
      ;; headings
      ef-themes-headings '((0 . (1.2 variable-pitch grayscale light regular))
-                             (1 . (1.1 variable-pitch rainbow light))
-                             (t . (variable-pitch rainbow regular)))
+                          (1 . (1.1 variable-pitch rainbow light))
+                          (t . (variable-pitch rainbow regular)))
 
      ;; org
      ef-themes-org-agenda '((header-block . (variable-pitch scale-title))
-                               (header-date . (grayscale bold-today)))
+                            (header-date . (grayscale bold-today)))
      ef-themes-org-blocks 'gray-background
 
      ;; text
@@ -700,196 +700,209 @@ Deploy the fanciness.
      ef-themes-variable-pitch-ui t))
 #+end_src
 *** gruvbox
-    #+begin_src emacs-lisp
-      (use-package gruvbox-theme :defer t)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package gruvbox-theme :defer t)
+#+end_src
 
 *** [[https://protesilaos.com/emacs/modus-themes][Modus Themes (Modus Operandi and Modus Vivendi) | Protesilaos Stavrou]]
-    #+begin_src emacs-lisp
-      (use-package modus-themes
-        :init
-        (setq
-         ;; headings
-         modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
-                                 (2 . (1.1 variable-pitch rainbow regular))
-                                 (t . (variable-pitch rainbow regular)))
+#+begin_src emacs-lisp
+  (use-package modus-themes
+    :init
+    (setq
+     ;; headings
+     modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+                             (2 . (1.1 variable-pitch rainbow regular))
+                             (t . (variable-pitch rainbow regular)))
 
-         ;; org
-         modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
-                                   (header-date . (grayscale bold-today)))
-         modus-themes-org-blocks 'gray-background
+     ;; org
+     modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                               (header-date . (grayscale bold-today)))
+     modus-themes-org-blocks 'gray-background
 
-         ;; text
-         modus-themes-bold-constructs t
-         modus-themes-italic-constructs t
-         modus-themes-slanted-constructs t
+     ;; text
+     modus-themes-bold-constructs t
+     modus-themes-italic-constructs t
+     modus-themes-slanted-constructs t
 
-         ;; other
-         modus-themes-hl-line '(accented)
-         modus-themes-lang-checkers '(straight-underline faint)
-         modus-themes-mode-line '(accented borderless)
-         modus-themes-syntax '(faint alt-syntax)
-         modus-themes-variable-pitch-ui t
+     ;; other
+     modus-themes-hl-line '(accented)
+     modus-themes-lang-checkers '(straight-underline faint)
+     modus-themes-mode-line '(accented borderless)
+     modus-themes-syntax '(faint alt-syntax)
+     modus-themes-variable-pitch-ui t
 
-         modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-nuanced)
-                                                  (prose-todo red)))
+     modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-nuanced)
+                                             (prose-todo red)))
 
-        (defun slumos-modus-themes-custom-faces ()
-          (modus-themes-with-colors
-            (set-face-attribute 'org-ellipsis nil :foreground fg-heading-8 :height 0.6)))
+    (defun slumos-modus-themes-custom-faces ()
+      (modus-themes-with-colors
+        (set-face-attribute 'org-ellipsis nil :foreground fg-heading-8 :height 0.6)))
 
-        :config
-        (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
-        (modus-themes-load-theme 'modus-operandi-tinted))
-    #+end_src
+    :config
+    (add-hook 'modus-themes-after-load-theme-hook #'slumos-modus-themes-custom-faces)
+    (modus-themes-load-theme 'modus-operandi-tinted))
+#+end_src
 
 *** nordless
-    #+BEGIN_SRC emacs-lisp
-      (use-package nordless-theme :defer t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package nordless-theme :defer t)
+#+END_SRC
 
 *** parchment
-    #+begin_src emacs-lisp
-      (use-package parchment-theme :defer t)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package parchment-theme :defer t)
+#+end_src
 *** symx
-    #+BEGIN_SRC emacs-lisp :tangle no
-      (use-package smyx-theme
-        :defer t
-        :config
-        (set-face-attribute 'org-todo nil :box nil)
-        (set-face-attribute 'org-done nil :box nil))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package smyx-theme
+    :defer t
+    :config
+    (set-face-attribute 'org-todo nil :box nil)
+    (set-face-attribute 'org-done nil :box nil))
+#+END_SRC
 *** tao-yin
-    #+begin_src emacs-lisp
-    (use-package tao-theme :defer t)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package tao-theme :defer t)
+#+end_src
 
 *** Dark/light switching on macOS
-    #+begin_src emacs-lisp
-      (defun slumos/handle-appearance-change (appearance)
-        (pcase appearance
-          ('light (modus-themes-load-theme 'modus-operandi-tinted))
-          ('dark (modus-themes-load-theme 'modus-vivendi-tinted))))
-      (add-hook 'ns-system-appearance-change-functions #'slumos/handle-appearance-change)
-    #+end_src
+#+begin_src emacs-lisp
+  (defun slumos/handle-appearance-change (appearance)
+    (pcase appearance
+      ('light (modus-themes-load-theme 'modus-operandi-tinted))
+      ('dark (modus-themes-load-theme 'modus-vivendi-tinted))))
+  (add-hook 'ns-system-appearance-change-functions #'slumos/handle-appearance-change)
+#+end_src
 
 ** Code
-   #+BEGIN_SRC emacs-lisp
-   (show-paren-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+#+END_SRC
 ** Mode Line
 *** Clock
-    #+begin_src emacs-lisp
-      (display-time)
-    #+end_src
+#+begin_src emacs-lisp
+  (display-time)
+#+end_src
 
 *** Filenames
 #+begin_src emacs-lisp
   (custom-set-variables '(find-file-visit-truename t))
 #+end_src
 *** COMMENT Doom Mode Line
-     #+begin_src emacs-lisp
-       (use-package doom-modeline
-         :hook
-         (after-init . doom-modeline-mode)
-         :custom
-         (doom-modeline-bar-width 8)
-         (doom-modeline-buffer-file-name-style 'truncate-nil)
-         (doom-modeline-enable-word-count t)
-         (doom-modeline-env-version t)
-         (doom-modeline-hud t)
-         (doom-modeline-icon t "Use all-the-icons")
-         (doom-modeline-vcs-max-length 25) ; feature_slumos_W123456789_something
-         ;(doom-modeline-buffer-file-name-style 'file-name) ;; if TRAMP is super-slow
-         )
-       #+end_src
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :hook
+    (after-init . doom-modeline-mode)
+    :custom
+    (doom-modeline-bar-width 8)
+    (doom-modeline-buffer-file-name-style 'truncate-nil)
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-env-version t)
+    (doom-modeline-hud t)
+    (doom-modeline-icon t "Use all-the-icons")
+    (doom-modeline-vcs-max-length 25) ; feature_slumos_W123456789_something
+                                          ;(doom-modeline-buffer-file-name-style 'file-name) ;; if TRAMP is super-slow
+    )
+#+end_src
 ** TODO COMMENT [[https://github.com/slumos/nano-emacs][NΛNO]]
-   #+begin_src emacs-lisp
-     ;; Path to nano emacs modules (mandatory)
-     (add-to-list 'load-path "~/Projects/nano-emacs")
-     (add-to-list 'load-path ".")
+#+begin_src emacs-lisp
+  ;; Path to nano emacs modules (mandatory)
+  (add-to-list 'load-path "~/Projects/nano-emacs")
+  (add-to-list 'load-path ".")
 
-     ;; Window layout (optional)
-     (require 'nano-layout)
+  ;; Window layout (optional)
+  (require 'nano-layout)
 
-     ;; Theming Command line options (this will cancel warning messages)
-     (add-to-list 'command-switch-alist '("-dark"   . (lambda (args))))
-     (add-to-list 'command-switch-alist '("-light"  . (lambda (args))))
-     (add-to-list 'command-switch-alist '("-default"  . (lambda (args))))
+  ;; Theming Command line options (this will cancel warning messages)
+  (add-to-list 'command-switch-alist '("-dark"   . (lambda (args))))
+  (add-to-list 'command-switch-alist '("-light"  . (lambda (args))))
+  (add-to-list 'command-switch-alist '("-default"  . (lambda (args))))
 
-     (cond
-      ((member "-default" command-line-args) t)
-      ((member "-dark" command-line-args) (require 'nano-theme-dark))
-      (t (require 'nano-theme-light)))
+  (cond
+   ((member "-default" command-line-args) t)
+   ((member "-dark" command-line-args) (require 'nano-theme-dark))
+   (t (require 'nano-theme-light)))
 
-     ;; Theme
-     (require 'nano-faces)
-     (nano-faces)
+  ;; Theme
+  (require 'nano-faces)
+  (nano-faces)
 
-     (require 'nano-theme)
-     (nano-theme)
+  (require 'nano-theme)
+  (nano-theme)
 
-     ;; Nano default settings (optional)
-     (require 'nano-defaults)
+  ;; Nano default settings (optional)
+  (require 'nano-defaults)
 
-     ;; Nano header & mode lines (optional)
-     (require 'nano-modeline)
-   #+end_src
+  ;; Nano header & mode lines (optional)
+  (require 'nano-modeline)
+#+end_src
 * Magit
-  [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
+[[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
-  Magit—like Org—is a total killer app and probably one of the reasons
-  Emacs had a revival in the recent(ish) years.
+Magit—like Org—is a total killer app and probably one of the reasons
+Emacs had a revival in the recent(ish) years.
 
-  Just like [[http://mh-e.sourceforge.net/][MH-E]] back in the day, it's not about avoiding the CLI,
-  it's about heads-up display of the important stuff and driving the
-  CLI with single keystrokes.
+Just like [[http://mh-e.sourceforge.net/][MH-E]] back in the day, it's not about avoiding the CLI,
+it's about heads-up display of the important stuff and driving the
+CLI with single keystrokes.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :bind
-      ("\C-x g" . magit-status)
-      :custom
-      (magit-file-mode t)
-      (magit-clone-default-directory "~/Projects/")
-      (magit-repository-directories
-       '(("~/Projects" . 1)
-         ("~/Projects/iac" . 1)
-         ("~/Projects/puppet" . 1)))
-      (transient-default-level 5)
-      (auto-revert-verbose t))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind
+    ("\C-x g" . magit-status)
+    :custom
+    (magit-file-mode t)
+    (magit-clone-default-directory "~/Projects/")
+    (magit-repository-directories
+     '(("~/Projects" . 1)
+       ("~/Projects/iac" . 1)
+       ("~/Projects/puppet" . 1)))
+    (transient-default-level 5)
+    (auto-revert-verbose t))
+#+END_SRC
 
-  #+begin_src emacs-lisp
-    ;; Security has pretty much killed this.
-    ;; (use-package forge
-    ;;   :after magit
-    ;;   :custom
-    ;;   (forge-topic-list-limit '(60 . 0)))
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package forge
+    :after magit
+    :custom
+    (forge-topic-list-limit '(60 . 0)))
+#+end_src
+** TODO Look at https://github.com/arthurcgusmao/acg-emacs/commit/2257058e424b82e1d670cadf2e870f0a6a37d669
+** Originally based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
+#+begin_src emacs-lisp
+  (defun slumos/parse-github-repo-url (url)
+    "return a hash of the components of a git repo url (naive)"
+    (let ((components (make-hash-table)))
+      (string-match "\\(.*\\)@\\(.*\\):\\(.*\\)/\\(.*?\\)\\(.git\\|$\\)" url)
+      (puthash 'user (match-string 1 url) components)
+      (puthash 'host (match-string 2 url) components)
+      (puthash 'org  (match-string 3 url) components)
+      (puthash 'repo (match-string 4 url) components)
+      (json-encode components)))
 
-  Based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
-  #+begin_src emacs-lisp
-    (defun slumos/parse-git-repo-url (url)
-      "convert a git remote location as a HTTP URL"
-      (if (string-match "^http" url)
-          url
-        (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git\\)?"
-                                  "https://\\2/\\3"
-                                  url)))
+  (defun slumos/magit-browse-repo ())
+#+end_src
 
-    (defun slumos/magit-open-repo ()
-      "open remote repo URL"
-      (interactive)
-      (let ((url (magit-get "remote" "origin" "url")))
-        (progn
-          (browse-url (slumos/parse-git-repo-url url))
-          (message "opening repo %s" url))))
+#+begin_src emacs-lisp
+  (defun slumos/parse-git-repo-url (url)
+    "convert a git remote location as a HTTP URL"
+    (if (string-match "^http" url)
+        url
+      (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git\\)?"
+                                "https://\\2/\\3"
+                                url)))
 
-    (add-hook 'magit-mode-hook
-              (lambda ()
-                (local-set-key (kbd "o") #'slumos/magit-open-repo)))
+  (defun slumos/magit-open-repo ()
+    "open remote repo URL"
+    (interactive)
+    (let ((url (magit-get "remote" "origin" "url")))
+      (progn
+        (browse-url (slumos/parse-git-repo-url url))
+        (message "opening repo %s" url))))
+
+  (add-hook 'magit-mode-hook
+            (lambda ()
+              (local-set-key (kbd "o") #'slumos/magit-open-repo)))
   #+end_src
 
   Inspired by [[https://emacs.stackexchange.com/questions/30487/add-copy-to-kill-ring-current-branch-name-with-magit][Add (copy) to kill ring current branch name with Magit - Emacs Stack Exchange]]
@@ -1880,7 +1893,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      (global-set-key (kbd "C-c h") #'invoke-hydra)
    #+end_src
 *** Hydras
-**** Commonly visited files
+**** Commonly visited file shortcuts
 
      This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
      #+name: commonly-visited-files-shortcuts
@@ -1890,6 +1903,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      | c   | ~/.emacs.d/config.org             | main config (config.org) | find-file    |
      | N   | ~/Sync/OneDrive/Notes/NOTES.org   | NOTES.org                | find-file    |
      | p   | ~/.emacs.d/personal.org           | personal config          | find-file    |
+     | q   | ~/Sync/GDrive/Notes/Quizlet.org   | Quizlet.org              | find-file    |
      | r   | ~/Sync/Notes/Cookbook.org         | cookbook                 | find-file    |
      | s   | ~/Sync/Notes/SLUMOS.org           | SLUMOS.org               | find-file    |
      | t   | ~/Sync/Notes/TODO.org             | TODO.org                 | find-file    |
@@ -1904,7 +1918,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      #+name: table-to-file-shortcuts-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
        (cl-loop for (key path name fun) in table do
-                (print (list key (list (intern fun) path) name)) (list :column "File Shortcuts"))))
+                (print (list key (list (intern fun) path) name)) (list :column "File Shortcuts"))
      #+end_src
 
      #+begin_src emacs-lisp :noweb yes
@@ -1912,6 +1926,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
          <<table-to-file-shortcuts-heads(table=commonly-visited-files-shortcuts)>>)
        (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
      #+end_src
+     
 **** kill-ring-saving
 #+begin_src emacs-lisp
   (defhydra slumos-hydra-copy-something-as-kill (:color blue)
