@@ -12,7 +12,7 @@
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-     (setq org-directory "~/Sync/GDrive/Notes")
+     (setq org-directory "~/Sync/GDrive/My Drive/Notes")
      (setq slumos-org-directory "~/Sync/ST/Notes")
      (setq org-agenda-files (list
                              (expand-file-name "Quizlet.org" org-directory)
