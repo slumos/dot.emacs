@@ -710,9 +710,9 @@ Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_sni
     :init
     (setq
      ;; headings
-     modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
-                             (2 . (1.1 variable-pitch rainbow regular))
-                             (t . (variable-pitch rainbow regular)))
+     ;; modus-themes-headings '((1 . (1.2 variable-pitch monochrome regular))
+     ;;                         (2 . (1.1 variable-pitch rainbow regular))
+     ;;                         (t . (variable-pitch rainbow regular)))
 
      ;; org
      modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
@@ -870,20 +870,6 @@ CLI with single keystrokes.
 ** TODO Look at https://github.com/arthurcgusmao/acg-emacs/commit/2257058e424b82e1d670cadf2e870f0a6a37d669
 ** Originally based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
 #+begin_src emacs-lisp
-  (defun slumos/parse-github-repo-url (url)
-    "return a hash of the components of a git repo url (naive)"
-    (let ((components (make-hash-table)))
-      (string-match "\\(.*\\)@\\(.*\\):\\(.*\\)/\\(.*?\\)\\(.git\\|$\\)" url)
-      (puthash 'user (match-string 1 url) components)
-      (puthash 'host (match-string 2 url) components)
-      (puthash 'org  (match-string 3 url) components)
-      (puthash 'repo (match-string 4 url) components)
-      (json-encode components)))
-
-  (defun slumos/magit-browse-repo ())
-#+end_src
-
-#+begin_src emacs-lisp
   (defun slumos/parse-git-repo-url (url)
     "convert a git remote location as a HTTP URL"
     (if (string-match "^http" url)
@@ -916,11 +902,40 @@ CLI with single keystrokes.
                    (message "%s" branch))
           (user-error "There is not current branch"))))
   #+end_src
+** COMMENT Experimental
+  #+begin_src emacs-lisp
+  (defun slumos/parse-github-repo-url (url)
+    "return a hash of the components of a git repo url (naive)"
+    (let ((components (make-hash-table)))
+      (string-match "\\(.*\\)@\\(.*\\):\\(.*\\)/\\(.*?\\)\\(.git\\|$\\)" url)
+      (puthash 'user (match-string 1 url) components)
+      (puthash 'host (match-string 2 url) components)
+      (puthash 'org  (match-string 3 url) components)
+      (puthash 'repo (match-string 4 url) components)
+      components))
 
+  (defun slumos/magit-browse-repo ()
+    (interactive)
+    (let* ((git-url (magit-get "remote" "origin" "url"))
+           (parsed (slumos/parse-github-repo-url git-url))
+           (gh-url (format "https://%s/%s/%s"
+                           (gethash 'host parsed)
+                           (gethash 'org parsed)
+                           (gethash 'repo parsed))))
+      (browse-url gh-url)))
+
+  (define-transient-command slumos/magit-open-transient ()
+                           "Open related URLs"
+                           [["Browse"
+                             ("g" "GitHub" slumos/magit-browse-github)
+                             ("c" "CircleCI" slumos/magit-browse-github)]])
+
+  (define-key magit-status-mode-map "M-o" #'slumos/magit-open-transient)
+#+end_src
 ** Initialization
 * Org                                                                   :org:
 #+begin_src emacs-lisp
-  (setq *slumos-org-notes-directory* (expand-file-name "~/Sync/Notes"))
+  (setq *slumos-org-notes-directory* (expand-file-name "~/Sync/ST/Notes"))
 #+end_src
 
 
@@ -1175,8 +1190,10 @@ CLI with single keystrokes.
 ** Evaluation
 *** Structure Templates
     #+begin_src emacs-lisp
+      (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
       (add-to-list 'org-structure-template-alist '("sj" . "src shell :results output :wrap src json"))
       (add-to-list 'org-structure-template-alist '("st" . "src shell :results output :wrap src text"))
+      (add-to-list 'org-structure-template-alist '("sy" . "src shell :results output :wrap src yaml"))
     #+end_src
 *** Beautiful, gorgeous hack from [[https://emacs.stackexchange.com/questions/24247/org-mode-pipe-source-block-output-as-stdin-to-next-source-block/51734#51734][org babel - Org-mode: pipe source block output as stdin to next source block - Emacs Stack Exchange]]
     #+begin_src emacs-lisp
@@ -1389,6 +1406,21 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_example
 
 * Other Apps
+** Docker
+*** [[https://github.com/Silex/docker.el][Silex/docker.el: Manage docker from Emacs.]]
+#+begin_src emacs-lisp
+    (use-package docker
+      :bind ("C-c d" . docker))
+#+end_src
+*** COMMENT (deprecated) [[https://github.com/emacs-pe/docker-tramp.el][emacs-pe/docker-tramp.el: TRAMP integration for docker containers]]
+#+begin_src emacs-lisp
+;  (use-package docker-tramp)
+#+end_src
+
+** [[https://github.com/akermu/emacs-libvterm][akermu/emacs-libvterm: Emacs libvterm integration]]
+#+begin_src emacs-lisp
+  (use-package vterm)
+#+end_src
 ** TODO [[https://github.com/xenodium/chatgpt-shell][xenodium/chatgpt-shell: ChatGPT and DALL-E Emacs shells + Org babel 🦄 + a shell maker for other providers]]
 ** [[https://github.com/skeeto/elfeed][skeeto/elfeed: An Emacs web feeds client]]
 #+begin_src emacs-lisp
@@ -1790,8 +1822,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        :config
        (setq lsp-disabled-clients '(tfls))
        :hook
-       ;(terraform-mode . terraform-format-on-save-mode)
-       (terraform-mode . apheleia-mode)
+       ; see aphelia (terraform-mode . terraform-format-on-save-mode)
        (terraform-mode . lsp-deferred)
        (terraform-mode . flycheck-mode))
    #+END_SRC
@@ -1865,7 +1896,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 ** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
   (use-package apheleia
-    :hook (prog-mode . apheleia-mode))
+    :hook (terraform-mode . apheleia-mode))
 #+end_src
 
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
@@ -1965,7 +1996,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
    #+END_SRC
-** Font scale for all frames
+** (not needed as of 29.1?) Font scale for all frames
    #+BEGIN_SRC emacs-lisp
      (use-package default-text-scale
        :init (default-text-scale-mode))
@@ -1984,7 +2015,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     #+BEGIN_SRC emacs-lisp
 	(use-package avy
           :bind
-          ("C-." . avy-goto-char)
+          ("C-." . avy-goto-char-timer)
           ("M-g M-g" . avy-goto-line))
     #+END_SRC
 *** [[https://github.com/noctuid/link-hint.el][noctuid/link-hint.el: Pentadactyl-like Link Hinting in Emacs with Avy]]
@@ -2579,7 +2610,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
      (let* ((local-config-name (pcase (system-name)
                                  ("m2.local" "personal.org")
                                  ("steven.lan" "personal.org")
-                                 (rx "salesforce.com" "work.org")))
+                                 ("Steven-Lumos-VXXQV3F32R.local" "work.org")))
             (local-config (expand-file-name local-config-name user-emacs-directory)))
        (message "work/life loading %s on %s" local-config (system-name))
        (if (file-exists-p local-config)
@@ -2637,12 +2668,13 @@ LC_ALL=
 
    #+RESULTS:
    #+begin_src text
-   | lsp-log-io                             | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
-   | leaf-defaults                          | ('(:ensure t))     | Customized with leaf in `leaf' block at `/Users/slumos/.config/emacs/config.el'   |
-   | lsp-log-max                            | (2000)             | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
-   | lsp-auto-guess-root                    | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
-   | lsp-enable-completion-at-point         | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
-   | lsp-ui-doc-enable                      | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.config/emacs/config.el' |
-   | org-ql-search-directories-files-regexp | (\.org\(_done\)?\') | Customized with leaf in `org-ql' block at `/Users/slumos/.config/emacs/config.el' |
-   | el-get-git-shallow-clone               | (t)                | Customized with leaf in `el-get' block at `/Users/slumos/.config/emacs/config.el' |
+   | debug-on-error                         | (t)                | nil                                                                          |
+   | lsp-log-io                             | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.emacs.d/config.el' |
+   | leaf-defaults                          | ('(:ensure t))     | Customized with leaf in `leaf' block at `/Users/slumos/.emacs.d/config.el'   |
+   | lsp-log-max                            | (2000)             | Customized with leaf in `lsp-ui' block at `/Users/slumos/.emacs.d/config.el' |
+   | lsp-auto-guess-root                    | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.emacs.d/config.el' |
+   | lsp-enable-completion-at-point         | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.emacs.d/config.el' |
+   | lsp-ui-doc-enable                      | (t)                | Customized with leaf in `lsp-ui' block at `/Users/slumos/.emacs.d/config.el' |
+   | org-ql-search-directories-files-regexp | (\.org\(_done\)?\') | Customized with leaf in `org-ql' block at `/Users/slumos/.emacs.d/config.el' |
+   | el-get-git-shallow-clone               | (t)                | Customized with leaf in `el-get' block at `/Users/slumos/.emacs.d/config.el' |
    #+end_src

@@ -38,37 +38,35 @@
        :load-path "~/.config/emacs/org-ql")
    #+end_src
 ** Capture templates
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (setq org-capture-templates
-           (quote
-            (("j" "Journal" entry (file+datetree "~/Sync/OneDrive/ST/Notes/JOURNAL.org")
+            `(("j" "Journal" entry (file+datetree ,(expand-file-name "JOURNAL.org" slumos-org-directory))
               "* %^T %?")
-             ("k" "linK" entry
-              (id "006AA229-6D16-4C2B-9D56-E8CBA014ED54")
-              "* %U %?")
              ("l" "Log" entry
-              (id "189F5056-2ACF-4892-A792-54DBB9C34FE1")
-              "* %U {%^{estimate of time spent}} %^{log}%?" :prepend t)
+              (file+olp+datetree "Quizlet.org" "Log")
+              "* %U {%^{estimate of time spent}} %^{log}%?"
+              :time-prompt t
+              :prepend t)
              ("m" "Meeting" entry
-              (id "C2D75FC0-1685-414B-BB72-C7510B37FAE2")
-              :jump-to-captured t)
+              (id "A4F25C0F-571E-40BF-9305-3CC7C7264ED6")
+              "* %^T %?"
+              :jump-to-captured t
+              :prepend t)
              ("n" "Note" entry
               (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
               "* %^{title} %U%?")
              ("p" "Pager" entry
-              (file+olp+datetree "DMP.org" "On call" "Pages")
+              (file+olp+datetree "Quizlet.org" "On call" "Pages")
               "* %T %?"
               :time-prompt t
+              :tree-type week
               :jump-to-captured t
               :prepend t)
              ("s" "Snippet" entry
-              (file+olp "~/Sync/OneDrive/Notes/NOTES.org" "Snippets")
+              (file+olp ,(expand-file-name "Snippets.org" slumos-org-directory) "Snippets")
               "* %^{title}: %?"
-              :jump-to-captured t)
-             ("t" "Task" entry
-              (id "236EAFF9-52A6-4CDB-9EC3-F4236BBBE7C7")
-              "* TODO %?"))))
-   #+END_SRC
+              :jump-to-captured t)))
+   #+end_src
 ** Helpers
    :PROPERTIES:
    :test-property: test-value
@@ -99,8 +97,12 @@
     (exec-path-from-shell-copy-envs
      '("GITHUB_EMACS_MAGIT_TOKEN"))
   #+END_SRC
-
-** TODO [[https://github.com/kamushadenes/1password.el][kamushadenes/1password.el: Use 1Password from Emacs]]
+** TODO [[https://github.com/dlobraico/auth-source-1password][dlobraico/auth-source-1password: Emacs auth-source integration for 1Password]]
+#+begin_src emacs-lisp
+  (use-package auth-source-1password
+    :config
+    (setq auth-source-1password-vault "Private"))
+#+end_src
 * [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
 #+begin_src emacs-lisp
   (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
