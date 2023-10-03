@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-04-06 Thu 08:48 slumos@m2>
+# Time-stamp: <2023-10-03 Tue 10:48 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1082,7 +1082,7 @@ CLI with single keystrokes.
      :after org-agenda
      :config (idle-org-agenda-mode))
    #+end_src
-
+**** Time stamp
    Decided to add a save timestamp to help me tell that whatever I'm
    editing is up to date with other copies.
    #+BEGIN_SRC emacs-lisp
@@ -1877,6 +1877,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
+** COMMENT [[https://github.com/emacs-tree-sitter/ts-fold][emacs-tree-sitter/ts-fold: Code-folding using tree-sitter]]
+#+begin_src emacs-lisp
+  (use-package ts-fold
+    :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
+#+end_src
+
 ** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
 #+begin_src emacs-lisp
   (use-package async)
