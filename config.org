@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-10-03 Tue 10:48 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2023-11-01 Wed 10:20 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -71,9 +71,9 @@ John Wiegley is an Emacs badass. I am not even kidding.
 #+end_src
 
 #+begin_src emacs-lisp
-                                          ;  (unless (package-installed-p 'vc-use-package)
-                                          ;    (package-install "https://github.com/slotThe/vc-use-package"))
-                                          ;  (require 'vc-use-package)
+   (unless (package-installed-p 'vc-use-package)
+     (package-vc-install "https://github.com/slotThe/vc-use-package"))
+   (require 'vc-use-package)
 #+end_src
 
 Adds the =:quelpa= keyword for extra laziness when installing sutff outside
@@ -185,6 +185,7 @@ Full Screen though!
      '("AWS_CONFIG_FILE"
        "EMAIL"
        "LANG"
+       "TERRAFORM_CLOUD_TOKEN"
        "TMPDIR"
        "XDG_CACHE_HOME"
        "XDG_CONFIG_DIRS"
@@ -836,6 +837,14 @@ Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_sni
   ;; Nano header & mode lines (optional)
   (require 'nano-modeline)
 #+end_src
+** COMMENT [[https://github.com/jdtsmith/indent-bars][jdtsmith/indent-bars: Fast, configurable indentation guide-bars for Emacs]]
+#+begin_src emacs-lisp
+  (use-package indent-bars
+    :vc (:fetcher github :repo jdtsmith/indent-bars)
+    :hook (yaml-mode . indent-bars-mode)
+    :custom (indent-bars-prefer-character . t))
+#+end_src
+
 * Magit
 [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -914,12 +923,12 @@ CLI with single keystrokes.
         (puthash 'repo (match-string 4 url) components)
         components))
 
-    ;; (with-current-buffer "magit: quizlet"
-    ;;   (slumos/parse-github-repo-url (magit-get "remote" "origin" "url")))
+    (with-current-buffer "magit: .emacs.d"
+      (slumos/parse-github-repo-url (magit-get "remote" "origin" "url")))
   #+end_src
 
   #+RESULTS:
-  : slumos/parse-github-repo-url
+  : #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (user "git" host "github.com" org "slumos" repo "dot.emacs"))
 
 #+begin_src emacs-lisp
   (defun slumos/magit-context ()
@@ -930,15 +939,18 @@ CLI with single keystrokes.
 
   
   #+begin_src emacs-lisp
-  (defun slumos/magit-browse-repo ()
-    (interactive)
-    (let* ((git-url (magit-get "remote" "origin" "url"))
-           (parsed (slumos/parse-github-repo-url git-url))
-           (gh-url (format "https://%s/%s/%s"
-                           (gethash 'host parsed)
-                           (gethash 'org parsed)
-                           (gethash 'repo parsed))))
-      (browse-url gh-url)))
+    (defun slumos/magit-browse-repo ()
+      (interactive)
+      (let* ((git-url (magit-get "remote" "origin" "url"))
+             (parsed (slumos/parse-github-repo-url git-url))
+             (gh-url (format "https://%s/%s/%s"
+                             (gethash 'host parsed)
+                             (gethash 'org parsed)
+                             (gethash 'repo parsed))))
+        (browse-url gh-url)))
+
+    (with-current-buffer "magit: .emacs.d"
+      (slumos/magit-browse-repo))
   #+end_src
 
   #+begin_src emacs-lisp
@@ -1017,16 +1029,16 @@ CLI with single keystrokes.
    (setq org-cycle-global-at-bob t)
    #+END_SRC
 
-   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]]:
+   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]] (disabled while I figure out how to incorporate work and personal):
 
-   #+BEGIN_SRC emacs-lisp
-        (defun slumos-org-refile-files ()
-          (let ((case-fold-search nil))
-            (directory-files *slumos-org-notes-directory* t "^[[:upper:]][[:alpha:]]*.org$")))
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (defun slumos-org-refile-files ()
+       (let ((case-fold-search nil))
+         (directory-files *slumos-org-notes-directory* t "^[[:upper:]][[:alpha:]]*.org$")))
 
-        (setq org-refile-use-outline-path 'file
-                   org-outline-path-complete-in-steps nil
-                   org-refile-targets '((slumos-org-refile-files :maxlevel . 2)))
+     (setq org-refile-use-outline-path 'file
+                org-outline-path-complete-in-steps nil
+                org-refile-targets '((slumos-org-refile-files :maxlevel . 2)))
    #+END_SRC
 
    That's why I also like to enable speed commands when point is at
@@ -1866,15 +1878,17 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :mode "\\(.yaml\\|.yml\\)$"
-    :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+     (use-package yaml-mode
+       :mode "\\(.yaml\\|.yml\\)$"
+       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
 
-  (use-package yaml-pro
-    :hook (yaml-mode . yaml-pro-mode))
+     (use-package yaml-pro
+       :hook
+       (yaml-mode . yaml-pro-mode)
+       (yaml-ts-mode . yaml-pro-ts-mode))
 
-  (use-package yaml-imenu
-    :hook (yaml-mode . yaml-imenu-enable))
+     (use-package yaml-imenu
+       :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
 ** COMMENT [[https://github.com/emacs-tree-sitter/ts-fold][emacs-tree-sitter/ts-fold: Code-folding using tree-sitter]]
@@ -1943,7 +1957,8 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+end_src
 ** Hydra
    #+begin_src emacs-lisp
-     (use-package hydra)
+     (use-package hydra
+       :custom (hydra-hint-display-type 'lv))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -1959,20 +1974,20 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 *** Hydras
 **** Commonly visited file shortcuts
 
-     This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
-     #+name: commonly-visited-files-shortcuts
-     | key | path                                     | name                     | fun          |
-     |-----+------------------------------------------+--------------------------+--------------|
-     | a   | ~/.config/alacritty/alacritty.yml        | alacritty config         | find-file    |
-     | c   | ~/.emacs.d/config.org                    | main config (config.org) | find-file    |
-     | N   | ~/Sync/OneDrive/Notes/NOTES.org          | NOTES.org                | find-file    |
-     | p   | ~/.emacs.d/personal.org                  | personal config          | find-file    |
-     | q   | ~/Sync/GDrive/My Drive/Notes/Quizlet.org | Quizlet.org              | find-file    |
-     | r   | ~/Sync/Notes/Cookbook.org                | cookbook                 | find-file    |
-     | s   | ~/Sync/Notes/SLUMOS.org                  | SLUMOS.org               | find-file    |
-     | t   | ~/Sync/Notes/TODO.org                    | TODO.org                 | find-file    |
-     | w   | ~/.emacs.d/work.org                      | work config              | find-file    |
-     | z   | ~/.zshrc                                 | zshrc                    | chezmoi-find |
+This seems like a decent demonstration of literate programming. Add a row to this table, then eval the defhydra block.
+#+name: commonly-visited-files-shortcuts
+| key | path                                     | name                     | fun          |
+|-----+------------------------------------------+--------------------------+--------------|
+| a   | ~/.config/alacritty/alacritty.yml        | alacritty config         | find-file    |
+| c   | ~/.emacs.d/config.org                    | main config (config.org) | find-file    |
+| N   | ~/Sync/OneDrive/Notes/NOTES.org          | NOTES.org                | find-file    |
+| p   | ~/.emacs.d/personal.org                  | personal config          | find-file    |
+| q   | ~/Sync/GDrive/My Drive/Notes/Quizlet.org | Quizlet.org              | find-file    |
+| r   | ~/Sync/Notes/Cookbook.org                | cookbook                 | find-file    |
+| s   | ~/Sync/Notes/SLUMOS.org                  | SLUMOS.org               | find-file    |
+| t   | ~/Sync/Notes/TODO.org                    | TODO.org                 | find-file    |
+| w   | ~/.emacs.d/work.org                      | work config              | find-file    |
+| z   | ~/.zshrc                                 | zshrc                    | chezmoi-find |
 
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
        (cl-loop for (key path name fun) in table do
@@ -1986,7 +2001,8 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
      #+end_src
 
      #+begin_src emacs-lisp :noweb yes
-       (defhydra hydra-commonly-visited-files-shortcuts (:color blue)
+       (defhydra hydra-commonly-visited-files-shortcuts (:color blue :columns 1)
+         "visit file"
          <<table-to-file-shortcuts-heads(table=commonly-visited-files-shortcuts)>>)
        (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
      #+end_src
@@ -2162,7 +2178,10 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    This cleans up trailing whitespace only on lines I edited. Briliant!
    #+BEGIN_SRC emacs-lisp
      (use-package ws-butler
-       :hook (prog-mode . ws-butler-mode))
+       :hook
+       (prog-mode . ws-butler-mode)
+       (yaml-mode . ws-butler-mode)
+       (yaml-ts-mode . ws-butler-mode))
    #+END_SRC
 ** yasnippet
    #+begin_src emacs-lisp

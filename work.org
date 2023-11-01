@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-10-03 Tue 10:47 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2023-10-25 Wed 11:42 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -40,7 +40,7 @@
 ** Capture templates
    #+begin_src emacs-lisp 
      (setq org-capture-templates
-            `(("j" "Journal" entry (file+datetree ,(expand-file-name "JOURNAL.org" slumos-org-directory))
+           `(("j" "Journal" entry (file+datetree ,(expand-file-name "JOURNAL.org" slumos-org-directory))
               "* %^T %?")
              ("l" "Log" entry
               (file+olp+datetree "Quizlet.org" "Log")
@@ -48,9 +48,14 @@
               :time-prompt t
               :prepend t)
              ("m" "Meetings")
+             ("m1" "One-on-one" entry
+              (id "A4F25C0F-571E-40BF-9305-3CC7C7264ED6")
+              "* %^T %^{who with?} 1:1 %? :1on1:"
+              :jump-to-captured t
+              :prepend t)
              ("my" "Yanet 1:1" entry
               (id "A4F25C0F-571E-40BF-9305-3CC7C7264ED6")
-              "* %^T Yanet 1:1 %? :1on1"
+              "* %^T Yanet 1:1 %? :1on1:"
               :jump-to-captured t
               :prepend t)
              ("mm" "Generic Meeting" entry
@@ -66,9 +71,9 @@
              ("n" "Note" entry
               (id "FB0D399D-1009-4F21-9D41-FEA95E232B56")
               "* %^{title} %U%?")
-             ("p" "Pager" entry
+             ("p" "Page" entry
               (file+olp+datetree "Quizlet.org" "On call" "Pages")
-              "* %T %?"
+              "* TODO %T %?"
               :time-prompt t
               :tree-type week
               :jump-to-captured t
@@ -104,16 +109,11 @@
   #+END_SRC
 
 * Environment
-  #+BEGIN_SRC emacs-lisp
-    (exec-path-from-shell-copy-envs
-     '("GITHUB_EMACS_MAGIT_TOKEN"))
-  #+END_SRC
-** TODO [[https://github.com/dlobraico/auth-source-1password][dlobraico/auth-source-1password: Emacs auth-source integration for 1Password]]
+* Secrets
 #+begin_src emacs-lisp
-  (use-package auth-source-1password
-    :config
-    (setq auth-source-1password-vault "Private"))
+  (use-package hush)
 #+end_src
+
 * [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
 #+begin_src emacs-lisp
   (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
