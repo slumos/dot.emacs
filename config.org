@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-11-01 Wed 10:20 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2023-11-21 Tue 12:25 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -837,12 +837,12 @@ Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_sni
   ;; Nano header & mode lines (optional)
   (require 'nano-modeline)
 #+end_src
-** COMMENT [[https://github.com/jdtsmith/indent-bars][jdtsmith/indent-bars: Fast, configurable indentation guide-bars for Emacs]]
+** [[https://github.com/jdtsmith/indent-bars][jdtsmith/indent-bars: Fast, configurable indentation guide-bars for Emacs]]
 #+begin_src emacs-lisp
   (use-package indent-bars
     :vc (:fetcher github :repo jdtsmith/indent-bars)
     :hook (yaml-mode . indent-bars-mode)
-    :custom (indent-bars-prefer-character . t))
+    :custom (indent-bars-prefer-character t))
 #+end_src
 
 * Magit
@@ -1029,18 +1029,6 @@ CLI with single keystrokes.
    (setq org-cycle-global-at-bob t)
    #+END_SRC
 
-   These settings fix refile completion with [[*Counsel / Ivy / Swiper][Counsel]] (disabled while I figure out how to incorporate work and personal):
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (defun slumos-org-refile-files ()
-       (let ((case-fold-search nil))
-         (directory-files *slumos-org-notes-directory* t "^[[:upper:]][[:alpha:]]*.org$")))
-
-     (setq org-refile-use-outline-path 'file
-                org-outline-path-complete-in-steps nil
-                org-refile-targets '((slumos-org-refile-files :maxlevel . 2)))
-   #+END_SRC
-
    That's why I also like to enable speed commands when point is at
    beginning-of-buffer. This means that immediately after opening an
    org file, you can jump to the first heading just by tapping =n=.
@@ -1087,7 +1075,10 @@ CLI with single keystrokes.
 				(magit-wip-after-apply-mode t)
 				(magit-wip-before-change-mode t)))
    #+END_SRC
-
+**** Refiling
+#+begin_src emacs-lisp
+  (setq org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 2)))
+#+end_src
 **** COMMENT [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
    #+begin_src emacs-lisp
    (use-package idle-org-agenda
@@ -1483,6 +1474,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_src
 
 * Language Modes
+** TODO [[https://github.com/christophstockhusen/bigquery-mode][christophstockhusen/bigquery-mode: GNU Emacs Major Mode for Editing and Executing BigQuery Scripts]]
+#+begin_src emacs-lisp
+  (use-package bigquery-mode
+    :vc (:fetcher github :repo christophstockhusen/bigquery-mode))
+#+end_src
+
 ** Tree Sitter
 *** [[https://github.com/renzmann/treesit-auto][renzmann/treesit-auto: Automatic installation, usage, and fallback for tree-sitter major modes in Emacs 29]]
 #+begin_src emacs-lisp
@@ -1865,6 +1862,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        (terraform-mode . lsp-deferred)
        (terraform-mode . flycheck-mode))
    #+END_SRC
+
+#+begin_src emacs-lisp
+  (use-package terraform-ts-mode
+    :vc (:fetcher github :repo kgrotel/terraform-ts-mode))
+#+end_src
+
 ** Web (HTML, etc)
    #+BEGIN_SRC emacs-lisp
      (use-package web-mode
@@ -1980,12 +1983,13 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 |-----+------------------------------------------+--------------------------+--------------|
 | a   | ~/.config/alacritty/alacritty.yml        | alacritty config         | find-file    |
 | c   | ~/.emacs.d/config.org                    | main config (config.org) | find-file    |
+| n   | ~/Sync/ST/Notes/Snippets.org             | snippets                 | find-file    |
 | N   | ~/Sync/OneDrive/Notes/NOTES.org          | NOTES.org                | find-file    |
 | p   | ~/.emacs.d/personal.org                  | personal config          | find-file    |
 | q   | ~/Sync/GDrive/My Drive/Notes/Quizlet.org | Quizlet.org              | find-file    |
-| r   | ~/Sync/Notes/Cookbook.org                | cookbook                 | find-file    |
-| s   | ~/Sync/Notes/SLUMOS.org                  | SLUMOS.org               | find-file    |
-| t   | ~/Sync/Notes/TODO.org                    | TODO.org                 | find-file    |
+| r   | ~/Sync/ST/Notes/Cookbook.org             | cookbook                 | find-file    |
+| s   | ~/Sync/ST/Notes/SLUMOS.org               | SLUMOS.org               | find-file    |
+| t   | ~/Sync/ST/Notes/TODO.org                 | TODO.org                 | find-file    |
 | w   | ~/.emacs.d/work.org                      | work config              | find-file    |
 | z   | ~/.zshrc                                 | zshrc                    | chezmoi-find |
 
@@ -1993,6 +1997,9 @@ This seems like a decent demonstration of literate programming. Add a row to thi
        (cl-loop for (key path name fun) in table do
                 (prin1 (list key path name fun)))
      #+end_src
+
+     #+RESULTS:
+     : ("a" "~/.config/alacritty/alacritty.yml" "alacritty config" "find-file")("c" "~/.emacs.d/config.org" "main config (config.org)" "find-file")("N" "~/Sync/OneDrive/Notes/NOTES.org" "NOTES.org" "find-file")("p" "~/.emacs.d/personal.org" "personal config" "find-file")("q" "~/Sync/GDrive/My Drive/Notes/Quizlet.org" "Quizlet.org" "find-file")("r" "~/Sync/ST/Notes/Cookbook.org" "cookbook" "find-file")("s" "~/Sync/ST/Notes/SLUMOS.org" "SLUMOS.org" "find-file")("t" "~/Sync/ST/Notes/TODO.org" "TODO.org" "find-file")("w" "~/.emacs.d/work.org" "work config" "find-file")("z" "~/.zshrc" "zshrc" "chezmoi-find")
 
      #+name: table-to-file-shortcuts-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
