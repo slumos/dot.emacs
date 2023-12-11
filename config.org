@@ -1486,9 +1486,14 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     (setq mastodon-instance-url "https://emacs.ch"
           mastodon-active-user "slumos"))
 #+end_src
+** [[https://github.com/KeyWeeUsr/emacs-syncthing][KeyWeeUsr/emacs-syncthing: Emacs client for Syncthing]]
+#+begin_src emacs-lisp
+  (use-package syncthing)
+#+end_src
+
 
 * Language Modes
-** TODO [[https://github.com/christophstockhusen/bigquery-mode][christophstockhusen/bigquery-mode: GNU Emacs Major Mode for Editing and Executing BigQuery Scripts]]
+** TODO COMMENT [[https://github.com/christophstockhusen/bigquery-mode][christophstockhusen/bigquery-mode: GNU Emacs Major Mode for Editing and Executing BigQuery Scripts]]
 #+begin_src emacs-lisp
   (use-package bigquery-mode
     :vc (:fetcher github :repo christophstockhusen/bigquery-mode))
@@ -1622,260 +1627,260 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    #+end_src
 
 ** flycheck
-   #+BEGIN_SRC emacs-lisp
-     (use-package flycheck-mode
-       :ensure flycheck
-       :hook (puppet-mode ruby-mode json-mode python-mode))
-   #+END_SRC
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :hook (puppet-mode ruby-mode json-mode python-mode terraform-mode))
+#+end_src
 *** TODO [[https://github.com/baron42bba/.emacs.d/blob/master/bba.org#flycheck][Flycheck puppet-lint from this example]]
 ** Go (golang)
-   #+begin_src emacs-lisp
-     (use-package go-mode
-       :bind
-       (:map go-mode-map
-             ("M-." . godef-jump))
-       :config
-       (add-hook 'go-mode-hook (lambda () (setq tab-width 4)))
-       (add-hook 'before-save-hook 'gofmt-before-save))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :bind
+    (:map go-mode-map
+          ("M-." . godef-jump))
+    :config
+    (add-hook 'go-mode-hook (lambda () (setq tab-width 4)))
+    (add-hook 'before-save-hook 'gofmt-before-save))
+#+end_src
 
 (use-package go-mode
-  :mode ("\\.go\\'")
-  :ensure t
-  :config
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (setq tab-width 4)
-              (add-hook 'before-save-hook 'gofmt-before-save)
-              )))
+:mode ("\\.go\\'")
+:ensure t
+:config
+(add-hook 'go-mode-hook
+(lambda ()
+(setq tab-width 4)
+(add-hook 'before-save-hook 'gofmt-before-save)
+)))
    
 ** Groovy
-   #+BEGIN_SRC emacs-lisp
-     (use-package groovy-mode
-       :mode "\\.groovy\\'"
-       :custom
-       (groovy-indent-offset 2))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package groovy-mode
+    :mode "\\.groovy\\'"
+    :custom
+    (groovy-indent-offset 2))
+#+END_SRC
 ** Java
-   #+begin_src emacs-lisp
-     (exec-path-from-shell-copy-env "JAVA_HOME")
-   #+end_src
+#+begin_src emacs-lisp
+  (exec-path-from-shell-copy-env "JAVA_HOME")
+#+end_src
 
-   #+begin_src emacs-lisp
-     (leaf lsp-mode
-       :commands lsp)
-   #+end_src
+#+begin_src emacs-lisp
+  (leaf lsp-mode
+    :commands lsp)
+#+end_src
 
-   #+begin_src emacs-lisp
-     (leaf lsp-ui
-       :hook (lsp-mode-hook . lsp-ui-mode)
-       :custom
-       ((lsp-auto-guess-root . t)
-        (lsp-enable-completion-at-point . t)
-        (lsp-log-io . t)
-        (lsp-log-max . 2000)
-        (lsp-ui-doc-enable . t)))
-   #+end_src
+#+begin_src emacs-lisp
+  (leaf lsp-ui
+    :hook (lsp-mode-hook . lsp-ui-mode)
+    :custom
+    ((lsp-auto-guess-root . t)
+     (lsp-enable-completion-at-point . t)
+     (lsp-log-io . t)
+     (lsp-log-max . 2000)
+     (lsp-ui-doc-enable . t)))
+#+end_src
 
-   #+begin_src emacs-lisp
-     (use-package lsp-java
-       :hook ((java-mode-hook . lsp-deferred)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package lsp-java
+    :hook ((java-mode-hook . lsp-deferred)))
+#+end_src
 
-   #+begin_src emacs-lisp
-     (use-package dap-mode
-       :hook ((java-mode-hook . dap-mode)
-              (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
-       :config
-       (dap-mode 1)
-       (dap-ui-mode 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :hook ((java-mode-hook . dap-mode)
+           (dap-stopped . (lambda (arg) call-interactively #'dap-hydra)))
+    :config
+    (dap-mode 1)
+    (dap-ui-mode 1))
+#+end_src
 
-   #+begin_src emacs-lisp :tangle no
-     (leaf dap-java
-       :package (dap-mode))
-   #+end_src
+#+begin_src emacs-lisp :tangle no
+  (leaf dap-java
+    :package (dap-mode))
+#+end_src
 
 ** Javascript
-   #+BEGIN_SRC emacs-lisp
-     (use-package js2-mode :mode "\\.js\'")
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode :mode "\\.js\'")
+#+END_SRC
 
-   Putting JSON here too...meh.
-   #+BEGIN_SRC emacs-lisp
+Putting JSON here too...meh.
+#+BEGIN_SRC emacs-lisp
   (use-package json-mode
     :mode "\\.json\\(\\.erb\\)?\'"
     :config
-    (add-hook 'json-mode-hook #'flycheck-mode)
     (add-hook 'json-mode-hook #'yas-minor-mode)
     (org-babel-do-load-languages 'org-babel-load-languages '((jq . t))))
-   #+END_SRC
+#+END_SRC
 
-   Trying out jsonian
-   #+begin_src emacs-lisp :tangle no
-     (use-package jsonian
-       :straight (:type git :host github :repo "iwahbe/jsonian")
-       :mode "\\.json\'"
-       :after so-long
-       :custom (jsonian-no-so-long-mode))
-   #+end_src
+Trying out jsonian
+#+begin_src emacs-lisp :tangle no
+  (use-package jsonian
+    :straight (:type git :host github :repo "iwahbe/jsonian")
+    :mode "\\.json\'"
+    :after so-long
+    :custom (jsonian-no-so-long-mode))
+#+end_src
 
 ** jq mode
-   #+begin_src emacs-lisp
-     (use-package jq-mode)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package jq-mode)
+#+end_src
 ** Kubernetes / Helm
-   #+begin_src emacs-lisp
-     (use-package k8s-mode
-       :ensure t
-       :hook (k8s-mode . yas-minor-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package k8s-mode
+    :ensure t
+    :hook (k8s-mode . yas-minor-mode))
+#+end_src
 ** Markdown
-   #+BEGIN_SRC emacs-lisp
-     (use-package markdown-mode
-       :commands (markdown-mode gfm-mode)
-       :mode (("README\\.md\\'" . gfm-mode)
-              ("\\.md\\'" . markdown-mode)
-              ("\\.markdown\\'" . markdown-mode))
-       :init
-       (setq markdown-command "cmark-gfm"
-             ;;; ripped from https://github.com/hlissner/doom-emacs/blob/ce3188/modules/lang/markdown/config.el#L28
-             ;; HACK Due to jrblevin/markdown-mode#578, invoking `imenu' throws a
-             ;;      'wrong-type-argument consp nil' error if you use native-comp.
-             markdown-nested-imenu-heading-index (not (ignore-errors (native-comp-available-p)))))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init
+    (setq markdown-command "cmark-gfm"
+          ;;; ripped from https://github.com/hlissner/doom-emacs/blob/ce3188/modules/lang/markdown/config.el#L28
+          ;; HACK Due to jrblevin/markdown-mode#578, invoking `imenu' throws a
+          ;;      'wrong-type-argument consp nil' error if you use native-comp.
+          markdown-nested-imenu-heading-index (not (ignore-errors (native-comp-available-p)))))
+#+END_SRC
 ** MinecraftForge
 *** TODO [[https://github.com/qwattash/forge-mode][qwattash/forge-mode: Emacs minor mode for minecraft forge development]]
 
 ** Puppet
-   #+BEGIN_SRC emacs-lisp
-     (use-package puppet-mode
-       :mode "\\.pp\\'"
-       :config
-       (unbind-key "$" puppet-mode-map)
-       (setq-local align-region-separate 'group)
-       (add-to-list 'puppet-mode-align-rules
-		    '(puppet-assignment-literal
-		      (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
-		      (repeat . t)
-		      (modes . '(puppet-mode)))))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package puppet-mode
+    :mode "\\.pp\\'"
+    :config
+    (unbind-key "$" puppet-mode-map)
+    (setq-local align-region-separate 'group)
+    (add-to-list 'puppet-mode-align-rules
+                 '(puppet-assignment-literal
+                   (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+                   (repeat . t)
+                   (modes . '(puppet-mode)))))
+#+END_SRC
 ** Python
-   #+BEGIN_SRC emacs-lisp
-     (use-package python
-       :mode ("\\.py\\'" . python-mode)
-       :interpreter ("python" . python-mode))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package python
+    :mode ("\\.py\\'" . python-mode)
+    :interpreter ("python" . python-mode))
+#+END_SRC
 
-   #+begin_src emacs-lisp
-     (use-package elpy)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package elpy)
+#+end_src
 
-   IPython / Jupyter Notebook client
+IPython / Jupyter Notebook client
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package ein
-       :commands (ein:notebooklist-login
-                  ein:notebooklist-open)
-       :config
-       (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package ein
+    :commands (ein:notebooklist-login
+               ein:notebooklist-open)
+    :config
+    (org-babel-do-load-languages 'org-babel-load-languages '((ein . t))))
+#+END_SRC
 
-   Language Server Protocol
-   #+begin_src emacs-lisp
-     (use-package lsp-python-ms
-       :hook
-       (python-mode . (lambda () (require 'lsp-python-ms))))
-   #+end_src
+Language Server Protocol
+#+begin_src emacs-lisp
+  (use-package lsp-python-ms
+    :hook
+    (python-mode . (lambda () (require 'lsp-python-ms))))
+#+end_src
 *** [[https://github.com/abo-abo/lpy][abo-abo/lpy: Minimal Python IDE for GNU Emacs]]
-    #+begin_src emacs-lisp
-      (use-package lpy)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package lpy)
+#+end_src
 
 ** Ruby
-   #+BEGIN_SRC emacs-lisp
-     (use-package ruby-mode
-       :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\(\\.local\\)?\\||Puppetfile\\)\\'")
+#+BEGIN_SRC emacs-lisp
+  (use-package ruby-mode
+    :mode "\\(\\.rb\\|\\.rake\\|Gemfile\\(\\.local\\)?\\||Puppetfile\\)\\'")
 
-     (use-package inf-ruby
-       :no-require t)
+  (use-package inf-ruby
+    :no-require t)
 
-     (use-package rspec-mode
-       :config
-       (inf-ruby-switch-setup))
+  (use-package rspec-mode
+    :config
+    (inf-ruby-switch-setup))
 
-     (use-package ruby-hash-syntax
-       :bind
-       (:map ruby-mode-map
-             ("C-c #" . ruby-hash-syntax-toggle)))
+  (use-package ruby-hash-syntax
+    :bind
+    (:map ruby-mode-map
+          ("C-c #" . ruby-hash-syntax-toggle)))
 
-     (use-package seeing-is-believing
-       :bind (("<s-return>" . seeing-is-believing)))
+  (use-package seeing-is-believing
+    :bind (("<s-return>" . seeing-is-believing)))
 
-     (use-package chruby)
-   #+END_SRC
+  (use-package chruby)
+#+END_SRC
 
-   #+begin_src emacs-lisp
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((ruby . t)))
-   #+end_src
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((ruby . t)))
+#+end_src
 
-   #+BEGIN_SRC emacs-lisp
-     ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
-     (require 'align)
+#+BEGIN_SRC emacs-lisp
+  ;; https://raw.githubusercontent.com/jimweirich/emacs-setup-esk/master/ruby-align.el
+  (require 'align)
 
-     (add-to-list 'align-rules-list
-		  '(ruby-comma-delimiter
-		    (regexp . ",\\(\\s-*\\)[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
+  (add-to-list 'align-rules-list
+               '(ruby-comma-delimiter
+                 (regexp . ",\\(\\s-*\\)[^# \t\n]")
+                 (repeat . t)
+                 (modes  . '(ruby-mode))))
 
-     (add-to-list 'align-rules-list
-		  '(ruby-hash-literal
-		    (regexp . "\\(\\s-*\\)=>\\s-*[^# \t\n]")
-		    (group 2 3)
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
+  (add-to-list 'align-rules-list
+               '(ruby-hash-literal
+                 (regexp . "\\(\\s-*\\)=>\\s-*[^# \t\n]")
+                 (group 2 3)
+                 (repeat . t)
+                 (modes  . '(ruby-mode))))
 
-     (add-to-list 'align-rules-list
-		  '(ruby-hash-literal2
-		    (regexp . "[a-z0-9]:\\(\\s-*\\)[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
+  (add-to-list 'align-rules-list
+               '(ruby-hash-literal2
+                 (regexp . "[a-z0-9]:\\(\\s-*\\)[^# \t\n]")
+                 (repeat . t)
+                 (modes  . '(ruby-mode))))
 
-     (add-to-list 'align-rules-list
-		  '(ruby-assignment-literal
-		    (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
-		    (repeat . t)
-		    (modes  . '(ruby-mode))))
+  (add-to-list 'align-rules-list
+               '(ruby-assignment-literal
+                 (regexp . "\\(\\s-*\\)=\\s-*[^# \t\n]")
+                 (repeat . t)
+                 (modes  . '(ruby-mode))))
 
-     (add-to-list 'align-rules-list
-		  '(ruby-xmpfilter-mark
-		    (regexp . "\\(\\s-*\\)# => [^#\t\n]")
-		    (repeat . nil)
-		    (modes  . '(ruby-mode))))
-   #+END_SRC
+  (add-to-list 'align-rules-list
+               '(ruby-xmpfilter-mark
+                 (regexp . "\\(\\s-*\\)# => [^#\t\n]")
+                 (repeat . nil)
+                 (modes  . '(ruby-mode))))
+#+END_SRC
 
 ** Rust
-   #+begin_src emacs-lisp
-   (use-package rustic)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package rustic)
+#+end_src
 
-   #+begin_src emacs-lisp
-   (use-package flycheck-rust)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package flycheck-rust)
+#+end_src
 
 ** Terraform (HCL)
-   #+BEGIN_SRC emacs-lisp
-     (use-package terraform-mode
-       :config
-       (setq lsp-disabled-clients '(tfls))
-       :hook
-       ; see aphelia (terraform-mode . terraform-format-on-save-mode)
-       (terraform-mode . lsp-deferred)
-       (terraform-mode . flycheck-mode))
+#+BEGIN_SRC emacs-lisp
+  (use-package terraform-mode
+    :config
+    (setq lsp-disabled-clients '(tfls))
+                                          ;:hook
+                                          ; see apheleia (terraform-mode . terraform-format-on-save-mode)
+    )
    #+END_SRC
+
+*** COMMENT [[https://github.com/kgrotel/terraform-ts-mode][kgrotel/terraform-ts-mode: Terraform major mode with treesit and eglot support]]
+Not there yet based on my experience. [2023-12-06 Wed]
 
 #+begin_src emacs-lisp
   (use-package terraform-ts-mode
@@ -1908,10 +1913,15 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
-** COMMENT [[https://github.com/emacs-tree-sitter/ts-fold][emacs-tree-sitter/ts-fold: Code-folding using tree-sitter]]
+** TRYING [[https://github.com/joaotavora/breadcrumb][joaotavora/breadcrumb: Emacs headerline indication of where you are in a large project]]
 #+begin_src emacs-lisp
-  (use-package ts-fold
-    :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
+  (use-package breadcrumb)
+#+end_src
+
+** [[https://github.com/junyi-hou/tree-sitter-fold][junyi-hou/tree-sitter-fold: Code-folding using tree-sitter]]
+#+begin_src emacs-lisp
+  (use-package tree-sitter-fold
+    :vc (:fetcher github :repo junyi-hou/tree-sitter-fold))
 #+end_src
 
 ** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
@@ -1959,8 +1969,10 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 
 ** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
 #+begin_src emacs-lisp
-  (use-package apheleia
-    :hook (terraform-mode . apheleia-mode))
+    (use-package apheleia
+      :hook
+      (terraform-mode . apheleia-mode)
+      (terraform-ts-mode . apheleia-mode))
 #+end_src
 
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]

@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-10-25 Wed 11:42 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2023-11-28 Tue 09:20 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -59,6 +59,11 @@
               :jump-to-captured t
               :prepend t)
              ("mm" "Generic Meeting" entry
+              (id "A4F25C0F-571E-40BF-9305-3CC7C7264ED6")
+              "* %^T %?"
+              :jump-to-captured t
+              :prepend t)
+             ("mo" "OpsEx" entry
               (id "A4F25C0F-571E-40BF-9305-3CC7C7264ED6")
               "* %^T %?"
               :jump-to-captured t
