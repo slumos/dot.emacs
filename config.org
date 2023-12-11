@@ -876,6 +876,11 @@ CLI with single keystrokes.
     :custom
     (forge-topic-list-limit '(60 . 0)))
 #+end_src
+** [[https://github.com/Ailrun/magit-lfs][Ailrun/magit-lfs: Git LFS for magit!]]
+#+begin_src emacs-lisp
+  (use-package magit-lfs :pin melpa)
+#+end_src
+
 ** TODO Look at https://github.com/arthurcgusmao/acg-emacs/commit/2257058e424b82e1d670cadf2e870f0a6a37d669
 ** Originally based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
 #+begin_src emacs-lisp
