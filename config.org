@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-12-11 Mon 14:13 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-01-09 Tue 11:55 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -837,7 +837,7 @@ Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_sni
   ;; Nano header & mode lines (optional)
   (require 'nano-modeline)
 #+end_src
-** [[https://github.com/jdtsmith/indent-bars][jdtsmith/indent-bars: Fast, configurable indentation guide-bars for Emacs]]
+** COMMENT [[https://github.com/jdtsmith/indent-bars][jdtsmith/indent-bars: Fast, configurable indentation guide-bars for Emacs]]
 #+begin_src emacs-lisp
   (use-package indent-bars
     :vc (:fetcher github :repo jdtsmith/indent-bars)
@@ -880,7 +880,6 @@ CLI with single keystrokes.
 #+begin_src emacs-lisp
   (use-package magit-lfs :pin melpa)
 #+end_src
-
 ** TODO Look at https://github.com/arthurcgusmao/acg-emacs/commit/2257058e424b82e1d670cadf2e870f0a6a37d669
 ** Originally based on [[https://gist.github.com/dotemacs/9a0433341e75e01461c9][this gist]]:
 #+begin_src emacs-lisp
@@ -1488,10 +1487,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_src
 ** [[https://github.com/KeyWeeUsr/emacs-syncthing][KeyWeeUsr/emacs-syncthing: Emacs client for Syncthing]]
 #+begin_src emacs-lisp
-  (use-package syncthing)
+  (use-package syncthing
+    :after exec-path-from-shell
+    :config
+    (if-let ((syncthing-token (cdar (exec-path-from-shell-copy-envs '("SYNCTHING_TOKEN")))))
+        (setq syncthing-default-server-token syncthing-token)))
 #+end_src
-
-
 * Language Modes
 ** TODO COMMENT [[https://github.com/christophstockhusen/bigquery-mode][christophstockhusen/bigquery-mode: GNU Emacs Major Mode for Editing and Executing BigQuery Scripts]]
 #+begin_src emacs-lisp
@@ -1740,12 +1741,8 @@ Trying out jsonian
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
-    :init
-    (setq markdown-command "cmark-gfm"
-          ;;; ripped from https://github.com/hlissner/doom-emacs/blob/ce3188/modules/lang/markdown/config.el#L28
-          ;; HACK Due to jrblevin/markdown-mode#578, invoking `imenu' throws a
-          ;;      'wrong-type-argument consp nil' error if you use native-comp.
-          markdown-nested-imenu-heading-index (not (ignore-errors (native-comp-available-p)))))
+    :custom
+    (markdown-open-command "open"))
 #+END_SRC
 ** MinecraftForge
 *** TODO [[https://github.com/qwattash/forge-mode][qwattash/forge-mode: Emacs minor mode for minecraft forge development]]
@@ -1900,90 +1897,69 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
-     (use-package yaml-mode
-       :mode "\\(.yaml\\|.yml\\)$"
-       :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+          (use-package yaml-mode
+            :mode "\\(.yaml\\|.yml\\)$"
+            :config (add-hook 'yaml-mode-hook #'flycheck-mode))
 
-     (use-package yaml-pro
-       :hook
-       (yaml-mode . yaml-pro-mode)
-       (yaml-ts-mode . yaml-pro-ts-mode))
+          (use-package yaml-pro
+            :hook
+            (yaml-mode . yaml-pro-mode)
+            (yaml-ts-mode . yaml-pro-ts-mode))
 
-     (use-package yaml-imenu
-       :hook (yaml-mode . yaml-imenu-enable))
+          (use-package yaml-imenu
+            :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
-** TRYING [[https://github.com/joaotavora/breadcrumb][joaotavora/breadcrumb: Emacs headerline indication of where you are in a large project]]
+** Automagic make scripts executable
+   #+BEGIN_SRC emacs-lisp
+     (custom-set-variables '(executable-prefix-env t))
+   #+END_SRC
+** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
 #+begin_src emacs-lisp
-  (use-package breadcrumb)
-#+end_src
-
-** [[https://github.com/junyi-hou/tree-sitter-fold][junyi-hou/tree-sitter-fold: Code-folding using tree-sitter]]
-#+begin_src emacs-lisp
-  (use-package tree-sitter-fold
-    :vc (:fetcher github :repo junyi-hou/tree-sitter-fold))
-#+end_src
-
-** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
-#+begin_src emacs-lisp
-  (use-package async)
-#+end_src
-** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
-#+begin_src emacs-lisp
-    (use-package chezmoi
-      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
-      :bind
-      ("C-c C f" . chezmoi-find)
-      ("C-c C s" . chezmoi-write)
-      ("C-c C g" . chezmoi-magit-status))
-#+end_src
-** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
-"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :config (marginalia-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package embark
-    :ensure t
-    :bind
-    (("C-." . embark-act)
-     ("C-;" . embark-dwim)
-     ("C-h B" . embark-bindings))
-
-    :init
-    (setq prefix-help-command #'embark-prefix-help-command)
-
+  (use-package vundo
     :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   nil
-                   (window-parameters (mode-line-format . none)))))
-
-  (use-package embark-consult
-    :hook
-    (embark-collect-mode . consult-preview-at-point-mode))
+    (setq vundo-glyph-alist vundo-unicode-symbols))
 #+end_src
 
-** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+** Copy region formatted for various markup systems
+   #+BEGIN_SRC emacs-lisp
+   (use-package copy-as-format)
+   #+END_SRC
+** TRYING [[https://github.com/Fanael/edit-indirect/][Fanael/edit-indirect]]
 #+begin_src emacs-lisp
-    (use-package apheleia
-      :hook
-      (terraform-mode . apheleia-mode)
-      (terraform-ts-mode . apheleia-mode))
+  (use-package edit-indirect)
 #+end_src
 
-** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
-   #+begin_src emacs-lisp
-   (use-package direnv)
-   #+end_src
+** TRYING edit-server (with [[https://github.com/stsquad/emacs_chrome][stsquad/emacs_chrome]])
+#+begin_src emacs-lisp
+  (use-package edit-server
+    :commands edit-server-start
+    ;; :init (if after-init-time
+    ;;           (edit-server-start)
+    ;;         (add-hook 'after-init-hook
+    ;;                   #'(lambda () (edit-server-start))))
+    ;; :config
+    ;; (setq edit-server-new-frame-alist
+    ;;       '((name . "Edit with Emacs FRAME")
+    ;;         (top . 200)
+    ;;         (left . 200)
+    ;;         (width . 80)
+    ;;         (height . 25)
+    )
+#+end_src
 
-** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
-   #+begin_src emacs-lisp
-   (use-package wgrep)
-   #+end_src
+** Font scale for all frames
+   #+BEGIN_SRC emacs-lisp
+     (use-package default-text-scale
+       :init (default-text-scale-mode))
+   #+END_SRC
+** [[https://github.com/DarthFennec/highlight-indent-guides][DarthFennec/highlight-indent-guides: Emacs minor mode to highlight indentation]]
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :custom (highlight-indent-guides-method 'character)
+    :hook (yaml-mode yaml-pro-mode yaml-pro-ts-mode))
+#+end_src
+
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra
@@ -2048,45 +2024,12 @@ This seems like a decent demonstration of literate programming. Add a row to thi
       ("w" slumos/org-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
   (global-set-key (kbd "C-c w") #'slumos-hydra-copy-something-as-kill/body)
 #+end_src
-** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
+** [[https://github.com/joaotavora/breadcrumb][joaotavora/breadcrumb: Emacs headerline indication of where you are in a large project]]
 #+begin_src emacs-lisp
-  (use-package aas
-    :config
-    (aas-set-snippets 'global
-      ";->" "→"
-      ";arr" "⇒"
-      ";larr" "⟹")
-    (aas-global-mode))
+    (use-package breadcrumb
+      :hook (yaml-mode yaml-pro-mode yaml-pro-ts-mode))
 #+end_src
 
-** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
-   #+begin_src emacs-lisp
-     (use-package helpful
-       :after counsel
-       :config
-       (setq counsel-describe-function-function #'helpful-callable)
-       (setq counsel-describe-variable-function #'helpful-variable))
-   #+end_src
-** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
-#+begin_src emacs-lisp
-  (use-package elisp-demos
-    :after helpful
-    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
-#+end_src
-
-** Automagic make scripts executable
-   #+BEGIN_SRC emacs-lisp
-     (custom-set-variables '(executable-prefix-env t))
-   #+END_SRC
-** (not needed as of 29.1?) Font scale for all frames
-   #+BEGIN_SRC emacs-lisp
-     (use-package default-text-scale
-       :init (default-text-scale-mode))
-   #+END_SRC
-** Copy region formatted for various markup systems
-   #+BEGIN_SRC emacs-lisp
-   (use-package copy-as-format)
-   #+END_SRC
 ** Jumping
 *** avy
     #+BEGIN_QUOTE
@@ -2106,11 +2049,96 @@ This seems like a decent demonstration of literate programming. Add a row to thi
         :bind
         ("M-o" . link-hint-open-link))
     #+end_src
-** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
+** [[https://github.com/junyi-hou/tree-sitter-fold][junyi-hou/tree-sitter-fold: Code-folding using tree-sitter]]
 #+begin_src emacs-lisp
-  (use-package vundo
+  (use-package tree-sitter-fold
+    :vc (:fetcher github :repo junyi-hou/tree-sitter-fold :rev switch-to-treesit))
+#+end_src
+
+** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
+#+begin_src emacs-lisp
+  (use-package async)
+#+end_src
+** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
+   #+begin_src emacs-lisp
+   (use-package wgrep)
+   #+end_src
+** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
+"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :config (marginalia-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
     :config
-    (setq vundo-glyph-alist vundo-unicode-symbols))
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+#+begin_src emacs-lisp
+    (use-package apheleia
+      :hook
+      (terraform-mode . apheleia-mode)
+      (terraform-ts-mode . apheleia-mode))
+#+end_src
+
+** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
+#+begin_src emacs-lisp
+    (use-package chezmoi
+      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
+      :bind
+      ("C-c C f" . chezmoi-find)
+      ("C-c C s" . chezmoi-write)
+      ("C-c C g" . chezmoi-magit-status))
+#+end_src
+** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
+   #+begin_src emacs-lisp
+   (use-package direnv)
+   #+end_src
+
+** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
+   #+begin_src emacs-lisp
+     (use-package helpful
+       :after counsel
+       :config
+       (setq counsel-describe-function-function #'helpful-callable)
+       (setq counsel-describe-variable-function #'helpful-variable))
+   #+end_src
+** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
+#+begin_src emacs-lisp
+  (use-package elisp-demos
+    :after helpful
+    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+#+end_src
+
+** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
+#+begin_src emacs-lisp
+  (use-package aas
+    :config
+    (aas-set-snippets 'global
+      ";->" "→"
+      ";arr" "⇒"
+      ";larr" "⟹")
+    (aas-global-mode))
 #+end_src
 
 * multiple-cursors
