@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-01-15 Mon 09:02 slumos@argenta>
+# Time-stamp: <2024-01-15 Mon 09:12 slumos@argenta>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1881,6 +1881,11 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
+** [[https://github.com/Fanael/edit-indirect/blob/master/edit-indirect.el][edit-indirect/edit-indirect.el at master · Fanael/edit-indirect]]
+#+begin_src emacs-lisp
+  (use-package edit-indirect)
+#+end_src
+
 ** COMMENT [[https://github.com/emacs-tree-sitter/ts-fold][emacs-tree-sitter/ts-fold: Code-folding using tree-sitter]]
 #+begin_src emacs-lisp
   (use-package ts-fold
