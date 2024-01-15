@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-11-12 Sun 16:26 slumos@argenta>
+# Time-stamp: <2024-01-15 Mon 09:02 slumos@argenta>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1471,6 +1471,10 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_src
 
 * Language Modes
+** [[https://github.com/k1LoW/emacs-ansible][Ansible: k1LoW/emacs-ansible]]
+#+begin_src emacs-lisp
+  (use-package ansible)
+#+end_src
 ** Tree Sitter
 *** [[https://github.com/renzmann/treesit-auto][renzmann/treesit-auto: Automatic installation, usage, and fallback for tree-sitter major modes in Emacs 29]]
 #+begin_src emacs-lisp
@@ -2156,6 +2160,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        ("C-x u" . undo-tree-visualize)
        :config
        (setq undo-tree-visualizer-timestamps t)
+       (setq undo-tree-history-directory-alist `(("." . ,(expand-file-name ".undo-tree" user-emacs-directory))))
        (global-undo-tree-mode 1))
    #+END_SRC
 ** WS Butler
