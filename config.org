@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-01-09 Tue 11:55 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-01-31 Wed 16:35 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -183,6 +183,7 @@ Full Screen though!
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-envs
      '("AWS_CONFIG_FILE"
+       "CIRCLECI_TOKEN"
        "EMAIL"
        "LANG"
        "TERRAFORM_CLOUD_TOKEN"
@@ -1910,6 +1911,13 @@ Not there yet based on my experience. [2023-12-06 Wed]
             :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
+** [[https://github.com/federicotdn/verb][federicotdn/verb: Organize and send HTTP requests from Emacs]]
+#+begin_src emacs-lisp
+  (use-package verb
+    :after org
+    :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+#+end_src
+
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
@@ -1925,9 +1933,11 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+BEGIN_SRC emacs-lisp
    (use-package copy-as-format)
    #+END_SRC
-** TRYING [[https://github.com/Fanael/edit-indirect/][Fanael/edit-indirect]]
+** [[https://github.com/DarthFennec/highlight-indent-guides][DarthFennec/highlight-indent-guides: Emacs minor mode to highlight indentation]]
 #+begin_src emacs-lisp
-  (use-package edit-indirect)
+  (use-package highlight-indent-guides
+    :custom (highlight-indent-guides-method 'character)
+    :hook (yaml-mode yaml-pro-mode yaml-pro-ts-mode))
 #+end_src
 
 ** TRYING edit-server (with [[https://github.com/stsquad/emacs_chrome][stsquad/emacs_chrome]])
@@ -1948,18 +1958,16 @@ Not there yet based on my experience. [2023-12-06 Wed]
     )
 #+end_src
 
+** TRYING [[https://github.com/Fanael/edit-indirect/][Fanael/edit-indirect]]
+#+begin_src emacs-lisp
+  (use-package edit-indirect)
+#+end_src
+
 ** Font scale for all frames
    #+BEGIN_SRC emacs-lisp
      (use-package default-text-scale
        :init (default-text-scale-mode))
    #+END_SRC
-** [[https://github.com/DarthFennec/highlight-indent-guides][DarthFennec/highlight-indent-guides: Emacs minor mode to highlight indentation]]
-#+begin_src emacs-lisp
-  (use-package highlight-indent-guides
-    :custom (highlight-indent-guides-method 'character)
-    :hook (yaml-mode yaml-pro-mode yaml-pro-ts-mode))
-#+end_src
-
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra
@@ -2051,10 +2059,10 @@ This seems like a decent demonstration of literate programming. Add a row to thi
     #+end_src
 ** [[https://github.com/junyi-hou/tree-sitter-fold][junyi-hou/tree-sitter-fold: Code-folding using tree-sitter]]
 #+begin_src emacs-lisp
-  (use-package tree-sitter-fold
-    :vc (:fetcher github :repo junyi-hou/tree-sitter-fold :rev switch-to-treesit))
+    (use-package tree-sitter-fold
+      :vc (:fetcher github :repo junyi-hou/tree-sitter-fold :rev switch-to-treesit)
+      :bind ("C-<return>" . tree-sitter-fold-toggle))
 #+end_src
-
 ** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
 #+begin_src emacs-lisp
   (use-package async)
@@ -2123,6 +2131,11 @@ This seems like a decent demonstration of literate programming. Add a row to thi
        (setq counsel-describe-function-function #'helpful-callable)
        (setq counsel-describe-variable-function #'helpful-variable))
    #+end_src
+** [[https://github.com/Wilfred/deadgrep][Wilfred/deadgrep: fast, friendly searching with ripgrep and Emacs]]
+#+begin_src emacs-lisp
+  (use-package deadgrep)
+#+end_src
+
 ** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
 #+begin_src emacs-lisp
   (use-package elisp-demos
