@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-01-31 Wed 16:35 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-02-05 Mon 13:48 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1911,6 +1911,11 @@ Not there yet based on my experience. [2023-12-06 Wed]
             :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
+** [[https://github.com/r0bobo/kubedoc.el][r0bobo/kubedoc.el: kubedoc.el - Kubernetes API Documentation]]
+#+begin_src emacs-lisp
+  (use-package kubedoc)
+#+end_src
+
 ** [[https://github.com/federicotdn/verb][federicotdn/verb: Organize and send HTTP requests from Emacs]]
 #+begin_src emacs-lisp
   (use-package verb
@@ -1996,7 +2001,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 | n   | ~/Sync/ST/Notes/Snippets.org             | snippets                 | find-file    |
 | N   | ~/Sync/OneDrive/Notes/NOTES.org          | NOTES.org                | find-file    |
 | p   | ~/.emacs.d/personal.org                  | personal config          | find-file    |
-| q   | ~/Sync/GDrive/My Drive/Notes/Quizlet.org | Quizlet.org              | find-file    |
+| q   | ~/Notes/Quizlet.org                      | Quizlet.org              | find-file    |
 | r   | ~/Sync/ST/Notes/Cookbook.org             | cookbook                 | find-file    |
 | s   | ~/Sync/ST/Notes/SLUMOS.org               | SLUMOS.org               | find-file    |
 | t   | ~/Sync/ST/Notes/TODO.org                 | TODO.org                 | find-file    |

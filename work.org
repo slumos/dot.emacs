@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2023-11-28 Tue 09:20 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-02-05 Mon 13:49 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -12,7 +12,7 @@
 * Org
 ** Config
    #+BEGIN_SRC emacs-lisp
-     (setq org-directory "~/Sync/GDrive/My Drive/Notes")
+     (setq org-directory "~/Notes")
      (setq slumos-org-directory "~/Sync/ST/Notes")
      (setq org-agenda-files (list
                              (expand-file-name "Quizlet.org" org-directory)
