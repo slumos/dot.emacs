@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-01-15 Mon 09:12 slumos@argenta>
+# Time-stamp: <2024-02-24 Sat 22:29 slumos@argenta>
 #+DESCRIPTION: My nice =~/.config/emacs configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -205,9 +205,15 @@ XDG WHAT
 #+END_SRC
 *** Tuning
 Who remembers Eight Megs And Constantly Swapping?
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq gc-cons-threshold (* 100 1024 1024))
-#+END_SRC
+#+end_src
+
+From [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Performance - LSP Mode - LSP support for Emacs]]:
+#+begin_src emacs-lisp
+  (setq read-process-output-max (* 1024 1024))
+#+end_src
+
 *** Keys
 #+begin_src emacs-lisp
   (global-set-key (kbd "<C-backspace>") #'delete-indentation)
@@ -1433,6 +1439,14 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_example
 
 * Other Apps
+** [[https://github.com/atgreen/paperless][atgreen/paperless: Emacs-assisted PDF document filing]]
+#+begin_src emacs-lisp
+  (use-package paperless
+    :custom
+    (paperless-capture-directory "~/Sync/OneDrive/ScanSnap")
+    (paperless-root-directory "~/Sync/OneDrive/Documents"))
+#+end_src
+
 ** Docker
 *** [[https://github.com/Silex/docker.el][Silex/docker.el: Manage docker from Emacs.]]
 #+begin_src emacs-lisp
@@ -1444,7 +1458,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 ;  (use-package docker-tramp)
 #+end_src
 
-** [[https://github.com/akermu/emacs-libvterm][akermu/emacs-libvterm: Emacs libvterm integration]]
+** COMMENT [[https://github.com/akermu/emacs-libvterm][akermu/emacs-libvterm: Emacs libvterm integration]]
 #+begin_src emacs-lisp
   (use-package vterm)
 #+end_src
@@ -1469,7 +1483,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     (setq mastodon-instance-url "https://emacs.ch"
           mastodon-active-user "slumos"))
 #+end_src
-
 * Language Modes
 ** [[https://github.com/k1LoW/emacs-ansible][Ansible: k1LoW/emacs-ansible]]
 #+begin_src emacs-lisp
@@ -1593,7 +1606,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
    (use-package dockerfile-mode)
    #+end_src
 ** [[https://fennel-lang.org/][Fennel]]
-   Seeing if I can configure Hammerspoon with Fennel
+   I use Fennel for Hammerspoon configuration and lurves it.
    #+begin_src emacs-lisp
      (use-package fennel-mode
        :mode "\\.fnl\\'"
@@ -1601,7 +1614,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        (fennel-mode . lispy-mode)
        (emacs-lisp-mode . lispy-mode))
    #+end_src
-
 ** flycheck
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck-mode
@@ -1711,6 +1723,11 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
        :ensure t
        :hook (k8s-mode . yas-minor-mode))
    #+end_src
+** Lua
+#+begin_src emacs-lisp
+  (use-package lua-mode)
+#+end_src
+
 ** Markdown
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
@@ -1881,75 +1898,36 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 * Helpers
+** Automagic make scripts executable
+   #+BEGIN_SRC emacs-lisp
+     (custom-set-variables '(executable-prefix-env t))
+   #+END_SRC
+** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
+#+begin_src emacs-lisp
+  (use-package vundo
+    :config
+    (setq vundo-glyph-alist vundo-unicode-symbols))
+#+end_src
+
+** Copy region formatted for various markup systems
+   #+BEGIN_SRC emacs-lisp
+   (use-package copy-as-format)
+   #+END_SRC
 ** [[https://github.com/Fanael/edit-indirect/blob/master/edit-indirect.el][edit-indirect/edit-indirect.el at master · Fanael/edit-indirect]]
 #+begin_src emacs-lisp
   (use-package edit-indirect)
 #+end_src
-
 ** COMMENT [[https://github.com/emacs-tree-sitter/ts-fold][emacs-tree-sitter/ts-fold: Code-folding using tree-sitter]]
 #+begin_src emacs-lisp
   (use-package ts-fold
     :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
 #+end_src
 
-** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
-#+begin_src emacs-lisp
-  (use-package async)
-#+end_src
-** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
-#+begin_src emacs-lisp
-    (use-package chezmoi
-      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
-      :bind
-      ("C-c C f" . chezmoi-find)
-      ("C-c C s" . chezmoi-write)
-      ("C-c C g" . chezmoi-magit-status))
-#+end_src
-** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
-"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :config (marginalia-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package embark
-    :ensure t
-    :bind
-    (("C-." . embark-act)
-     ("C-;" . embark-dwim)
-     ("C-h B" . embark-bindings))
-
-    :init
-    (setq prefix-help-command #'embark-prefix-help-command)
-
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   nil
-                   (window-parameters (mode-line-format . none)))))
-
-  (use-package embark-consult
-    :hook
-    (embark-collect-mode . consult-preview-at-point-mode))
-#+end_src
-
-** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
-#+begin_src emacs-lisp
-  (use-package apheleia
-    :hook (terraform-mode . apheleia-mode))
-#+end_src
-
-** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
-   #+begin_src emacs-lisp
-   (use-package direnv)
-   #+end_src
-
-** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
-   #+begin_src emacs-lisp
-   (use-package wgrep)
-   #+end_src
+** Font scale for all frames
+   #+BEGIN_SRC emacs-lisp
+     (use-package default-text-scale
+       :init (default-text-scale-mode))
+   #+END_SRC
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra)
@@ -2008,45 +1986,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
       ("w" slumos/org-copy-workitem-id-for-subtree "workitem for subtree (org-mode)"))
   (global-set-key (kbd "C-c w") #'slumos-hydra-copy-something-as-kill/body)
 #+end_src
-** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
-#+begin_src emacs-lisp
-  (use-package aas
-    :config
-    (aas-set-snippets 'global
-      ";->" "→"
-      ";arr" "⇒"
-      ";larr" "⟹")
-    (aas-global-mode))
-#+end_src
-
-** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
-   #+begin_src emacs-lisp
-     (use-package helpful
-       :after counsel
-       :config
-       (setq counsel-describe-function-function #'helpful-callable)
-       (setq counsel-describe-variable-function #'helpful-variable))
-   #+end_src
-** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
-#+begin_src emacs-lisp
-  (use-package elisp-demos
-    :after helpful
-    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
-#+end_src
-
-** Automagic make scripts executable
-   #+BEGIN_SRC emacs-lisp
-     (custom-set-variables '(executable-prefix-env t))
-   #+END_SRC
-** (not needed as of 29.1?) Font scale for all frames
-   #+BEGIN_SRC emacs-lisp
-     (use-package default-text-scale
-       :init (default-text-scale-mode))
-   #+END_SRC
-** Copy region formatted for various markup systems
-   #+BEGIN_SRC emacs-lisp
-   (use-package copy-as-format)
-   #+END_SRC
 ** Jumping
 *** avy
     #+BEGIN_QUOTE
@@ -2066,11 +2005,104 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
         :bind
         ("M-o" . link-hint-open-link))
     #+end_src
-** [[https://github.com/casouri/vundo][casouri/vundo: Visualize the undo tree.]]
+** [[https://github.com/jwiegley/emacs-async][jwiegley/emacs-async: Simple library for asynchronous processing in Emacs]]
 #+begin_src emacs-lisp
-  (use-package vundo
+  (use-package async)
+#+end_src
+** COMMENT [[https://github.com/jinnovation/kele.el][jinnovation/kele.el: 🥤 Spritzy Kubernetes cluster management for Emacs]]
+#+begin_src emacs-lisp
+  (use-package kele
     :config
-    (setq vundo-glyph-alist vundo-unicode-symbols))
+    (kele-mode 1)
+    (bind-key (kbd "s-k") kele-command-map kele-mode-map))
+#+end_src
+
+** [[https://github.com/r0bobo/kubedoc.el/blob/main/kubedoc.el][kubedoc.el/kubedoc.el at main · r0bobo/kubedoc.el]]
+#+begin_src emacs-lisp
+  (use-package kubedoc
+    :bind
+    (:map kubedoc-mode-map
+          ("u" . kubedoc-up)))
+#+end_src
+
+** [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep: Writable grep buffer and apply the changes to files]]
+   #+begin_src emacs-lisp
+   (use-package wgrep)
+   #+end_src
+** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
+"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :config (marginalia-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+** [[https://github.com/radian-software/apheleia][radian-software/apheleia: 🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.]]
+#+begin_src emacs-lisp
+  (use-package apheleia
+    :hook (terraform-mode . apheleia-mode))
+#+end_src
+
+** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
+#+begin_src emacs-lisp
+    (use-package chezmoi
+      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
+      :bind
+      ("C-c C f" . chezmoi-find)
+      ("C-c C s" . chezmoi-write)
+      ("C-c C g" . chezmoi-magit-status))
+#+end_src
+** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
+   #+begin_src emacs-lisp
+   (use-package direnv)
+   #+end_src
+
+** [[https://github.com/Wilfred/helpful][Wilfred/helpful: A better Emacs *help* buffer]]
+   #+begin_src emacs-lisp
+     (use-package helpful
+       :after counsel
+       :config
+       (setq counsel-describe-function-function #'helpful-callable)
+       (setq counsel-describe-variable-function #'helpful-variable))
+   #+end_src
+** [[https://github.com/xuchunyang/elisp-demos][xuchunyang/elisp-demos: Demonstrate Emacs Lisp APIs]]
+#+begin_src emacs-lisp
+  (use-package elisp-demos
+    :after helpful
+    :init (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+#+end_src
+
+** [[https://github.com/ymarco/auto-activating-snippets][ymarco/auto-activating-snippets: Snippets for Emacs that expand as you type]]
+#+begin_src emacs-lisp
+  (use-package aas
+    :config
+    (aas-set-snippets 'global
+      ";->" "→"
+      ";arr" "⇒"
+      ";larr" "⟹")
+    (aas-global-mode))
 #+end_src
 
 * multiple-cursors
