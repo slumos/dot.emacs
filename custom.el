@@ -159,7 +159,7 @@
  '(lsp-completion-enable t)
  '(lsp-log-io t)
  '(lsp-log-max 2000)
- '(lsp-ui-doc-enable t t)
+ '(lsp-ui-doc-enable t)
  '(lua-indent-level 2)
  '(magit-clone-always-transient nil)
  '(magit-clone-set-remote-head nil)
@@ -167,8 +167,6 @@
  '(magit-diff-use-overlays nil)
  '(magit-repository-directories '(("~/Projects" . 1) ("/opt/projects" . 1)))
  '(magit-wip-mode t)
- '(org-agenda-files
-   '("/Users/slumos/Library/CloudStorage/GoogleDrive-steven.lumos@quizlet.com/My Drive/Notes/Quizlet.org" "/Users/slumos/Library/CloudStorage/GoogleDrive-steven.lumos@quizlet.com/My Drive/Notes/calendar.org" "/Users/slumos/.emacs.d/config.org"))
  '(org-agenda-span 'day)
  '(org-capture-bookmark nil)
  '(org-catch-invisible-edits 'error)

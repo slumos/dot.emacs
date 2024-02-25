@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-02-05 Mon 13:48 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-02-15 Thu 11:22 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -240,7 +240,7 @@ Deploy the fanciness.
 ** Fonts
 *** PragmataPro
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "PragmataPro Mono Liga-22")
+  (set-frame-font "PragmataPro Mono Liga-12")
 #+END_SRC
 
 #+begin_src emacs-lisp
@@ -1996,7 +1996,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 #+name: commonly-visited-files-shortcuts
 | key | path                                     | name                     | fun          |
 |-----+------------------------------------------+--------------------------+--------------|
-| a   | ~/.config/alacritty/alacritty.yml        | alacritty config         | find-file    |
+| a   | ~/.config/alacritty/alacritty.toml       | alacritty config         | chezmoi-find |
 | c   | ~/.emacs.d/config.org                    | main config (config.org) | find-file    |
 | n   | ~/Sync/ST/Notes/Snippets.org             | snippets                 | find-file    |
 | N   | ~/Sync/OneDrive/Notes/NOTES.org          | NOTES.org                | find-file    |
