@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-03-11 Mon 11:46 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-03-11 Mon 11:49 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -118,12 +118,6 @@
 * Secrets
 #+begin_src emacs-lisp
   (use-package hush)
-#+end_src
-
-* [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bug-Reference.html][Bug Reference]]
-#+begin_src emacs-lisp
-  (setq bug-reference-bug-regexp "\\(\\(W-[0-9]+\\)\\)")
-  (setq bug-reference-url-format "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=%s")
 #+end_src
 
 * Debug
