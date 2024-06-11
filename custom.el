@@ -12,12 +12,37 @@
  '(char-menu
    '("—" "‘’" "“”" "…" "«»" "–"
      ("Typography" "•" "©" "†" "‡" "°" "·" "§" "№" "★")
-     ("Mathematical Operators" "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉" "∊" "∋" "∌" "∍" "∎" "∏" "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙" "√" "∛" "∜" "∝" "∞" "∟" "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩" "∪" "∫" "∬" "∭" "∮" "∯" "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹" "∺" "∻" "∼" "∽" "∾" "∿" "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉" "≊" "≋" "≌" "≍" "≎" "≏" "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙" "≚" "≛" "≜" "≝" "≞" "≟" "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩" "≪" "≫" "≬" "≭" "≮" "≯" "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹" "≺" "≻" "≼" "≽" "≾" "≿" "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉" "⊊" "⊋" "⊌" "⊍" "⊎" "⊏" "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙" "⊚" "⊛" "⊜" "⊝" "⊞" "⊟" "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩" "⊪" "⊫" "⊬" "⊭" "⊮" "⊯" "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹" "⊺" "⊻" "⊼" "⊽" "⊾" "⊿" "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉" "⋊" "⋋" "⋌" "⋍" "⋎" "⋏" "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙" "⋚" "⋛" "⋜" "⋝" "⋞" "⋟" "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩" "⋪" "⋫" "⋬" "⋭" "⋮" "⋯" "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹" "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
-     ("Superscripts & Subscripts" "⁰" "ⁱ" "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺" "⁻" "⁼" "⁽" "⁾" "ⁿ" "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊" "₋" "₌" "₍₎" "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
+     ("Mathematical Operators" "∀" "∁" "∂" "∃" "∄" "∅" "∆" "∇" "∈" "∉"
+      "∊" "∋" "∌" "∍" "∎" "∏" "∐" "∑" "−" "∓" "∔" "∕" "∖" "∗" "∘" "∙"
+      "√" "∛" "∜" "∝" "∞" "∟" "∠" "∡" "∢" "∣" "∤" "∥" "∦" "∧" "∨" "∩"
+      "∪" "∫" "∬" "∭" "∮" "∯" "∰" "∱" "∲" "∳" "∴" "∵" "∶" "∷" "∸" "∹"
+      "∺" "∻" "∼" "∽" "∾" "∿" "≀" "≁" "≂" "≃" "≄" "≅" "≆" "≇" "≈" "≉"
+      "≊" "≋" "≌" "≍" "≎" "≏" "≐" "≑" "≒" "≓" "≔" "≕" "≖" "≗" "≘" "≙"
+      "≚" "≛" "≜" "≝" "≞" "≟" "≠" "≡" "≢" "≣" "≤" "≥" "≦" "≧" "≨" "≩"
+      "≪" "≫" "≬" "≭" "≮" "≯" "≰" "≱" "≲" "≳" "≴" "≵" "≶" "≷" "≸" "≹"
+      "≺" "≻" "≼" "≽" "≾" "≿" "⊀" "⊁" "⊂" "⊃" "⊄" "⊅" "⊆" "⊇" "⊈" "⊉"
+      "⊊" "⊋" "⊌" "⊍" "⊎" "⊏" "⊐" "⊑" "⊒" "⊓" "⊔" "⊕" "⊖" "⊗" "⊘" "⊙"
+      "⊚" "⊛" "⊜" "⊝" "⊞" "⊟" "⊠" "⊡" "⊢" "⊣" "⊤" "⊥" "⊦" "⊧" "⊨" "⊩"
+      "⊪" "⊫" "⊬" "⊭" "⊮" "⊯" "⊰" "⊱" "⊲" "⊳" "⊴" "⊵" "⊶" "⊷" "⊸" "⊹"
+      "⊺" "⊻" "⊼" "⊽" "⊾" "⊿" "⋀" "⋁" "⋂" "⋃" "⋄" "⋅" "⋆" "⋇" "⋈" "⋉"
+      "⋊" "⋋" "⋌" "⋍" "⋎" "⋏" "⋐" "⋑" "⋒" "⋓" "⋔" "⋕" "⋖" "⋗" "⋘" "⋙"
+      "⋚" "⋛" "⋜" "⋝" "⋞" "⋟" "⋠" "⋡" "⋢" "⋣" "⋤" "⋥" "⋦" "⋧" "⋨" "⋩"
+      "⋪" "⋫" "⋬" "⋭" "⋮" "⋯" "⋰" "⋱" "⋲" "⋳" "⋴" "⋵" "⋶" "⋷" "⋸" "⋹"
+      "⋺" "⋻" "⋼" "⋽" "⋾" "⋿")
+     ("Superscripts & Subscripts" "⁰" "ⁱ" "⁴" "⁵" "⁶" "⁷" "⁸" "⁹" "⁺"
+      "⁻" "⁼" "⁽" "⁾" "ⁿ" "₀" "₁" "₂" "₃" "₄" "₅" "₆" "₇" "₈" "₉" "₊"
+      "₋" "₌" "₍₎" "ₐ" "ₑ" "ₒ" "ₓ" "ₔ" "ₕ" "ₖ" "ₗ" "ₘ" "ₙ" "ₚ" "ₛ" "ₜ")
      ("Arrows" "←" "→" "↑" "↓" "⇐" "⇒" "⇑" "⇓")
-     ("Greek" "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ" "ν" "ξ" "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
-     ("Enclosed Alphanumerics" "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ" "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ" "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ" "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ" "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ" "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ" "ⓧ" "ⓨ" "ⓩ" "⓪")
-     ("Annotations" "      " "      " "     " "     " "        " "    " "      " "      " "      " "     " "    " "     " "     " "     ")) nil nil "Customized with use-package char-menu")
+     ("Greek" "α" "β" "Y" "δ" "ε" "ζ" "η" "θ" "ι" "κ" "λ" "μ" "ν" "ξ"
+      "ο" "π" "ρ" "σ" "τ" "υ" "φ" "χ" "ψ" "ω")
+     ("Enclosed Alphanumerics" "①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "Ⓐ"
+      "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ" "Ⓗ" "Ⓘ" "Ⓙ" "Ⓚ" "Ⓛ" "Ⓜ" "Ⓝ" "Ⓞ" "Ⓟ" "Ⓠ"
+      "Ⓡ" "Ⓢ" "Ⓣ" "Ⓤ" "Ⓥ" "Ⓦ" "Ⓧ" "Ⓨ" "Ⓩ" "ⓐ" "ⓑ" "ⓒ" "ⓓ" "ⓔ" "ⓕ" "ⓖ"
+      "ⓗ" "ⓘ" "ⓙ" "ⓚ" "ⓛ" "ⓜ" "ⓝ" "ⓞ" "ⓟ" "ⓠ" "ⓡ" "ⓢ" "ⓣ" "ⓤ" "ⓥ" "ⓦ"
+      "ⓧ" "ⓨ" "ⓩ" "⓪")
+     ("Annotations" "      " "      " "     " "     " "        "
+      "    " "      " "      " "      " "     " "    " "     "
+      "     " "     ")) nil nil "Customized with use-package char-menu")
  '(circe-default-directory "~/local/circe")
  '(circe-default-ip-family 'ipv4)
  '(circe-default-part-message "")
@@ -32,97 +57,134 @@
  '(compilation-message-face 'default)
  '(compilation-scroll-output t)
  '(connection-local-criteria-alist
-   '(((:application tramp :machine "Steven-Lumos-VXXQV3F32R.local")
+   '(((:application tramp :protocol "flatpak")
+      tramp-flatpak-connection-local-default-profile)
+     ((:application tramp :protocol "kubernetes")
+      tramp-kubernetes-connection-local-default-profile)
+     ((:application tramp :machine "Steven-Lumos-VXXQV3F32R.local")
       tramp-connection-local-darwin-ps-profile)
-     ((:application eshell)
-      eshell-connection-default-profile)
+     ((:application eshell) eshell-connection-default-profile)
      ((:application tramp :machine "localhost")
       tramp-connection-local-darwin-ps-profile)
      ((:application tramp :machine "m2.local")
       tramp-connection-local-darwin-ps-profile)
      ((:application tramp)
-      tramp-connection-local-default-system-profile tramp-connection-local-default-shell-profile)))
+      tramp-connection-local-default-system-profile
+      tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((eshell-connection-default-profile
-      (eshell-path-env-list))
+   '((tramp-flatpak-connection-local-default-profile
+      (tramp-remote-path "/app/bin" tramp-default-remote-path "/bin"
+                         "/usr/bin" "/sbin" "/usr/sbin"
+                         "/usr/local/bin" "/usr/local/sbin"
+                         "/local/bin" "/local/freeware/bin"
+                         "/local/gnu/bin" "/usr/freeware/bin"
+                         "/usr/pkg/bin" "/usr/contrib/bin" "/opt/bin"
+                         "/opt/sbin" "/opt/local/bin"))
+     (tramp-kubernetes-connection-local-default-profile
+      (tramp-config-check . tramp-kubernetes--current-context-data)
+      (tramp-extra-expand-args 97
+                               (tramp-kubernetes--container
+                                (car tramp-current-connection))
+                               104
+                               (tramp-kubernetes--pod
+                                (car tramp-current-connection))
+                               120
+                               (tramp-kubernetes--context-namespace
+                                (car tramp-current-connection))))
+     (eshell-connection-default-profile (eshell-path-env-list))
      (tramp-connection-local-darwin-ps-profile
-      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state=abcde" "-o" "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (euid . number)
-       (user . string)
-       (egid . number)
-       (comm . 52)
-       (state . 5)
-       (ppid . number)
-       (pgrp . number)
-       (sess . number)
-       (ttname . string)
-       (tpgid . number)
-       (minflt . number)
-       (majflt . number)
-       (time . tramp-ps-time)
-       (pri . number)
-       (nice . number)
-       (vsize . number)
-       (rss . number)
-       (etime . tramp-ps-time)
-       (pcpu . number)
-       (pmem . number)
-       (args)))
+      (tramp-process-attributes-ps-args "-acxww" "-o"
+                                        "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                        "-o" "state=abcde" "-o"
+                                        "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
+      (tramp-process-attributes-ps-format (pid . number)
+                                          (euid . number)
+                                          (user . string)
+                                          (egid . number) (comm . 52)
+                                          (state . 5) (ppid . number)
+                                          (pgrp . number)
+                                          (sess . number)
+                                          (ttname . string)
+                                          (tpgid . number)
+                                          (minflt . number)
+                                          (majflt . number)
+                                          (time . tramp-ps-time)
+                                          (pri . number)
+                                          (nice . number)
+                                          (vsize . number)
+                                          (rss . number)
+                                          (etime . tramp-ps-time)
+                                          (pcpu . number)
+                                          (pmem . number) (args)))
      (tramp-connection-local-busybox-ps-profile
-      (tramp-process-attributes-ps-args "-o" "pid,user,group,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "stat=abcde" "-o" "ppid,pgid,tty,time,nice,etime,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (user . string)
-       (group . string)
-       (comm . 52)
-       (state . 5)
-       (ppid . number)
-       (pgrp . number)
-       (ttname . string)
-       (time . tramp-ps-time)
-       (nice . number)
-       (etime . tramp-ps-time)
-       (args)))
+      (tramp-process-attributes-ps-args "-o"
+                                        "pid,user,group,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                        "-o" "stat=abcde" "-o"
+                                        "ppid,pgid,tty,time,nice,etime,args")
+      (tramp-process-attributes-ps-format (pid . number)
+                                          (user . string)
+                                          (group . string) (comm . 52)
+                                          (state . 5) (ppid . number)
+                                          (pgrp . number)
+                                          (ttname . string)
+                                          (time . tramp-ps-time)
+                                          (nice . number)
+                                          (etime . tramp-ps-time)
+                                          (args)))
      (tramp-connection-local-bsd-ps-profile
-      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,euid,user,egid,egroup,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state,ppid,pgid,sid,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etimes,pcpu,pmem,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (euid . number)
-       (user . string)
-       (egid . number)
-       (group . string)
-       (comm . 52)
-       (state . string)
-       (ppid . number)
-       (pgrp . number)
-       (sess . number)
-       (ttname . string)
-       (tpgid . number)
-       (minflt . number)
-       (majflt . number)
-       (time . tramp-ps-time)
-       (pri . number)
-       (nice . number)
-       (vsize . number)
-       (rss . number)
-       (etime . number)
-       (pcpu . number)
-       (pmem . number)
-       (args)))
+      (tramp-process-attributes-ps-args "-acxww" "-o"
+                                        "pid,euid,user,egid,egroup,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                        "-o"
+                                        "state,ppid,pgid,sid,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etimes,pcpu,pmem,args")
+      (tramp-process-attributes-ps-format (pid . number)
+                                          (euid . number)
+                                          (user . string)
+                                          (egid . number)
+                                          (group . string) (comm . 52)
+                                          (state . string)
+                                          (ppid . number)
+                                          (pgrp . number)
+                                          (sess . number)
+                                          (ttname . string)
+                                          (tpgid . number)
+                                          (minflt . number)
+                                          (majflt . number)
+                                          (time . tramp-ps-time)
+                                          (pri . number)
+                                          (nice . number)
+                                          (vsize . number)
+                                          (rss . number)
+                                          (etime . number)
+                                          (pcpu . number)
+                                          (pmem . number) (args)))
      (tramp-connection-local-default-shell-profile
-      (shell-file-name . "/bin/sh")
-      (shell-command-switch . "-c"))
+      (shell-file-name . "/bin/sh") (shell-command-switch . "-c"))
      (tramp-connection-local-default-system-profile
-      (path-separator . ":")
-      (null-device . "/dev/null"))))
+      (path-separator . ":") (null-device . "/dev/null"))))
  '(counsel-tramp-control-master-path "~/.ssh/sock")
  '(counsel-tramp-control-master-prefix "cc-vpc")
  '(counsel-tramp-custom-connections
-   '("/ssh:slumos@cc-vpc:/home/slumos" "/ssh:slumos@cc-vpc|ssh:slumos@slumos-dev001-ash-dev:/home/slumos"))
+   '("/ssh:slumos@cc-vpc:/home/slumos"
+     "/ssh:slumos@cc-vpc|ssh:slumos@slumos-dev001-ash-dev:/home/slumos"))
  '(custom-safe-themes
-   '("4b026ac68a1aa4d1a91879b64f54c2490b4ecad8b64de5b1865bca0addd053d9" "d395c1793e0d64797d711c870571a0033174ca321ed48444efbe640bf692bf4f" "4cc1cc7efd5c2362ef684657eec7d7e482223b1def4edeb0fab52ba1d334d38a" "6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" "d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0" "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b" "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2" "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158" "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7" "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" default))
+   '("4b026ac68a1aa4d1a91879b64f54c2490b4ecad8b64de5b1865bca0addd053d9"
+     "d395c1793e0d64797d711c870571a0033174ca321ed48444efbe640bf692bf4f"
+     "4cc1cc7efd5c2362ef684657eec7d7e482223b1def4edeb0fab52ba1d334d38a"
+     "6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1"
+     "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298"
+     "d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c"
+     "b583823b9ee1573074e7cbfd63623fe844030d911e9279a7c8a5d16de7df0ed0"
+     "ade34e908d3c56a0b50c4f3a822310e78cb80611d38d4aed8dfb90cfd6fd125b"
+     "571a762840562ec5b31b6a9d4b45cfb1156ce52339e188a8b66749ed9b3b22a2"
+     "773e0bfa5450c75d613cbf29734cdc876c3d59dbf85b93cff3015a8687dea158"
+     "406251a3b514a1b353dfba5e8986037ae354ee2b090039c1168fb985fef17aa7"
+     "7cb89c93e37327cf1545fd8579816241446c611ebabc144a9835d09bbe132b19"
+     "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147"
+     "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147"
+     "d5f17ae86464ef63c46ed4cb322703d91e8ed5e718bf5a7beb69dd63352b26b2"
+     "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596"
+     "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f"
+     default))
  '(display-time-24hr-format t)
  '(dockerfile-enable-auto-indent nil)
  '(dockerfile-indent-offset 2)
@@ -134,7 +196,9 @@
  '(executable-prefix-env t)
  '(face-font-family-alternatives
    '(("Monospace" "PragmataPro Liga" "courier" "fixed")
-     ("Monospace Serif" "PragmataPro Liga" "Courier 10 Pitch" "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier" "fixed")
+     ("Monospace Serif" "PragmataPro Liga" "Courier 10 Pitch"
+      "Consolas" "Courier Std" "FreeMono" "Nimbus Mono L" "courier"
+      "fixed")
      ("courier" "CMU Typewriter Text" "fixed")
      ("Sans Serif" "GillSans" "helv" "helvetica" "arial" "fixed")
      ("helv" "helvetica" "arial" "fixed")))
@@ -159,13 +223,33 @@
  '(lsp-completion-enable t)
  '(lsp-log-io t)
  '(lsp-log-max 2000)
- '(lsp-ui-doc-enable t)
+ '(lsp-ui-doc-enable t t)
  '(lua-indent-level 2)
  '(magit-clone-always-transient nil)
  '(magit-clone-set-remote-head nil)
  '(magit-commit-arguments '("--gpg-sign=F59B171B695B4C66"))
  '(magit-diff-use-overlays nil)
- '(magit-repository-directories '(("~/Projects" . 1) ("/opt/projects" . 1)))
+ '(magit-repository-directories
+   '(("~/Projects" . 1) ("/opt/projects" . 1)
+     ("/opt/projects/quizlet-infrastructure" . 1)))
+ '(magit-status-sections-hook
+   '(magit-insert-status-headers magit-insert-merge-log
+                                 magit-insert-rebase-sequence
+                                 magit-insert-am-sequence
+                                 magit-insert-sequencer-sequence
+                                 magit-insert-bisect-output
+                                 magit-insert-bisect-rest
+                                 magit-insert-bisect-log
+                                 magit-insert-untracked-files
+                                 magit-insert-unstaged-changes
+                                 magit-insert-staged-changes
+                                 magit-insert-stashes
+                                 magit-insert-unpushed-to-pushremote
+                                 magit-insert-unpushed-to-upstream-or-recent
+                                 magit-insert-unpulled-from-pushremote
+                                 magit-insert-unpulled-from-upstream
+                                 magit-insert-worktrees
+                                 forge-insert-issues))
  '(magit-wip-mode t)
  '(org-agenda-span 'day)
  '(org-capture-bookmark nil)
@@ -189,17 +273,46 @@
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(lsp-python-ms lsp-java lsp-ui lsp-mode kubedoc verb flycheck-rust edit-server highlight-indent-guides tree-sitter-fold magit-lfs syncthing flycheck mini-frame breadcrumb ts-fold terraform-ts-mode bigquery-mode tmux-mode vc-use-package "https://github.com/slotThe/vc-use-package" indent-bars hush agitate conventional-commit gpt-commit transpose-frame org-gcal alert tramp-container docker auth-source-1password treesit-auto org-jira ob-d2 d2-mode org-kanban vterm org-modern-indent ligature async chezmoi counsel k8s-mode groovy-mode org-web-tools org-modern ox-jira magit embark-consult marginalia embark esup elfeed-org elfeed prescient khoj tree-sitter-indent paradox mastodon eziam-themes vcl-mode yaml-pro-mode yaml-pro lispy org-mac-link nerd-fonts lastfm restclient-jq restclient pdf-tools counsel-projectile multiple-cursors vundo link-hint elisp-demos helpful aas apheleia pragmatapro-lig-mode rspec-mode inf-ruby ein org-sticky-header deadgrep jinja2-mode mmm-jinja2 mmm-mode org-ml expand-region org-variable-pitch idle-org-agenda edit-indirect lpy almost-mono-themes monochrome-theme nothing-theme spacemacs-theme ivy-avy vscode-dark-plus-theme org-babel-eval-in-repl ob-session-async org-chef ox-pandoc helm-dash ob-tmux char-menu parchment-theme 2048-game json-navigator vuiet ivy-emoji mlso-theme docker-compose-mode dockerfile-mode direnv vs-dark-theme chocolate-theme doom-themes lsp-ivy ivy-rich doom-modeline ivy-posframe yaml-tomato indent-guide org-ql ert-expectations vscdark-theme feather deft ivy-omni-org flycheck-pycheckers pyenv-mode-auto python-docstring python-mode python-pytest worf apples-mode ob-applescript paredit orgit straight nil smyx-theme dap-java nordless-theme ws-butler-mode fennel-mode mvn aws-snippets lsp-scala lush-theme company-lsp rustic rust-mode counsel-dash poly-markdown flymake-jslint flymake-json lsp-javacomp org-plus-contrib org-edna ox-slack ox-slimhtml tao-yin-theme el-get leaf-keywords counsel-tramp wgrep iedit arjen-grey-theme goose-theme grayscale-theme klere-theme kosmos-theme spacegray-theme plan9-theme sexy-monochrome-theme rimero-theme brutalist-theme basic-theme poet-theme eink-theme eziam-theme tao-theme color-theme-sanityinc-solarized jq-mode gruvbox-theme exotica-theme hydandata-light-theme madhat2r-theme majapahit-theme minimal-theme nova-theme org-beautify-theme overcast-theme paper-theme professional-theme quasi-monochrome-theme snazzy-theme tangotango-theme white-theme json-reformatter-jq s3ed ein-notebook ob-async use-package-hydra hydra-use-package spray nose quelpa-use-package quelpa company-restclient go-mode web-mode terraform-mode chruby seeing-is-believing ruby-hash-syntax puppet-mode ox-gfm ox-clip org-bullets indent-tools ivy-prescient ws-butler which-key ace-link spaceline-all-the-icons spaceline exec-path-from-shell forge flycheck-yamllint language-detection ox-confluence nord yaml-imenu constant-theme elpy flycheck-mode markdown-toc atomic-chrome browse-at-remote calfw calfw-cal calfw-gcal calfw-ical calfw-org counsel-org-capture-string default-text-scale spinner company-jedi copy-as-format ob-ipython ace-mc lastpass focus lua-mode nginx-mode leuven-theme org-brain flycheck-demjson json-mode js2-mode ob-restclient editorconfig undo-tree all-the-icons org-id ob-sh ivy-hydra flx zoom-frm))
+   '(aas almost-mono-themes apheleia async atomic-chrome breadcrumb
+         browse-at-remote casual-avy char-menu chezmoi chruby
+         copy-as-format counsel-projectile deadgrep default-text-scale
+         direnv docker dockerfile-mode edit-indirect edit-server
+         editorconfig ef-themes ein el-get elfeed-org elisp-demos elpy
+         embark-consult exec-path-from-shell fennel-mode flx
+         flycheck-rust forge go-mode groovy-mode gruvbox-theme helpful
+         highlight-indent-guides hush indent-tools inf-ruby ivy-avy
+         ivy-omni-org ivy-posframe ivy-prescient ivy-rich js2-mode
+         json-mode k8s-mode kubedoc lastfm lastpass leaf-keywords
+         ligature link-hint lpy lsp-java lsp-python-ms lsp-ui lua-mode
+         magit-lfs marginalia mastodon modus-themes multiple-cursors
+         nordless-theme ob-restclient ob-tmux org-mac-link org-modern
+         org-ql org-web-tools ox-clip ox-gfm ox-jira ox-pandoc
+         parchment-theme pdf-tools puppet-mode quelpa-use-package
+         restclient-jq rspec-mode ruby-hash-syntax rustic s3ed
+         seeing-is-believing syncthing tao-theme terraform-mode
+         tree-sitter-fold undo-tree use-package-hydra vc-use-package
+         verb vundo web-mode wgrep which-key ws-butler yaml-imenu
+         yaml-pro))
  '(package-vc-selected-packages
-   '((modus-exporter :vc-backend Git :url "https://github.com/polaris64/modus-exporter")
-     (tree-sitter-fold :vc-backend Git :url "https://github.com/junyi-hou/tree-sitter-fold")
-     (flycheck :vc-backend Git :url "https://github.com/flycheck/flycheck")
-     (org-modern-indent :vc-backend Git :url "https://github.com/jdtsmith/org-modern-indent")
-     (ts-fold :vc-backend Git :url "https://github.com/emacs-tree-sitter/ts-fold")
-     (terraform-ts-mode :vc-backend Git :url "https://github.com/kgrotel/terraform-ts-mode")
-     (bigquery-mode :vc-backend Git :url "https://github.com/christophstockhusen/bigquery-mode")
-     (indent-bars :vc-backend Git :url "https://github.com/jdtsmith/indent-bars")
-     (vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package")))
+   '((chezmoi :vc-backend Git :url
+              "https://github.com/tuh8888/chezmoi.el")
+     (tree-sitter-fold :vc-backend Git :url
+                       "https://github.com/junyi-hou/tree-sitter-fold")
+     (vc-use-package :url "https://github.com/slotThe/vc-use-package")
+     (modus-exporter :vc-backend Git :url
+                     "https://github.com/polaris64/modus-exporter")
+     (flycheck :vc-backend Git :url
+               "https://github.com/flycheck/flycheck")
+     (org-modern-indent :vc-backend Git :url
+                        "https://github.com/jdtsmith/org-modern-indent")
+     (ts-fold :vc-backend Git :url
+              "https://github.com/emacs-tree-sitter/ts-fold")
+     (terraform-ts-mode :vc-backend Git :url
+                        "https://github.com/kgrotel/terraform-ts-mode")
+     (bigquery-mode :vc-backend Git :url
+                    "https://github.com/christophstockhusen/bigquery-mode")
+     (indent-bars :vc-backend Git :url
+                  "https://github.com/jdtsmith/indent-bars")))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(python-indent-offset 2)

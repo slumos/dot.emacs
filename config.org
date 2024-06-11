@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-02-25 Sun 09:17 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-06-11 Tue 12:17 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -72,7 +72,7 @@ John Wiegley is an Emacs badass. I am not even kidding.
 
 #+begin_src emacs-lisp
    (unless (package-installed-p 'vc-use-package)
-     (package-vc-install "https://github.com/slotThe/vc-use-package"))
+     (package-vc-install '(vc-use-package :url "https://github.com/slotThe/vc-use-package")))
    (require 'vc-use-package)
 #+end_src
 
@@ -186,6 +186,7 @@ Full Screen though!
        "CIRCLECI_TOKEN"
        "EMAIL"
        "LANG"
+       "OPENAI_EMACS_GPT_COMMIT_TOKEN"
        "TERRAFORM_CLOUD_TOKEN"
        "TMPDIR"
        "XDG_CACHE_HOME"
@@ -247,7 +248,7 @@ Deploy the fanciness.
 ** Fonts
 *** PragmataPro
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "PragmataPro Mono Liga-18")
+  (set-frame-font "PragmataPro Mono Liga-14")
 #+END_SRC
 
 #+begin_src emacs-lisp
@@ -852,7 +853,6 @@ Copied from https://github.com/fabrizioschiavi/pragmatapro/blob/master/emacs_sni
     :hook (yaml-mode . indent-bars-mode)
     :custom (indent-bars-prefer-character t))
 #+end_src
-
 * Magit
 [[https://magit.vc/][It's Magit! A Git Porcelain inside Emacs]]
 
@@ -1355,7 +1355,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
              for wi-prop = (org-element-property :WORKITEM headline)
              for title = (org-element-property :title headline)
              if wi-prop return wi-prop
-             if (and title (string-match "W-\[0-9\]\+" title)) return (match-string 0 title)))
+             if (and title (string-match "\[A-Z\]\+-\[0-9\]\+" title)) return (match-string 0 title)))
 
   (defun slumos/org-subtree-headlines ()
     (save-excursion
@@ -1882,7 +1882,7 @@ Language Server Protocol
 #+BEGIN_SRC emacs-lisp
   (use-package terraform-mode
     :config
-    (setq lsp-disabled-clients '(tfls))
+    (setq lsp-disabled-clients '(semgrep-ls tfls))
                                           ;:hook
                                           ; see apheleia (terraform-mode . terraform-format-on-save-mode)
     )
@@ -2062,6 +2062,12 @@ This seems like a decent demonstration of literate programming. Add a row to thi
           ("C-." . avy-goto-char-timer)
           ("M-g M-g" . avy-goto-line))
     #+END_SRC
+*** [[https://github.com/kickingvegas/casual-avy][kickingvegas/casual-avy: Casual Avy - An opinionated Transient menu for Avy.]]
+#+begin_src emacs-lisp
+  (use-package casual-avy
+    :bind ("M-g" . casual-avy-tmenu))
+#+end_src
+
 *** [[https://github.com/noctuid/link-hint.el][noctuid/link-hint.el: Pentadactyl-like Link Hinting in Emacs with Avy]]
     #+begin_src emacs-lisp
       (use-package link-hint
@@ -2127,12 +2133,13 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 
 ** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
 #+begin_src emacs-lisp
-    (use-package chezmoi
-      :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
-      :bind
-      ("C-c C f" . chezmoi-find)
-      ("C-c C s" . chezmoi-write)
-      ("C-c C g" . chezmoi-magit-status))
+  (use-package chezmoi
+    :vc (:fetcher github :repo tuh8888/chezmoi.el)
+    :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
+    :bind
+    ("C-c C f" . chezmoi-find)
+    ("C-c C s" . chezmoi-write)
+    ("C-c C g" . chezmoi-magit-status))
 #+end_src
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
    #+begin_src emacs-lisp
