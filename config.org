@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-06-11 Tue 12:17 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-07-10 Wed 15:07 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -2481,18 +2481,23 @@ This seems like a decent demonstration of literate programming. Add a row to thi
     From the really-great http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 
 #+BEGIN_SRC emacs-lisp
+  ;; (defun rename-file-and-buffer ()
+  ;;   "Rename the current buffer and file it is visiting."
+  ;;   (interactive)
+  ;;   (let ((filename (buffer-file-name)))
+  ;;     (if (not (and filename (file-exists-p filename)))
+  ;;         (message "Buffer is not visiting a file!")
+  ;;       (let ((new-name (read-file-name "New name: " filename)))
+  ;;         (cond
+  ;;          ((vc-backend filename) (vc-rename-file filename new-name))
+  ;;          (t
+  ;;           (rename-file filename new-name t)
+  ;;           (set-visited-file-name new-name t t)))))))
+
   (defun rename-file-and-buffer ()
-    "Rename the current buffer and file it is visiting."
+    "Reminder to try Emacs built-in"
     (interactive)
-    (let ((filename (buffer-file-name)))
-      (if (not (and filename (file-exists-p filename)))
-          (message "Buffer is not visiting a file!")
-        (let ((new-name (read-file-name "New name: " filename)))
-          (cond
-           ((vc-backend filename) (vc-rename-file filename new-name))
-           (t
-            (rename-file filename new-name t)
-            (set-visited-file-name new-name t t)))))))
+    (error "Try `rename-visited-file`"))
 #+END_SRC
 **** TODO replace rename-file-and-buffer with rename-visited-file (Emacs 29)
 *** compile-notify

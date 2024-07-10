@@ -289,10 +289,10 @@
          org-ql org-web-tools ox-clip ox-gfm ox-jira ox-pandoc
          parchment-theme pdf-tools puppet-mode quelpa-use-package
          restclient-jq rspec-mode ruby-hash-syntax rustic s3ed
-         seeing-is-believing syncthing tao-theme terraform-mode
-         tree-sitter-fold undo-tree use-package-hydra vc-use-package
-         verb vundo web-mode wgrep which-key ws-butler yaml-imenu
-         yaml-pro))
+         seeing-is-believing separedit syncthing tao-theme
+         terraform-mode tree-sitter-fold undo-tree use-package-hydra
+         vc-use-package verb vundo web-mode wgrep which-key ws-butler
+         yaml-imenu yaml-pro))
  '(package-vc-selected-packages
    '((chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")
