@@ -1967,6 +1967,12 @@ Not there yet based on my experience. [2023-12-06 Wed]
   (use-package edit-indirect)
 #+end_src
 
+** TRYING [[https://github.com/twlz0ne/separedit.el][twlz0ne/separedit.el: Edit comment or string/docstring or code block inside them in separate buffer with your favorite mode]]
+#+begin_src emacs-lisp
+  (use-package separedit
+    :bind (:map prog-mode-map ("C-c '" . #'separedit)))
+#+end_src
+
 ** [[https://github.com/federicotdn/verb][federicotdn/verb: Organize and send HTTP requests from Emacs]]
 #+begin_src emacs-lisp
   (use-package verb
