@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-07-10 Wed 15:07 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-10-28 Mon 16:45 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -178,7 +178,7 @@ Full Screen though!
     :demand t
     :config
                                           ;(setq shell-file-name "/usr/local/bin/zsh")
-    (setq exec-path-from-shell-arguments '("-l" "-i"))
+    (setq exec-path-from-shell-arguments '("-l"))
     (setq exec-path-from-shell-check-startup-files nil)
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-envs
@@ -884,7 +884,7 @@ CLI with single keystrokes.
     :custom
     (forge-topic-list-limit '(60 . 0)))
 #+end_src
-** [[https://github.com/Ailrun/magit-lfs][Ailrun/magit-lfs: Git LFS for magit!]]
+** COMMENT [[https://github.com/Ailrun/magit-lfs][Ailrun/magit-lfs: Git LFS for magit!]]
 #+begin_src emacs-lisp
   (use-package magit-lfs :pin melpa)
 #+end_src
@@ -1062,13 +1062,6 @@ CLI with single keystrokes.
    #+BEGIN_SRC emacs-lisp
    (setq org-modules '(org-id org-mac-link org-protocol ob-shell))
    (org-load-modules-maybe t)
-   #+END_SRC
-
-   I don't use =hl-line-mode= often, but when I do, it's in buffers
-   that are lists of things.
-
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
    #+END_SRC
 
    #+BEGIN_QUOTE
@@ -1669,7 +1662,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     :custom
     (groovy-indent-offset 2))
 #+END_SRC
-** Java
+** COMMENT Java
 #+begin_src emacs-lisp
   (exec-path-from-shell-copy-env "JAVA_HOME")
 #+end_src
@@ -1742,6 +1735,20 @@ Trying out jsonian
     :ensure t
     :hook (k8s-mode . yas-minor-mode))
 #+end_src
+** COMMENT LSP
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui :commands lsp-ui-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+#+end_src
+
 ** Lua
 #+begin_src emacs-lisp
   (use-package lua-mode)
@@ -1758,7 +1765,7 @@ Trying out jsonian
 #+END_SRC
 ** MinecraftForge
 *** TODO [[https://github.com/qwattash/forge-mode][qwattash/forge-mode: Emacs minor mode for minecraft forge development]]
-
+** PHP
 ** Puppet
 #+BEGIN_SRC emacs-lisp
   (use-package puppet-mode
@@ -1909,19 +1916,40 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+END_SRC
 ** YAML
    #+BEGIN_SRC emacs-lisp
-          (use-package yaml-mode
-            :mode "\\(.yaml\\|.yml\\)$"
-            :config (add-hook 'yaml-mode-hook #'flycheck-mode))
+     (use-package yaml-mode
+       :mode "\\(.yaml\\|.yml\\)$"
+       :config
+       (add-hook 'yaml-mode-hook #'flycheck-mode)
+       (add-hook 'yaml-mode-hook #'eglot-ensure))
 
-          (use-package yaml-pro
-            :hook
-            (yaml-mode . yaml-pro-mode)
-            (yaml-ts-mode . yaml-pro-ts-mode))
+     (use-package yaml-pro
+       :hook
+       (yaml-mode . yaml-pro-mode)
+       (yaml-ts-mode . yaml-pro-ts-mode))
 
-          (use-package yaml-imenu
-            :hook (yaml-mode . yaml-imenu-enable))
+     (use-package yaml-imenu
+       :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
+
+   #+begin_src emacs-lisp
+     (use-package eglot-yaml
+       :vc (:fetcher github :repo yveszoundi/eglot-yaml))
+   #+end_src
+
 * Helpers
+** Location
+
+   I don't use =hl-line-mode= often, but when I do, it's in buffers
+   that are lists of things.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+   #+END_SRC
+
+   #+begin_src emacs-lisp
+     (add-hook 'tabulated-list-mode-hook #'hl-line-mode)
+   #+end_src
+
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
@@ -2145,8 +2173,11 @@ This seems like a decent demonstration of literate programming. Add a row to thi
     :bind
     ("C-c C f" . chezmoi-find)
     ("C-c C s" . chezmoi-write)
-    ("C-c C g" . chezmoi-magit-status))
+    ("C-c C g" . chezmoi-magit-status)
+    :config
+    (require 'chezmoi-magit))
 #+end_src
+
 ** [[https://github.com/wbolster/emacs-direnv][wbolster/emacs-direnv: direnv integration for emacs]]
    #+begin_src emacs-lisp
    (use-package direnv)
@@ -2839,3 +2870,14 @@ LC_ALL=
    | org-ql-search-directories-files-regexp | (\.org\(_done\)?\') | Customized with leaf in `org-ql' block at `/Users/slumos/.emacs.d/config.el' |
    | el-get-git-shallow-clone               | (t)                | Customized with leaf in `el-get' block at `/Users/slumos/.emacs.d/config.el' |
    #+end_src
+** scratch
+#+begin_src emacs-lisp :results value replace
+  (let* ((branch-name "tmp-branch")
+         (base-dir "~/.local/worktrees")
+         (worktree-dir (expand-file-name branch-name base-dir)))
+    worktree-dir)
+    
+#+end_src
+
+#+RESULTS:
+: /Users/slumos/.local/worktrees/tmp-branch

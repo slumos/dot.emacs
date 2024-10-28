@@ -57,7 +57,8 @@
  '(compilation-message-face 'default)
  '(compilation-scroll-output t)
  '(connection-local-criteria-alist
-   '(((:application tramp :protocol "flatpak")
+   '(((:application vc-git) vc-git-connection-default-profile)
+     ((:application tramp :protocol "flatpak")
       tramp-flatpak-connection-local-default-profile)
      ((:application tramp :protocol "kubernetes")
       tramp-kubernetes-connection-local-default-profile)
@@ -72,7 +73,8 @@
       tramp-connection-local-default-system-profile
       tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((tramp-flatpak-connection-local-default-profile
+   '((vc-git-connection-default-profile (vc-git--program-version))
+     (tramp-flatpak-connection-local-default-profile
       (tramp-remote-path "/app/bin" tramp-default-remote-path "/bin"
                          "/usr/bin" "/sbin" "/usr/sbin"
                          "/usr/local/bin" "/usr/local/sbin"
@@ -272,29 +274,11 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
- '(package-selected-packages
-   '(aas almost-mono-themes apheleia async atomic-chrome breadcrumb
-         browse-at-remote casual-avy char-menu chezmoi chruby
-         copy-as-format counsel-projectile deadgrep default-text-scale
-         direnv docker dockerfile-mode edit-indirect edit-server
-         editorconfig ef-themes ein el-get elfeed-org elisp-demos elpy
-         embark-consult exec-path-from-shell fennel-mode flx
-         flycheck-rust forge go-mode groovy-mode gruvbox-theme helpful
-         highlight-indent-guides hush indent-tools inf-ruby ivy-avy
-         ivy-omni-org ivy-posframe ivy-prescient ivy-rich js2-mode
-         json-mode k8s-mode kubedoc lastfm lastpass leaf-keywords
-         ligature link-hint lpy lsp-java lsp-python-ms lsp-ui lua-mode
-         magit-lfs marginalia mastodon modus-themes multiple-cursors
-         nordless-theme ob-restclient ob-tmux org-mac-link org-modern
-         org-ql org-web-tools ox-clip ox-gfm ox-jira ox-pandoc
-         parchment-theme pdf-tools puppet-mode quelpa-use-package
-         restclient-jq rspec-mode ruby-hash-syntax rustic s3ed
-         seeing-is-believing separedit syncthing tao-theme
-         terraform-mode tree-sitter-fold undo-tree use-package-hydra
-         vc-use-package verb vundo web-mode wgrep which-key ws-butler
-         yaml-imenu yaml-pro))
+ '(package-selected-packages '(eglot-yaml))
  '(package-vc-selected-packages
-   '((chezmoi :vc-backend Git :url
+   '((eglot-yaml :vc-backend Git :url
+                 "https://github.com/yveszoundi/eglot-yaml")
+     (chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")
      (tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")
