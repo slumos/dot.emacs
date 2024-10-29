@@ -274,12 +274,12 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
- '(package-selected-packages '(eglot-yaml))
+ '(package-selected-packages '(chezmoi eglot-yaml))
  '(package-vc-selected-packages
-   '((eglot-yaml :vc-backend Git :url
-                 "https://github.com/yveszoundi/eglot-yaml")
-     (chezmoi :vc-backend Git :url
+   '((chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")
+     (eglot-yaml :vc-backend Git :url
+                 "https://github.com/yveszoundi/eglot-yaml")
      (tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")
      (vc-use-package :url "https://github.com/slotThe/vc-use-package")

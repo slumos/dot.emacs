@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-10-28 Mon 16:45 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-10-29 Tue 12:57 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -2168,9 +2168,10 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 #+end_src
 
 ** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package chezmoi
     :vc (:fetcher github :repo tuh8888/chezmoi.el)
+    :load-path "~/.emacs.d/elpa/chezmoi/extensions"
     :commands (chezmoi-find chezmoi-write chezmoi-diff chezmoi-magit-status)
     :bind
     ("C-c C f" . chezmoi-find)
