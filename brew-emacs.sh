@@ -16,6 +16,9 @@ next-output-file-name () {
 formula="d12frosted/emacs-plus/emacs-plus"
 formula_version=29
 
+#icon_arg='--with-modern-nuvola-icon' 
+icon_arg='--with-savchenkovaleriy-big-sur-icon'
+
 case "${1-x}" in
   @??) formula_version="${1#@}" ;;
 esac
@@ -27,14 +30,14 @@ read enter
 
 print "logging to ${logfile}"
 
+set -x
 export CFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
 export LDFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
 
 brew install "${formula}@${formula_version}" \
   --display-times \
   --with-imagemagick \
-  --with-modern-nuvola-icon \
   --with-native-comp \
-  --with-poll \
   --with-xwidgets \
+  "${icon_arg}" \
 |& tee "$logfile"

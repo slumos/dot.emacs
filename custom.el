@@ -274,9 +274,11 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
- '(package-selected-packages '(chezmoi eglot-yaml))
+ '(package-selected-packages '(chezmoi copilot eglot-yaml gptel idle-org-agenda))
  '(package-vc-selected-packages
-   '((chezmoi :vc-backend Git :url
+   '((copilot :vc-backend Git :url
+              "https://github.com/copilot-emacs/copilot.el")
+     (chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")
      (eglot-yaml :vc-backend Git :url
                  "https://github.com/yveszoundi/eglot-yaml")

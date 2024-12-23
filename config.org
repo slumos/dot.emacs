@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-10-29 Tue 12:57 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2024-12-23 Mon 10:15 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -187,6 +187,7 @@ Full Screen though!
        "EMAIL"
        "LANG"
        "OPENAI_EMACS_GPT_COMMIT_TOKEN"
+       "OPENAI_EMACS_GPTEL_TOKEN"
        "TERRAFORM_CLOUD_TOKEN"
        "TMPDIR"
        "XDG_CACHE_HOME"
@@ -1093,7 +1094,7 @@ CLI with single keystrokes.
 #+begin_src emacs-lisp
   (setq org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 2)))
 #+end_src
-**** COMMENT [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+**** [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
    #+begin_src emacs-lisp
    (use-package idle-org-agenda
      :after org-agenda
@@ -1465,7 +1466,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+begin_src emacs-lisp
   (use-package vterm)
 #+end_src
-** TODO [[https://github.com/xenodium/chatgpt-shell][xenodium/chatgpt-shell: ChatGPT and DALL-E Emacs shells + Org babel 🦄 + a shell maker for other providers]]
 ** [[https://github.com/skeeto/elfeed][skeeto/elfeed: An Emacs web feeds client]]
 #+begin_src emacs-lisp
   (use-package elfeed)
@@ -1479,6 +1479,7 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 ***** [[https://sachachua.com/blog/feed/][Sacha Chua]]
 **** Friends                                                        :friends:
 ***** [[https://davidmcrampton.com/?feed=rss2][https://davidmcrampton.com/?feed=rss2]]
+
 ** [[https://codeberg.org/martianh/mastodon.el][martianh/mastodon.el: Emacs client for Mastodon]]
 #+begin_src emacs-lisp
   (use-package mastodon
@@ -1495,6 +1496,14 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
         (setq syncthing-default-server-token syncthing-token)))
 #+end_src
 * Language Modes
+** flymake
+#+begin_src emacs-lisp
+  (use-package flymake
+    :bind (("C-c e n" . flymake-goto-next-error)
+           ("C-c e p" . flymake-goto-previous-error)
+           ("C-c e l" . flymake-show-buffer-diagnostics)))
+#+end_src
+
 ** TODO COMMENT [[https://github.com/christophstockhusen/bigquery-mode][christophstockhusen/bigquery-mode: GNU Emacs Major Mode for Editing and Executing BigQuery Scripts]]
 #+begin_src emacs-lisp
   (use-package bigquery-mode
@@ -1938,6 +1947,29 @@ Not there yet based on my experience. [2023-12-06 Wed]
        :vc (:fetcher github :repo yveszoundi/eglot-yaml))
    #+end_src
 
+* LLM
+** [[https://github.com/karthink/gptel][karthink/gptel: A simple LLM client for Emacs]]
+#+begin_src emacs-lisp
+  (use-package gptel
+    :commands (gptel gptel-menu gptel-send)
+    :bind ("C-c G" . gptel-menu)
+    :config
+    (setq gptel-model 'llama3.2:latest
+          gptel-backend (gptel-make-ollama "Ollama"
+                          :host "localhost:11434"
+                          :stream t
+                          :models '(llama3.2:latest))))
+#+end_src
+
+      ;; '( codegemma:latest
+      ;;    codellama:latest
+      ;;    gemma2:latest
+      ;;    llama3.2:latest
+      ;;    llava:latest
+      ;;    mistral:latest)
+** TODO [[https://github.com/lanceberge/elysium][lanceberge/elysium: Automatically apply AI-generated code changes in Emacs]]
+** TODO [[https://github.com/douo/magit-gptcommit][douo/magit-gptcommit: Magit commit with help of gpt]]
+** TODO [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
 * Helpers
 ** Location
 
@@ -1961,6 +1993,18 @@ Not there yet based on my experience. [2023-12-06 Wed]
   (use-package vundo
     :config
     (setq vundo-glyph-alist vundo-unicode-symbols))
+#+end_src
+** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
+#+begin_src emacs-lisp
+  (use-package copilot
+    :vc (:fetcher github
+         :repo copilot-emacs/copilot.el
+         :rev :newest)
+    :bind
+    ("M-C-<next>" . copilot-next-completion)
+    ("M-C-<prior>" . copilot-previous-completion)
+    ("M-C-<return>" . copilot-accept-completion)
+    ("M-C-<backspace>" . copilot-cancel-completion))
 #+end_src
 
 ** Copy region formatted for various markup systems
@@ -2055,9 +2099,6 @@ This seems like a decent demonstration of literate programming. Add a row to thi
                 (prin1 (list key path name fun)))
      #+end_src
 
-     #+RESULTS:
-     : ("a" "~/.config/alacritty/alacritty.yml" "alacritty config" "find-file")("c" "~/.emacs.d/config.org" "main config (config.org)" "find-file")("N" "~/Sync/OneDrive/Notes/NOTES.org" "NOTES.org" "find-file")("p" "~/.emacs.d/personal.org" "personal config" "find-file")("q" "~/Sync/GDrive/My Drive/Notes/Quizlet.org" "Quizlet.org" "find-file")("r" "~/Sync/ST/Notes/Cookbook.org" "cookbook" "find-file")("s" "~/Sync/ST/Notes/SLUMOS.org" "SLUMOS.org" "find-file")("t" "~/Sync/ST/Notes/TODO.org" "TODO.org" "find-file")("w" "~/.emacs.d/work.org" "work config" "find-file")("z" "~/.zshrc" "zshrc" "chezmoi-find")
-
      #+name: table-to-file-shortcuts-heads
      #+begin_src emacs-lisp :var table=commonly-visited-files-shortcuts :results output replace
        (cl-loop for (key path name fun) in table do
@@ -2069,8 +2110,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
          "visit file"
          <<table-to-file-shortcuts-heads(table=commonly-visited-files-shortcuts)>>)
        (global-set-key (kbd "C-c v") #'hydra-commonly-visited-files-shortcuts/body)
-     #+end_src
-     
+     #+end_src    
 **** kill-ring-saving
 #+begin_src emacs-lisp
   (defhydra slumos-hydra-copy-something-as-kill (:color blue)
@@ -2168,7 +2208,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
 #+end_src
 
 ** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package chezmoi
     :vc (:fetcher github :repo tuh8888/chezmoi.el)
     :load-path "~/.emacs.d/elpa/chezmoi/extensions"
@@ -2300,7 +2340,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
      (use-package which-key
        :config (which-key-mode))
    #+END_SRC
-** undo-tree
+** COMMENT undo-tree
    [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][Advanced undo/redo with undo-tree | Pragmatic Emacs]]
    [[http://www.dr-qubit.org/undo-tree/undo-tree.el][www.dr-qubit.org/undo-tree/undo-tree.el]]
    #+begin_src emacs-lisp
@@ -2829,6 +2869,7 @@ LC_TIME="en_US.UTF-8"
 LC_ALL=
 #+end_src
 
+** TODO [[https://github.com/GarySGlover/dotfiles/blob/6469ea9b5aeb64ff5ebee53713eb3ba22bdda818/modules/users/global/editors/emacs/emacs-config.org#transient][dotfiles/modules/users/global/editors/emacs/emacs-config.org at 6469ea9b5aeb64ff5ebee53713eb3ba22bdda818 · GarySGlover/dotfiles]]
 ** TODO COMMENT [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-04/msg00874.html][[O] Cool trick on how to eval bash/zsh babel blocks in emacs]]
    #+begin_src emacs-lisp
    (setq explicit-shell-file-name "/usr/local/bin/zsh")
