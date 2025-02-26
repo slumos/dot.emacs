@@ -6,7 +6,6 @@
  '(auth-source-cache-expiry 86400)
  '(auth-source-debug 'trivia)
  '(auth-source-save-behavior 'ask)
- '(auth-sources nil)
  '(auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
  '(avy-style 'pre)
  '(char-menu
@@ -274,9 +273,13 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
- '(package-selected-packages '(chezmoi copilot eglot-yaml gptel idle-org-agenda))
+ '(package-selected-packages
+   '(chezmoi copilot corfu eglot-yaml gptel idle-org-agenda lastfm lispy
+             pdf-tools rainbow-mode sideline sideline-load-cost vterm))
  '(package-vc-selected-packages
-   '((copilot :vc-backend Git :url
+   '((sideline-load-cost :vc-backend Git :url
+                         "https://github.com/emacs-sideline/sideline-load-cost")
+     (copilot :vc-backend Git :url
               "https://github.com/copilot-emacs/copilot.el")
      (chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")

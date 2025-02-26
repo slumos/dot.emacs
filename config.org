@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-12-23 Mon 10:15 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-02-25 Tue 16:33 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -177,7 +177,7 @@ Full Screen though!
   (use-package exec-path-from-shell
     :demand t
     :config
-                                          ;(setq shell-file-name "/usr/local/bin/zsh")
+    (setq shell-file-name "/opt/homebrew/bin/zsh")
     (setq exec-path-from-shell-arguments '("-l"))
     (setq exec-path-from-shell-check-startup-files nil)
     (exec-path-from-shell-initialize)
@@ -924,7 +924,8 @@ CLI with single keystrokes.
                    (message "%s" branch))
           (user-error "There is not current branch"))))
   #+end_src
-** COMMENT Experimental
+** COMMENT TODO Experimental
+SCHEDULED: <2025-02-10 Mon>
   #+begin_src emacs-lisp :results replace
     (defun slumos/parse-github-repo-url (url)
       "return a hash of the components of a git repo url (naive)"
@@ -941,7 +942,7 @@ CLI with single keystrokes.
   #+end_src
 
   #+RESULTS:
-  : #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (user "git" host "github.com" org "slumos" repo "dot.emacs"))
+  : #s(hash-table data (user "git" host "github.com" org "slumos" repo "dot.emacs"))
 
 #+begin_src emacs-lisp
   (defun slumos/magit-context ()
@@ -1076,13 +1077,18 @@ CLI with single keystrokes.
    How awesome does that sound? To call back all your saves is just
    =M-x magit-wip-log-current=.
 
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'org-mode-hook (lambda ()
-				(magit-wip-after-save-mode t)
-				(magit-wip-after-apply-mode t)
-				(magit-wip-before-change-mode t)))
-   #+END_SRC
+   # #+BEGIN_SRC emacs-lisp
+   #   (add-hook 'org-mode-hook (lambda ()
+   #      			(magit-wip-after-save-mode t)
+   #      			(magit-wip-after-apply-mode t)
+   #      			(magit-wip-before-change-mode t)))
+   # #+END_SRC
 
+   #+begin_src emacs-lisp
+     (add-hook 'org-mode-hook #'magit-wip-mode)
+   #+end_src
+
+   
    I /think/ I want =visual-line-mode= always in org... still thinking about it.
 
    #+begin_src emacs-lisp
@@ -1744,6 +1750,19 @@ Trying out jsonian
     :ensure t
     :hook (k8s-mode . yas-minor-mode))
 #+end_src
+
+#+begin_src emacs-lisp
+  (setq slumos-eglot-k8s-config '(:yaml :schemas
+                                   (:Kubernetes ("pod.yaml"
+                                                 "service.yaml"
+                                                 "deployment.yaml"
+                                                 "configmap.yaml")
+                                                )
+                                   :completion t
+                                   :hover t
+                                   ))
+#+end_src
+
 ** COMMENT LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -1942,12 +1961,25 @@ Not there yet based on my experience. [2023-12-06 Wed]
        :hook (yaml-mode . yaml-imenu-enable))
    #+END_SRC
 
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (use-package eglot-yaml
        :vc (:fetcher github :repo yveszoundi/eglot-yaml))
    #+end_src
 
 * LLM
+** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
+#+begin_src emacs-lisp
+  (use-package copilot
+    :vc (:fetcher github
+         :repo copilot-emacs/copilot.el
+         :rev :newest)
+    :bind
+    ("M-C-<next>" . copilot-next-completion)
+    ("M-C-<prior>" . copilot-previous-completion)
+    ("M-C-<return>" . copilot-accept-completion)
+    ("M-C-<backspace>" . copilot-cancel-completion))
+#+end_src
+
 ** [[https://github.com/karthink/gptel][karthink/gptel: A simple LLM client for Emacs]]
 #+begin_src emacs-lisp
   (use-package gptel
@@ -1971,19 +2003,6 @@ Not there yet based on my experience. [2023-12-06 Wed]
 ** TODO [[https://github.com/douo/magit-gptcommit][douo/magit-gptcommit: Magit commit with help of gpt]]
 ** TODO [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
 * Helpers
-** Location
-
-   I don't use =hl-line-mode= often, but when I do, it's in buffers
-   that are lists of things.
-
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
-   #+END_SRC
-
-   #+begin_src emacs-lisp
-     (add-hook 'tabulated-list-mode-hook #'hl-line-mode)
-   #+end_src
-
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
@@ -1994,19 +2013,6 @@ Not there yet based on my experience. [2023-12-06 Wed]
     :config
     (setq vundo-glyph-alist vundo-unicode-symbols))
 #+end_src
-** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
-#+begin_src emacs-lisp
-  (use-package copilot
-    :vc (:fetcher github
-         :repo copilot-emacs/copilot.el
-         :rev :newest)
-    :bind
-    ("M-C-<next>" . copilot-next-completion)
-    ("M-C-<prior>" . copilot-previous-completion)
-    ("M-C-<return>" . copilot-accept-completion)
-    ("M-C-<backspace>" . copilot-cancel-completion))
-#+end_src
-
 ** Copy region formatted for various markup systems
    #+BEGIN_SRC emacs-lisp
    (use-package copy-as-format)
@@ -2059,6 +2065,19 @@ Not there yet based on my experience. [2023-12-06 Wed]
      (use-package default-text-scale
        :init (default-text-scale-mode))
    #+END_SRC
+** hl-line-mode
+
+   I don't use =hl-line-mode= often, but when I do, it's in buffers
+   that are lists of things.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+   #+END_SRC
+
+   #+begin_src emacs-lisp
+     (add-hook 'tabulated-list-mode-hook #'hl-line-mode)
+   #+end_src
+
 ** Hydra
    #+begin_src emacs-lisp
      (use-package hydra
@@ -2205,6 +2224,22 @@ This seems like a decent demonstration of literate programming. Add a row to thi
       :hook
       (terraform-mode . apheleia-mode)
       (terraform-ts-mode . apheleia-mode))
+#+end_src
+
+** [[https://github.com/emacs-sideline/sideline][emacs-sideline/sideline: Show information on the side]]
+#+begin_src emacs-lisp
+  (use-package sideline
+    :init
+    (setq sideline-backends-right '(sideline-eglot
+                                    sideling-flymake
+                                    sideline-load-cost))
+    :hooks
+    ((flymake-mode . sideline-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+    (use-package sideline-load-cost :after sideline
+      :vc (:fetcher github :repo emacs-sideline/sideline-load-cost))
 #+end_src
 
 ** [[https://github.com/tuh8888/chezmoi.el][tuh8888/chezmoi.el: An emacs package for interacting with chezmoi.]]
