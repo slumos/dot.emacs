@@ -273,11 +273,12 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
- '(package-selected-packages
-   '(chezmoi copilot corfu eglot-yaml gptel idle-org-agenda lastfm lispy
-             pdf-tools rainbow-mode sideline sideline-load-cost vterm))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((sideline-load-cost :vc-backend Git :url
+   '((tree-sitter-fold :vc-backend Git :url
+                       "https://github.com/junyi-hou/tree-sitter-fold")
+     (vc-use-package :url "https://github.com/slotThe/vc-use-package")
+     (sideline-load-cost :vc-backend Git :url
                          "https://github.com/emacs-sideline/sideline-load-cost")
      (copilot :vc-backend Git :url
               "https://github.com/copilot-emacs/copilot.el")
@@ -285,9 +286,6 @@
               "https://github.com/tuh8888/chezmoi.el")
      (eglot-yaml :vc-backend Git :url
                  "https://github.com/yveszoundi/eglot-yaml")
-     (tree-sitter-fold :vc-backend Git :url
-                       "https://github.com/junyi-hou/tree-sitter-fold")
-     (vc-use-package :url "https://github.com/slotThe/vc-use-package")
      (modus-exporter :vc-backend Git :url
                      "https://github.com/polaris64/modus-exporter")
      (flycheck :vc-backend Git :url

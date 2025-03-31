@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-02-25 Tue 16:33 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-03-31 Mon 09:22 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1457,6 +1457,14 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 #+end_example
 
 * Other Apps
+** DAP
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :config
+    (dap-mode 1)
+    (dap-ui-mode 1))
+#+end_src
+
 ** Docker
 *** [[https://github.com/Silex/docker.el][Silex/docker.el: Manage docker from Emacs.]]
 #+begin_src emacs-lisp
@@ -1659,17 +1667,6 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     (add-hook 'go-mode-hook (lambda () (setq tab-width 4)))
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
-
-(use-package go-mode
-:mode ("\\.go\\'")
-:ensure t
-:config
-(add-hook 'go-mode-hook
-(lambda ()
-(setq tab-width 4)
-(add-hook 'before-save-hook 'gofmt-before-save)
-)))
-   
 ** Groovy
 #+BEGIN_SRC emacs-lisp
   (use-package groovy-mode
