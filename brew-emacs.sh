@@ -17,7 +17,8 @@ formula="d12frosted/emacs-plus/emacs-plus"
 formula_version=29
 
 #icon_arg='--with-modern-nuvola-icon' 
-icon_arg='--with-savchenkovaleriy-big-sur-icon'
+#icon_arg='--with-savchenkovaleriy-big-sur-icon'
+icon_arg='--with-modern-yellow-icon'
 
 case "${1-x}" in
   @??) formula_version="${1#@}" ;;
@@ -31,13 +32,22 @@ read enter
 print "logging to ${logfile}"
 
 set -x
-export CFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
+
+optimization_flags=(
+  -march=native
+  -O3
+)
+
+deprecated_flags=(
+  --with-native-comp
+)
+
+export CFLAGS="${optimization_flags[@]} -L/usr/local/opt/libgccjit/lib/gcc/current"
 export LDFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
 
 brew install "${formula}@${formula_version}" \
   --display-times \
   --with-imagemagick \
-  --with-native-comp \
   --with-xwidgets \
   "${icon_arg}" \
 |& tee "$logfile"
