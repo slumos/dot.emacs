@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-03-31 Mon 09:22 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-04-16 Wed 11:55 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -183,11 +183,11 @@ Full Screen though!
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-envs
      '("AWS_CONFIG_FILE"
-       "CIRCLECI_TOKEN"
        "EMAIL"
        "LANG"
        "OPENAI_EMACS_GPT_COMMIT_TOKEN"
        "OPENAI_EMACS_GPTEL_TOKEN"
+       "SLUMOS_CIRCLECI_CLI_TOKEN"
        "TERRAFORM_CLOUD_TOKEN"
        "TMPDIR"
        "XDG_CACHE_HOME"
@@ -2230,7 +2230,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
     (setq sideline-backends-right '(sideline-eglot
                                     sideling-flymake
                                     sideline-load-cost))
-    :hooks
+    :hook
     ((flymake-mode . sideline-mode)))
 #+end_src
 

@@ -14,24 +14,17 @@ next-output-file-name () {
 }
 
 formula="d12frosted/emacs-plus/emacs-plus"
-formula_version=29
+formula_version=30
 
-#icon_arg='--with-modern-nuvola-icon' 
-#icon_arg='--with-savchenkovaleriy-big-sur-icon'
-icon_arg='--with-modern-yellow-icon'
+icon_arg='--with-gnu-head-icon'
 
 case "${1-x}" in
-  @??) formula_version="${1#@}" ;;
+  @??) formula_version="${1#@}" ;&
+  @30) icon_arg='--with-modern-nuvola-icon' ;;
+  @31) icon_arg='--with-modern-yellow-icon' ;;
 esac
 
 logfile="$(next-output-file-name "${formula:t}@${formula_version}.out")"
-
-print "brew install ${formula}@${formula_version}? (^C to abort, enter to continue)"
-read enter
-
-print "logging to ${logfile}"
-
-set -x
 
 optimization_flags=(
   -march=native
@@ -42,12 +35,28 @@ deprecated_flags=(
   --with-native-comp
 )
 
-export CFLAGS="${optimization_flags[@]} -L/usr/local/opt/libgccjit/lib/gcc/current"
-export LDFLAGS='-L/usr/local/opt/libgccjit/lib/gcc/current'
+formula_flags=(
+ --display-times
+ --with-imagemagick
+ --with-xwidgets
+)
 
-brew install "${formula}@${formula_version}" \
-  --display-times \
-  --with-imagemagick \
-  --with-xwidgets \
-  "${icon_arg}" \
+# It is an annoying pain to figure this out in a general way. Just run =brew test libgccjit=
+# and extract paths from its output, e.g.
+# ==> /opt/homebrew/opt/gcc/bin/gcc-14 -I/opt/homebrew/Cellar/libgccjit/14.2.0_1/include test-libgccjit.c -o test -L/opt/homebrew/lib/gcc/current -lgccjit
+
+libgccjit_inc=/opt/homebrew/Cellar/libgccjit/14.2.0_1/include
+libgccjit_lib=/opt/homebrew/lib/gcc/current 
+
+print "'brew install ${formula}@${formula_version} ${formula_flags[@]} ${icon_arg}'? (^C to abort, enter to continue)"
+read enter
+
+print "logging to ${logfile}"
+
+set -x
+
+export CFLAGS="${optimization_flags[@]} -I${libgccjit_inc}"
+export LDFLAGS="-L${libgccjit_lib}"
+
+brew install "${formula}@${formula_version}" "${formula_flags[@]}" "${icon_arg}" \
 |& tee "$logfile"
