@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-04-16 Wed 11:55 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-04-18 Fri 11:12 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -178,7 +178,8 @@ Full Screen though!
     :demand t
     :config
     (setq shell-file-name "/opt/homebrew/bin/zsh")
-    (setq exec-path-from-shell-arguments '("-l"))
+    ;(setq exec-path-from-shell-debug t)
+    (setq exec-path-from-shell-arguments '("-i"))
     (setq exec-path-from-shell-check-startup-files nil)
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-envs
