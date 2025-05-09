@@ -232,7 +232,7 @@
  '(magit-diff-use-overlays nil)
  '(magit-repository-directories
    '(("~/Projects" . 1) ("/opt/projects" . 1)
-     ("/opt/projects/quizlet-infrastructure" . 1)) nil nil "Customized with use-package magit")
+     ("/opt/projects/quizlet-infrastructure" . 1)))
  '(magit-status-sections-hook
    '(magit-insert-status-headers magit-insert-merge-log
                                  magit-insert-rebase-sequence
@@ -276,25 +276,25 @@
  '(package-selected-packages
    '(aas almost-mono-themes apheleia async atomic-chrome breadcrumb
          browse-at-remote casual-avy char-menu chezmoi chruby copilot
-         copy-as-format corfu counsel-projectile dap-mode deadgrep
-         default-text-scale direnv docker dockerfile-mode edit-server
-         ef-themes eglot-yaml ein el-get elfeed-org elisp-demos elpy
-         embark-consult exec-path-from-shell fennel-mode flx
-         flycheck-rust forge go-mode gptel groovy-mode gruvbox-theme
-         helpful highlight-indent-guides hush idle-org-agenda
-         indent-tools inf-ruby ivy-avy ivy-omni-org ivy-posframe
-         ivy-prescient ivy-rich js2-mode json-mode k8s-mode kubedoc
-         lastfm lastpass leaf-keywords ligature link-hint lispy lpy
-         lsp-mode lsp-python-ms lua-mode marginalia mastodon
-         modus-themes multiple-cursors nordless-theme ob-restclient
-         ob-tmux org-mac-link org-modern org-ql org-web-tools ox-clip
-         ox-gfm ox-jira ox-pandoc parchment-theme pdf-tools
-         puppet-mode quelpa-use-package rainbow-mode restclient-jq
-         rspec-mode ruby-hash-syntax rustic s3ed seeing-is-believing
-         separedit sideline-load-cost syncthing tao-theme
-         terraform-mode tree-sitter-fold use-package-hydra
-         vc-use-package verb vterm vundo web-mode wgrep ws-butler
-         yaml-imenu yaml-pro))
+         copilot-chat copy-as-format corfu counsel-projectile dap-mode
+         deadgrep default-text-scale direnv docker dockerfile-mode
+         edit-server ef-themes eglot eglot-yaml ein el-get elfeed-org
+         elisp-demos elpy embark-consult exec-path-from-shell
+         fennel-mode flx flycheck-rust forge go-mode gptel groovy-mode
+         gruvbox-theme helpful highlight-indent-guides hush
+         idle-org-agenda indent-tools inf-ruby ivy-avy ivy-omni-org
+         ivy-posframe ivy-prescient ivy-rich js2-mode json-mode
+         k8s-mode kubedoc lastfm lastpass leaf-keywords ligature
+         link-hint lispy lpy lsp-mode lsp-python-ms lua-mode
+         marginalia mastodon modus-themes multiple-cursors
+         nordless-theme ob-restclient ob-tmux org-mac-link org-modern
+         org-ql org-web-tools ox-clip ox-gfm ox-jira ox-pandoc
+         parchment-theme pdf-tools puppet-mode quelpa-use-package
+         rainbow-mode restclient-jq rspec-mode ruby-hash-syntax rustic
+         s3ed seeing-is-believing separedit sideline-eglot
+         sideline-load-cost syncthing tao-theme terraform-mode
+         tree-sitter-fold use-package-hydra vc-use-package verb vterm
+         vundo web-mode wgrep ws-butler yaml-imenu yaml-pro))
  '(package-vc-selected-packages
    '((tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")

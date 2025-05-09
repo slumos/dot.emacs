@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-04-18 Fri 11:12 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-05-09 Fri 15:31 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1761,6 +1761,8 @@ Trying out jsonian
                                    ))
 #+end_src
 
+
+
 ** COMMENT LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -1976,6 +1978,24 @@ Not there yet based on my experience. [2023-12-06 Wed]
     ("M-C-<prior>" . copilot-previous-completion)
     ("M-C-<return>" . copilot-accept-completion)
     ("M-C-<backspace>" . copilot-cancel-completion))
+#+end_src
+** [[https://github.com/chep/copilot-chat.el][chep/copilot-chat.el: Chat with Github copilot in Emacs !]]
+#+begin_src emacs-lisp
+  (use-package copilot-chat
+    :bind ("C-c p" . copilot-chat-transient))
+#+end_src
+*** Add go files under current directory
+#+begin_src emacs-lisp
+  (defun slumos/copilot-chat-add-golang-files-current-dir (dir)
+    (interactive "D")
+    (let* ((max-files 40)
+           (files (directory-files-recursively dir (rx ".go" eos))))
+      (message "got files in %s: %S" dir files)
+      (if (> (length files) max-files)
+          (message "Too many files (%d > %d). Skipping." (length files) max-files)
+        (dolist (file files)
+          (copilot-chat-add-file file))
+        (message "Added %d files." (length files)))))
 #+end_src
 
 ** [[https://github.com/karthink/gptel][karthink/gptel: A simple LLM client for Emacs]]
@@ -2224,7 +2244,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
       (terraform-ts-mode . apheleia-mode))
 #+end_src
 
-** [[https://github.com/emacs-sideline/sideline][emacs-sideline/sideline: Show information on the side]]
+** COMMENT [[https://github.com/emacs-sideline/sideline][emacs-sideline/sideline: Show information on the side]]
 #+begin_src emacs-lisp
   (use-package sideline
     :init
