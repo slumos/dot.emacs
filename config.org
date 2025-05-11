@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-05-09 Fri 15:31 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-05-11 Sun 14:09 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -2004,19 +2004,51 @@ Not there yet based on my experience. [2023-12-06 Wed]
     :commands (gptel gptel-menu gptel-send)
     :bind ("C-c G" . gptel-menu)
     :config
-    (setq gptel-model 'llama3.2:latest
-          gptel-backend (gptel-make-ollama "Ollama"
-                          :host "localhost:11434"
-                          :stream t
-                          :models '(llama3.2:latest))))
+    (setq gptel-model 'claude-3.7-sonnet
+          gptel-backend (gptel-make-gh-copilot "Copilot")))
+
 #+end_src
 
-      ;; '( codegemma:latest
-      ;;    codellama:latest
-      ;;    gemma2:latest
-      ;;    llama3.2:latest
-      ;;    llava:latest
-      ;;    mistral:latest)
+;; (setq gptel-model 'llama3.2:latest
+;;       gptel-backend (gptel-make-ollama "Ollama"
+;;                       :host "localhost:11434"
+;;                       :stream t
+;;                       :models '(llama3.2:latest)))
+
+;; '( codegemma:latest
+;;    codellama:latest
+;;    gemma2:latest
+;;    llama3.2:latest
+;;    llava:latest
+;;    mistral:latest)
+** TODO COMMENT [[https://github.com/daedsidog/evedel][daedsidog/evedel: Instructed LLM programmer/assistant for Emacs]]
+#+begin_src emacs-lisp
+(use-package evedel
+  :defer t
+  :config
+  (customize-set-variable 'evedel-empty-tag-query-matches-all nil)
+  ;; These conflict with flymake so have to modify before use
+  :bind (("C-c e r" . evedel-create-reference)
+         ("C-c e d" . evedel-create-directive)
+         ("C-c e s" . evedel-save-instructions)
+         ("C-c e l" . evedel-load-instructions)
+         ("C-c e p" . evedel-process-directives)
+         ("C-c e m" . evedel-modify-directive)
+         ("C-c e C" . evedel-modify-reference-commentary)
+         ("C-c e k" . evedel-delete-instructions)
+         ("C-c e c" . evedel-convert-instructions)
+         ("C->"     . evedel-next-instruction)
+         ("C-<"     . evedel-previous-instruction)
+         ("C-."     . evedel-cycle-instructions-at-point)
+         ("C-c e t" . evedel-add-tags)
+         ("C-c e T" . evedel-remove-tags)
+         ("C-c e D" . evedel-modify-directive-tag-query)
+         ("C-c e P" . evedel-preview-directive-prompt)
+         ("C-c e /" . evedel-directive-undo)
+         ("C-c e ?" . (lambda ()
+                        (interactive)
+                        (evedel-directive-undo t)))  
+#+end_src
 ** TODO [[https://github.com/lanceberge/elysium][lanceberge/elysium: Automatically apply AI-generated code changes in Emacs]]
 ** TODO [[https://github.com/douo/magit-gptcommit][douo/magit-gptcommit: Magit commit with help of gpt]]
 ** TODO [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
