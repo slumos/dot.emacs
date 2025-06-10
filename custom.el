@@ -294,7 +294,8 @@
          s3ed seeing-is-believing separedit sideline-eglot
          sideline-load-cost syncthing tao-theme terraform-mode
          tree-sitter-fold use-package-hydra vc-use-package verb vterm
-         vundo web-mode wgrep ws-butler yaml-imenu yaml-pro))
+         vundo web-mode wgrep wgrep-deadgrep ws-butler yaml-imenu
+         yaml-pro))
  '(package-vc-selected-packages
    '((tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")
