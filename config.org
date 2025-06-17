@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-06-09 Mon 17:29 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-06-11 Wed 15:04 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -186,6 +186,7 @@ Full Screen though!
      '("AWS_CONFIG_FILE"
        "EMAIL"
        "LANG"
+       "OPENAI_API_KEY_AIDER"
        "OPENAI_EMACS_GPT_COMMIT_TOKEN"
        "OPENAI_EMACS_GPTEL_TOKEN"
        "SLUMOS_CIRCLECI_CLI_TOKEN"
@@ -1967,6 +1968,17 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+end_src
 
 * LLM
+** COMMENT [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
+#+begin_src emacs-lisp
+  (use-package aidermacs
+    :bind (("C-c SPC" . aidermacs-transient-menu))
+    :config
+    (setenv "OPENAI_API_KEY" (getenv "OPENAI_API_KEY_AIDER"))
+    :custom
+    (aidermacs-use-architect-mode t)
+    (aidermacs-default-model "openai/gemini-2.5-pro-preview-05-06"))
+#+end_src
+
 ** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
 #+begin_src emacs-lisp
   (use-package copilot
@@ -2050,7 +2062,6 @@ Not there yet based on my experience. [2023-12-06 Wed]
                         (evedel-directive-undo t)))  
 #+end_src
 ** TODO [[https://github.com/lanceberge/elysium][lanceberge/elysium: Automatically apply AI-generated code changes in Emacs]]
-** TODO [[https://github.com/douo/magit-gptcommit][douo/magit-gptcommit: Magit commit with help of gpt]]
 ** TODO [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
 * Helpers
 ** Automagic make scripts executable
