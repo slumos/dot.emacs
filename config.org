@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-06-11 Wed 15:04 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-06-26 Thu 11:06 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1968,15 +1968,14 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+end_src
 
 * LLM
-** COMMENT [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
+** [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
 #+begin_src emacs-lisp
   (use-package aidermacs
     :bind (("C-c SPC" . aidermacs-transient-menu))
     :config
     (setenv "OPENAI_API_KEY" (getenv "OPENAI_API_KEY_AIDER"))
     :custom
-    (aidermacs-use-architect-mode t)
-    (aidermacs-default-model "openai/gemini-2.5-pro-preview-05-06"))
+    (aidermacs-backend 'vterm))
 #+end_src
 
 ** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
@@ -2016,7 +2015,7 @@ Not there yet based on my experience. [2023-12-06 Wed]
     :commands (gptel gptel-menu gptel-send)
     :bind ("C-c G" . gptel-menu)
     :config
-    (setq gptel-model 'claude-3.7-sonnet
+    (setq gptel-model 'gemini-2.5-pro-preview-06-05
           gptel-backend (gptel-make-gh-copilot "Copilot")))
 
 #+end_src
