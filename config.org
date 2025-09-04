@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-06-26 Thu 11:06 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-08-12 Tue 15:31 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1478,7 +1478,12 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
 ;  (use-package docker-tramp)
 #+end_src
 
-** COMMENT [[https://github.com/akermu/emacs-libvterm][akermu/emacs-libvterm: Emacs libvterm integration]]
+** [[https://codeberg.org/akib/emacs-eat][akib/emacs-eat: Emulate A Terminal, in a region, in a buffer and in Eshell - Codeberg.org]]
+#+begin_src emacs-lisp
+  (use-package eat)
+#+end_src
+
+** [[https://github.com/akermu/emacs-libvterm][akermu/emacs-libvterm: Emacs libvterm integration]]
 #+begin_src emacs-lisp
   (use-package vterm)
 #+end_src
@@ -1968,6 +1973,15 @@ Not there yet based on my experience. [2023-12-06 Wed]
    #+end_src
 
 * LLM
+** [[https://github.com/manzaltu/claude-code-ide.el][manzaltu/claude-code-ide.el: Claude Code IDE integration for Emacs]]
+#+begin_src emacs-lisp
+(use-package claude-code-ide
+  :vc (:fetcher github :repo manzaltu/claude-code-ide.el :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
+#+end_src
+
 ** [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
 #+begin_src emacs-lisp
   (use-package aidermacs
@@ -2298,7 +2312,7 @@ This seems like a decent demonstration of literate programming. Add a row to thi
   (use-package sideline
     :init
     (setq sideline-backends-right '(sideline-eglot
-                                    sideling-flymake
+                                    ;sideline-flymake
                                     sideline-load-cost))
     :hook
     ((flymake-mode . sideline-mode)))
@@ -2886,7 +2900,7 @@ https://www.emacswiki.org/emacs/ToggleWindowSplit
    [[https://www.youtube.com/watch?v=fTvQTMOGJaw][(26) Emacs Rocks! Episode 15: restclient-mode - YouTube]]
    #+BEGIN_SRC emacs-lisp
      (use-package restclient)
-     (use-package restclient-jq)
+;     (use-package restclient-jq)
      (use-package ob-restclient
        :config
        (org-babel-do-load-languages

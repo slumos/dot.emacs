@@ -274,30 +274,32 @@
      ("melpa" . "https://melpa.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(aas almost-mono-themes apheleia async atomic-chrome breadcrumb
-         browse-at-remote casual-avy char-menu chezmoi chruby copilot
-         copilot-chat copy-as-format corfu counsel-projectile dap-mode
-         deadgrep default-text-scale direnv docker dockerfile-mode
-         edit-server ef-themes eglot eglot-yaml ein el-get elfeed-org
-         elisp-demos elpy embark-consult exec-path-from-shell
-         fennel-mode flx flycheck-rust forge go-mode gptel groovy-mode
-         gruvbox-theme helpful highlight-indent-guides hush
-         idle-org-agenda indent-tools inf-ruby ivy-avy ivy-omni-org
-         ivy-posframe ivy-prescient ivy-rich js2-mode json-mode
-         k8s-mode kubedoc lastfm lastpass leaf-keywords ligature
-         link-hint lispy lpy lsp-mode lsp-python-ms lua-mode
-         marginalia mastodon modus-themes multiple-cursors
-         nordless-theme ob-restclient ob-tmux org-mac-link org-modern
-         org-ql org-web-tools ox-clip ox-gfm ox-jira ox-pandoc
-         parchment-theme pdf-tools puppet-mode quelpa-use-package
-         rainbow-mode restclient-jq rspec-mode ruby-hash-syntax rustic
-         s3ed seeing-is-believing separedit sideline-eglot
-         sideline-load-cost syncthing tao-theme terraform-mode
-         tree-sitter-fold use-package-hydra vc-use-package verb vterm
-         vundo web-mode wgrep wgrep-deadgrep ws-butler yaml-imenu
-         yaml-pro))
+   '(aas aidermacs almost-mono-themes apheleia async atomic-chrome
+         breadcrumb browse-at-remote casual-avy char-menu chezmoi
+         chruby claude-code-ide copilot copilot-chat copy-as-format
+         corfu counsel-projectile dap-mode deadgrep default-text-scale
+         direnv docker dockerfile-mode eat edit-server ef-themes
+         eglot-yaml ein el-get elfeed-org elisp-demos elpy
+         embark-consult exec-path-from-shell fennel-mode flx
+         flycheck-rust forge go-mode gptel groovy-mode gruvbox-theme
+         helpful highlight-indent-guides hush idle-org-agenda
+         indent-tools inf-ruby ivy-avy ivy-omni-org ivy-posframe
+         ivy-prescient ivy-rich js2-mode json-mode k8s-mode kubedoc
+         lastfm lastpass leaf-keywords ligature link-hint lispy lpy
+         lsp-python-ms lua-mode marginalia mastodon modus-themes
+         multiple-cursors nordless-theme ob-restclient ob-tmux
+         org-mac-link org-modern org-ql org-web-tools ox-clip ox-gfm
+         ox-jira ox-pandoc parchment-theme pdf-tools puppet-mode
+         quelpa-use-package rainbow-mode restclient-jq rspec-mode
+         ruby-hash-syntax rustic s3ed seeing-is-believing separedit
+         sideline-eglot sideline-load-cost syncthing tao-theme
+         terraform-mode tree-sitter-fold use-package-hydra
+         vc-use-package verb vterm vundo web-mode wgrep-deadgrep
+         ws-butler yaml-imenu yaml-pro))
  '(package-vc-selected-packages
-   '((tree-sitter-fold :vc-backend Git :url
+   '((claude-code-ide :vc-backend Git :url
+                      "https://github.com/manzaltu/claude-code-ide.el")
+     (tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")
      (vc-use-package :url "https://github.com/slotThe/vc-use-package")
      (sideline-load-cost :vc-backend Git :url
