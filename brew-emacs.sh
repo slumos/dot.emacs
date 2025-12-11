@@ -21,7 +21,7 @@ icon_arg='--with-gnu-head-icon'
 case "${1-x}" in
   @??) formula_version="${1#@}" ;&
   @30) icon_arg='--with-modern-nuvola-icon' ;;
-  @31) icon_arg='--with-modern-yellow-icon' ;;
+  @31) icon_arg='--with-gnu-head-icon' ;;
 esac
 
 logfile="$(next-output-file-name "${formula:t}@${formula_version}.out")"
@@ -44,9 +44,10 @@ formula_flags=(
 # It is an annoying pain to figure this out in a general way. Just run =brew test libgccjit=
 # and extract paths from its output, e.g.
 # ==> /opt/homebrew/opt/gcc/bin/gcc-14 -I/opt/homebrew/Cellar/libgccjit/14.2.0_1/include test-libgccjit.c -o test -L/opt/homebrew/lib/gcc/current -lgccjit
+# . . . seems to be fixed, let's see
 
-libgccjit_inc=/opt/homebrew/Cellar/libgccjit/14.2.0_1/include
-libgccjit_lib=/opt/homebrew/lib/gcc/current 
+libgccjit_inc=/opt/homebrew/include
+libgccjit_lib=/opt/homebrew/lib/gcc/current
 
 print "'brew install ${formula}@${formula_version} ${formula_flags[@]} ${icon_arg}'? (^C to abort, enter to continue)"
 read enter
