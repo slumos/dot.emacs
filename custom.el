@@ -3,6 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(apheleia-hide-log-buffers nil)
+ '(apheleia-log-debug-info t)
+ '(apheleia-log-only-errors nil)
  '(auth-source-cache-expiry 86400)
  '(auth-source-debug 'trivia)
  '(auth-source-save-behavior 'ask)
@@ -286,7 +289,7 @@
          indent-tools inf-ruby ivy-avy ivy-omni-org ivy-posframe
          ivy-prescient ivy-rich js2-mode json-mode k8s-mode kubedoc
          lastfm lastpass leaf-keywords ligature link-hint lispy lpy
-         lsp-python-ms lua-mode marginalia mastodon modus-themes
+         lsp-python-ms lua-mode marginalia mastodon mise modus-themes
          multiple-cursors nordless-theme ob-restclient ob-tmux
          org-mac-link org-modern org-ql org-web-tools ox-clip ox-gfm
          ox-jira ox-pandoc parchment-theme pdf-tools puppet-mode
@@ -297,7 +300,9 @@
          vc-use-package verb vterm vundo web-mode wgrep-deadgrep
          ws-butler yaml-imenu yaml-pro))
  '(package-vc-selected-packages
-   '((claude-code-ide :vc-backend Git :url
+   '((eglot-yaml :vc-backend Git :url
+                 "https://github.com/buzztaiki/eglot-yaml")
+     (claude-code-ide :vc-backend Git :url
                       "https://github.com/manzaltu/claude-code-ide.el")
      (tree-sitter-fold :vc-backend Git :url
                        "https://github.com/junyi-hou/tree-sitter-fold")
@@ -308,8 +313,6 @@
               "https://github.com/copilot-emacs/copilot.el")
      (chezmoi :vc-backend Git :url
               "https://github.com/tuh8888/chezmoi.el")
-     (eglot-yaml :vc-backend Git :url
-                 "https://github.com/yveszoundi/eglot-yaml")
      (modus-exporter :vc-backend Git :url
                      "https://github.com/polaris64/modus-exporter")
      (flycheck :vc-backend Git :url

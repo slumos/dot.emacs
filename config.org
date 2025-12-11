@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-08-12 Tue 15:31 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2025-12-11 Thu 15:43 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -204,6 +204,12 @@ XDG WHAT
 #+BEGIN_SRC emacs-lisp
   (require 'xdg)
 #+END_SRC
+*** [[https://mise.jdx.dev/ide-integration.html#emacs][Mise integration]]
+#+begin_src emacs-lisp
+  (use-package mise
+    :hook (after-init . global-mise-mode))
+
+#+end_src
 *** Dedicated directory for backup files
 #+BEGIN_SRC emacs-lisp
   (defconst *backup-dir* (expand-file-name "emacs/backups" (xdg-data-home)))
@@ -1539,6 +1545,15 @@ The main goal of these is to make it super easy to get the ID or a full rich tex
     (setq treesit-auto-install 'prompt)
     (global-treesit-auto-mode))
 #+end_src
+*** Set grammar sources for treesit-install-language-grammar
+#+begin_src emacs-lisp
+(let ((url "https://github.com/tree-sitter-grammars/tree-sitter-markdown")
+      (branch "split_parser"))
+  (dolist (grammar '((markdown . "tree-sitter-markdown")
+                     (markdown-inline . "tree-sitter-markdown-inline")))
+    (setf (alist-get (car grammar) treesit-language-source-alist)
+          (list url branch (format "%s/src" (cdr grammar))))))
+#+end_src
 
 ** Misc
 *** [[https://github.com/abo-abo/lispy][abo-abo/lispy: Short and sweet LISP editing]]
@@ -1768,7 +1783,6 @@ Trying out jsonian
 #+end_src
 
 
-
 ** COMMENT LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -1959,9 +1973,9 @@ Not there yet based on my experience. [2023-12-06 Wed]
      (use-package yaml-pro
        :hook
        (yaml-mode . yaml-pro-mode)
-       (yaml-ts-mode . yaml-pro-ts-mode)
-       (yaml-mode . eglot-ensure)
-       (yaml-ts-mode . eglot-ensure))
+       (yaml-ts-mode . yaml-pro-ts-mode))
+       ;(yaml-mode . eglot-ensure)
+       ;(yaml-ts-mode . eglot-ensure))
 
      (use-package yaml-imenu
        :hook (yaml-mode . yaml-imenu-enable))
@@ -1969,8 +1983,30 @@ Not there yet based on my experience. [2023-12-06 Wed]
 
    #+begin_src emacs-lisp :tangle no
      (use-package eglot-yaml
-       :vc (:fetcher github :repo yveszoundi/eglot-yaml))
+       :after (eglot)
+       :vc (:fetcher github :repo buzztaiki/eglot-yaml)
+       :init
+       (add-to-list 'eglot-server-programs
+                    '((yaml-ts-mode yaml-mode) eglot-yaml-lsp-server "yaml-language-server" "--stdio")))
    #+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (defcustom slumos/eglot-yaml-local-schema-base-dir "/opt/projects/json-schemas"
+    "A local directory holding schemas in :group/:kind_:version.json layout"
+    :group 'slumos
+    :type 'string)
+
+  (defun slumos/eglot-yaml-local-schema-resolver ()
+    "Check local schema location first"
+    (pcase-let* ((api-version (save-excursion (and (re-search-forward "^apiVersion:[ \t]*\\([^ \t\n]+\\).*$" nil t) (match-string 1))))
+                 (`(,group ,version) (string-split api-version "/"))
+                (kind (save-excursion (and (re-search-forward "^kind:[ \t]*\\([^ \t\n]+\\).*$" nil t) (match-string 1))))
+                (local-schema-path (format "%s/%s/%s_%s.json" slumos/eglot-yaml-local-schema-base-dir (downcase group) (downcase kind) version)))
+      (if (file-exists-p local-schema-path) local-schema-path nil)))
+
+  ;; (with-current-buffer "debeziumserver.yaml"
+  ;;   ;(slumos/eglot-yaml-local-schema-resolver))
+#+end_src
 
 * LLM
 ** [[https://github.com/manzaltu/claude-code-ide.el][manzaltu/claude-code-ide.el: Claude Code IDE integration for Emacs]]
