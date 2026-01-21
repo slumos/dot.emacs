@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Literate Emacs config what!
 ;; See emacs.org.
 ;; 2014-04-05 first

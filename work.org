@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2024-11-06 Wed 16:01 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2026-01-21 Wed 13:30 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.config/emacs configuration: stuff for work
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -8,6 +8,10 @@
 #+FILETAGS: :emacs:config:
 #+CATEGORY: EMACS
 #+PROPERTY: header-args    :results silent
+
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+end_src
 
 * Org
 ** Config

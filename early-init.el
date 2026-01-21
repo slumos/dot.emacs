@@ -1,4 +1,4 @@
-;;; -*- no-byte-compile: t -*-
+;;; -*- no-byte-compile: t; lexical-binding: t; -*-
 
 ;; Limit GC during startup
 (setq gc-cons-threshold most-positive-fixnum)

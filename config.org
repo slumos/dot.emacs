@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2025-12-11 Thu 15:43 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2026-01-21 Wed 13:28 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -10,6 +10,10 @@
 #+PROPERTY: header-args :results silent
 
 [[http://oremacs.com/lispy/][lispy.el function reference]]
+
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+end_src
 
 * Introduction
 I know, I'm supposed to only care about writing code and not

@@ -1,5 +1,9 @@
 #+PROPERTY: header-args    :results silent
 
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+end_src
+
 * Org
 ** Agenda Files
    #+BEGIN_SRC emacs-lisp
