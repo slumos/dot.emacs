@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2026-01-21 Wed 13:28 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2026-02-24 Tue 16:18 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -997,6 +997,37 @@ SCHEDULED: <2025-02-10 Mon>
     (with-current-buffer "magit: .emacs.d"
       (slumos/magit-open-transient))
 #+end_src
+** Worktree
+#+begin_src emacs-lisp
+  (defun slumos/abbreviate-directory-name (dir-name)
+    "Abbreviate DIR-NAME by taking first letter of each hyphen-separated word.
+  Example: quizlet-infrastructure -> qi"
+    (mapconcat (lambda (word) (substring word 0 1))
+               (split-string dir-name "-")
+               ""))
+
+  (defun slumos/create-worktree-for-workitem (workitem-id tag)
+    "Create a worktree and branch for a Jira WORKITEM-ID with TAG.
+  Branch: slumos-WORKITEM-ID-TAG
+  Worktree: <parent-dir>/<repo-abbrev>_WORKITEM-ID-TAG"
+    (interactive
+     (list (read-string "Workitem ID: ")
+           (read-string "Tag: ")))
+    (let* ((repo-dir (magit-toplevel))
+           (repo-name (file-name-nondirectory (directory-file-name repo-dir)))
+           (parent-dir (file-name-directory (directory-file-name repo-dir)))
+           (repo-abbrev (slumos/abbreviate-directory-name repo-name))
+           (branch-name (format "slumos-%s-%s" workitem-id tag))
+           (worktree-name (format "%s_%s-%s" repo-abbrev workitem-id tag))
+           (worktree-path (expand-file-name worktree-name parent-dir))
+           (start-point (magit-get-current-branch)))
+      (magit-worktree-branch worktree-path branch-name start-point)))
+
+  (with-eval-after-load 'magit-worktree
+    (transient-append-suffix 'magit-worktree "b"
+      '("w" "Workitem" slumos/create-worktree-for-workitem)))
+#+end_src
+
 ** Initialization
 * Org                                                                   :org:
 #+begin_src emacs-lisp
@@ -1112,7 +1143,7 @@ SCHEDULED: <2025-02-10 Mon>
 #+begin_src emacs-lisp
   (setq org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 2)))
 #+end_src
-**** [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
+**** COMMENT [[https://github.com/enisozgen/idle-org-agenda][enisozgen/idle-org-agenda: A package that shows your agenda when Emacs is idle]]
    #+begin_src emacs-lisp
    (use-package idle-org-agenda
      :after org-agenda
@@ -1212,7 +1243,7 @@ SCHEDULED: <2025-02-10 Mon>
     #+begin_src emacs-lisp
       (use-package orgit)
     #+end_src
-*** [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
+*** COMMENT [[https://github.com/akirak/ivy-omni-org][akirak/ivy-omni-org: An Ivy command which lets you visit Org buffers, files, bookmarks, and agenda commands]]
     #+begin_src emacs-lisp
       (leaf ivy-omni-org
         :after counsel
@@ -2013,7 +2044,42 @@ Not there yet based on my experience. [2023-12-06 Wed]
 #+end_src
 
 * LLM
-** [[https://github.com/manzaltu/claude-code-ide.el][manzaltu/claude-code-ide.el: Claude Code IDE integration for Emacs]]
+** TRYING [[https://github.com/stevemolitor/claude-code.el][stevemolitor/claude-code.el: Claude Code Emacs integration]]
+*** Dependencies
+Just dumping dependencies here for now
+#+begin_src emacs-lisp
+(use-package inheritenv
+  :vc (:fetcher github :repo "purcell/inheritenv" :rev :newest))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package eat)
+  (use-package vterm)
+#+end_src
+
+*** Main packages
+#+begin_src emacs-lisp
+(use-package monet
+  :vc (:fetcher github :repo "stevemolitor/monet" :rev :newest))
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package claude-code
+    :vc (:fetcher github :repo "stevemolitor/claude-code.el" :rev :newest)
+    
+    :config
+    (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+    (monet-mode 1)
+    (claude-code-mode)
+    
+    :bind-keymap ("C-c C-." . claude-code-command-map)
+
+    ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
+    :bind (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
+#+end_src
+
+** COMMENT [[https://github.com/manzaltu/claude-code-ide.el][manzaltu/claude-code-ide.el: Claude Code IDE integration for Emacs]]
 #+begin_src emacs-lisp
 (use-package claude-code-ide
   :vc (:fetcher github :repo manzaltu/claude-code-ide.el :rev :newest)
@@ -2022,7 +2088,7 @@ Not there yet based on my experience. [2023-12-06 Wed]
   (claude-code-ide-emacs-tools-setup))
 #+end_src
 
-** [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
+** COMMENT [[https://github.com/MatthewZMD/aidermacs][MatthewZMD/aidermacs: AI Pair Programming in Emacs with Aider]]
 #+begin_src emacs-lisp
   (use-package aidermacs
     :bind (("C-c SPC" . aidermacs-transient-menu))
@@ -2032,7 +2098,7 @@ Not there yet based on my experience. [2023-12-06 Wed]
     (aidermacs-backend 'vterm))
 #+end_src
 
-** [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
+** COMMENT [[https://github.com/copilot-emacs/copilot.el][copilot-emacs/copilot.el: An unofficial Copilot plugin for Emacs.]]
 #+begin_src emacs-lisp
   (use-package copilot
     :vc (:fetcher github
@@ -2044,7 +2110,7 @@ Not there yet based on my experience. [2023-12-06 Wed]
     ("M-C-<return>" . copilot-accept-completion)
     ("M-C-<backspace>" . copilot-cancel-completion))
 #+end_src
-** [[https://github.com/chep/copilot-chat.el][chep/copilot-chat.el: Chat with Github copilot in Emacs !]]
+** COMMENT [[https://github.com/chep/copilot-chat.el][chep/copilot-chat.el: Chat with Github copilot in Emacs !]]
 #+begin_src emacs-lisp
   (use-package copilot-chat
     :bind ("C-c p" . copilot-chat-transient))
@@ -2063,7 +2129,7 @@ Not there yet based on my experience. [2023-12-06 Wed]
         (message "Added %d files." (length files)))))
 #+end_src
 
-** [[https://github.com/karthink/gptel][karthink/gptel: A simple LLM client for Emacs]]
+** COMMENT [[https://github.com/karthink/gptel][karthink/gptel: A simple LLM client for Emacs]]
 #+begin_src emacs-lisp
   (use-package gptel
     :commands (gptel gptel-menu gptel-send)
@@ -2114,9 +2180,64 @@ Not there yet based on my experience. [2023-12-06 Wed]
                         (interactive)
                         (evedel-directive-undo t)))  
 #+end_src
-** TODO [[https://github.com/lanceberge/elysium][lanceberge/elysium: Automatically apply AI-generated code changes in Emacs]]
-** TODO [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
+** TODO COMMENT [[https://github.com/lanceberge/elysium][lanceberge/elysium: Automatically apply AI-generated code changes in Emacs]]
+** TODO COMMENT [[https://github.com/karthink/gptel/wiki/Defining-custom-gptel-commands#example-2-rewrite-a-region][Defining custom gptel commands · karthink/gptel Wiki]]
 * Helpers
+** TODO [[https://github.com/emacselements/whisper][emacselements/whisper: An Emacs package that provides sophisticated speech-to-text functionality using Whisper]]
+** TRYING edit-server (with [[https://github.com/stsquad/emacs_chrome][stsquad/emacs_chrome]])
+#+begin_src emacs-lisp
+  (use-package edit-server
+    :commands edit-server-start
+    ;; :init (if after-init-time
+    ;;           (edit-server-start)
+    ;;         (add-hook 'after-init-hook
+    ;;                   #'(lambda () (edit-server-start))))
+    ;; :config
+    ;; (setq edit-server-new-frame-alist
+    ;;       '((name . "Edit with Emacs FRAME")
+    ;;         (top . 200)
+    ;;         (left . 200)
+    ;;         (width . 80)
+    ;;         (height . 25)
+    )
+#+end_src
+
+** TRYING [[https://github.com/twlz0ne/separedit.el][twlz0ne/separedit.el: Edit comment or string/docstring or code block inside them in separate buffer with your favorite mode]]
+#+begin_src emacs-lisp
+  (use-package separedit
+    :bind (:map prog-mode-map ("C-c '" . #'separedit)))
+#+end_src
+
+** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
+"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :config (marginalia-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
 ** Automagic make scripts executable
    #+BEGIN_SRC emacs-lisp
      (custom-set-variables '(executable-prefix-env t))
@@ -2138,33 +2259,9 @@ Not there yet based on my experience. [2023-12-06 Wed]
     :hook (yaml-mode yaml-pro-mode yaml-pro-ts-mode))
 #+end_src
 
-** TRYING edit-server (with [[https://github.com/stsquad/emacs_chrome][stsquad/emacs_chrome]])
-#+begin_src emacs-lisp
-  (use-package edit-server
-    :commands edit-server-start
-    ;; :init (if after-init-time
-    ;;           (edit-server-start)
-    ;;         (add-hook 'after-init-hook
-    ;;                   #'(lambda () (edit-server-start))))
-    ;; :config
-    ;; (setq edit-server-new-frame-alist
-    ;;       '((name . "Edit with Emacs FRAME")
-    ;;         (top . 200)
-    ;;         (left . 200)
-    ;;         (width . 80)
-    ;;         (height . 25)
-    )
-#+end_src
-
-** TRYING [[https://github.com/Fanael/edit-indirect/][Fanael/edit-indirect]]
+** [[https://github.com/Fanael/edit-indirect/][Fanael/edit-indirect]]
 #+begin_src emacs-lisp
   (use-package edit-indirect)
-#+end_src
-
-** TRYING [[https://github.com/twlz0ne/separedit.el][twlz0ne/separedit.el: Edit comment or string/docstring or code block inside them in separate buffer with your favorite mode]]
-#+begin_src emacs-lisp
-  (use-package separedit
-    :bind (:map prog-mode-map ("C-c '" . #'separedit)))
 #+end_src
 
 ** [[https://github.com/federicotdn/verb][federicotdn/verb: Organize and send HTTP requests from Emacs]]
@@ -2303,36 +2400,6 @@ This seems like a decent demonstration of literate programming. Add a row to thi
        :after deadgrep
        :hook (deadgrep-finished-hook . wgrep-deadgrep-setup))
    #+end_src
-
-** TRYING [[https://github.com/oantolin/embark/tree/master#quick-start][oantolin/embark: Emacs Mini-Buffer Actions Rooted in Keymaps]]
-"It is highly recommended to also install Marginalia..." [[https://github.com/minad/marginalia][minad/marginalia: marginalia.el - Marginalia in the minibuffer]]
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :config (marginalia-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package embark
-    :ensure t
-    :bind
-    (("C-." . embark-act)
-     ("C-;" . embark-dwim)
-     ("C-h B" . embark-bindings))
-
-    :init
-    (setq prefix-help-command #'embark-prefix-help-command)
-
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   nil
-                   (window-parameters (mode-line-format . none)))))
-
-  (use-package embark-consult
-    :hook
-    (embark-collect-mode . consult-preview-at-point-mode))
-#+end_src
 
 ** [[https://github.com/r0bobo/kubedoc.el][r0bobo/kubedoc.el: kubedoc.el - Kubernetes API Documentation]]
 #+begin_src emacs-lisp

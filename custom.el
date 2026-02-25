@@ -60,7 +60,23 @@
  '(compilation-message-face 'default)
  '(compilation-scroll-output t)
  '(connection-local-criteria-alist
-   '(((:application vc-git) vc-git-connection-default-profile)
+   '(((:application tramp :machine "ipv6-loopback")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "ipv6-localhost")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "ip6-loopback")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "ip6-localhost")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "localhost6")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "localhost4")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "::1")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine "127.0.0.1")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application vc-git) vc-git-connection-default-profile)
      ((:application tramp :protocol "flatpak")
       tramp-flatpak-connection-local-default-profile)
      ((:application tramp :protocol "kubernetes")
@@ -165,7 +181,8 @@
      (tramp-connection-local-default-shell-profile
       (shell-file-name . "/bin/sh") (shell-command-switch . "-c"))
      (tramp-connection-local-default-system-profile
-      (path-separator . ":") (null-device . "/dev/null"))))
+      (path-separator . ":") (null-device . "/dev/null")
+      (exec-suffixes ""))))
  '(counsel-tramp-control-master-path "~/.ssh/sock")
  '(counsel-tramp-control-master-prefix "cc-vpc")
  '(counsel-tramp-custom-connections
@@ -210,7 +227,6 @@
  '(find-file-visit-truename t)
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
  '(flycheck-yamllintrc nil)
- '(frame-background-mode 'dark)
  '(frame-resize-pixelwise t)
  '(global-flycheck-mode nil)
  '(global-prettify-symbols-mode t)
@@ -280,17 +296,18 @@
  '(package-selected-packages
    '(aas aidermacs almost-mono-themes apheleia async atomic-chrome
          breadcrumb browse-at-remote casual-avy char-menu chezmoi
-         chruby claude-code-ide copilot copilot-chat copy-as-format
-         corfu counsel-projectile dap-mode deadgrep default-text-scale
-         direnv docker dockerfile-mode eat edit-server ef-themes
-         eglot-yaml ein el-get elfeed-org elisp-demos elpy
-         embark-consult exec-path-from-shell fennel-mode flx
-         flycheck-rust forge go-mode gptel groovy-mode gruvbox-theme
-         helpful highlight-indent-guides hush idle-org-agenda
-         indent-tools inf-ruby ivy-avy ivy-omni-org ivy-posframe
-         ivy-prescient ivy-rich js2-mode json-mode k8s-mode kubedoc
-         lastfm lastpass leaf-keywords ligature link-hint lispy lpy
-         lsp-python-ms lua-mode marginalia mastodon mise modus-themes
+         chruby claude-code claude-code-ide copilot copilot-chat
+         copy-as-format corfu counsel-projectile dap-mode deadgrep
+         default-text-scale direnv docker dockerfile-mode eat
+         edit-server ef-themes eglot-yaml ein el-get elfeed-org
+         elisp-demos elpy embark-consult exec-path-from-shell
+         fennel-mode flx flycheck-rust forge free-keys go-mode gptel
+         groovy-mode gruvbox-theme helpful highlight-indent-guides
+         hush idle-org-agenda indent-tools inf-ruby ivy-avy
+         ivy-omni-org ivy-posframe ivy-prescient ivy-rich js2-mode
+         json-mode k8s-mode kubedoc lastfm lastpass leaf-keywords
+         ligature link-hint lispy lpy lsp-python-ms lua-mode
+         marginalia mark-graf mastodon mise modus-themes monet
          multiple-cursors nordless-theme ob-restclient ob-tmux
          org-mac-link org-modern org-ql org-web-tools ox-clip ox-gfm
          ox-jira ox-pandoc parchment-theme pdf-tools puppet-mode
@@ -301,7 +318,8 @@
          vc-use-package verb vterm vundo web-mode wgrep-deadgrep
          ws-butler yaml-imenu yaml-pro))
  '(package-vc-selected-packages
-   '((eglot-yaml :vc-backend Git :url
+   '((monet :vc-backend Git :url "https://github.com/stevemolitor/monet")
+     (eglot-yaml :vc-backend Git :url
                  "https://github.com/buzztaiki/eglot-yaml")
      (claude-code-ide :vc-backend Git :url
                       "https://github.com/manzaltu/claude-code-ide.el")
