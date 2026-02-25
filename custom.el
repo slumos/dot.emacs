@@ -272,6 +272,9 @@
                                  magit-insert-worktrees
                                  forge-insert-issues))
  '(magit-wip-mode t)
+ '(mark-graf-edit-style 'hybrid)
+ '(mark-graf-left-margin 4)
+ '(mark-graf-text-width 120)
  '(org-agenda-span 'day)
  '(org-capture-bookmark nil)
  '(org-catch-invisible-edits 'error)

@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2026-02-24 Tue 16:18 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2026-02-24 Tue 18:21 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1837,6 +1837,14 @@ Trying out jsonian
   (use-package lua-mode)
 #+end_src
 ** Markdown
+*** TRYING [[https://github.com/hyperZphere/mark-graf][hyperZphere/mark-graf: Emacs Markdown mode with inline rendering]]
+#+begin_src emacs-lisp
+  (use-package mark-graf
+    :commands mark-graf-mode
+    :mode (("\\.md\\'" . mark-graf-mode)))
+#+end_src
+
+*** COMMENT markdown-mode
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :commands (markdown-mode gfm-mode)
