@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2026-02-24 Tue 18:21 slumos@Steven-Lumos-VXXQV3F32R>
+# Time-stamp: <2026-03-04 Wed 12:08 slumos@Steven-Lumos-VXXQV3F32R>
 #+DESCRIPTION: My nice =~/.emacs.d configuration.
 #+KEYWORDS:  emacs org
 #+LANGUAGE:  en
@@ -1029,6 +1029,11 @@ SCHEDULED: <2025-02-10 Mon>
 #+end_src
 
 ** Initialization
+** TRYING [[https://github.com/jonathanchu/magit-gh][jonathanchu/magit-gh: A lightweight GitHub CLI (gh) integration for Magit]]
+#+begin_src emacs-lisp
+  (use-package magit-gh :after magit)
+#+end_src
+
 * Org                                                                   :org:
 #+begin_src emacs-lisp
   (setq *slumos-org-notes-directory* (expand-file-name "~/Sync/ST/Notes"))
@@ -1841,7 +1846,8 @@ Trying out jsonian
 #+begin_src emacs-lisp
   (use-package mark-graf
     :commands mark-graf-mode
-    :mode (("\\.md\\'" . mark-graf-mode)))
+    :mode (("\\.md\\'" . mark-graf-mode))
+    :hook (mark-graf-mode . (lambda () (display-line-numbers-mode -1))))
 #+end_src
 
 *** COMMENT markdown-mode
@@ -2075,7 +2081,10 @@ Just dumping dependencies here for now
 #+begin_src emacs-lisp
   (use-package claude-code
     :vc (:fetcher github :repo "stevemolitor/claude-code.el" :rev :newest)
-    
+
+    :custom
+    (claude-code-program-switches '("--settings" "{\"prefersReducedMotion\": true}"))
+
     :config
     (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
     (monet-mode 1)

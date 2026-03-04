@@ -309,15 +309,15 @@
          hush idle-org-agenda indent-tools inf-ruby ivy-avy
          ivy-omni-org ivy-posframe ivy-prescient ivy-rich js2-mode
          json-mode k8s-mode kubedoc lastfm lastpass leaf-keywords
-         ligature link-hint lispy lpy lsp-python-ms lua-mode
+         ligature link-hint lispy lpy lsp-python-ms lua-mode magit-gh
          marginalia mark-graf mastodon mise modus-themes monet
          multiple-cursors nordless-theme ob-restclient ob-tmux
-         org-mac-link org-modern org-ql org-web-tools ox-clip ox-gfm
-         ox-jira ox-pandoc parchment-theme pdf-tools puppet-mode
-         quelpa-use-package rainbow-mode restclient-jq rspec-mode
-         ruby-hash-syntax rustic s3ed seeing-is-believing separedit
-         sideline-eglot sideline-load-cost syncthing tao-theme
-         terraform-mode tree-sitter-fold use-package-hydra
+         org-mac-link org-modern org-ql org-web-tools orgit ox-clip
+         ox-gfm ox-jira ox-pandoc parchment-theme pdf-tools
+         puppet-mode quelpa-use-package rainbow-mode restclient-jq
+         rspec-mode ruby-hash-syntax rustic s3ed seeing-is-believing
+         separedit sideline-eglot sideline-load-cost syncthing
+         tao-theme terraform-mode tree-sitter-fold use-package-hydra
          vc-use-package verb vterm vundo web-mode wgrep-deadgrep
          ws-butler yaml-imenu yaml-pro))
  '(package-vc-selected-packages
